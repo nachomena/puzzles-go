@@ -1,0 +1,44 @@
+/* Pantalla de menú: botón de continuar y lista de niveles con su reserva de tableros. */
+import { LEVELS, LEVEL_ORDER, BUFFER_CAP } from '../config.js';
+import { formatTime, plural } from '../lib/format.js';
+
+function levelMeta(level, stats){
+  if (!stats.solved) return level.desc;
+  return plural(stats.solved, 'resuelto') + (stats.best ? `, récord ${formatTime(stats.best)}` : '');
+}
+
+function bufferDots(ready, working){
+  let dots = '';
+  for (let i = 0; i < BUFFER_CAP; i++){
+    const cls = i < ready ? 'is-filled' : (i === ready && working ? 'is-working' : '');
+    dots += `<i class="${cls}"></i>`;
+  }
+  return `<span class="dots" aria-label="${ready} tableros listos">${dots}</span>`;
+}
+
+export class MenuView {
+  constructor({ levels, resume }){
+    this.levelsEl = levels;
+    this.resumeEl = resume;
+  }
+
+  /**
+   * @param {import('../game/store.js').Store} store
+   * @param {string|null} generating  nivel que se está generando ahora
+   */
+  render(store, generating){
+    this.levelsEl.innerHTML = LEVEL_ORDER.map(L => {
+      const lv = LEVELS[L];
+      return `<button class="level" data-action="start-level" data-level="${L}">` +
+        `<span class="level__text"><span class="level__name display">${lv.name.toUpperCase()}</span>` +
+        `<span class="level__meta">${levelMeta(lv, store.statsFor(L))}</span></span>` +
+        bufferDots(store.bufferSize(L), generating === L) +
+        `</button>`;
+    }).join('');
+
+    const c = store.state.cur;
+    this.resumeEl.innerHTML = (c && !c.done)
+      ? `<button class="resume" data-action="continue"><b class="display">CONTINUAR</b><span>${LEVELS[c.L].name}, ${formatTime(c.time || 0)}</span></button>`
+      : '';
+  }
+}

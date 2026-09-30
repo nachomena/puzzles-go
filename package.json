@@ -1,0 +1,11 @@
+{
+  "name": "star-battle-go",
+  "private": true,
+  "type": "module",
+  "description": "Star Battle 10×10 como web app instalable. Sin paso de compilación: ES modules nativos.",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "test": "node --test tests/*.test.js",
+    "check:sw": "node tests/check-sw-files.mjs"
+  }
+}

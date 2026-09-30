@@ -1,0 +1,56 @@
+/* Design tokens: única fuente de colores, tipografías y medidas. */
+@font-face{font-family:"Archivo Black";src:url(../fonts/archivo-black.woff2) format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"Archivo";src:url(../fonts/archivo.woff2) format("woff2");font-weight:100 900;font-display:swap}
+
+:root{
+  color-scheme:dark;
+
+  /* Superficies */
+  --bg:#212026;
+  --surface:#2a2930;          /* hojas y tarjetas */
+  --surface-press:#2e2d34;    /* botón pulsado */
+  --backdrop:rgba(18,17,22,.72);
+  --cell:#39383d;
+  --cell-flash:#6c6a77;
+  --cell-paint:#5f5933;
+
+  /* Texto */
+  --ink:#dcdbe4;
+  --ink-soft:#c9c8d2;
+  --ink-label:#b9b8c3;
+  --dim:#8f8e9a;
+
+  /* Líneas */
+  --grid:#4c4b53;
+  --wall:#e3e2e9;
+  --divider:#3a3940;
+  --rule:#4a4950;
+  --outline:#55545d;
+
+  /* Estado */
+  --x:#de6a5e;
+  --bad:#ff5b4f;
+  --star:#fff;
+
+  /* Controles */
+  --seg:#302f36;
+  --seg-on:#66656f;
+  --dot:#4e4d56;
+  --dot-pulse:#8a8994;
+  --switch-off:#4a4951;
+  --switch-on:#8b89a0;
+  --knob:#fff;
+
+  /* Tipografía */
+  --font-body:"Archivo",-apple-system,BlinkMacSystemFont,"Helvetica Neue",system-ui,sans-serif;
+  --font-display:"Archivo Black","Arial Black",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+
+  /* Medidas */
+  --content-max:560px;
+  --gutter:24px;
+  --radius-sm:10px;
+  --radius:12px;
+  --radius-lg:20px;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+}

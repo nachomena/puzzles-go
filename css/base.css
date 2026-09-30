@@ -1,0 +1,19 @@
+/* Reset, elementos base y utilidades de maquetación. */
+:root{box-sizing:border-box;padding-top:var(--safe-top);padding-bottom:var(--safe-bottom)}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;background:var(--bg);scroll-padding-top:var(--safe-top)}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:var(--font-body);
+  -webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;
+  overscroll-behavior:none;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer}
+button:focus-visible,label:focus-within{outline:2px solid var(--wall);outline-offset:3px;border-radius:6px}
+button:disabled{opacity:.35;cursor:default}
+svg{display:block}
+
+.display{font-family:var(--font-display);font-weight:900;letter-spacing:.01em}
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
+.wrap{max-width:var(--content-max);margin:0 auto;padding:0 var(--gutter)}
+.screen{display:none}
+.screen.is-on{display:block}
+
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
