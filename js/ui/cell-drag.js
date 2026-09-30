@@ -1,5 +1,6 @@
 /* Entrada táctil genérica sobre una rejilla: tocar y arrastrar.
-   Interpola entre eventos para no saltarse casillas en arrastres rápidos. */
+   Interpola entre eventos para no saltarse casillas en arrastres rápidos.
+   Salir de la rejilla termina el trazo: al volver a entrar sin soltar no se sigue marcando. */
 
 /**
  * @param {HTMLElement} el
@@ -31,21 +32,25 @@ export function bindCellDrag(el, { cellAt, cellSize, enabled, onStart, onEnter, 
     const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
     const n = Math.max(1, Math.ceil(Math.hypot(dx, dy) / step));
     const entered = [];
+    let left = false;
     for (let k = 1; k <= n; k++){
       const i = cellAt(drag.x + dx * k / n, drag.y + dy * k / n);
-      if (i < 0 || i === drag.last) continue;
+      if (i < 0){ left = true; break; }
+      if (i === drag.last) continue;
       drag.last = i;
       entered.push(i);
     }
     drag.x = e.clientX; drag.y = e.clientY;
     if (entered.length) onEnter(entered);
+    if (left) finish();
   });
 
-  const end = e => {
-    if (!drag || e.pointerId !== drag.id) return;
+  const finish = () => {
+    try { el.releasePointerCapture(drag.id); } catch (_){}
     drag = null;
     onEnd();
   };
+  const end = e => { if (drag && e.pointerId === drag.id) finish(); };
   el.addEventListener('pointerup', end);
   el.addEventListener('pointercancel', end);
   el.addEventListener('contextmenu', e => e.preventDefault());
