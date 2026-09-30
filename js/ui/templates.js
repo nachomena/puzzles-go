@@ -27,7 +27,7 @@ export const undoRedo = () =>
 export const dock = () =>
   `<nav class="dock">` +
   iconButton('back', 'back', 'Volver') +
-  iconButton('hint', 'hint', 'Pista') +
+  `<button class="icon-btn hint-btn" data-action="hint" aria-label="Pista">${svgIcon('hint')}<span class="hint-btn__wait" data-hud="hint-wait"></span></button>` +
   iconButton('open', 'gear', 'Ajustes', { attrs: 'data-target="settings"' }) +
   iconButton('open', 'help', 'Cómo se juega', { attrs: 'data-target="help"' }) +
   `</nav>`;

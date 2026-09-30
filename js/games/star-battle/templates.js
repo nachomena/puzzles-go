@@ -22,7 +22,7 @@ export const help = () => `
     <li>Toca una casilla para pasar de vacía a X, de X a estrella y de estrella a vacía.</li>
     <li>Arrastra el dedo para marcar varias X seguidas.</li>
     <li>Con el pincel pintas casillas para marcar una suposición. No cuenta como estrella ni como X; toca o arrastra otra vez para quitar la pintura.</li>
-    <li>La bombilla da una pista: señala un error o coloca una estrella correcta.</li>
+    <li>La bombilla da una pista: señala un error o coloca una estrella correcta. Hay una pista cada 10 minutos de juego.</li>
   </ul>
   <h3>Truco de inicio</h3>
   <p>Empieza por las regiones pequeñas: si una región cabe en una sola fila o columna, las estrellas de esa fila o columna ya están decididas.</p>`;

@@ -1,8 +1,9 @@
 /* Controlador base de una partida (patrón plantilla).
    Resuelve lo común a todos los juegos: historial, cronómetro, reinicio, victoria,
    herramientas y cabecera. Cada juego hereda y rellena los pasos marcados como "abstractos". */
-import { HISTORY_LIMIT, TIMING } from '../config.js';
+import { HISTORY_LIMIT, HINT_COOLDOWN_SEC, TIMING } from '../config.js';
 import { History } from './history.js';
+import { hintWait } from './hint-cooldown.js';
 import { formatTime, plural } from '../lib/format.js';
 
 export class GameController {
@@ -43,8 +44,8 @@ export class GameController {
   clearInput(){}
   /** ¿Está resuelto el tablero? */
   isSolved(){ return false; }
-  /** Pista: corrige un error o avanza un paso. */
-  hint(){}
+  /** Da una pista (corrige un error o avanza un paso). Devuelve true si la dio. */
+  giveHint(){ return false; }
   /** Recalcula lo derivado tras un cambio (p. ej. X automáticas). */
   normalize(){}
   /** Reacciona a un ajuste cambiado. */
@@ -81,6 +82,7 @@ export class GameController {
     this.hud.setHistory(this.history.canUndo && !s.done, this.history.canRedo && !s.done);
     this.hud.setTool(this.tool);
     this.hud.setTime(this.settings.timer ? formatTime(s.time) : '');
+    this.hud.setHintWait(this.hintWait);
   }
 
   /** Aplica las consecuencias de un cambio. `final` = fin de la acción del jugador. */
@@ -106,6 +108,7 @@ export class GameController {
     if (!this.active) return;
     s.time++;
     if (this.settings.timer) this.hud.setTime(formatTime(s.time));
+    this.hud.setHintWait(this.hintWait);
     if (s.time % TIMING.autosaveEverySec === 0) this.store.save();
   }
 
@@ -136,8 +139,21 @@ export class GameController {
     this.notify('Tablero vacío. Puedes deshacerlo.');
   }
 
-  /** Cuenta una pista usada (anula el récord de la partida). */
-  countHint(){ this.session.hints++; }
+  /** Segundos de juego que faltan para la próxima pista. */
+  get hintWait(){ return this.session ? hintWait(this.session, HINT_COOLDOWN_SEC) : 0; }
+
+  /** Pista con límite: una cada HINT_COOLDOWN_SEC de juego. Anula el récord de la partida. */
+  hint(){
+    if (!this.active) return;
+    const wait = this.hintWait;
+    if (wait > 0){ this.notify(`Próxima pista en ${formatTime(wait)}`); return; }
+    if (!this.giveHint()) return;
+    const s = this.session;
+    s.hints++;
+    s.hintAt = s.time;
+    this.store.save();
+    this.hud.setHintWait(this.hintWait);
+  }
 
   #checkWin(){
     const s = this.session;

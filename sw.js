@@ -1,11 +1,11 @@
 // Sube la versión cuando publiques cambios para que el iPhone descargue la nueva
-const VERSION = 'pzg-v1';
+const VERSION = 'pzg-v2';
 const FILES = [
   './', './index.html', './manifest.webmanifest',
   './css/base.css', './css/components.css', './css/games/star-battle.css', './css/games/sudoku.css',
   './css/menu.css', './css/overlays.css', './css/play.css', './css/tokens.css', './js/app/app.js',
   './js/config.js', './js/core/game-controller.js', './js/core/game-definition.js',
-  './js/core/generator-worker.js', './js/core/history.js', './js/core/puzzle-supply.js',
+  './js/core/generator-worker.js', './js/core/hint-cooldown.js', './js/core/history.js', './js/core/puzzle-supply.js',
   './js/core/runners.js', './js/core/store.js', './js/games/index.js',
   './js/games/star-battle/board-view.js', './js/games/star-battle/config.js',
   './js/games/star-battle/controller.js', './js/games/star-battle/engine/bits.js',

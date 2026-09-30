@@ -24,7 +24,7 @@ export const help = () => `
     <li>Toca una casilla y después un número del teclado. Toca el mismo número otra vez para quitarlo.</li>
     <li>Con el lápiz ${svgIcon('pencil').replace('<svg', '<svg class="inline-icon"')} anotas candidatos pequeños en la casilla; toca otra vez para quitarlos.</li>
     <li>La goma borra la casilla seleccionada. En teclado físico: números, flechas, retroceso y <b>N</b> para cambiar de lápiz a número.</li>
-    <li>La bombilla da una pista: señala un número equivocado o coloca el siguiente que se puede deducir.</li>
+    <li>La bombilla da una pista: señala un número equivocado o coloca el siguiente que se puede deducir. Hay una pista cada 10 minutos de juego.</li>
   </ul>
   <h3>Niveles</h3>
   <ul>

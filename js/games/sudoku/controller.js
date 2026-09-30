@@ -131,16 +131,12 @@ export class SudokuController extends GameController {
     this.commit(true);
   }
 
-  hint(){
-    const s = this.session;
-    if (!this.active) return;
-    const hint = findHint(s.values, s.p.solution);
-    if (!hint) return;
-    this.countHint();
+  giveHint(){
+    const s = this.session, hint = findHint(s.values, s.p.solution);
+    if (!hint) return false;
     if (hint.type === 'wrong'){
       this.notify('Este número no va aquí');
       s.sel = hint.cell;
-      this.store.save();
       this.render();
     } else {
       this.record();
@@ -149,5 +145,6 @@ export class SudokuController extends GameController {
       this.commit(true);
     }
     this.board.flash(hint.cell);
+    return true;
   }
 }

@@ -59,21 +59,16 @@ export class StarBattleController extends GameController {
     return { tool: el => this.setTool(el.dataset.tool) };
   }
 
-  hint(){
-    const s = this.session;
-    if (!this.active) return;
-    const hint = findHint(s.marks, s.p.solution);
-    if (!hint) return;
-    this.countHint();
+  giveHint(){
+    const s = this.session, hint = findHint(s.marks, s.p.solution);
+    if (!hint) return false;
     if (hint.type === 'place-star'){
       this.record();
       s.marks[hint.cell] = MARK.STAR;
       this.commit(true);
-    } else {
-      this.notify(HINT_MESSAGES[hint.type]);
-      this.store.save();
-    }
+    } else this.notify(HINT_MESSAGES[hint.type]);
     this.board.flash(hint.cell);
+    return true;
   }
 
   /* ---------- Trazos (tocar y arrastrar) ---------- */

@@ -71,3 +71,11 @@ test('bits: combinaciones sin crear arrays y bits encendidos', () => {
   assert.deepEqual(bitIndices(0b10110), [1, 2, 4]);
   assert.equal(popcount(0x1ff), 9);
 });
+
+import { hintWait } from '../js/core/hint-cooldown.js';
+
+test('hintWait: la primera pista está libre y luego hay que esperar el tiempo de juego', () => {
+  assert.equal(hintWait({ time: 0 }, 600), 0);
+  assert.equal(hintWait({ time: 100, hintAt: 90 }, 600), 590);
+  assert.equal(hintWait({ time: 700, hintAt: 90 }, 600), 0);
+});

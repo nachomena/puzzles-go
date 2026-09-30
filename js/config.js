@@ -6,6 +6,9 @@ export const APP_NAME = 'Puzzles Go';
 export const BUFFER_CAP = 5;
 export const HISTORY_LIMIT = 400;
 
+/** Segundos de juego entre una pista y la siguiente. */
+export const HINT_COOLDOWN_SEC = 10 * 60;
+
 export const TIMING = Object.freeze({
   toastMs: 1900,
   winOverlayDelayMs: 1100,
