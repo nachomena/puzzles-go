@@ -1,0 +1,33 @@
+/* Contrato que cumple cada juego para enchufarse a la app. Documentado en js/games/README.md.
+
+   @typedef {object} GameDefinition
+   @property {string} id            identificador corto (se usa en ids del DOM)
+   @property {string} name          nombre visible
+   @property {string} tagline       descripción corta para el selector
+   @property {string} icon          símbolo del sprite (#i-<icon>)
+   @property {string} storageKey    clave de localStorage
+   @property {Object<string,{name:string,target:number,desc:string}>} levels
+   @property {string[]} levelOrder
+   @property {string[]} tools       herramientas; la primera es la de por defecto
+   @property {object} defaultSettings
+   @property {{key:string,title:string,desc:string}[]} settings   interruptores de Ajustes
+   @property {URL} workerUrl        worker que llama a serveGenerator(generate)
+   @property {(target:number) => Generator} generate   generador del motor
+   @property {(p:object, L:string) => boolean} isValidPuzzle
+   @property {(s:object) => object|null} restoreSession   valida/actualiza una partida guardada
+   @property {(p:object) => string} sizeLabel
+   @property {string} controls      marcado bajo el tablero
+   @property {string} help          marcado de la ayuda
+   @property {typeof import('./game-controller.js').GameController} Controller */
+
+const REQUIRED = ['id', 'name', 'tagline', 'icon', 'storageKey', 'levels', 'levelOrder', 'tools', 'defaultSettings',
+  'settings', 'workerUrl', 'generate', 'isValidPuzzle', 'restoreSession', 'sizeLabel', 'controls', 'help', 'Controller'];
+
+/** Valida la definición y la congela. Falla pronto si falta algo. */
+export function defineGame(def){
+  const missing = REQUIRED.filter(k => def[k] === undefined);
+  if (missing.length) throw new Error(`Juego "${def.id}": faltan ${missing.join(', ')}`);
+  const badLevel = def.levelOrder.find(L => !def.levels[L]);
+  if (badLevel) throw new Error(`Juego "${def.id}": nivel desconocido ${badLevel}`);
+  return Object.freeze(def);
+}

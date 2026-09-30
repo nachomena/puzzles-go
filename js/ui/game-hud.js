@@ -1,6 +1,4 @@
-/* Cabecera y barra de herramientas de la partida. Solo presentación. */
-import { TOOL } from '../config.js';
-
+/* Cabecera y barra de herramientas de una pantalla de juego. Solo presentación. */
 export class GameHud {
   constructor(root){
     const q = sel => root.querySelector(sel);
@@ -11,9 +9,9 @@ export class GameHud {
     this.redo = q('[data-action="redo"]');
     this.tools = [...root.querySelectorAll('[data-action="tool"]')];
   }
-  setHeader(levelName, { N, K }){
+  setHeader(levelName, sizeText){
     this.level.textContent = levelName;
-    this.size.textContent = `${N}x${N} ${K}★`;
+    this.size.textContent = sizeText;
   }
   setTime(text){ this.time.textContent = text; }
   setHistory(canUndo, canRedo){
@@ -28,5 +26,3 @@ export class GameHud {
     }
   }
 }
-
-export const isTool = t => Object.values(TOOL).includes(t);

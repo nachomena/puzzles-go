@@ -7,7 +7,9 @@ const walk = dir => readdirSync(dir).flatMap(f => {
   const p = join(dir, f);
   return statSync(p).isDirectory() ? walk(p) : [p];
 });
-const assets = ['css', 'js', 'fonts', 'icons'].flatMap(d => walk(join(root, d))).map(p => './' + relative(root, p));
+const assets = ['css', 'js', 'fonts', 'icons'].flatMap(d => walk(join(root, d)))
+  .filter(p => !p.endsWith('.md'))
+  .map(p => './' + relative(root, p));
 const sw = readFileSync(join(root, 'sw.js'), 'utf8');
 const missing = assets.filter(a => !sw.includes(`'${a}'`));
 if (missing.length){

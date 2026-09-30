@@ -1,6 +1,6 @@
 {
-  "name": "Star Battle Go",
-  "short_name": "Star Battle",
+  "name": "Puzzles Go",
+  "short_name": "Puzzles Go",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

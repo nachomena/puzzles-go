@@ -1,0 +1,23 @@
+/* Configuración del Sudoku. */
+
+/** Niveles. `target` es el nivel del solucionador lógico que exige el tablero. */
+export const LEVELS = Object.freeze({
+  easy:   Object.freeze({ name: 'Fácil',   target: 1, desc: 'Basta con ver dónde va cada número' }),
+  medium: Object.freeze({ name: 'Medio',   target: 2, desc: 'Pares, tríos y candidatos bloqueados' }),
+  hard:   Object.freeze({ name: 'Difícil', target: 3, desc: 'Exige X-Wing o Swordfish' })
+});
+export const LEVEL_ORDER = Object.freeze(['easy', 'medium', 'hard']);
+
+export const STORAGE_KEY = 'puzzlesgo.sudoku.v1';
+
+/** Herramientas: escribir el número o anotarlo como candidato. */
+export const TOOL = Object.freeze({ PEN: 'pen', PENCIL: 'pencil' });
+
+export const DEFAULT_SETTINGS = Object.freeze({ errors: true, autoNotes: true, sameDigit: true, timer: true });
+
+export const SETTINGS = Object.freeze([
+  { key: 'errors',    title: 'Resaltar errores',        desc: 'Los números repetidos en una fila, columna o caja se ponen rojos.' },
+  { key: 'autoNotes', title: 'Limpiar notas',           desc: 'Al poner un número se borra de las notas de su fila, columna y caja.' },
+  { key: 'sameDigit', title: 'Resaltar números iguales', desc: 'Marca todas las casillas con el número seleccionado.' },
+  { key: 'timer',     title: 'Cronómetro',              desc: 'Muestra el tiempo de la partida.' }
+]);
