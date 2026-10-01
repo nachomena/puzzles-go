@@ -21,10 +21,12 @@ const htmlToElement = html => {
 export class App {
   /**
    * @param {object} deps
-   * @param {object[]} deps.games   definiciones (js/games/index.js)
+   * @param {{ meta: object, load: () => Promise<{ default: object }> }[]} deps.catalog  (js/games/catalog.js)
    * @param {Storage|null} deps.storage
    */
-  constructor({ games, storage }){
+  constructor({ catalog, storage }){
+    this.catalog = catalog;
+    this.storage = storage;
     this.screen = 'hub';
     this.current = null;
     this.toast = new Toast(byId('toast'));
@@ -35,8 +37,26 @@ export class App {
     this.fitHubTitle = keepFitted(byId('title'));
     this.fitGameTitle = keepFitted(byId('gameTitle'));
 
-    this.entries = new Map(games.map(game => [game.id, this.#createEntry(game, storage)]));
+    this.entries = new Map();   // juegos ya abiertos: id → entrada
+    this.loading = new Map();   // importaciones en curso: id → promesa
     this.#bindEvents();
+  }
+
+  /** Carga un juego la primera vez que se abre y arranca su generación de tableros. */
+  #entryFor(id){
+    if (this.entries.has(id)) return Promise.resolve(this.entries.get(id));
+    if (!this.loading.has(id)){
+      const item = this.catalog.find(c => c.meta.id === id);
+      if (!item) return Promise.resolve(null);
+      this.loading.set(id, item.load().then(({ default: game }) => {
+        const entry = this.#createEntry(game, this.storage);
+        this.entries.set(id, entry);
+        this.loading.delete(id);
+        entry.supply.init();
+        return entry;
+      }));
+    }
+    return this.loading.get(id);
   }
 
   /** Todo lo que vive por juego: estado, generación, pantalla y controlador. */
@@ -65,10 +85,7 @@ export class App {
     return entry;
   }
 
-  start(){
-    this.#refreshMenus();
-    for (const e of this.entries.values()) e.supply.init();
-  }
+  start(){ this.#refreshMenus(); }
 
   /* ---------- Navegación ---------- */
 
@@ -83,9 +100,26 @@ export class App {
     for (const e of this.entries.values()) e.supply.pump();
   }
 
+  /** Abre el menú del juego al instante; su código se carga y genera tableros en segundo plano. */
   openGame(id){
-    this.current = this.entries.get(id);
-    if (this.current) this.showScreen('levels');
+    const item = this.catalog.find(c => c.meta.id === id);
+    if (!item) return;
+    this.currentMeta = item.meta;
+    this.current = this.entries.get(id) || null;
+    this.showScreen('levels');
+    this.#entryFor(id).then(entry => {
+      if (this.currentMeta?.id !== id) return;   // se cambió de juego mientras cargaba
+      this.current = entry;
+      this.#refreshMenus();
+    });
+  }
+
+  /** Ejecuta `fn` con el juego abierto, esperando a que termine de cargar si hace falta. */
+  async #withGame(fn){
+    const id = this.currentMeta?.id;
+    if (!id) return;
+    const entry = await this.#entryFor(id);
+    if (entry && this.currentMeta?.id === id && this.screen !== 'hub') fn(entry);
   }
 
   continueGame(){
@@ -106,15 +140,19 @@ export class App {
 
   back(){
     if (this.screen === 'play'){ this.current.store.save(); this.showScreen('levels'); }
-    else this.showScreen('hub');
+    else { this.currentMeta = null; this.showScreen('hub'); }
   }
 
   #refreshMenus(){
-    if (this.screen === 'hub') this.hub.render([...this.entries.values()]);
-    if (this.screen === 'levels'){
-      const { game, store, supply } = this.current;
-      this.levelMenu.render(game, store, supply.job);
-    }
+    if (this.screen === 'hub') this.hub.render(this.catalog.map(({ meta }) => ({
+      meta, summary: Store.summarize(this.#menuData(meta))
+    })));
+    if (this.screen === 'levels' && this.currentMeta) this.levelMenu.render(this.currentMeta, this.#menuData(this.currentMeta));
+  }
+
+  /** Estadísticas y partida abierta: del store si el juego ya está cargado, si no del almacenamiento. */
+  #menuData(meta){
+    return this.entries.get(meta.id)?.store.menuData() ?? Store.peek(this.storage, meta.storageKey);
   }
 
   /* ---------- Acciones: cada [data-action] del HTML se resuelve aquí o en el juego actual ---------- */
@@ -123,10 +161,10 @@ export class App {
     const cur = this.current;
     return {
       'open-game':    el => this.openGame(el.dataset.game),
-      'start-level':  el => this.startLevel(el.dataset.level),
-      'continue':     () => this.continueGame(),
+      'start-level':  el => this.#withGame(entry => this.startLevel(el.dataset.level, entry)),
+      'continue':     () => this.#withGame(entry => { this.current = entry; this.continueGame(); }),
       'back':         () => this.back(),
-      'open':         el => this.#openOverlay(el.dataset.target),
+      'open':         el => this.#withGame(entry => { this.current = entry; this.#openOverlay(el.dataset.target); }),
       'close':        () => this.overlays.closeDismissable(),
       'cancel-generation': () => { this.overlays.close('loading'); cur.supply.cancelRequest(); },
       'next-puzzle':  () => { this.overlays.close('win'); this.startLevel(cur.store.state.cur.L); },
@@ -141,6 +179,7 @@ export class App {
   }
 
   #openOverlay(id){
+    if (!this.current) return;
     const { game, store, controller } = this.current;
     if (id === 'settings') this.settings.show(game.settings, store, key => {
       if (this.screen === 'play') controller.applySettings(key);

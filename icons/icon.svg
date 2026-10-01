@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Fondo a sangre: iOS y Android aplican su propia máscara. El contenido cabe en la zona segura (80 %). -->
+  <rect width="512" height="512" fill="#212026"/>
+  <!-- Tablero 3×3 -->
+  <g transform="translate(76 76) scale(1.125)">
+    <rect width="320" height="320" fill="#39383d"/>
+    <path d="M106.7 0V320M213.3 0V320M0 106.7H320M0 213.3H320" stroke="#4c4b53" stroke-width="5"/>
+    <!-- Pared de región, como en Star Battle -->
+    <path d="M0 213.3H106.7V106.7H213.3V0" stroke="#e3e2e9" stroke-width="11" fill="none" stroke-linecap="square"/>
+    <rect width="320" height="320" fill="none" stroke="#e3e2e9" stroke-width="16"/>
+    <!-- Estrella (Star Battle) -->
+    <path transform="translate(53.3 53.3) scale(3.5) translate(-12 -12)" fill="#fff"
+      d="M12 2.8l2.75 5.9 6.45.75-4.78 4.4 1.28 6.37L12 17.05 6.3 20.22l1.28-6.37L2.8 9.45l6.45-.75z"/>
+    <!-- Número (Sudoku) -->
+    <text x="160" y="160" dy=".36em" text-anchor="middle" font-family="Archivo Black, Archivo, sans-serif" font-weight="900" font-size="92" fill="#9db8ff">9</text>
+    <!-- X -->
+    <path transform="translate(266.7 266.7)" d="M-25 -25L25 25M25 -25L-25 25" stroke="#de6a5e" stroke-width="11" stroke-linecap="round"/>
+  </g>
+</svg>

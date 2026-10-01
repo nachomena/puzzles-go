@@ -3,16 +3,11 @@ import { defineGame } from '../../core/game-definition.js';
 import { generate } from './engine/generator.js';
 import { StarBattleController } from './controller.js';
 import { controls, help } from './templates.js';
-import { BOARD, LEVELS, LEVEL_ORDER, STORAGE_KEY, TOOL, DEFAULT_SETTINGS, SETTINGS } from './config.js';
+import { BOARD, LEVELS, TOOL, DEFAULT_SETTINGS, SETTINGS } from './config.js';
+import meta from './meta.js';
 
 export default defineGame({
-  id: 'star-battle',
-  name: 'Star Battle',
-  tagline: `${BOARD.size}×${BOARD.size} · ${BOARD.stars} estrellas por fila, columna y región`,
-  icon: 'star',
-  storageKey: STORAGE_KEY,
-  levels: LEVELS,
-  levelOrder: LEVEL_ORDER,
+  ...meta,
   tools: Object.values(TOOL),
   defaultSettings: DEFAULT_SETTINGS,
   settings: SETTINGS,

@@ -1,14 +1,9 @@
 /* Configuración del Sudoku. */
+import meta from './meta.js';
 
-/** Niveles. `target` es el nivel del solucionador lógico que exige el tablero. */
-export const LEVELS = Object.freeze({
-  easy:   Object.freeze({ name: 'Fácil',   target: 1, desc: 'Basta con ver dónde va cada número' }),
-  medium: Object.freeze({ name: 'Medio',   target: 2, desc: 'Pares, tríos y candidatos bloqueados' }),
-  hard:   Object.freeze({ name: 'Difícil', target: 3, desc: 'Exige X-Wing o Swordfish' })
-});
-export const LEVEL_ORDER = Object.freeze(['easy', 'medium', 'hard']);
-
-export const STORAGE_KEY = 'puzzlesgo.sudoku.v1';
+/** Niveles: viven en meta.js para que el menú se pinte sin cargar el juego. */
+export const LEVELS = meta.levels;
+export const LEVEL_ORDER = meta.levelOrder;
 
 /** Herramientas: escribir el número o anotarlo como candidato. */
 export const TOOL = Object.freeze({ PEN: 'pen', PENCIL: 'pencil' });

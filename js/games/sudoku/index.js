@@ -4,18 +4,13 @@ import { generate } from './engine/generator.js';
 import { CELLS } from './engine/grid.js';
 import { SudokuController } from './controller.js';
 import { controls, help } from './templates.js';
-import { LEVELS, LEVEL_ORDER, STORAGE_KEY, TOOL, DEFAULT_SETTINGS, SETTINGS } from './config.js';
+import { LEVELS, TOOL, DEFAULT_SETTINGS, SETTINGS } from './config.js';
+import meta from './meta.js';
 
 const isGrid = g => Array.isArray(g) && g.length === CELLS;
 
 export default defineGame({
-  id: 'sudoku',
-  name: 'Sudoku',
-  tagline: '9×9 clásico · del 1 al 9 sin repetir',
-  icon: 'grid',
-  storageKey: STORAGE_KEY,
-  levels: LEVELS,
-  levelOrder: LEVEL_ORDER,
+  ...meta,
   tools: Object.values(TOOL),
   defaultSettings: DEFAULT_SETTINGS,
   settings: SETTINGS,
