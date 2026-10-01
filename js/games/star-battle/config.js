@@ -1,14 +1,11 @@
 /* Configuración de Star Battle. */
+import meta from './meta.js';
 
 export const BOARD = Object.freeze({ size: 10, stars: 2 });
 
-/** Niveles de dificultad. `target` es el nivel del solucionador lógico que exige el tablero. */
-export const LEVELS = Object.freeze({
-  easy:   Object.freeze({ name: 'Fácil',   target: 1, desc: 'Solo reglas básicas' }),
-  hard:   Object.freeze({ name: 'Difícil', target: 2, desc: 'Razonar con varias regiones' }),
-  expert: Object.freeze({ name: 'Experto', target: 3, desc: 'Necesita probar hipótesis' })
-});
-export const LEVEL_ORDER = Object.freeze(['easy', 'hard', 'expert']);
+/** Niveles: viven en meta.js para que el menú se pinte sin cargar el juego. */
+export const LEVELS = meta.levels;
+export const LEVEL_ORDER = meta.levelOrder;
 
 /** Estado de cada casilla en la partida. */
 export const MARK = Object.freeze({ EMPTY: 0, X: 1, STAR: 2, AUTO_X: 3 });

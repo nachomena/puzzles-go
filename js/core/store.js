@@ -50,16 +50,22 @@ export class Store {
   /* ---- Partida en curso ---- */
   get hasOpenSession(){ return !!this.state.cur && !this.state.cur.done; }
 
-  /* ---- Resumen para el selector ---- */
-  summary(){ return { inProgress: this.hasOpenSession, solved: this.totalSolved() }; }
+  /* ---- Datos para el selector y el menú de niveles ---- */
 
-  /** Resumen leído directamente del almacenamiento, sin cargar el juego. */
-  static summary(storage, key){
+  /** { stats, cur } con cur = partida abierta o null. */
+  menuData(){ return { stats: this.state.stats, cur: this.hasOpenSession ? this.state.cur : null }; }
+
+  /** Lo mismo leído directamente del almacenamiento, sin cargar el juego. */
+  static peek(storage, key){
     try {
       const s = JSON.parse(storage?.getItem(key) || 'null') || {};
-      const solved = Object.values(s.stats || {}).reduce((n, st) => n + (st.solved || 0), 0);
-      return { inProgress: !!s.cur && !s.cur.done, solved };
-    } catch (e){ return { inProgress: false, solved: 0 }; }
+      return { stats: s.stats || {}, cur: s.cur && !s.cur.done ? s.cur : null };
+    } catch (e){ return { stats: {}, cur: null }; }
+  }
+
+  /** Resumen para el selector a partir de menuData()/peek(). */
+  static summarize({ stats, cur }){
+    return { inProgress: !!cur, solved: Object.values(stats).reduce((n, st) => n + (st.solved || 0), 0) };
   }
 
   /* ---- Estadísticas ---- */

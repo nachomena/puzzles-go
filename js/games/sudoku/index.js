@@ -4,15 +4,13 @@ import { generate } from './engine/generator.js';
 import { CELLS } from './engine/grid.js';
 import { SudokuController } from './controller.js';
 import { controls, help } from './templates.js';
-import { LEVELS, LEVEL_ORDER, TOOL, DEFAULT_SETTINGS, SETTINGS } from './config.js';
+import { LEVELS, TOOL, DEFAULT_SETTINGS, SETTINGS } from './config.js';
 import meta from './meta.js';
 
 const isGrid = g => Array.isArray(g) && g.length === CELLS;
 
 export default defineGame({
   ...meta,
-  levels: LEVELS,
-  levelOrder: LEVEL_ORDER,
   tools: Object.values(TOOL),
   defaultSettings: DEFAULT_SETTINGS,
   settings: SETTINGS,

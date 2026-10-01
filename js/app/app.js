@@ -100,21 +100,26 @@ export class App {
     for (const e of this.entries.values()) e.supply.pump();
   }
 
-  async openGame(id){
-    this.opening = id;
-    if (!this.entries.has(id)){
-      // Se muestra el menú al instante; los niveles llegan cuando termine de cargar el juego
-      const item = this.catalog.find(c => c.meta.id === id);
-      if (!item) return;
-      this.current = null;
-      this.levelMenu.renderLoading(item.meta);
-      this.showScreen('levels');
-    }
-    const entry = await this.#entryFor(id);
-    // Si mientras tanto se volvió atrás o se abrió otro juego, no se cambia de pantalla
-    if (!entry || this.opening !== id || (this.current === null && this.screen !== 'levels')) return;
-    this.current = entry;
+  /** Abre el menú del juego al instante; su código se carga y genera tableros en segundo plano. */
+  openGame(id){
+    const item = this.catalog.find(c => c.meta.id === id);
+    if (!item) return;
+    this.currentMeta = item.meta;
+    this.current = this.entries.get(id) || null;
     this.showScreen('levels');
+    this.#entryFor(id).then(entry => {
+      if (this.currentMeta?.id !== id) return;   // se cambió de juego mientras cargaba
+      this.current = entry;
+      this.#refreshMenus();
+    });
+  }
+
+  /** Ejecuta `fn` con el juego abierto, esperando a que termine de cargar si hace falta. */
+  async #withGame(fn){
+    const id = this.currentMeta?.id;
+    if (!id) return;
+    const entry = await this.#entryFor(id);
+    if (entry && this.currentMeta?.id === id && this.screen !== 'hub') fn(entry);
   }
 
   continueGame(){
@@ -134,20 +139,20 @@ export class App {
   }
 
   back(){
-    this.opening = null;
     if (this.screen === 'play'){ this.current.store.save(); this.showScreen('levels'); }
-    else this.showScreen('hub');
+    else { this.currentMeta = null; this.showScreen('hub'); }
   }
 
   #refreshMenus(){
     if (this.screen === 'hub') this.hub.render(this.catalog.map(({ meta }) => ({
-      meta,
-      summary: this.entries.get(meta.id)?.store.summary() ?? Store.summary(this.storage, meta.storageKey)
+      meta, summary: Store.summarize(this.#menuData(meta))
     })));
-    if (this.screen === 'levels' && this.current){
-      const { game, store } = this.current;
-      this.levelMenu.render(game, store);
-    }
+    if (this.screen === 'levels' && this.currentMeta) this.levelMenu.render(this.currentMeta, this.#menuData(this.currentMeta));
+  }
+
+  /** Estadísticas y partida abierta: del store si el juego ya está cargado, si no del almacenamiento. */
+  #menuData(meta){
+    return this.entries.get(meta.id)?.store.menuData() ?? Store.peek(this.storage, meta.storageKey);
   }
 
   /* ---------- Acciones: cada [data-action] del HTML se resuelve aquí o en el juego actual ---------- */
@@ -156,10 +161,10 @@ export class App {
     const cur = this.current;
     return {
       'open-game':    el => this.openGame(el.dataset.game),
-      'start-level':  el => this.startLevel(el.dataset.level),
-      'continue':     () => this.continueGame(),
+      'start-level':  el => this.#withGame(entry => this.startLevel(el.dataset.level, entry)),
+      'continue':     () => this.#withGame(entry => { this.current = entry; this.continueGame(); }),
       'back':         () => this.back(),
-      'open':         el => this.#openOverlay(el.dataset.target),
+      'open':         el => this.#withGame(entry => { this.current = entry; this.#openOverlay(el.dataset.target); }),
       'close':        () => this.overlays.closeDismissable(),
       'cancel-generation': () => { this.overlays.close('loading'); cur.supply.cancelRequest(); },
       'next-puzzle':  () => { this.overlays.close('win'); this.startLevel(cur.store.state.cur.L); },

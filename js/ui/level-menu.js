@@ -11,30 +11,21 @@ export class LevelMenu {
     Object.assign(this, { titleEl: title, levelsEl: levels, resumeEl: resume });
   }
 
-  /** Mientras se carga el juego: solo el título. */
-  renderLoading(meta){
-    this.titleEl.textContent = meta.name.toUpperCase();
-    this.levelsEl.innerHTML = '';
-    this.resumeEl.innerHTML = '';
-  }
-
   /**
-   * @param {object} game  definición del juego
-   * @param {import('../core/store.js').Store} store
+   * @param {{ name: string, levels: object, levelOrder: string[] }} meta  datos del juego (meta.js)
+   * @param {{ stats: object, cur: object|null }} data  de Store#menuData o Store.peek
    */
-  render(game, store){
-    this.titleEl.textContent = game.name.toUpperCase();
-    this.levelsEl.innerHTML = game.levelOrder.map(L => {
-      const lv = game.levels[L];
+  render(meta, { stats, cur }){
+    this.titleEl.textContent = meta.name.toUpperCase();
+    this.levelsEl.innerHTML = meta.levelOrder.map(L => {
+      const lv = meta.levels[L];
       return `<button class="level" data-action="start-level" data-level="${L}">` +
         `<span class="level__text"><span class="level__name display">${lv.name.toUpperCase()}</span>` +
-        `<span class="level__meta">${levelMeta(lv, store.statsFor(L))}</span></span>` +
+        `<span class="level__meta">${levelMeta(lv, stats[L] || {})}</span></span>` +
         `</button>`;
     }).join('');
-
-    const c = store.state.cur;
-    this.resumeEl.innerHTML = store.hasOpenSession
-      ? `<button class="resume" data-action="continue"><b class="display">CONTINUAR</b><span>${game.levels[c.L].name}, ${formatTime(c.time || 0)}</span></button>`
+    this.resumeEl.innerHTML = cur
+      ? `<button class="resume" data-action="continue"><b class="display">CONTINUAR</b><span>${meta.levels[cur.L].name}, ${formatTime(cur.time || 0)}</span></button>`
       : '';
   }
 }
