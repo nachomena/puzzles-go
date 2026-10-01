@@ -26,7 +26,7 @@ export const controls = () =>
 
 export const help = () => `
   <p>Coloca las 12 piezas en el tablero para que cada una de las <b>4 casillas</b> muestre una <b>cara de dado</b> válida, en cualquier orientación.</p>
-  <p>Una flecha junto a una fila o columna indica cuánto deben <b>sumar los dos dados</b> de esa fila o columna. Las piezas que ya vienen colocadas (con borde fijo) no se pueden mover. Cada reto tiene una única solución.</p>
+  <p>Una flecha junto a una fila o columna indica cuánto deben <b>sumar los dos dados</b> de esa fila o columna. Las piezas que ya vienen colocadas (en gris) no se pueden mover; las que pones tú se ven resaltadas. Cada reto tiene una única solución.</p>
   <div class="sd-faces" aria-hidden="true">${faces()}</div>
   <h3>Controles</h3>
   <ul>

@@ -8,7 +8,7 @@ export const LEVEL_ORDER = meta.levelOrder;
 /** No hay herramientas que elegir: se arrastra para colocar y se toca para girar. */
 export const TOOL = Object.freeze({ MOVE: 'move' });
 
-export const DEFAULT_SETTINGS = Object.freeze({ errors: true, timer: true });
+export const DEFAULT_SETTINGS = Object.freeze({ errors: false, timer: true });
 
 export const SETTINGS = Object.freeze([
   { key: 'errors', title: 'Resaltar errores', desc: 'Marca en rojo los dados que no forman una cara válida y las sumas que no cuadran.' },

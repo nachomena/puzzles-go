@@ -11,7 +11,7 @@ export const LEVEL_ORDER = meta.levelOrder;
 export const MARK = Object.freeze({ EMPTY: 0, X: 1, STAR: 2, AUTO_X: 3 });
 export const TOOL = Object.freeze({ STAR: 'star', BRUSH: 'brush' });
 
-export const DEFAULT_SETTINGS = Object.freeze({ autoX: true, errors: true, timer: true, tint: false });
+export const DEFAULT_SETTINGS = Object.freeze({ autoX: true, errors: false, timer: true, tint: false });
 
 export const SETTINGS = Object.freeze([
   { key: 'autoX',  title: 'X automáticas',     desc: 'Pone X alrededor de cada estrella que colocas.' },

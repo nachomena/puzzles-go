@@ -2,7 +2,7 @@
 :root{
   --sd-piece:rgba(220,219,228,.10);
   --sd-piece-line:rgba(220,219,228,.55);
-  --sd-fixed:rgba(220,219,228,.24);
+  --sd-placed:rgba(220,219,228,.24);
   --sd-dot:#fff;
   --sd-tray-cell:30px;
 }
@@ -39,12 +39,15 @@
   box-shadow:inset 0 0 0 2px var(--sd-piece-line),inset 0 3px 4px rgba(255,255,255,.16),inset 0 -5px 9px rgba(0,0,0,.38);
   touch-action:none;cursor:grab;transition:opacity .15s}
 .sd-piece::before{content:"";position:absolute;inset:5px;border-radius:6px;border:1px solid rgba(255,255,255,.2);pointer-events:none}
-.sd-pieces .sd-piece{--gap:8px;box-shadow:inset 0 0 0 2px var(--sd-piece-line),inset 0 3px 4px rgba(255,255,255,.16),inset 0 -5px 9px rgba(0,0,0,.38),0 3px 6px rgba(0,0,0,.4)}
+/* Colocadas por el jugador: resaltadas (borde claro y más relleno) */
+.sd-pieces .sd-piece{--gap:8px;background:var(--sd-placed);
+  box-shadow:inset 0 0 0 2px var(--wall),inset 0 3px 4px rgba(255,255,255,.2),inset 0 -5px 9px rgba(0,0,0,.35),0 3px 6px rgba(0,0,0,.4)}
 .sd-piece i{position:absolute;width:calc(40% / var(--w));aspect-ratio:1;border-radius:50%;background:var(--sd-dot);transform:translate(-50%,-50%);
   box-shadow:inset 0 -2px 3px rgba(0,0,0,.25),0 1px 2px rgba(0,0,0,.35)}
 .sd-pieces .sd-piece i{width:calc((100% + 16px) * .4 / var(--w))}
-.sd-piece.is-fixed{background:var(--sd-fixed);cursor:default;
-  box-shadow:inset 0 0 0 2px var(--wall),inset 0 3px 4px rgba(255,255,255,.2),inset 0 -5px 9px rgba(0,0,0,.35),0 3px 6px rgba(0,0,0,.4)}
+/* Las que trae el reto: gris discreto, no se mueven */
+.sd-pieces .sd-piece.is-fixed{background:var(--sd-piece);cursor:default;
+  box-shadow:inset 0 0 0 2px var(--sd-piece-line),inset 0 3px 4px rgba(255,255,255,.16),inset 0 -5px 9px rgba(0,0,0,.38),0 3px 6px rgba(0,0,0,.4)}
 .sd-piece.is-lifted{opacity:.2}
 .sd-piece.is-ghost{position:fixed;z-index:30;pointer-events:none;background:rgba(220,219,228,.22);
   box-shadow:inset 0 0 0 2px var(--ink),inset 0 3px 4px rgba(255,255,255,.18),inset 0 -5px 9px rgba(0,0,0,.35),0 10px 24px rgba(0,0,0,.45)}
