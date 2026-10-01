@@ -8,9 +8,9 @@
 }
 
 /* Tablero con flechas: filas a la derecha, columnas debajo */
-.sd-area{display:grid;grid-template-columns:1fr 54px;grid-template-rows:auto 54px;gap:6px}
+.sd-area{display:grid;grid-template-columns:1fr 54px;grid-template-rows:auto 54px;gap:14px}
 .sd-area .board{grid-area:1/1}
-.board--dice{--n:6;margin:4px auto}
+.board--dice{--n:6;margin:0 auto}
 .board--dice .board__grid{stroke-width:.02}
 /* Separaciones entre dados finas y marco por fuera: así las 36 casillas se ven iguales */
 .board--dice .board__wall{stroke-width:.035;stroke-linecap:butt}
@@ -25,7 +25,7 @@
 .sd-arrows--cols .sd-arrow{width:40px;height:54px}
 .sd-arrow__shape{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .sd-arrow__shape path{fill:var(--surface);stroke:var(--ink-soft);stroke-width:2.5;stroke-linejoin:round}
-.sd-arrow__num{position:relative;font-family:var(--font-display);font-weight:900;font-size:24px;line-height:1;color:var(--ink)}
+.sd-arrow__num{position:relative;font-family:var(--font-display);font-weight:900;font-size:18px;line-height:1;color:var(--ink)}
 .sd-arrows--rows .sd-arrow__num{margin-left:12px}
 .sd-arrows--cols .sd-arrow__num{margin-top:12px}
 .sd-arrow.is-empty{visibility:hidden}
