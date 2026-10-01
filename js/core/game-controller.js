@@ -44,7 +44,14 @@ export class GameController {
   clearInput(){}
   /** ¿Está resuelto el tablero? */
   isSolved(){ return false; }
-  /** Da una pista (corrige un error o avanza un paso). Devuelve true si la dio. */
+  /**
+   * Primer error del jugador frente a la solución: { message, ... } o null.
+   * La pista lo señala antes de dar ningún paso nuevo (igual en todos los juegos).
+   */
+  findMistake(){ return null; }
+  /** Señala en el tablero el error que devolvió findMistake (p. ej. un destello). */
+  showMistake(mistake){}
+  /** Avanza un paso hacia la solución (sin errores en el tablero). Devuelve true si lo dio. */
   giveHint(){ return false; }
   /** Recalcula lo derivado tras un cambio (p. ej. X automáticas). */
   normalize(){}
@@ -142,12 +149,19 @@ export class GameController {
   /** Segundos de juego que faltan para la próxima pista. */
   get hintWait(){ return this.session ? hintWait(this.session, HINT_COOLDOWN_SEC) : 0; }
 
-  /** Pista con límite: una cada HINT_COOLDOWN_SEC de juego. Anula el récord de la partida. */
+  /**
+   * Pista con límite: una cada HINT_COOLDOWN_SEC de juego. Anula el récord de la partida.
+   * Si hay algo mal puesto se señala eso; si no, se avanza un paso.
+   */
   hint(){
     if (!this.active) return;
     const wait = this.hintWait;
     if (wait > 0){ this.notify(`Próxima pista en ${formatTime(wait)}`); return; }
-    if (!this.giveHint()) return;
+    const mistake = this.findMistake();
+    if (mistake){
+      this.notify(mistake.message);
+      this.showMistake(mistake);
+    } else if (!this.giveHint()) return;
     const s = this.session;
     s.hints++;
     s.hintAt = s.time;

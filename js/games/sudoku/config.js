@@ -8,7 +8,7 @@ export const LEVEL_ORDER = meta.levelOrder;
 /** Herramientas: escribir el número o anotarlo como candidato. */
 export const TOOL = Object.freeze({ PEN: 'pen', PENCIL: 'pencil' });
 
-export const DEFAULT_SETTINGS = Object.freeze({ errors: true, autoNotes: true, sameDigit: true, timer: true });
+export const DEFAULT_SETTINGS = Object.freeze({ errors: false, autoNotes: true, sameDigit: true, timer: true });
 
 export const SETTINGS = Object.freeze([
   { key: 'errors',    title: 'Resaltar errores',        desc: 'Los números repetidos en una fila, columna o caja se ponen rojos.' },

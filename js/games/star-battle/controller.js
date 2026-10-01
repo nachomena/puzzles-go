@@ -3,7 +3,7 @@ import { GameController } from '../../core/game-controller.js';
 import { bindCellDrag } from '../../ui/cell-drag.js';
 import { StarBattleBoard } from './board-view.js';
 import { MARK, TOOL } from './config.js';
-import { analyze, applyAutoX, effectiveMark, nextMark, hasPlayerInput, findHint } from './rules.js';
+import { analyze, applyAutoX, effectiveMark, nextMark, hasPlayerInput, findHint, findMistake } from './rules.js';
 
 const HINT_MESSAGES = {
   'wrong-star': 'Esta estrella no va aquí',
@@ -59,14 +59,17 @@ export class StarBattleController extends GameController {
     return { tool: el => this.setTool(el.dataset.tool) };
   }
 
+  findMistake(){
+    const m = findMistake(this.session.marks, this.session.p.solution);
+    return m && { ...m, message: HINT_MESSAGES[m.type] };
+  }
+  showMistake({ cell }){ this.board.flash(cell); }
   giveHint(){
     const s = this.session, hint = findHint(s.marks, s.p.solution);
     if (!hint) return false;
-    if (hint.type === 'place-star'){
-      this.record();
-      s.marks[hint.cell] = MARK.STAR;
-      this.commit(true);
-    } else this.notify(HINT_MESSAGES[hint.type]);
+    this.record();
+    s.marks[hint.cell] = MARK.STAR;
+    this.commit(true);
     this.board.flash(hint.cell);
     return true;
   }

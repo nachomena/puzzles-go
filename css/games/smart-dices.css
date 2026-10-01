@@ -1,0 +1,71 @@
+/* Smart Dices: piezas transparentes con puntos, flechas de suma y bandeja. */
+:root{
+  --sd-piece:rgba(220,219,228,.10);
+  --sd-piece-line:rgba(220,219,228,.55);
+  --sd-placed:rgba(220,219,228,.24);
+  --sd-dot:#fff;
+  --sd-tray-cell:30px;
+}
+
+/* Tablero con flechas: filas a la derecha, columnas debajo */
+.sd-area{display:grid;grid-template-columns:1fr 54px;grid-template-rows:auto 54px;gap:14px}
+.sd-area .board{grid-area:1/1}
+.board--dice{--n:6;margin:0 auto}
+.board--dice .board__grid{stroke-width:.02}
+/* Separaciones entre dados finas y marco por fuera: así las 36 casillas se ven iguales */
+.board--dice .board__wall{stroke-width:.035;stroke-linecap:butt}
+.board--dice .board__frame{stroke-width:.08}
+.sd-arrows{display:flex}
+.sd-arrows--rows{grid-area:1/2;flex-direction:column}
+.sd-arrows--cols{grid-area:2/1}
+.sd-arrow-slot{flex:1;display:grid;place-items:center}
+/* Flecha: forma SVG con el número grande dentro */
+.sd-arrow{position:relative;display:grid;place-items:center;font-variant-numeric:tabular-nums}
+.sd-arrows--rows .sd-arrow{width:54px;height:40px}
+.sd-arrows--cols .sd-arrow{width:40px;height:54px}
+.sd-arrow__shape{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.sd-arrow__shape path{fill:var(--surface);stroke:var(--ink-soft);stroke-width:2.5;stroke-linejoin:round}
+.sd-arrow__num{position:relative;font-family:var(--font-display);font-weight:900;font-size:18px;line-height:1;color:var(--ink)}
+.sd-arrows--rows .sd-arrow__num{margin-left:12px}
+.sd-arrows--cols .sd-arrow__num{margin-top:12px}
+.sd-arrow.is-empty{visibility:hidden}
+.sd-arrow.is-ok .sd-arrow__shape path{stroke:var(--wall);fill:var(--seg-on)}
+.sd-arrow.is-bad .sd-arrow__shape path{stroke:var(--bad)}
+.sd-arrow.is-bad .sd-arrow__num{color:var(--bad)}
+
+/* Dados: resaltado de cara no válida */
+.sd-dice{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;pointer-events:none}
+.sd-dice i.is-bad{box-shadow:inset 0 0 0 4px var(--bad)}
+
+/* Piezas: plástico transparente. El borde es una sombra interior (no ocupa sitio), con un filo
+   interior como en las piezas reales, luz arriba, sombra abajo y una sombra ligera debajo. */
+.sd-pieces{position:absolute;inset:0}
+.sd-piece{--gap:0px;position:absolute;box-sizing:border-box;border-radius:10px;background:var(--sd-piece);
+  box-shadow:inset 0 0 0 2px var(--sd-piece-line),inset 0 3px 4px rgba(255,255,255,.16),inset 0 -5px 9px rgba(0,0,0,.38);
+  touch-action:none;cursor:grab;transition:opacity .15s}
+.sd-piece::before{content:"";position:absolute;inset:5px;border-radius:6px;border:1px solid rgba(255,255,255,.2);pointer-events:none}
+/* Colocadas por el jugador: resaltadas (borde claro y más relleno) */
+.sd-pieces .sd-piece{--gap:8px;background:var(--sd-placed);
+  box-shadow:inset 0 0 0 2px var(--wall),inset 0 3px 4px rgba(255,255,255,.2),inset 0 -5px 9px rgba(0,0,0,.35),0 3px 6px rgba(0,0,0,.4)}
+.sd-piece i{position:absolute;width:calc(40% / var(--w));aspect-ratio:1;border-radius:50%;background:var(--sd-dot);transform:translate(-50%,-50%);
+  box-shadow:inset 0 -2px 3px rgba(0,0,0,.25),0 1px 2px rgba(0,0,0,.35)}
+.sd-pieces .sd-piece i{width:calc((100% + 16px) * .4 / var(--w))}
+/* Las que trae el reto: gris discreto, no se mueven */
+.sd-pieces .sd-piece.is-fixed{background:var(--sd-piece);cursor:default;
+  box-shadow:inset 0 0 0 2px var(--sd-piece-line),inset 0 3px 4px rgba(255,255,255,.16),inset 0 -5px 9px rgba(0,0,0,.38),0 3px 6px rgba(0,0,0,.4)}
+.sd-piece.is-lifted{opacity:.2}
+.sd-piece.is-ghost{position:fixed;z-index:30;pointer-events:none;background:rgba(220,219,228,.22);
+  box-shadow:inset 0 0 0 2px var(--ink),inset 0 3px 4px rgba(255,255,255,.18),inset 0 -5px 9px rgba(0,0,0,.35),0 10px 24px rgba(0,0,0,.45)}
+.sd-piece.is-flash{animation:flash .5s ease-in-out 3}
+.board.is-won .sd-piece i{animation:win 1s ease-in-out both}
+
+/* Bandeja */
+.toolbar .sd-tip{font-size:13px;color:var(--dim);text-align:center;flex:1;padding:0 6px}
+.sd-tray{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center;padding:16px 0 4px;min-height:80px;touch-action:none}
+.sd-piece.is-tray{position:relative;width:calc(var(--w) * var(--sd-tray-cell));height:calc(var(--h) * var(--sd-tray-cell));border-radius:8px}
+
+/* Ayuda: caras válidas */
+.sd-faces{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 4px}
+.sd-face{width:38px;height:38px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:4px;background:var(--cell);border-radius:6px}
+.sd-face i{border-radius:50%;margin:2px;background:transparent}
+.sd-face i.on{background:var(--sd-dot)}

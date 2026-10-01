@@ -40,3 +40,12 @@ test('findHint señala primero el número equivocado', () => {
   const h = findHint(full, solution);
   assert.equal(h.type, 'place'); assert.equal(h.cell, 10); assert.equal(h.digit, solution[10]);
 });
+
+import { findMistake } from '../js/games/sudoku/rules.js';
+test('findMistake de Sudoku: el primer número equivocado', () => {
+  const solution = [...Array(81)].map((_, i) => (i % 9) + 1);
+  const values = new Array(81).fill(0); values[5] = solution[5]; values[7] = 1;
+  assert.deepEqual(findMistake(values, solution), { type: 'wrong', cell: 7 });
+  values[7] = 0;
+  assert.equal(findMistake(values, solution), null);
+});
