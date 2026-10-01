@@ -55,6 +55,8 @@ export class GameController {
   giveHint(){ return false; }
   /** Recalcula lo derivado tras un cambio (p. ej. X automáticas). */
   normalize(){}
+  /** Aviso al reiniciar (los juegos sin deshacer no deben ofrecerlo). */
+  get resetMessage(){ return 'Tablero vacío. Puedes deshacerlo.'; }
   /** Reacciona a un ajuste cambiado. */
   onSetting(key){}
   /** Animación de victoria. */
@@ -143,7 +145,7 @@ export class GameController {
     this.record();
     this.clearInput();
     this.commit(true);
-    this.notify('Tablero vacío. Puedes deshacerlo.');
+    this.notify(this.resetMessage);
   }
 
   /** Segundos de juego que faltan para la próxima pista. */

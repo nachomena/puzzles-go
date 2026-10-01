@@ -45,6 +45,8 @@ export class SmartDicesController extends GameController {
     s.place = s.place.map((pos, piece) => s.p.fixed.includes(piece) ? pos : null);
   }
   isSolved(){ return isSolved(this.session.place, this.session.p.arrows); }
+  /** Aquí no hay botón de deshacer: el aviso no lo ofrece. */
+  get resetMessage(){ return 'Tablero vacío.'; }
   celebrate(){ this.view.celebrate(); }
 
   findMistake(){
