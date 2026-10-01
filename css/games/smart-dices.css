@@ -10,8 +10,11 @@
 /* Tablero con flechas: filas a la derecha, columnas debajo */
 .sd-area{display:grid;grid-template-columns:1fr 40px;grid-template-rows:auto 40px;gap:6px}
 .sd-area .board{grid-area:1/1}
-.board--dice{--n:6}
+.board--dice{--n:6;margin:4px auto}
 .board--dice .board__grid{stroke-width:.02}
+/* Separaciones entre dados finas y marco por fuera: así las 36 casillas se ven iguales */
+.board--dice .board__wall{stroke-width:.035;stroke-linecap:butt}
+.board--dice .board__frame{stroke-width:.08}
 .sd-arrows{display:flex}
 .sd-arrows--rows{grid-area:1/2;flex-direction:column}
 .sd-arrows--cols{grid-area:2/1}
@@ -36,10 +39,10 @@
   box-shadow:inset 0 0 0 2px var(--sd-piece-line),inset 0 3px 4px rgba(255,255,255,.16),inset 0 -5px 9px rgba(0,0,0,.38);
   touch-action:none;cursor:grab;transition:opacity .15s}
 .sd-piece::before{content:"";position:absolute;inset:5px;border-radius:6px;border:1px solid rgba(255,255,255,.2);pointer-events:none}
-.sd-pieces .sd-piece{--gap:6px;box-shadow:inset 0 0 0 2px var(--sd-piece-line),inset 0 3px 4px rgba(255,255,255,.16),inset 0 -5px 9px rgba(0,0,0,.38),0 3px 6px rgba(0,0,0,.4)}
+.sd-pieces .sd-piece{--gap:8px;box-shadow:inset 0 0 0 2px var(--sd-piece-line),inset 0 3px 4px rgba(255,255,255,.16),inset 0 -5px 9px rgba(0,0,0,.38),0 3px 6px rgba(0,0,0,.4)}
 .sd-piece i{position:absolute;width:calc(40% / var(--w));aspect-ratio:1;border-radius:50%;background:var(--sd-dot);transform:translate(-50%,-50%);
   box-shadow:inset 0 -2px 3px rgba(0,0,0,.25),0 1px 2px rgba(0,0,0,.35)}
-.sd-pieces .sd-piece i{width:calc((100% + 12px) * .4 / var(--w))}
+.sd-pieces .sd-piece i{width:calc((100% + 16px) * .4 / var(--w))}
 .sd-piece.is-fixed{background:var(--sd-fixed);cursor:default;
   box-shadow:inset 0 0 0 2px var(--wall),inset 0 3px 4px rgba(255,255,255,.2),inset 0 -5px 9px rgba(0,0,0,.35),0 3px 6px rgba(0,0,0,.4)}
 .sd-piece.is-lifted{opacity:.2}

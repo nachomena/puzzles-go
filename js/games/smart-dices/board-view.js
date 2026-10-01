@@ -3,6 +3,8 @@ import { GridBoard } from '../../ui/grid-board.js';
 import { SIZE, CELLS, PIECES, shape, dieOf } from './engine/pieces.js';
 
 const REGIONS = Array.from({ length: CELLS }, (_, i) => dieOf(i));
+/** Grosor del marco en unidades de casilla (coincide con .board--dice .board__frame en el CSS). */
+const FRAME = .08;
 const pct = (n, of = SIZE) => (n / of * 100) + '%';
 
 /* Cada pieza deja un margen --gap dentro de sus casillas; los puntos se sitúan respecto a la
@@ -35,6 +37,10 @@ export class DicesBoardView {
 
   build({ arrows }){
     this.grid.build(SIZE, REGIONS);
+    // El marco va por fuera de la cuadrícula para que las casillas del borde no se vean más pequeñas
+    const frame = this.board.querySelector('.board__frame'), out = FRAME / 2;
+    frame.setAttribute('x', -out); frame.setAttribute('y', -out);
+    frame.setAttribute('width', SIZE + 2 * out); frame.setAttribute('height', SIZE + 2 * out);
     // GridBoard sustituye su contenido de casillas; las capas propias siguen encima
     for (const [kind, list] of Object.entries(arrows)) list.forEach((sum, i) => {
       const el = this.arrows[`${kind}-${i}`];
