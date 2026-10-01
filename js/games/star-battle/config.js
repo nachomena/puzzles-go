@@ -10,9 +10,6 @@ export const LEVELS = Object.freeze({
 });
 export const LEVEL_ORDER = Object.freeze(['easy', 'hard', 'expert']);
 
-/** Se mantiene la clave antigua para no perder partidas ni estadísticas guardadas. */
-export const STORAGE_KEY = 'starbattlego.v2';
-
 /** Estado de cada casilla en la partida. */
 export const MARK = Object.freeze({ EMPTY: 0, X: 1, STAR: 2, AUTO_X: 3 });
 export const TOOL = Object.freeze({ STAR: 'star', BRUSH: 'brush' });

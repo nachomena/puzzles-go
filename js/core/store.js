@@ -50,6 +50,18 @@ export class Store {
   /* ---- Partida en curso ---- */
   get hasOpenSession(){ return !!this.state.cur && !this.state.cur.done; }
 
+  /* ---- Resumen para el selector ---- */
+  summary(){ return { inProgress: this.hasOpenSession, solved: this.totalSolved() }; }
+
+  /** Resumen leído directamente del almacenamiento, sin cargar el juego. */
+  static summary(storage, key){
+    try {
+      const s = JSON.parse(storage?.getItem(key) || 'null') || {};
+      const solved = Object.values(s.stats || {}).reduce((n, st) => n + (st.solved || 0), 0);
+      return { inProgress: !!s.cur && !s.cur.done, solved };
+    } catch (e){ return { inProgress: false, solved: 0 }; }
+  }
+
   /* ---- Estadísticas ---- */
   statsFor(L){ return this.state.stats[L] || {}; }
   totalSolved(){ return Object.values(this.state.stats).reduce((n, s) => n + (s.solved || 0), 0); }

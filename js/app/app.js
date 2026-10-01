@@ -21,10 +21,12 @@ const htmlToElement = html => {
 export class App {
   /**
    * @param {object} deps
-   * @param {object[]} deps.games   definiciones (js/games/index.js)
+   * @param {{ meta: object, load: () => Promise<{ default: object }> }[]} deps.catalog  (js/games/catalog.js)
    * @param {Storage|null} deps.storage
    */
-  constructor({ games, storage }){
+  constructor({ catalog, storage }){
+    this.catalog = catalog;
+    this.storage = storage;
     this.screen = 'hub';
     this.current = null;
     this.toast = new Toast(byId('toast'));
@@ -35,8 +37,26 @@ export class App {
     this.fitHubTitle = keepFitted(byId('title'));
     this.fitGameTitle = keepFitted(byId('gameTitle'));
 
-    this.entries = new Map(games.map(game => [game.id, this.#createEntry(game, storage)]));
+    this.entries = new Map();   // juegos ya abiertos: id → entrada
+    this.loading = new Map();   // importaciones en curso: id → promesa
     this.#bindEvents();
+  }
+
+  /** Carga un juego la primera vez que se abre y arranca su generación de tableros. */
+  #entryFor(id){
+    if (this.entries.has(id)) return Promise.resolve(this.entries.get(id));
+    if (!this.loading.has(id)){
+      const item = this.catalog.find(c => c.meta.id === id);
+      if (!item) return Promise.resolve(null);
+      this.loading.set(id, item.load().then(({ default: game }) => {
+        const entry = this.#createEntry(game, this.storage);
+        this.entries.set(id, entry);
+        this.loading.delete(id);
+        entry.supply.init();
+        return entry;
+      }));
+    }
+    return this.loading.get(id);
   }
 
   /** Todo lo que vive por juego: estado, generación, pantalla y controlador. */
@@ -65,10 +85,7 @@ export class App {
     return entry;
   }
 
-  start(){
-    this.#refreshMenus();
-    for (const e of this.entries.values()) e.supply.init();
-  }
+  start(){ this.#refreshMenus(); }
 
   /* ---------- Navegación ---------- */
 
@@ -83,9 +100,21 @@ export class App {
     for (const e of this.entries.values()) e.supply.pump();
   }
 
-  openGame(id){
-    this.current = this.entries.get(id);
-    if (this.current) this.showScreen('levels');
+  async openGame(id){
+    this.opening = id;
+    if (!this.entries.has(id)){
+      // Se muestra el menú al instante; los niveles llegan cuando termine de cargar el juego
+      const item = this.catalog.find(c => c.meta.id === id);
+      if (!item) return;
+      this.current = null;
+      this.levelMenu.renderLoading(item.meta);
+      this.showScreen('levels');
+    }
+    const entry = await this.#entryFor(id);
+    // Si mientras tanto se volvió atrás o se abrió otro juego, no se cambia de pantalla
+    if (!entry || this.opening !== id || (this.current === null && this.screen !== 'levels')) return;
+    this.current = entry;
+    this.showScreen('levels');
   }
 
   continueGame(){
@@ -105,13 +134,17 @@ export class App {
   }
 
   back(){
+    this.opening = null;
     if (this.screen === 'play'){ this.current.store.save(); this.showScreen('levels'); }
     else this.showScreen('hub');
   }
 
   #refreshMenus(){
-    if (this.screen === 'hub') this.hub.render([...this.entries.values()]);
-    if (this.screen === 'levels'){
+    if (this.screen === 'hub') this.hub.render(this.catalog.map(({ meta }) => ({
+      meta,
+      summary: this.entries.get(meta.id)?.store.summary() ?? Store.summary(this.storage, meta.storageKey)
+    })));
+    if (this.screen === 'levels' && this.current){
       const { game, store, supply } = this.current;
       this.levelMenu.render(game, store, supply.job);
     }
@@ -141,6 +174,7 @@ export class App {
   }
 
   #openOverlay(id){
+    if (!this.current) return;
     const { game, store, controller } = this.current;
     if (id === 'settings') this.settings.show(game.settings, store, key => {
       if (this.screen === 'play') controller.applySettings(key);

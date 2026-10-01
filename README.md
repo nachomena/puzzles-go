@@ -46,10 +46,12 @@ js/
   ui/                   vistas reutilizables: tablero en rejilla, cabecera, menús, capas, arrastre…
   lib/                  utilidades puras (bits, rejilla, azar, formato, DOM)
   games/
-    index.js            registro de juegos
+    catalog.js          catálogo: datos del selector + carga diferida de cada juego
     star-battle/        motor, reglas, controlador, vista, plantillas y definición
     sudoku/             ídem
 tests/                  pruebas con node:test
 ```
+
+Los iconos de la app salen de `icons/icon.svg`: `node scripts/make-icons.cjs` regenera los PNG.
 
 Cómo añadir un juego nuevo: [js/games/README.md](js/games/README.md).

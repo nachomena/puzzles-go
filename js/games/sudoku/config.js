@@ -8,8 +8,6 @@ export const LEVELS = Object.freeze({
 });
 export const LEVEL_ORDER = Object.freeze(['easy', 'medium', 'hard']);
 
-export const STORAGE_KEY = 'puzzlesgo.sudoku.v1';
-
 /** Herramientas: escribir el número o anotarlo como candidato. */
 export const TOOL = Object.freeze({ PEN: 'pen', PENCIL: 'pencil' });
 

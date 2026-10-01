@@ -21,6 +21,13 @@ export class LevelMenu {
     Object.assign(this, { titleEl: title, levelsEl: levels, resumeEl: resume });
   }
 
+  /** Mientras se carga el juego: solo el título. */
+  renderLoading(meta){
+    this.titleEl.textContent = meta.name.toUpperCase();
+    this.levelsEl.innerHTML = '';
+    this.resumeEl.innerHTML = '';
+  }
+
   /**
    * @param {object} game  definición del juego
    * @param {import('../core/store.js').Store} store
