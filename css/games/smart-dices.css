@@ -8,7 +8,9 @@
 }
 
 /* Tablero con flechas: filas a la derecha, columnas debajo */
-.sd-area{display:grid;grid-template-columns:1fr 54px;grid-template-rows:auto 54px;gap:14px}
+.sd-area{--arrow-long:54px;--arrow-short:40px;display:grid;grid-template-columns:1fr var(--arrow-long);grid-template-rows:auto var(--arrow-long);gap:14px}
+/* Móviles estrechos: flechas algo más compactas para dejar más sitio al tablero */
+@media (max-width:400px){.sd-area{--arrow-long:46px;--arrow-short:36px;gap:10px}}
 .sd-area .board{grid-area:1/1}
 .board--dice{--n:6;margin:0 auto}
 .board--dice .board__grid{stroke-width:.02}
@@ -21,8 +23,8 @@
 .sd-arrow-slot{flex:1;display:grid;place-items:center}
 /* Flecha: forma SVG con el número grande dentro */
 .sd-arrow{position:relative;display:grid;place-items:center;font-variant-numeric:tabular-nums}
-.sd-arrows--rows .sd-arrow{width:54px;height:40px}
-.sd-arrows--cols .sd-arrow{width:40px;height:54px}
+.sd-arrows--rows .sd-arrow{width:var(--arrow-long);height:var(--arrow-short)}
+.sd-arrows--cols .sd-arrow{width:var(--arrow-short);height:var(--arrow-long)}
 .sd-arrow__shape{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .sd-arrow__shape path{fill:var(--surface);stroke:var(--ink-soft);stroke-width:2.5;stroke-linejoin:round}
 .sd-arrow__num{position:relative;font-family:var(--font-display);font-weight:900;font-size:18px;line-height:1;color:var(--ink)}
@@ -45,11 +47,11 @@
   touch-action:none;cursor:grab;transition:opacity .15s}
 .sd-piece::before{content:"";position:absolute;inset:5px;border-radius:6px;border:1px solid rgba(255,255,255,.2);pointer-events:none}
 /* Colocadas por el jugador: resaltadas (borde claro y más relleno) */
-.sd-pieces .sd-piece{--gap:8px;background:var(--sd-placed);
+.sd-pieces .sd-piece{--gap:clamp(5px, 1.8vw, 8px);background:var(--sd-placed);
   box-shadow:inset 0 0 0 2px var(--wall),inset 0 3px 4px rgba(255,255,255,.2),inset 0 -5px 9px rgba(0,0,0,.35),0 3px 6px rgba(0,0,0,.4)}
-.sd-piece i{position:absolute;width:calc(40% / var(--w));aspect-ratio:1;border-radius:50%;background:var(--sd-dot);translate:-50% -50%;
+/* Punto: 50 % de la parte visible de una casilla (casilla menos el margen), así nunca toca el borde */
+.sd-piece i{position:absolute;width:calc(((100% + 2 * var(--gap)) / var(--w) - 2 * var(--gap)) * .5);aspect-ratio:1;border-radius:50%;background:var(--sd-dot);translate:-50% -50%;
   box-shadow:inset 0 -2px 3px rgba(0,0,0,.25),0 1px 2px rgba(0,0,0,.35)}
-.sd-pieces .sd-piece i{width:calc((100% + 16px) * .4 / var(--w))}
 /* Las que trae el reto: gris discreto, no se mueven */
 .sd-pieces .sd-piece.is-fixed{background:var(--sd-piece);cursor:default;
   box-shadow:inset 0 0 0 2px var(--sd-piece-line),inset 0 3px 4px rgba(255,255,255,.16),inset 0 -5px 9px rgba(0,0,0,.38),0 3px 6px rgba(0,0,0,.4)}
