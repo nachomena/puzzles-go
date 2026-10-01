@@ -1,9 +1,10 @@
-/** Reduce la fuente de `el` para que quepa en una línea dentro de su contenedor. */
+/** Reduce la fuente de `el` para que quepa en una línea junto a sus hermanos dentro del contenedor. */
 export function fitToWidth(el){
   if (!el || !el.offsetParent) return;
   el.style.fontSize = '';
-  const parent = el.parentElement;
-  const avail = parent.clientWidth - parseFloat(getComputedStyle(parent).paddingLeft) * 2;
+  const parent = el.parentElement, cs = getComputedStyle(parent);
+  let avail = parent.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+  for (const sib of parent.children) if (sib !== el) avail -= sib.offsetWidth + (parseFloat(cs.columnGap) || 0);
   const base = parseFloat(getComputedStyle(el).fontSize);
   if (el.scrollWidth > avail) el.style.fontSize = Math.floor(base * avail / el.scrollWidth) + 'px';
 }

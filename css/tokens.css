@@ -54,3 +54,11 @@
   --safe-top:env(safe-area-inset-top,0px);
   --safe-bottom:env(safe-area-inset-bottom,0px);
 }
+
+/* Sudoku */
+:root{
+  --entry:#9db8ff;            /* número escrito por el jugador */
+  --cell-peer:#45444c;        /* fila, columna y caja de la casilla elegida */
+  --cell-same:#58566e;        /* casillas con el mismo número */
+  --cell-selected:#66656f;
+}

@@ -6,9 +6,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Star Battle">
+<meta name="apple-mobile-web-app-title" content="Puzzles Go">
 <meta name="theme-color" content="#232228">
-<title>Star Battle Go</title>
+<title>Puzzles Go</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/icon-192.png">
@@ -17,8 +17,10 @@
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/menu.css">
-<link rel="stylesheet" href="css/game.css">
+<link rel="stylesheet" href="css/play.css">
 <link rel="stylesheet" href="css/overlays.css">
+<link rel="stylesheet" href="css/games/star-battle.css">
+<link rel="stylesheet" href="css/games/sudoku.css">
 <script type="module" src="js/main.js"></script>
 </head>
 <body>
@@ -36,17 +38,35 @@
   <symbol id="i-hint" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3z"/></symbol>
   <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v2.3M12 19.2v2.3M21.5 12h-2.3M4.8 12H2.5M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6M18.7 18.7l-1.6-1.6M6.9 6.9L5.3 5.3"/><circle cx="12" cy="12" r="7.2"/></symbol>
   <symbol id="i-help" viewBox="0 0 24 24"><path d="M8.5 8.5a3.6 3.6 0 1 1 5.2 3.2c-1 .5-1.7 1.3-1.7 2.4v1"/><circle cx="12" cy="19.2" r=".4"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1.5"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></symbol>
+  <symbol id="i-number" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="2.5"/><path d="M10 8.6l2.4-1.6v10"/></symbol>
+  <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20l1.2-4.6L15.8 4.8a2 2 0 0 1 2.8 0l.6.6a2 2 0 0 1 0 2.8L8.6 18.8zM14 6.6l3.4 3.4"/></symbol>
+  <symbol id="i-erase" viewBox="0 0 24 24"><path d="M8.5 19.5l-4-4a2 2 0 0 1 0-2.8l8.2-8.2a2 2 0 0 1 2.8 0l4 4a2 2 0 0 1 0 2.8l-8 8.2zM8.5 19.5H20M9 8.2l6.8 6.8"/></symbol>
 </svg>
 
-<!-- MENÚ -->
-<section id="menu" class="screen is-on" aria-label="Menú">
+<main id="app">
+
+<!-- SELECTOR DE JUEGOS -->
+<section id="hub" class="screen is-on" aria-label="Juegos">
   <header class="hero"><div class="wrap">
-    <h1 class="hero__title display" id="title"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-logo"/></svg><span>STAR BATTLE GO</span></h1>
+    <h1 class="hero__title display" id="title">PUZZLES GO</h1>
+  </div></header>
+  <div class="wrap menu">
+    <p class="menu__label">Elige un juego</p>
+    <div id="games"></div>
+  </div>
+</section>
+
+<!-- MENÚ DE UN JUEGO -->
+<section id="levels" class="screen" aria-label="Niveles">
+  <header class="hero hero--game"><div class="wrap">
+    <button class="icon-btn hero__back" data-action="back" aria-label="Volver a los juegos"><svg viewBox="0 0 24 24"><use href="#i-back"/></svg></button>
+    <h1 class="hero__title display" id="gameTitle"></h1>
   </div></header>
   <div class="wrap menu">
     <div id="resume"></div>
     <p class="menu__label">Nueva partida</p>
-    <div id="levels"></div>
+    <div id="levelList"></div>
     <hr class="rule">
     <nav class="menu__icons">
       <button class="icon-btn" data-action="open" data-target="settings" aria-label="Ajustes"><svg viewBox="0 0 24 24"><use href="#i-gear"/></svg></button>
@@ -55,69 +75,24 @@
   </div>
 </section>
 
-<!-- PARTIDA -->
-<section id="game" class="screen" aria-label="Partida">
-  <div class="wrap wrap--game">
-    <div class="hud">
-      <span data-hud="level"></span>
-      <span class="hud__time" data-hud="time">0:00</span>
-      <span data-hud="size"></span>
-    </div>
-    <div id="board" class="board" role="grid" aria-label="Tablero">
-      <div class="board__cells" data-board-cells></div>
-      <svg class="board__lines" data-board-lines preserveAspectRatio="none"></svg>
-    </div>
-    <div class="toolbar">
-      <button class="icon-btn" data-action="reset" aria-label="Reiniciar tablero"><svg viewBox="0 0 24 24"><use href="#i-reset"/></svg></button>
-      <div class="segmented" role="radiogroup" aria-label="Herramienta">
-        <button data-action="tool" data-tool="star" role="radio" aria-label="Estrellas y X"><svg viewBox="0 0 24 24"><use href="#i-star"/></svg></button>
-        <button data-action="tool" data-tool="brush" role="radio" aria-label="Pintar casillas"><svg viewBox="0 0 24 24"><use href="#i-brush"/></svg></button>
-      </div>
-      <div class="toolbar__group">
-        <button class="icon-btn" data-action="undo" aria-label="Deshacer"><svg viewBox="0 0 24 24"><use href="#i-undo"/></svg></button>
-        <button class="icon-btn" data-action="redo" aria-label="Rehacer"><svg viewBox="0 0 24 24"><use href="#i-redo"/></svg></button>
-      </div>
-    </div>
-    <nav class="dock">
-      <button class="icon-btn" data-action="back" aria-label="Volver al menú"><svg viewBox="0 0 24 24"><use href="#i-back"/></svg></button>
-      <button class="icon-btn" data-action="hint" aria-label="Pista"><svg viewBox="0 0 24 24"><use href="#i-hint"/></svg></button>
-      <button class="icon-btn" data-action="open" data-target="settings" aria-label="Ajustes"><svg viewBox="0 0 24 24"><use href="#i-gear"/></svg></button>
-      <button class="icon-btn" data-action="open" data-target="help" aria-label="Cómo se juega"><svg viewBox="0 0 24 24"><use href="#i-help"/></svg></button>
-    </nav>
-  </div>
-</section>
+<!-- Las pantallas de cada juego se añaden aquí desde js/games/<juego>/templates.js -->
+</main>
 
-<!-- AJUSTES -->
+<!-- AJUSTES (los interruptores los declara cada juego) -->
 <div class="overlay" id="settings" role="dialog" aria-label="Ajustes" data-dismissable>
   <div class="sheet">
     <h2 class="display">Ajustes</h2>
-    <label class="toggle"><div><b>X automáticas</b><span>Pone X alrededor de cada estrella que colocas.</span></div><input type="checkbox" data-setting="autoX"></label>
-    <label class="toggle"><div><b>Resaltar errores</b><span>Las estrellas que rompen una regla se ponen rojas.</span></div><input type="checkbox" data-setting="errors"></label>
-    <label class="toggle"><div><b>Cronómetro</b><span>Muestra el tiempo de la partida.</span></div><input type="checkbox" data-setting="timer"></label>
-    <label class="toggle"><div><b>Colorear regiones</b><span>Tiñe cada región con un tono distinto.</span></div><input type="checkbox" data-setting="tint"></label>
+    <div id="settingsList"></div>
     <button class="btn-danger" data-action="wipe-stats">Borrar estadísticas</button>
     <button class="btn-primary" data-action="close">Listo</button>
   </div>
 </div>
 
-<!-- AYUDA -->
+<!-- AYUDA (el texto lo aporta cada juego) -->
 <div class="overlay" id="help" role="dialog" aria-label="Cómo se juega" data-dismissable>
   <div class="sheet">
     <h2 class="display">Cómo se juega</h2>
-    <p>Coloca estrellas para que cada <b>fila</b>, cada <b>columna</b> y cada <b>región</b> (zona rodeada por línea gruesa) tenga exactamente 2 estrellas.</p>
-    <p>Dos estrellas nunca pueden tocarse, ni siquiera en diagonal. Todos los tableros son de 10×10 y tienen una única solución; la dificultad depende de la forma de las regiones.</p>
-    <h3>Controles</h3>
-    <div class="demo" aria-hidden="true">
-      <div class="cell"></div>→<div class="cell cell--x"><svg viewBox="0 0 24 24"><use href="#i-x"/></svg></div>→<div class="cell cell--star"><svg viewBox="0 0 24 24"><use href="#i-star"/></svg></div>→<div class="cell"></div>
-    </div>
-    <ul>
-      <li>Toca una casilla para pasar de vacía a X, de X a estrella y de estrella a vacía.</li>
-      <li>Arrastra el dedo para marcar varias X seguidas.</li>
-      <li>Con el pincel pintas casillas para marcar una suposición. No cuenta como estrella ni como X; toca o arrastra otra vez para quitar la pintura.</li>
-      <li>La bombilla da una pista: señala un error o coloca una estrella correcta.</li>
-    </ul>
-    <h3>Truco de inicio</h3>
-    <p>Empieza por las regiones pequeñas: si una región cabe en una sola fila o columna, las estrellas de esa fila o columna ya están decididas.</p>
+    <div id="helpBody"></div>
     <button class="btn-primary" data-action="close">Entendido</button>
   </div>
 </div>
