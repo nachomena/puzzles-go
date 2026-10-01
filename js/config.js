@@ -2,8 +2,8 @@
 
 export const APP_NAME = 'Puzzles Go';
 
-/** Tableros pre-generados que se guardan por nivel. */
-export const BUFFER_CAP = 5;
+/** Tableros pre-generados que se guardan por nivel: uno listo; al usarlo se prepara el siguiente. */
+export const BUFFER_CAP = 1;
 export const HISTORY_LIMIT = 400;
 
 /** Segundos de juego entre una pista y la siguiente. */

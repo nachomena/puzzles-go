@@ -145,8 +145,8 @@ export class App {
       summary: this.entries.get(meta.id)?.store.summary() ?? Store.summary(this.storage, meta.storageKey)
     })));
     if (this.screen === 'levels' && this.current){
-      const { game, store, supply } = this.current;
-      this.levelMenu.render(game, store, supply.job);
+      const { game, store } = this.current;
+      this.levelMenu.render(game, store);
     }
   }
 

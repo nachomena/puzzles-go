@@ -1,5 +1,5 @@
 // Sube la versión cuando publiques cambios para que el iPhone descargue la nueva
-const VERSION = 'pzg-v5';
+const VERSION = 'pzg-v6';
 const FILES = [
   './', './index.html', './manifest.webmanifest',
   './css/base.css', './css/components.css', './css/games/star-battle.css', './css/games/sudoku.css',
