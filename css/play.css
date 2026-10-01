@@ -3,6 +3,8 @@
 
 .hud{display:flex;justify-content:space-between;align-items:baseline;font-size:clamp(19px,5.6vw,24px);font-weight:500;padding:34px 2px 8px}
 .hud__time{color:var(--dim);font-variant-numeric:tabular-nums;font-size:.85em}
+/* Juegos sin etiqueta de tamaño: el tiempo pasa a la derecha */
+.hud [data-hud="size"]:empty{display:none}
 @media (min-height:800px){.hud{padding-top:70px}}
 
 .board{--n:10;position:relative;width:100%;aspect-ratio:1/1;touch-action:none;background:var(--cell);margin:0 auto}

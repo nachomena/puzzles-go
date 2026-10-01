@@ -24,7 +24,7 @@ export default defineGame({
     if (!Array.isArray(s.trot)) s.trot = PIECES.map(() => 0);
     return s;
   },
-  sizeLabel: () => '4 dados',
+  sizeLabel: () => '',   // siempre son 4 dados: no aporta nada en la cabecera
 
   boardHtml: boardHtml(),
   controls: controls(),
