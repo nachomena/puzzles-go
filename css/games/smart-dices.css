@@ -29,15 +29,22 @@
 .sd-dice{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;pointer-events:none}
 .sd-dice i.is-bad{box-shadow:inset 0 0 0 4px var(--bad)}
 
-/* Piezas */
+/* Piezas: plástico transparente. El borde es una sombra interior (no ocupa sitio), con un filo
+   interior como en las piezas reales, luz arriba, sombra abajo y una sombra ligera debajo. */
 .sd-pieces{position:absolute;inset:0}
-.sd-piece{position:absolute;box-sizing:border-box;border:2px solid var(--sd-piece-line);border-radius:10px;background:var(--sd-piece);
+.sd-piece{--gap:0px;position:absolute;box-sizing:border-box;border-radius:10px;background:var(--sd-piece);
+  box-shadow:inset 0 0 0 2px var(--sd-piece-line),inset 0 3px 4px rgba(255,255,255,.16),inset 0 -5px 9px rgba(0,0,0,.38);
   touch-action:none;cursor:grab;transition:opacity .15s}
-.sd-pieces .sd-piece{margin:0;transform:scale(.92);transform-origin:center}
-.sd-piece i{position:absolute;width:calc(40% / var(--w));aspect-ratio:1;border-radius:50%;background:var(--sd-dot);transform:translate(-50%,-50%)}
-.sd-piece.is-fixed{background:var(--sd-fixed);border-color:var(--wall);cursor:default}
+.sd-piece::before{content:"";position:absolute;inset:5px;border-radius:6px;border:1px solid rgba(255,255,255,.2);pointer-events:none}
+.sd-pieces .sd-piece{--gap:6px;box-shadow:inset 0 0 0 2px var(--sd-piece-line),inset 0 3px 4px rgba(255,255,255,.16),inset 0 -5px 9px rgba(0,0,0,.38),0 3px 6px rgba(0,0,0,.4)}
+.sd-piece i{position:absolute;width:calc(40% / var(--w));aspect-ratio:1;border-radius:50%;background:var(--sd-dot);transform:translate(-50%,-50%);
+  box-shadow:inset 0 -2px 3px rgba(0,0,0,.25),0 1px 2px rgba(0,0,0,.35)}
+.sd-pieces .sd-piece i{width:calc((100% + 12px) * .4 / var(--w))}
+.sd-piece.is-fixed{background:var(--sd-fixed);cursor:default;
+  box-shadow:inset 0 0 0 2px var(--wall),inset 0 3px 4px rgba(255,255,255,.2),inset 0 -5px 9px rgba(0,0,0,.35),0 3px 6px rgba(0,0,0,.4)}
 .sd-piece.is-lifted{opacity:.2}
-.sd-piece.is-ghost{position:fixed;z-index:30;pointer-events:none;background:rgba(220,219,228,.22);border-color:var(--ink);box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.sd-piece.is-ghost{position:fixed;z-index:30;pointer-events:none;background:rgba(220,219,228,.22);
+  box-shadow:inset 0 0 0 2px var(--ink),inset 0 3px 4px rgba(255,255,255,.18),inset 0 -5px 9px rgba(0,0,0,.35),0 10px 24px rgba(0,0,0,.45)}
 .sd-piece.is-flash{animation:flash .5s ease-in-out 3}
 .board.is-won .sd-piece i{animation:win 1s ease-in-out both}
 

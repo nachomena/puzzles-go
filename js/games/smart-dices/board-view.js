@@ -5,10 +5,16 @@ import { SIZE, CELLS, PIECES, shape, dieOf } from './engine/pieces.js';
 const REGIONS = Array.from({ length: CELLS }, (_, i) => dieOf(i));
 const pct = (n, of = SIZE) => (n / of * 100) + '%';
 
+/* Cada pieza deja un margen --gap dentro de sus casillas; los puntos se sitúan respecto a la
+   cuadrícula (no a la pieza encogida) para que caigan justo en el centro de su casilla. */
+const inset = (n, of = SIZE) => `calc(${pct(n, of)} + var(--gap))`;
+const span = (n, of = SIZE) => `calc(${pct(n, of)} - 2 * var(--gap))`;
+const dotPos = (k, size) => `calc((100% + 2 * var(--gap)) * ${(k + .5) / size} - var(--gap))`;
+
 /** Marcado de una pieza (rectángulo con sus puntos) en un giro. `style` posiciona la pieza. */
 function pieceHtml(piece, rot, { style = '', cls = '' } = {}){
   const s = shape(PIECES[piece], rot);
-  const dots = s.dots.map(([r, c]) => `<i style="left:${pct(c + .5, s.w)};top:${pct(r + .5, s.h)}"></i>`).join('');
+  const dots = s.dots.map(([r, c]) => `<i style="left:${dotPos(c, s.w)};top:${dotPos(r, s.h)}"></i>`).join('');
   return `<div class="sd-piece ${cls}" data-piece="${piece}" style="--w:${s.w};--h:${s.h};${style}">${dots}</div>`;
 }
 
@@ -50,7 +56,7 @@ export class DicesBoardView {
       const s = shape(PIECES[piece], pos.rot);
       return pieceHtml(piece, pos.rot, {
         cls: fixed.includes(piece) ? 'is-fixed' : '',
-        style: `left:${pct(pos.c)};top:${pct(pos.r)};width:${pct(s.w)};height:${pct(s.h)}`
+        style: `left:${inset(pos.c)};top:${inset(pos.r)};width:${span(s.w)};height:${span(s.h)}`
       });
     }).join('');
     this.tray.innerHTML = place.map((pos, piece) => pos ? '' : pieceHtml(piece, trot[piece], { cls: 'is-tray' })).join('');
