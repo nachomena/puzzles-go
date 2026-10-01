@@ -21,6 +21,10 @@
 .level__meta{display:block;font-size:14px;color:var(--dim);margin-top:2px;font-weight:500}
 .level:active .level__name{opacity:.7}
 
+.boot-error{padding:14px 16px;border:2px solid var(--x);border-radius:var(--radius);font-size:14px;line-height:1.5}
+.boot-error b{display:block;margin-bottom:6px;color:var(--x)}
+.boot-error span{display:block;white-space:pre-wrap;word-break:break-word;color:var(--ink-soft);user-select:text;-webkit-user-select:text}
+
 .dots{display:flex;gap:6px;flex-shrink:0}
 .dots i{width:12px;height:12px;border-radius:50%;background:var(--dot);display:block}
 .dots i.is-filled{background:var(--ink)}
