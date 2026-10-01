@@ -1,5 +1,5 @@
 // Sube la versión cuando publiques cambios para que el iPhone descargue la nueva
-const VERSION = 'pzg-v7';
+const VERSION = 'pzg-v8';
 const FILES = [
   './', './index.html', './manifest.webmanifest',
   './css/base.css', './css/components.css', './css/games/star-battle.css', './css/games/sudoku.css',
@@ -20,7 +20,7 @@ const FILES = [
   './js/games/sudoku/index.js', './js/games/sudoku/meta.js', './js/games/sudoku/rules.js',
   './js/games/sudoku/templates.js', './js/games/sudoku/worker.js', './js/lib/bits.js', './js/lib/dom.js',
   './js/lib/format.js', './js/lib/grid.js', './js/lib/iter.js', './js/lib/random.js', './js/main.js',
-  './js/pwa.js', './js/ui/cell-drag.js', './js/ui/fit-text.js', './js/ui/game-hud.js',
+  './js/pwa.js', './js/ui/cell-drag.js', './js/ui/confirm-dialog.js', './js/ui/fit-text.js', './js/ui/game-hud.js',
   './js/ui/grid-board.js', './js/ui/hub-view.js', './js/ui/level-menu.js', './js/ui/overlays.js',
   './js/ui/settings-panel.js', './js/ui/templates.js', './js/ui/toast.js',
   './fonts/archivo-black.woff2', './fonts/archivo.woff2',

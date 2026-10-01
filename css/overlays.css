@@ -13,6 +13,7 @@
 
 .card{margin:auto;width:min(88vw,380px);background:var(--surface);padding:30px 26px;border-radius:var(--radius-lg);text-align:center}
 .card h2{font-size:40px;margin:0 0 6px}
+.card .card__title{font-size:28px;line-height:1.15;margin-bottom:12px}
 .card__big{font-size:48px;font-weight:700;font-variant-numeric:tabular-nums;margin:12px 0 2px}
 .card__sub{color:var(--dim);font-size:15px;margin-bottom:24px;line-height:1.5}
 .card .btn-primary{margin-top:0}

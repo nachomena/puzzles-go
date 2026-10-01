@@ -8,6 +8,8 @@ import { HubView } from '../ui/hub-view.js';
 import { LevelMenu } from '../ui/level-menu.js';
 import { Overlays } from '../ui/overlays.js';
 import { SettingsPanel } from '../ui/settings-panel.js';
+import { ConfirmDialog } from '../ui/confirm-dialog.js';
+import { formatTime } from '../lib/format.js';
 import { Toast } from '../ui/toast.js';
 import { keepFitted } from '../ui/fit-text.js';
 import { playScreen } from '../ui/templates.js';
@@ -34,6 +36,7 @@ export class App {
     this.hub = new HubView(byId('games'));
     this.levelMenu = new LevelMenu({ title: byId('gameTitle'), levels: byId('levelList'), resume: byId('resume') });
     this.settings = new SettingsPanel(byId('settingsList'));
+    this.confirm = new ConfirmDialog(byId('confirm'), this.overlays);
     this.fitHubTitle = keepFitted(byId('title'));
     this.fitGameTitle = keepFitted(byId('gameTitle'));
 
@@ -126,6 +129,26 @@ export class App {
     if (this.current.controller.mount()) this.showScreen('play');
   }
 
+  /**
+   * Nueva partida desde el menú. Si hay una partida a medias, pregunta antes para no perderla:
+   * se puede empezar la nueva o seguir con la actual.
+   */
+  async requestLevel(L, entry){
+    const cur = entry.store.hasOpenSession ? entry.store.state.cur : null;
+    if (cur){
+      const choice = await this.confirm.ask({
+        title: '¿Empezar otra partida?',
+        text: `Tienes una partida de ${entry.game.levels[cur.L].name} en curso (${formatTime(cur.time || 0)}). Si empiezas otra, se perderá.`,
+        accept: 'Empezar nueva',
+        alternate: 'Seguir con la actual'
+      });
+      if (this.currentMeta?.id !== entry.game.id || this.screen !== 'levels') return;
+      if (choice === 'alternate'){ this.current = entry; this.continueGame(); return; }
+      if (choice !== 'accept') return;
+    }
+    this.startLevel(L, entry);
+  }
+
   startLevel(L, entry = this.current){
     this.current = entry;
     const puzzle = entry.store.takePuzzle(L);
@@ -161,7 +184,9 @@ export class App {
     const cur = this.current;
     return {
       'open-game':    el => this.openGame(el.dataset.game),
-      'start-level':  el => this.#withGame(entry => this.startLevel(el.dataset.level, entry)),
+      'start-level':  el => this.#withGame(entry => this.requestLevel(el.dataset.level, entry)),
+      'confirm-accept':    () => this.confirm.answer('accept'),
+      'confirm-alternate': () => this.confirm.answer('alternate'),
       'continue':     () => this.#withGame(entry => { this.current = entry; this.continueGame(); }),
       'back':         () => this.back(),
       'open':         el => this.#withGame(entry => { this.current = entry; this.#openOverlay(el.dataset.target); }),
@@ -198,7 +223,7 @@ export class App {
     });
 
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape'){ this.overlays.closeDismissable(); return; }
+      if (e.key === 'Escape'){ this.confirm.answer('cancel'); this.overlays.closeDismissable(); return; }
       if (this.screen !== 'play' || this.overlays.anyOpen() || e.metaKey || e.ctrlKey || e.altKey) return;
       if (this.current.controller.onKey(e)) e.preventDefault();
     });
