@@ -8,9 +8,15 @@
 }
 
 /* Tablero con flechas: filas a la derecha, columnas debajo */
-.sd-area{--arrow-long:54px;--arrow-short:40px;display:grid;grid-template-columns:1fr var(--arrow-long);grid-template-rows:auto var(--arrow-long);gap:14px}
+.sd-area{--arrow-long:54px;--arrow-short:40px;--sd-gap:14px;display:grid;grid-template-columns:1fr var(--arrow-long);
+  grid-template-rows:auto var(--arrow-long);gap:var(--sd-gap)}
 /* Móviles estrechos: flechas algo más compactas para dejar más sitio al tablero */
-@media (max-width:400px){.sd-area{--arrow-long:46px;--arrow-short:36px;gap:10px}}
+@media (max-width:400px){.sd-area{--arrow-long:46px;--arrow-short:36px;--sd-gap:10px}}
+/* Sin flechas de filas: sin esa columna y el tablero (del mismo tamaño) centrado */
+.sd-area.is-no-rows{grid-template-columns:1fr;padding:0 calc((var(--arrow-long) + var(--sd-gap)) / 2)}
+.sd-area.is-no-rows .sd-arrows--rows{display:none}
+/* Reiniciar: abajo a la izquierda, a la altura de las flechas de columna */
+.sd-reset{grid-area:2/1;justify-self:start;align-self:center;position:relative;z-index:1;margin-left:-6px}
 .sd-area .board{grid-area:1/1}
 .board--dice{--n:6;margin:0 auto}
 .board--dice .board__grid{stroke-width:.02}
@@ -61,9 +67,9 @@
 .sd-piece.is-flash{animation:flash .5s ease-in-out 3}
 .board.is-won .sd-piece i{animation:win 1s ease-in-out both}
 
-/* Bandeja */
-.toolbar .sd-tip{font-size:13px;color:var(--dim);text-align:center;flex:1;padding:0 6px}
-.sd-tray{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center;padding:16px 0 4px;min-height:80px;touch-action:none}
+/* Bandeja y ayuda breve debajo */
+.sd-tip{font-size:13px;color:var(--dim);text-align:center;margin:4px 0 0}
+.sd-tray{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center;padding:10px 0 4px;min-height:60px;touch-action:none}
 .sd-piece.is-tray{position:relative;width:calc(var(--w) * var(--sd-tray-cell));height:calc(var(--h) * var(--sd-tray-cell));border-radius:8px}
 
 /* Ayuda: caras válidas */

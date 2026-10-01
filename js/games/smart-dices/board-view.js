@@ -37,6 +37,8 @@ export class DicesBoardView {
 
   build({ arrows }){
     this.grid.build(SIZE, REGIONS);
+    // Sin flechas en las filas no hace falta su columna: el tablero se centra
+    this.board.closest('.sd-area').classList.toggle('is-no-rows', arrows.rows.every(s => s == null));
     // El marco va por fuera de la cuadrícula para que las casillas del borde no se vean más pequeñas
     const frame = this.board.querySelector('.board__frame'), out = FRAME / 2;
     frame.setAttribute('x', -out); frame.setAttribute('y', -out);

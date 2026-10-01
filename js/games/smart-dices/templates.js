@@ -1,5 +1,5 @@
 /* Marcado propio de Smart Dices: tablero con flechas, controles, bandeja de piezas y ayuda. */
-import { board, iconButton, undoRedo } from '../../ui/templates.js';
+import { board, iconButton } from '../../ui/templates.js';
 
 /** Puntos de cada cara (posiciones 0..8 de la rejilla 3×3), como en el reglamento. */
 const FACE_DOTS = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] };
@@ -17,21 +17,23 @@ const arrow = (kind, i) =>
   `<svg class="sd-arrow__shape" viewBox="${ARROW_SHAPE[kind].box}" aria-hidden="true"><path d="${ARROW_SHAPE[kind].d}"/></svg>` +
   `<b class="sd-arrow__num"></b></span></span>`;
 
-/** Tablero con las flechas de las filas a la derecha y las de las columnas debajo. */
+/**
+ * Tablero con las flechas de las filas a la derecha y las de las columnas debajo.
+ * Reiniciar va abajo a la izquierda, junto a las flechas de columna (que van centradas
+ * bajo cada dado, así que esa esquina siempre está libre).
+ */
 export const boardHtml = () =>
   `<div class="sd-area">` +
   board('board--dice') +
   `<div class="sd-arrows sd-arrows--rows">${arrow('rows', 0)}${arrow('rows', 1)}</div>` +
   `<div class="sd-arrows sd-arrows--cols">${arrow('cols', 0)}${arrow('cols', 1)}</div>` +
+  iconButton('reset', 'reset', 'Quitar todas las piezas', { cls: 'icon-btn sd-reset' }) +
   `</div>`;
 
+/** Bajo el tablero solo va la bandeja, para que las piezas se vean sin hacer scroll. */
 export const controls = () =>
-  `<div class="toolbar">` +
-  iconButton('reset', 'reset', 'Quitar todas las piezas') +
-  `<span class="sd-tip">Arrastra · toca para girar</span>` +
-  undoRedo() +
-  `</div>` +
-  `<div class="sd-tray" data-tray aria-label="Piezas sin colocar"></div>`;
+  `<div class="sd-tray" data-tray aria-label="Piezas sin colocar"></div>` +
+  `<p class="sd-tip">Arrastra para colocar · toca para girar</p>`;
 
 export const help = () => `
   <p>Coloca las 12 piezas en el tablero para que cada una de las <b>4 casillas</b> muestre una <b>cara de dado</b> válida, en cualquier orientación.</p>

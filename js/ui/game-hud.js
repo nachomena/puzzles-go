@@ -18,9 +18,10 @@ export class GameHud {
     this.size.textContent = sizeText;
   }
   setTime(text){ this.time.textContent = text; }
+  /** Los juegos sin botones de deshacer/rehacer simplemente no los tienen. */
   setHistory(canUndo, canRedo){
-    this.undo.disabled = !canUndo;
-    this.redo.disabled = !canRedo;
+    if (this.undo) this.undo.disabled = !canUndo;
+    if (this.redo) this.redo.disabled = !canRedo;
   }
   /** Cuenta atrás de la próxima pista (0 = disponible). */
   setHintWait(sec){
