@@ -8,7 +8,7 @@
 }
 
 /* Tablero con flechas: filas a la derecha, columnas debajo */
-.sd-area{display:grid;grid-template-columns:1fr 40px;grid-template-rows:auto 40px;gap:6px}
+.sd-area{display:grid;grid-template-columns:1fr 54px;grid-template-rows:auto 54px;gap:6px}
 .sd-area .board{grid-area:1/1}
 .board--dice{--n:6;margin:4px auto}
 .board--dice .board__grid{stroke-width:.02}
@@ -19,14 +19,19 @@
 .sd-arrows--rows{grid-area:1/2;flex-direction:column}
 .sd-arrows--cols{grid-area:2/1}
 .sd-arrow-slot{flex:1;display:grid;place-items:center}
-.sd-arrow{display:flex;align-items:center;gap:2px;padding:4px 7px;border:2px solid var(--outline);border-radius:var(--radius-sm);
-  font-weight:700;font-size:17px;line-height:1;font-variant-numeric:tabular-nums}
-.sd-arrows--rows .sd-arrow::before{content:"◂";font-size:12px;color:var(--dim)}
-.sd-arrows--cols .sd-arrow{flex-direction:column;padding:3px 9px 5px}
-.sd-arrows--cols .sd-arrow::before{content:"▴";font-size:12px;color:var(--dim)}
+/* Flecha: forma SVG con el número grande dentro */
+.sd-arrow{position:relative;display:grid;place-items:center;font-variant-numeric:tabular-nums}
+.sd-arrows--rows .sd-arrow{width:54px;height:40px}
+.sd-arrows--cols .sd-arrow{width:40px;height:54px}
+.sd-arrow__shape{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.sd-arrow__shape path{fill:var(--surface);stroke:var(--ink-soft);stroke-width:2.5;stroke-linejoin:round}
+.sd-arrow__num{position:relative;font-family:var(--font-display);font-weight:900;font-size:24px;line-height:1;color:var(--ink)}
+.sd-arrows--rows .sd-arrow__num{margin-left:12px}
+.sd-arrows--cols .sd-arrow__num{margin-top:12px}
 .sd-arrow.is-empty{visibility:hidden}
-.sd-arrow.is-ok{border-color:var(--ink)}
-.sd-arrow.is-bad{border-color:var(--bad);color:var(--bad)}
+.sd-arrow.is-ok .sd-arrow__shape path{stroke:var(--wall);fill:var(--seg-on)}
+.sd-arrow.is-bad .sd-arrow__shape path{stroke:var(--bad)}
+.sd-arrow.is-bad .sd-arrow__num{color:var(--bad)}
 
 /* Dados: resaltado de cara no válida */
 .sd-dice{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;pointer-events:none}

@@ -44,7 +44,8 @@ export class DicesBoardView {
     // GridBoard sustituye su contenido de casillas; las capas propias siguen encima
     for (const [kind, list] of Object.entries(arrows)) list.forEach((sum, i) => {
       const el = this.arrows[`${kind}-${i}`];
-      el.textContent = sum ?? "";
+      el.querySelector('.sd-arrow__num').textContent = sum ?? '';
+      el.setAttribute('aria-label', sum == null ? '' : `Suma ${sum}`);
       el.classList.toggle('is-empty', sum == null);
     });
   }

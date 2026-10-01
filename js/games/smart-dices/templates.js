@@ -6,7 +6,16 @@ const FACE_DOTS = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 
 const faces = () => Object.entries(FACE_DOTS).map(([n, dots]) =>
   `<span class="sd-face" title="${n}">${[...Array(9).keys()].map(k => `<i${dots.includes(k) ? ' class="on"' : ''}></i>`).join('')}</span>`).join('');
 
-const arrow = (kind, i) => `<span class="sd-arrow-slot"><span class="sd-arrow" data-arrow="${kind}-${i}"></span></span>`;
+/* Flecha de suma con forma de flecha (como en el juego original) y el número dentro.
+   Filas: apunta a la izquierda, hacia el tablero; columnas: apunta hacia arriba. */
+const ARROW_SHAPE = {
+  rows: { box: '0 0 56 40', d: 'M3 20 L17 3 H51 a3 3 0 0 1 3 3 V34 a3 3 0 0 1 -3 3 H17 Z' },
+  cols: { box: '0 0 40 56', d: 'M20 3 L37 17 V51 a3 3 0 0 1 -3 3 H6 a3 3 0 0 1 -3 -3 V17 Z' }
+};
+const arrow = (kind, i) =>
+  `<span class="sd-arrow-slot"><span class="sd-arrow" data-arrow="${kind}-${i}">` +
+  `<svg class="sd-arrow__shape" viewBox="${ARROW_SHAPE[kind].box}" aria-hidden="true"><path d="${ARROW_SHAPE[kind].d}"/></svg>` +
+  `<b class="sd-arrow__num"></b></span></span>`;
 
 /** Tablero con las flechas de las filas a la derecha y las de las columnas debajo. */
 export const boardHtml = () =>
