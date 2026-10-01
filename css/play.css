@@ -1,7 +1,7 @@
 /* Pantalla de juego común: cabecera, tablero, barra de herramientas y barra inferior. */
 .wrap--game{padding:0 14px 100px}
 
-.hud{display:flex;justify-content:space-between;align-items:baseline;font-size:clamp(19px,5.6vw,24px);font-weight:500;padding:34px 2px 8px}
+.hud{display:flex;justify-content:space-between;align-items:baseline;font-size:clamp(19px,5.6vw,24px);font-weight:500;padding:34px 0 8px}
 .hud__time{color:var(--dim);font-variant-numeric:tabular-nums;font-size:.85em}
 /* Juegos sin etiqueta de tamaño: el tiempo pasa a la derecha */
 .hud [data-hud="size"]:empty{display:none}

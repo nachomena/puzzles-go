@@ -8,12 +8,17 @@
 }
 
 /* Tablero con flechas: filas a la derecha, columnas debajo */
-.sd-area{--arrow-long:54px;--arrow-short:40px;--sd-gap:14px;display:grid;grid-template-columns:1fr var(--arrow-long);
+/* Medidas compartidas por el tablero, las flechas y la cabecera */
+[data-game="smart-dices"]{--arrow-long:54px;--arrow-short:40px;--sd-gap:14px}
+.sd-area{display:grid;grid-template-columns:1fr var(--arrow-long);
   grid-template-rows:auto var(--arrow-long);gap:var(--sd-gap)}
 /* Móviles estrechos: flechas algo más compactas para dejar más sitio al tablero */
-@media (max-width:400px){.sd-area{--arrow-long:46px;--arrow-short:36px;--sd-gap:10px}}
+@media (max-width:400px){[data-game="smart-dices"]{--arrow-long:46px;--arrow-short:36px;--sd-gap:10px}}
 /* Sin flechas de filas: sin esa columna y el tablero (del mismo tamaño) centrado */
 .sd-area.is-no-rows{grid-template-columns:1fr;padding:0 calc((var(--arrow-long) + var(--sd-gap)) / 2)}
+/* Cabecera (nivel y tiempo) alineada siempre con los bordes del tablero */
+[data-game="smart-dices"] .hud{padding-left:0;padding-right:calc(var(--arrow-long) + var(--sd-gap))}
+[data-game="smart-dices"].sd-no-rows .hud{padding-left:calc((var(--arrow-long) + var(--sd-gap)) / 2);padding-right:calc((var(--arrow-long) + var(--sd-gap)) / 2)}
 .sd-area.is-no-rows .sd-arrows--rows{display:none}
 /* Reiniciar: abajo a la izquierda, a la altura de las flechas de columna */
 .sd-reset{grid-area:2/1;justify-self:start;align-self:center;position:relative;z-index:1;margin-left:-6px}
