@@ -24,7 +24,7 @@ export default defineGame({
     if (typeof s.sel !== 'number') s.sel = -1;
     return s;
   },
-  sizeLabel: () => '9×9',
+  sizeLabel: () => '',   // siempre es 9×9: no aporta nada en la cabecera
   boardClass: 'board--sudoku',
 
   controls: controls(),

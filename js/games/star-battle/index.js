@@ -20,7 +20,7 @@ export default defineGame({
     if (!Array.isArray(s.hl)) s.hl = s.marks.map(() => 0);
     return s;
   },
-  sizeLabel: p => `${p.N}x${p.N} ${p.K}★`,
+  sizeLabel: () => '',   // siempre es 10×10 con 2★: no aporta nada en la cabecera
 
   controls: controls(),
   help: help(),
