@@ -37,6 +37,7 @@ export function shape(type, rot){
   const cells = rotate(t.cells, rot), dots = rotate(t.dots, rot, t.cells);
   const key = p => p[0] * 10 + p[1];
   cells.sort((a, b) => key(a) - key(b));
+  dots.sort((a, b) => key(a) - key(b));
   return {
     cells, dots,
     h: Math.max(...cells.map(p => p[0])) + 1,

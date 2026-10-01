@@ -3,8 +3,10 @@
    Para añadir un juego: crea su carpeta (ver README.md) y añade aquí su entrada. */
 import starBattle from './star-battle/meta.js';
 import sudoku from './sudoku/meta.js';
+import smartDices from './smart-dices/meta.js';
 
 export const CATALOG = [
   { meta: starBattle, load: () => import('./star-battle/index.js') },
-  { meta: sudoku,     load: () => import('./sudoku/index.js') }
+  { meta: sudoku,     load: () => import('./sudoku/index.js') },
+  { meta: smartDices, load: () => import('./smart-dices/index.js') }
 ];

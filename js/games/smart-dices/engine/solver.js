@@ -10,7 +10,7 @@ const SUBSET_OK = new Uint8Array(512);
 for (let m = 0; m < 512; m++) for (const face of FACES.keys()) if ((m & face) === m){ SUBSET_OK[m] = 1; break; }
 
 /** Giros distintos de cada tipo (las piezas simétricas repiten forma). */
-const ROTATIONS = PIECE_TYPES.map((_, type) => {
+export const ROTATIONS = PIECE_TYPES.map((_, type) => {
   const seen = new Set(), out = [];
   for (let rot = 0; rot < 4; rot++){
     const s = shape(type, rot), key = JSON.stringify([s.cells, s.dots]);
@@ -39,10 +39,10 @@ const DIE_CELLS = 9;
 /**
  * Cuenta colocaciones válidas hasta `limit`.
  * @param {{ fixed: {type,rot,r,c}[], arrows: { rows: (number|null)[], cols: (number|null)[] } }} puzzle
- * @param {{ limit?: number, random?: boolean, budget?: number }} opts
+ * @param {{ limit?: number, random?: boolean, budget?: number, onSolution?: (p: object[]) => void }} opts
  * @returns {{ count: number, first: {type,rot,r,c}[]|null, nodes: number, over: boolean }}
  */
-export function solve({ fixed = [], arrows = { rows: [null, null], cols: [null, null] } }, { limit = 2, random = false, budget = Infinity } = {}){
+export function solve({ fixed = [], arrows = { rows: [null, null], cols: [null, null] } }, { limit = 2, random = false, budget = Infinity, onSolution = null } = {}){
   const grid = new Int8Array(CELLS).fill(-1);
   const dieMask = new Uint16Array(4), dieFilled = new Uint8Array(4);
   const left = PIECE_TYPES.map(t => t.count);
@@ -94,6 +94,7 @@ export function solve({ fixed = [], arrows = { rows: [null, null], cols: [null, 
     if (e === CELLS){
       count++;
       if (!first) first = placed.slice();
+      onSolution?.(placed);
       return count >= limit;
     }
     const opts = random ? shuffle(OPTIONS[e].slice()) : OPTIONS[e];

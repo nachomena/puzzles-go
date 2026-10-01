@@ -32,7 +32,10 @@ export const dock = () =>
   iconButton('open', 'help', 'Cómo se juega', { attrs: 'data-target="help"' }) +
   `</nav>`;
 
-/** Pantalla de juego completa: cabecera, tablero, lo propio del juego y barra inferior. */
-export const playScreen = ({ id, name, boardClass = '', controls }) =>
+/**
+ * Pantalla de juego completa: cabecera, tablero, lo propio del juego y barra inferior.
+ * `boardHtml` sustituye al tablero estándar si el juego necesita otro marco (p. ej. flechas alrededor).
+ */
+export const playScreen = ({ id, name, boardClass = '', boardHtml = null, controls }) =>
   `<section id="play-${id}" class="screen" data-game="${id}" aria-label="${name}">` +
-  `<div class="wrap wrap--game">${hud()}${board(boardClass)}${controls}${dock()}</div></section>`;
+  `<div class="wrap wrap--game">${hud()}${boardHtml ?? board(boardClass)}${controls}${dock()}</div></section>`;
