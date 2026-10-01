@@ -45,12 +45,19 @@ export const hasPlayerInput = (marks, paint) =>
   marks.some(v => v === MARK.X || v === MARK.STAR) || paint.some(Boolean);
 
 /** Pista: primero corrige errores, si no hay coloca una estrella que falte. */
-export function findHint(marks, solution){
+/** Primer error: una estrella donde no va, o una X donde sí va una estrella. */
+export function findMistake(marks, solution){
   const sol = new Set(solution);
   const wrongStar = marks.findIndex((v, i) => v === MARK.STAR && !sol.has(i));
   if (wrongStar >= 0) return { type: 'wrong-star', cell: wrongStar };
   const wrongX = marks.findIndex((v, i) => v === MARK.X && sol.has(i));
   if (wrongX >= 0) return { type: 'missing-star', cell: wrongX };
+  return null;
+}
+
+export function findHint(marks, solution){
+  const mistake = findMistake(marks, solution);
+  if (mistake) return mistake;
   const missing = solution.filter(i => marks[i] !== MARK.STAR);
   if (!missing.length) return null;
   return { type: 'place-star', cell: pick(missing) };

@@ -4,7 +4,7 @@ import { bindCellDrag } from '../../ui/cell-drag.js';
 import { SudokuBoard } from './board-view.js';
 import { CELLS, SIZE, bit } from './engine/grid.js';
 import { TOOL } from './config.js';
-import { conflicts, isSolved, digitCounts, clearNoteAround, findHint } from './rules.js';
+import { conflicts, isSolved, digitCounts, clearNoteAround, findHint, findMistake } from './rules.js';
 
 const ARROWS = { ArrowUp: -SIZE, ArrowDown: SIZE, ArrowLeft: -1, ArrowRight: 1 };
 
@@ -131,20 +131,24 @@ export class SudokuController extends GameController {
     this.commit(true);
   }
 
+  findMistake(){
+    const m = findMistake(this.session.values, this.session.p.solution);
+    return m && { ...m, message: 'Este número no va aquí' };
+  }
+  showMistake({ cell }){
+    this.session.sel = cell;
+    this.render();
+    this.board.flash(cell);
+  }
   giveHint(){
     const s = this.session, hint = findHint(s.values, s.p.solution);
     if (!hint) return false;
-    if (hint.type === 'wrong'){
-      this.notify('Este número no va aquí');
-      s.sel = hint.cell;
-      this.render();
-    } else {
-      this.record();
-      this.#place(hint.cell, hint.digit);
-      s.sel = hint.cell;
-      this.commit(true);
-    }
+    this.record();
+    this.#place(hint.cell, hint.digit);
+    s.sel = hint.cell;
+    this.commit(true);
     this.board.flash(hint.cell);
     return true;
   }
+
 }

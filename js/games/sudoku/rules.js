@@ -35,9 +35,15 @@ export function clearNoteAround(notes, i, d){
  * Pista: primero señala un número equivocado; si no hay, la siguiente casilla que se
  * deduce con singles; si no, una casilla vacía cualquiera.
  */
-export function findHint(values, solution){
+/** Primer número escrito que no coincide con la solución. */
+export function findMistake(values, solution){
   const wrong = values.findIndex((v, i) => v && v !== solution[i]);
-  if (wrong >= 0) return { type: 'wrong', cell: wrong };
+  return wrong >= 0 ? { type: 'wrong', cell: wrong } : null;
+}
+
+export function findHint(values, solution){
+  const mistake = findMistake(values, solution);
+  if (mistake) return mistake;
   const single = nextSingle(values);
   if (single) return { type: 'place', ...single };
   const empty = values.map((v, i) => v ? -1 : i).filter(i => i >= 0);

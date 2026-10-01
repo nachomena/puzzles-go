@@ -64,6 +64,13 @@ export function isSolved(place, arrows){
 /** ¿Está la pieza donde va en la solución? (las piezas iguales son intercambiables) */
 const keyOf = (piece, pos) => placementKey({ type: PIECES[piece], ...pos });
 
+/** Primera pieza movible que está en un sitio que no es el de la solución (o null). */
+export function findMistake(place, solution, fixed){
+  const solutionKeys = new Set(solution.map(s => keyOf(s.piece, s)));
+  const piece = place.findIndex((pos, piece) => pos && !fixed.includes(piece) && !solutionKeys.has(keyOf(piece, pos)));
+  return piece >= 0 ? { piece } : null;
+}
+
 /**
  * Pista: una pieza de la solución que todavía no está en su sitio.
  * Devuelve { piece, pos } (la pieza del jugador que hay que mover y adónde) o null.

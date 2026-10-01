@@ -4,7 +4,7 @@ import { PIECES, PIECE_TYPES, shape, FACES, CELLS } from '../js/games/smart-dice
 import { solve, diceValues } from '../js/games/smart-dices/engine/solver.js';
 import { arrangements, matching } from '../js/games/smart-dices/engine/arrangements.js';
 import { generate, LEVEL_RULES } from '../js/games/smart-dices/engine/generator.js';
-import { evaluate, isSolved, findHint, fits } from '../js/games/smart-dices/rules.js';
+import { evaluate, isSolved, findHint, findMistake, fits } from '../js/games/smart-dices/rules.js';
 import { runToEnd } from '../js/lib/iter.js';
 
 test('las 12 piezas cubren justo el tablero y tienen 12 puntos', () => {
@@ -67,4 +67,21 @@ test('reglas: resolver, errores y pista', () => {
   assert.ok(hint && !p.fixed.includes(hint.piece));
   assert.ok(fits(partial, hint.piece, hint.pos), 'la pista cabe');
   assert.equal(findHint(solved, p.solution, p.fixed), null, 'resuelto: no hay pista');
+});
+
+
+test('findMistake señala una pieza mal colocada antes de dar una pista', () => {
+  const p = runToEnd(generate(1));
+  const solved = p.solution.map(({ rot, r, c }) => ({ rot, r, c }));
+  assert.equal(findMistake(solved, p.solution, p.fixed), null, 'todo bien: no hay error');
+  // Se deja solo lo fijo y una pieza movible desplazada a un sitio que no es el suyo
+  const place = solved.map((pos, i) => p.fixed.includes(i) ? pos : null);
+  const piece = p.solution.find(s => !p.fixed.includes(s.piece)).piece;
+  for (let r = 0; r < 6 && !place[piece]; r++) for (let c = 0; c < 6 && !place[piece]; c++){
+    const pos = { rot: p.solution[piece].rot, r, c };
+    const isSolutionSpot = p.solution.some(s => s.type === p.solution[piece].type && s.r === r && s.c === c);
+    if (!isSolutionSpot && fits(place, piece, pos)) place[piece] = pos;
+  }
+  assert.ok(place[piece], 'hay sitio para colocarla mal');
+  assert.deepEqual(findMistake(place, p.solution, p.fixed), { piece });
 });

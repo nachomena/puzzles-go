@@ -3,7 +3,7 @@ import { GameController } from '../../core/game-controller.js';
 import { DicesBoardView } from './board-view.js';
 import { bindPieceDrag } from './piece-drag.js';
 import { PIECES, SIZE, shape } from './engine/pieces.js';
-import { evaluate, fits, isSolved, findHint, occupancy, cellsOf } from './rules.js';
+import { evaluate, fits, isSolved, findHint, findMistake, occupancy, cellsOf } from './rules.js';
 
 export class SmartDicesController extends GameController {
   constructor(deps){
@@ -47,6 +47,11 @@ export class SmartDicesController extends GameController {
   isSolved(){ return isSolved(this.session.place, this.session.p.arrows); }
   celebrate(){ this.view.celebrate(); }
 
+  findMistake(){
+    const s = this.session, m = findMistake(s.place, s.p.solution, s.p.fixed);
+    return m && { ...m, message: 'Esta pieza no va aquí' };
+  }
+  showMistake({ piece }){ this.view.flash(piece); }
   giveHint(){
     const s = this.session, hint = findHint(s.place, s.p.solution, s.p.fixed);
     if (!hint) return false;
