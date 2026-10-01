@@ -1,7 +1,7 @@
 /* Partida de Smart Dices: arrastrar piezas de la bandeja al tablero y tocar para girarlas. */
 import { GameController } from '../../core/game-controller.js';
 import { DicesBoardView } from './board-view.js';
-import { bindPieceDrag } from './piece-drag.js';
+import { bindPieceDrag } from '../../ui/piece-drag.js';
 import { PIECES, SIZE, shape } from './engine/pieces.js';
 import { evaluate, fits, isSolved, findHint, findMistake, occupancy, cellsOf } from './rules.js';
 

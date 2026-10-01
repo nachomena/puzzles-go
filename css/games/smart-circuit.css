@@ -1,0 +1,45 @@
+/* Smart Circuit: piezas oscuras de plástico con caminos en amarillo tenue. */
+[data-game="smart-circuit"]{
+  --sc-path:#e2bf5a;          /* amarillo tenue de los caminos */
+  --sc-path-dim:rgba(226,191,90,.28);
+  --sc-piece:#4a4952;
+  --sc-piece-fixed:#3f3e46;
+}
+
+.board--circuit{aspect-ratio:2/1;--n:8}
+.board--circuit .board__grid{stroke-width:.02}
+
+/* Pistas del reto */
+.sc-clues,.sc-errors{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.sc-errors{z-index:2}
+.sc-clue-dot{fill:none;stroke:var(--sc-path);stroke-width:.07}
+.sc-clue-path{fill:none;stroke:var(--sc-path-dim);stroke-width:.16;stroke-linecap:round;stroke-linejoin:round}
+.sc-clue-outline{fill:none;stroke:var(--ink-soft);stroke-width:.04;stroke-dasharray:.12 .1;stroke-linecap:round}
+.sc-broken{fill:var(--bad)}
+
+/* Piezas */
+.sc-pieces{position:absolute;inset:0}
+.sc-piece{position:absolute;touch-action:none;cursor:grab}
+.sc-piece__svg{display:block;width:100%;height:100%;overflow:visible}
+.sc-piece__body{fill:var(--sc-piece);filter:drop-shadow(0 1.5px 2px rgba(0,0,0,.45))}
+.sc-piece__path{fill:none;stroke:var(--sc-path);stroke-width:.2;stroke-linecap:round;stroke-linejoin:round}
+.sc-piece__dots{fill:var(--sc-path)}
+.sc-piece.is-fixed{cursor:default}
+.sc-piece.is-fixed .sc-piece__body{fill:var(--sc-piece-fixed)}
+/* Elegida: halo claro alrededor de la pieza entera (sin marcar las uniones entre casillas) */
+.sc-piece.is-selected .sc-piece__body{fill:#5d5c67;filter:drop-shadow(0 0 1px var(--wall)) drop-shadow(0 0 1px var(--wall)) drop-shadow(0 2px 3px rgba(0,0,0,.5))}
+.sc-piece.is-lifted{opacity:.2}
+.sc-piece.is-ghost{position:fixed;z-index:30;pointer-events:none;filter:drop-shadow(0 10px 18px rgba(0,0,0,.5))}
+.sc-piece.is-flash{animation:flash .5s ease-in-out 3}
+.board.is-won .sc-piece__path{animation:sc-glow 1.2s ease-in-out both}
+@keyframes sc-glow{40%{stroke:#ffe9a0;stroke-width:.28}}
+
+/* Botones bajo el tablero: reiniciar a la izquierda, voltear a la derecha */
+.sc-actions{display:flex;justify-content:space-between;align-items:center;padding-top:8px}
+.btn-chip{display:flex;align-items:center;gap:6px;height:40px;padding:0 14px;border-radius:20px;background:var(--seg);font-weight:600;font-size:15px}
+.btn-chip svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round}
+
+/* Bandeja */
+.sc-tray{--sc-tray-cell:26px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center;padding:12px 0 4px;min-height:60px;touch-action:none}
+.sc-piece.is-tray{position:relative;width:calc(var(--w) * var(--sc-tray-cell));height:calc(var(--h) * var(--sc-tray-cell))}
+.sc-tip{font-size:13px;color:var(--dim);text-align:center;margin:4px 0 0}
