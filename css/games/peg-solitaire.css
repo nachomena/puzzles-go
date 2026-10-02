@@ -15,7 +15,7 @@
 .ps-ball[hidden]{display:none}
 .ps-ball{background:radial-gradient(circle at 33% 27%,#fff 0,#e6e5ec 7%,#b3b2bd 24%,#7a7985 55%,#45444d 85%,#2c2b32 100%);
   box-shadow:0 3px 4px rgba(0,0,0,.6),0 0 0 1px rgba(0,0,0,.35),inset 0 -2px 4px rgba(0,0,0,.35);
-  transition:left .3s ease,top .3s ease,scale .15s ease,box-shadow .15s ease}
+  transition:left .3s ease,top .3s ease,translate .2s ease,scale .15s ease,box-shadow .15s ease}
 .ps-ball.is-out{transition:left .55s cubic-bezier(.3,.7,.2,1),top .55s cubic-bezier(.3,.7,.2,1);box-shadow:0 1px 2px rgba(0,0,0,.55),inset 0 -2px 4px rgba(0,0,0,.35)}
 .ps-ball.is-selected{scale:1.14;z-index:2;box-shadow:0 0 0 2px var(--ink),0 6px 10px rgba(0,0,0,.5),inset 0 -2px 4px rgba(0,0,0,.35)}
 .ps-ball.is-dragging{transition:none;z-index:5;scale:1.22;box-shadow:0 0 0 2px var(--ink),0 12px 18px rgba(0,0,0,.55),inset 0 -2px 4px rgba(0,0,0,.35)}

@@ -20,6 +20,7 @@ export default defineGame({
   restoreSession: s => {
     if (!isBoard(s.board) || !Array.isArray(s.balls) || s.balls.length !== N * N || !Array.isArray(s.out)) return null;
     if (typeof s.sel !== 'number') s.sel = -1;
+    if (typeof s.resets !== 'number') s.resets = 0;
     return s;
   },
   sizeLabel: () => '',

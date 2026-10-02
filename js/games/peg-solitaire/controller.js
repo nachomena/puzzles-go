@@ -19,7 +19,7 @@ export class PegSolitaireController extends GameController {
 
   createSession(L, puzzle){
     const board = this.#boardFromSettings();
-    return { L, p: puzzle, board, balls: startBalls(board), out: [], sel: -1, time: 0, done: false, hints: 0 };
+    return { L, p: puzzle, board, balls: startBalls(board), out: [], sel: -1, time: 0, resets: 0, done: false, hints: 0 };
   }
   mount(){
     if (!super.mount()) return false;
@@ -35,12 +35,23 @@ export class PegSolitaireController extends GameController {
     else if (!anyMove(s.board, s.balls)) status = `Sin saltos · ${status}`;
     this.view.render({ balls: s.balls, out: s.out, sel: s.sel, targets, status });
   }
-  snapshot(){ return { balls: this.session.balls.slice(), out: this.session.out.slice() }; }
-  restore(snap){ Object.assign(this.session, { balls: snap.balls.slice(), out: snap.out.slice(), sel: -1 }); }
+  /**
+   * Reiniciar pone el cronómetro a 0. Las instantáneas llevan el tiempo y cuántos reinicios
+   * llevamos: deshacer un salto no toca el tiempo, pero deshacer (o rehacer) un reinicio sí lo recupera.
+   */
+  snapshot(){ const s = this.session; return { balls: s.balls.slice(), out: s.out.slice(), time: s.time, resets: s.resets }; }
+  restore(snap){
+    const s = this.session;
+    if (snap.resets !== s.resets) Object.assign(s, { time: snap.time, resets: snap.resets });
+    Object.assign(s, { balls: snap.balls.slice(), out: snap.out.slice(), sel: -1 });
+  }
   hasInput(){ return this.session.out.length > 0; }
-  clearInput(){ Object.assign(this.session, { balls: startBalls(this.session.board), out: [], sel: -1 }); }
+  clearInput(){
+    const s = this.session;
+    Object.assign(s, { balls: startBalls(s.board), out: [], sel: -1, time: 0, resets: s.resets + 1 });
+  }
   isSolved(){ return countBalls(this.session.balls) === 1; }
-  get resetMessage(){ return 'Bolas de vuelta al tablero. Puedes deshacerlo.'; }
+  get resetMessage(){ return 'Partida reiniciada. Puedes deshacerlo.'; }
   celebrate(){ this.session.sel = -1; this.renderBoard(); this.view.celebrate(); }
 
   /** Cambiar de tablero: al momento si aún no se ha jugado; si no, en la próxima partida. */
@@ -114,13 +125,21 @@ export class PegSolitaireController extends GameController {
       const d = drag;
       drag = null;
       try { el.releasePointerCapture(d.id); } catch (_){}
+      if (!cancelled && d.moved){
+        const to = this.view.holeAt(e.clientX, e.clientY);
+        if (to >= 0 && this.jump(d.from, to)){
+          // la bola ya está donde se soltó: se coloca en su agujero sin animar desde el origen
+          d.ball.style.translate = '';
+          d.ball.getBoundingClientRect();
+          d.ball.classList.remove('is-dragging');
+          return;
+        }
+      }
+      // sin salto: vuelve a su agujero con una transición corta
       d.ball.classList.remove('is-dragging');
       d.ball.style.translate = '';
-      if (cancelled) return;
-      if (d.moved){
-        const to = this.view.holeAt(e.clientX, e.clientY);
-        if (to < 0 || !this.jump(d.from, to)) this.render();
-      } else if (d.was) this.select(-1);
+      if (cancelled || d.moved){ this.render(); return; }
+      if (d.was) this.select(-1);
     };
     el.addEventListener('pointerup', e => end(e, false));
     el.addEventListener('pointercancel', e => end(e, true));
