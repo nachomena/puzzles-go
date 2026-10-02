@@ -10,7 +10,9 @@
    @property {string[]} levelOrder
    @property {string[]} tools       herramientas; la primera es la de por defecto
    @property {object} defaultSettings
-   @property {{key:string,title:string,desc:string}[]} settings   interruptores de Ajustes
+   @property {{key:string,title:string,desc:string,options?:{value:string,label:string}[]}[]} settings
+                                    ajustes: interruptores, o desplegables si traen `options`
+   @property {boolean} [hint]       false = sin botón de pista (por defecto lo hay)
    @property {URL} workerUrl        worker que llama a serveGenerator(generate)
    @property {(target:number) => Generator} generate   generador del motor
    @property {(p:object, L:string) => boolean} isValidPuzzle

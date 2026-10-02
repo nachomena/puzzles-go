@@ -6,6 +6,7 @@ Juegos de lógica como web app instalable que funciona sin conexión:
 - **Sudoku** 9×9 (Fácil, Medio, Difícil). El Difícil siempre exige X-Wing o Swordfish.
 - **Smart Dices**: 12 piezas que forman 4 caras de dado con sumas por fila y columna (5 niveles).
 - **Smart Circuit**: 10 piezas de doble cara que unen los puntos con caminos en un tablero de 8×4 (5 niveles).
+- **Solitario**: el clásico de saltar bolas hasta dejar una, en tablero inglés (33) o europeo (37) a elegir en Ajustes.
 
 Todos los tableros se generan en el dispositivo, tienen solución única y su nivel lo garantiza un
 solucionador lógico que usa técnicas humanas.

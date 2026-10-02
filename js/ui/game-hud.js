@@ -25,6 +25,7 @@ export class GameHud {
   }
   /** Cuenta atrás de la próxima pista (0 = disponible). */
   setHintWait(sec){
+    if (!this.hint) return;   // juego sin pistas
     const text = sec > 0 ? formatTime(sec) : '';
     if (this.hintWait.textContent === text) return;
     this.hintWait.textContent = text;

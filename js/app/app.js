@@ -66,7 +66,7 @@ export class App {
 
   /** Todo lo que vive por juego: estado, generación, pantalla y controlador. */
   #createEntry(game, storage){
-    const screen = htmlToElement(playScreen({ id: game.id, name: game.name, boardClass: game.boardClass || '', boardHtml: game.boardHtml, controls: game.controls }));
+    const screen = htmlToElement(playScreen({ id: game.id, name: game.name, boardClass: game.boardClass || '', boardHtml: game.boardHtml, controls: game.controls, hint: game.hint !== false }));
     byId('app').appendChild(screen);
     const store = new Store(storage, game);
     store.load();

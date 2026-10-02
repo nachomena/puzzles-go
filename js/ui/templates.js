@@ -23,11 +23,11 @@ export const board = (extraClass = '') =>
 export const undoRedo = () =>
   `<div class="toolbar__group">${iconButton('undo', 'undo', 'Deshacer')}${iconButton('redo', 'redo', 'Rehacer')}</div>`;
 
-/** Barra inferior fija: volver, pista, ajustes, ayuda. */
-export const dock = () =>
+/** Barra inferior fija: volver, pista (si el juego la tiene), ajustes, ayuda. */
+export const dock = ({ hint = true } = {}) =>
   `<nav class="dock">` +
   iconButton('back', 'back', 'Volver') +
-  `<button class="icon-btn hint-btn" data-action="hint" aria-label="Pista">${svgIcon('hint')}<span class="hint-btn__wait" data-hud="hint-wait"></span></button>` +
+  (hint ? `<button class="icon-btn hint-btn" data-action="hint" aria-label="Pista">${svgIcon('hint')}<span class="hint-btn__wait" data-hud="hint-wait"></span></button>` : '') +
   iconButton('open', 'gear', 'Ajustes', { attrs: 'data-target="settings"' }) +
   iconButton('open', 'help', 'Cómo se juega', { attrs: 'data-target="help"' }) +
   `</nav>`;
@@ -36,6 +36,6 @@ export const dock = () =>
  * Pantalla de juego completa: cabecera, tablero, lo propio del juego y barra inferior.
  * `boardHtml` sustituye al tablero estándar si el juego necesita otro marco (p. ej. flechas alrededor).
  */
-export const playScreen = ({ id, name, boardClass = '', boardHtml = null, controls }) =>
+export const playScreen = ({ id, name, boardClass = '', boardHtml = null, controls, hint = true }) =>
   `<section id="play-${id}" class="screen" data-game="${id}" aria-label="${name}">` +
-  `<div class="wrap wrap--game">${hud()}${boardHtml ?? board(boardClass)}${controls}${dock()}</div></section>`;
+  `<div class="wrap wrap--game">${hud()}${boardHtml ?? board(boardClass)}${controls}${dock({ hint })}</div></section>`;

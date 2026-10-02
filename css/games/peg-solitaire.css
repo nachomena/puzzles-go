@@ -1,0 +1,30 @@
+/* Solitario: tablero redondo de madera, bolas de cristal ámbar y ranura para las retiradas. */
+.ps-area{width:100%}
+.ps-board{position:relative;width:100%;max-width:440px;aspect-ratio:1;margin:0 auto;touch-action:none;user-select:none;-webkit-user-select:none;
+  border-radius:50%;box-shadow:0 10px 26px rgba(0,0,0,.5),0 2px 4px rgba(0,0,0,.4)}
+.ps-wood{position:absolute;inset:0;width:100%;height:100%;display:block}
+.ps-disc{fill:url(#ps-wood-g);stroke:#5a381f;stroke-width:.08}
+.ps-grain{fill:none;stroke:rgba(60,30,10,.12);stroke-width:.05}
+.ps-groove{fill:none;stroke:#4a2d17;stroke-width:.82}
+.ps-groove-rim{fill:none;stroke:rgba(255,225,180,.22);stroke-width:.05}
+.ps-groove-edge{fill:none;stroke:rgba(20,10,4,.55);stroke-width:.07}
+.ps-hole{fill:url(#ps-hole-g);stroke:rgba(255,225,180,.16);stroke-width:.04}
+
+.ps-balls{position:absolute;inset:0}
+.ps-ball,.ps-target{position:absolute;transform:translate(-50%,-50%);border-radius:50%;pointer-events:none}
+.ps-ball[hidden]{display:none}
+.ps-ball{background:radial-gradient(circle at 34% 28%,rgba(255,250,235,.95) 0,rgba(255,236,190,.75) 9%,#f0b955 26%,#c98327 58%,#7e4a12 100%);
+  box-shadow:0 2px 3px rgba(0,0,0,.45),inset 0 -2px 4px rgba(90,45,5,.45);
+  transition:left .3s ease,top .3s ease,scale .15s ease,box-shadow .15s ease}
+.ps-ball.is-out{transition:left .55s cubic-bezier(.3,.7,.2,1),top .55s cubic-bezier(.3,.7,.2,1);box-shadow:0 1px 2px rgba(0,0,0,.55),inset 0 -2px 4px rgba(90,45,5,.45)}
+.ps-ball.is-selected{scale:1.14;z-index:2;box-shadow:0 0 0 2px var(--ink),0 6px 10px rgba(0,0,0,.5),inset 0 -2px 4px rgba(90,45,5,.45)}
+.ps-ball.is-dragging{transition:none;z-index:5;scale:1.22;box-shadow:0 0 0 2px var(--ink),0 12px 18px rgba(0,0,0,.55),inset 0 -2px 4px rgba(90,45,5,.45)}
+.ps-target{box-shadow:0 0 0 2px rgba(255,236,190,.75);background:rgba(255,236,190,.12);animation:ps-pulse 1.2s ease-in-out infinite}
+.ps-target[hidden]{display:none}
+@keyframes ps-pulse{50%{box-shadow:0 0 0 3px rgba(255,236,190,.35)}}
+.ps-board.is-won .ps-ball:not(.is-out){animation:ps-glow 1.4s ease-in-out 2}
+@keyframes ps-glow{50%{box-shadow:0 0 0 3px #ffe9a0,0 0 22px 6px rgba(255,210,120,.7)}}
+
+.ps-actions{display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:12px}
+.ps-status{flex:1;text-align:center;font-size:15px;font-weight:600;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.ps-tip{font-size:13px;color:var(--dim);text-align:center;margin:10px 0 0}

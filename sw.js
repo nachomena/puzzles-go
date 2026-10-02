@@ -1,13 +1,18 @@
 // Sube la versión cuando publiques cambios para que el iPhone descargue la nueva
-const VERSION = 'pzg-v28';
+const VERSION = 'pzg-v29';
 const FILES = [
   './', './index.html', './manifest.webmanifest',
-  './css/base.css', './css/components.css', './css/games/smart-circuit.css', './css/games/smart-dices.css',
+  './css/base.css', './css/components.css', './css/games/peg-solitaire.css', './css/games/smart-circuit.css', './css/games/smart-dices.css',
   './css/games/star-battle.css', './css/games/sudoku.css', './css/menu.css', './css/overlays.css',
   './css/play.css', './css/tokens.css', './js/app/app.js', './js/boot-check.js', './js/config.js',
   './js/core/game-controller.js', './js/core/game-definition.js', './js/core/generator-worker.js',
   './js/core/hint-cooldown.js', './js/core/history.js', './js/core/puzzle-supply.js', './js/core/runners.js',
-  './js/core/store.js', './js/games/catalog.js', './js/games/smart-circuit/board-view.js',
+  './js/core/store.js', './js/games/catalog.js',
+  './js/games/peg-solitaire/board-view.js', './js/games/peg-solitaire/config.js',
+  './js/games/peg-solitaire/controller.js', './js/games/peg-solitaire/engine/generator.js',
+  './js/games/peg-solitaire/engine/rules.js', './js/games/peg-solitaire/index.js',
+  './js/games/peg-solitaire/meta.js', './js/games/peg-solitaire/templates.js',
+  './js/games/peg-solitaire/worker.js', './js/games/smart-circuit/board-view.js',
   './js/games/smart-circuit/config.js', './js/games/smart-circuit/controller.js',
   './js/games/smart-circuit/engine/arrangements-data.js', './js/games/smart-circuit/engine/arrangements.js',
   './js/games/smart-circuit/engine/generator.js', './js/games/smart-circuit/engine/pieces.js',
