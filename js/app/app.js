@@ -11,7 +11,7 @@ import { SettingsPanel } from '../ui/settings-panel.js';
 import { ConfirmDialog } from '../ui/confirm-dialog.js';
 import { formatTime } from '../lib/format.js';
 import { Toast } from '../ui/toast.js';
-import { keepFitted } from '../ui/fit-text.js';
+import { keepFitted, keepNamesFitted } from '../ui/fit-text.js';
 import { playScreen } from '../ui/templates.js';
 
 const htmlToElement = html => {
@@ -39,6 +39,8 @@ export class App {
     this.confirm = new ConfirmDialog(byId('confirm'), this.overlays);
     this.fitHubTitle = keepFitted(byId('title'));
     this.fitGameTitle = keepFitted(byId('gameTitle'));
+    this.fitGames = keepNamesFitted(byId('games'));
+    this.fitLevels = keepNamesFitted(byId('levelList'));
 
     this.entries = new Map();   // juegos ya abiertos: id → entrada
     this.loading = new Map();   // importaciones en curso: id → promesa
@@ -171,6 +173,8 @@ export class App {
       meta, summary: Store.summarize(this.#menuData(meta))
     })));
     if (this.screen === 'levels' && this.currentMeta) this.levelMenu.render(this.currentMeta, this.#menuData(this.currentMeta));
+    if (this.screen === 'hub') this.fitGames();
+    if (this.screen === 'levels') this.fitLevels();
   }
 
   /** Estadísticas y partida abierta: del store si el juego ya está cargado, si no del almacenamiento. */
