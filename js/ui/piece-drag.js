@@ -35,7 +35,8 @@ export function bindPieceDrag(root, { canMove, cellSize, onTap, onDrop }){
       g.classList.remove('is-tray');
       g.classList.add('is-ghost');
       Object.assign(g.style, { width: w * cell + 'px', height: h * cell + 'px', left: '0', top: '0' });
-      document.body.appendChild(g);
+      // dentro de la pantalla del juego, para que herede sus colores (variables CSS)
+      (root.closest('.screen') || document.body).appendChild(g);
       drag.el.classList.add('is-lifted');
       drag.ghost = g;
       drag.gw = w * cell; drag.gh = h * cell;
