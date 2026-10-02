@@ -105,11 +105,24 @@ export class App {
     for (const e of this.entries.values()) e.supply.pump();
   }
 
+  /** Un juego con un solo nivel no tiene menú: se entra directo a la partida. */
+  #isDirect(meta = this.currentMeta){ return meta?.levelOrder.length === 1; }
+
   /** Abre el menú del juego al instante; su código se carga y genera tableros en segundo plano. */
   openGame(id){
     const item = this.catalog.find(c => c.meta.id === id);
     if (!item) return;
     this.currentMeta = item.meta;
+    if (this.#isDirect()){
+      // sin menú: sigue la partida abierta o empieza una
+      this.#entryFor(id).then(entry => {
+        if (this.currentMeta?.id !== id || this.screen !== 'hub') return;
+        this.current = entry;
+        if (entry.store.hasOpenSession) this.continueGame();
+        else this.startLevel(item.meta.levelOrder[0], entry);
+      });
+      return;
+    }
     this.current = this.entries.get(id) || null;
     this.showScreen('levels');
     this.#entryFor(id).then(entry => {
@@ -164,8 +177,15 @@ export class App {
   }
 
   back(){
-    if (this.screen === 'play'){ this.current.store.save(); this.showScreen('levels'); }
+    if (this.screen === 'play') this.current.store.save();
+    if (this.screen === 'play' && !this.#isDirect()) this.showScreen('levels');
     else { this.currentMeta = null; this.showScreen('hub'); }
+  }
+
+  /** Menú del juego actual (o el selector, si el juego no tiene menú de niveles). */
+  #toMenu(){
+    if (this.#isDirect()){ this.currentMeta = null; this.showScreen('hub'); }
+    else this.showScreen('levels');
   }
 
   #refreshMenus(){
@@ -197,7 +217,7 @@ export class App {
       'close':        () => this.overlays.closeDismissable(),
       'cancel-generation': () => { this.overlays.close('loading'); cur.supply.cancelRequest(); },
       'next-puzzle':  () => { this.overlays.close('win'); this.startLevel(cur.store.state.cur.L); },
-      'to-menu':      () => { this.overlays.close('win'); this.showScreen('levels'); },
+      'to-menu':      () => { this.overlays.close('win'); this.#toMenu(); },
       'wipe-stats':   () => { cur.store.clearStats(); this.#refreshMenus(); this.toast.show('Estadísticas borradas'); },
       'undo':         () => cur.controller.undo(),
       'redo':         () => cur.controller.redo(),

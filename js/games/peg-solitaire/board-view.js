@@ -1,5 +1,5 @@
-/* Vista del Solitario: tablero redondo de madera con los agujeros en cruz y, alrededor, la
-   ranura donde se dejan las bolas que se van retirando (como en los tableros de madera).
+/* Vista del Solitario: tablero redondo con los agujeros en cruz y, alrededor, la ranura donde se
+   dejan las bolas que se van retirando (como en los tableros de madera).
    Coordenadas en unidades de agujero con el centro en (0, 0); el tablero mide 2·R de lado. */
 import { N, holes } from './engine/rules.js';
 
@@ -29,8 +29,8 @@ export class PegBoardView {
     for (let r = .6; r < R; r += .55) grain += `<circle r="${r.toFixed(2)}" class="ps-grain"/>`;
     this.wood.innerHTML =
       `<defs>` +
-      `<radialGradient id="ps-wood-g" cx="45%" cy="40%" r="65%"><stop offset="0" stop-color="#a87a4f"/><stop offset=".7" stop-color="#8c5d36"/><stop offset="1" stop-color="#6f4628"/></radialGradient>` +
-      `<radialGradient id="ps-hole-g" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#1f130a"/><stop offset=".75" stop-color="#2e1c0f"/><stop offset="1" stop-color="#4a2f1a"/></radialGradient>` +
+      `<radialGradient id="ps-wood-g" cx="42%" cy="35%" r="70%"><stop offset="0" stop-color="#34333b"/><stop offset=".65" stop-color="#28272e"/><stop offset="1" stop-color="#1e1d23"/></radialGradient>` +
+      `<radialGradient id="ps-hole-g" cx="50%" cy="38%" r="62%"><stop offset="0" stop-color="#0c0c0f"/><stop offset=".7" stop-color="#141318"/><stop offset="1" stop-color="#232228"/></radialGradient>` +
       `</defs>` +
       `<circle r="${R - .04}" class="ps-disc"/>${grain}` +
       `<circle r="${GROOVE}" class="ps-groove"/>` +
