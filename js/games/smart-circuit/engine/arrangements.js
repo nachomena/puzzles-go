@@ -2,10 +2,18 @@
    comprobar al instante qué colocaciones cumplen unas pistas. */
 import { COUNT, DATA } from './arrangements-data.js';
 import { PIECES, CELLS, W } from './pieces.js';
-import { ORIENTATIONS } from './solver.js';
+import { orient } from './solver.js';
 
-/** Orientación de una pieza con una cara y un giro. */
-export const orientation = (piece, face, rot) => ORIENTATIONS[piece].find(o => o.face === face && o.rot === rot);
+/**
+ * Orientación de una pieza con una cara y un giro (cualquiera de los 4 giros: el jugador puede
+ * dejar una pieza simétrica girada 180°, que no está entre las orientaciones distintas).
+ */
+const memo = new Map();
+export function orientation(piece, face, rot){
+  const k = (piece * 4 + face) * 4 + rot;
+  if (!memo.has(k)) memo.set(k, orient(piece, face, rot));
+  return memo.get(k);
+}
 
 /** Casillas, salidas y puntos que ocupa una pieza colocada con su casilla de anclaje. */
 export function footprint({ piece, face, rot, cell }){

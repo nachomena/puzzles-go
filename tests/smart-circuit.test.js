@@ -66,3 +66,23 @@ test('reglas: resuelto, errores, pista y salidas cortadas', () => {
   }
   assert.deepEqual(findMistake(one, p.solution, []), { piece: 0 });
 });
+
+test('una pieza simétrica girada 180° (igual a la vista) también cuenta como resuelta', () => {
+  const sig = o => JSON.stringify([o.cells, o.masks, [...o.dots].sort()]);
+  let checked = 0;
+  for (const a of arrangements().slice(0, 60)){
+    const toPos = s => { const o = orient(s.piece, s.face, s.rot); return { face: s.face, rot: s.rot, x: s.cell % 8 - o.cells[0][0], y: ((s.cell / 8) | 0) - o.cells[0][1] }; };
+    const place = [];
+    for (const s of a.pieces) place[s.piece] = toPos(s);
+    for (const s of a.pieces){
+      const same = [0, 1, 2, 3].filter(r => r !== s.rot && sig(orient(s.piece, s.face, r)) === sig(orient(s.piece, s.face, s.rot)));
+      for (const rot of same){
+        const alt = place.slice();
+        alt[s.piece] = { ...place[s.piece], rot };
+        assert.ok(isSolved(alt, a.pieces));
+        checked++;
+      }
+    }
+  }
+  assert.ok(checked > 0);
+});
