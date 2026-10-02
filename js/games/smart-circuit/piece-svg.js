@@ -54,15 +54,23 @@ function bevels(cells){
   return Object.entries(out).map(([k, d]) => `<path class="sc-bevel--${k}" d="${d}"/>`).join('');
 }
 
-/** SVG completo de una orientación (de engine/solver.js#orient). */
-export function pieceSvg(o){
+/**
+ * Contenido de una pieza en unidades de casilla (0..w, 0..h): cuerpo, bisel, camino y puntos.
+ * `halo`: contorno claro de la pieza elegida (un trazo bajo el cuerpo: solo asoma por fuera).
+ */
+export function pieceParts(o, { halo = false } = {}){
   const paths = o.cells.map(([x, y], k) => cellPath(x, y, o.masks[k])).join('');
   const dots = [...o.dots].map(k => `<circle cx="${o.cells[k][0] + .5}" cy="${o.cells[k][1] + .5}" r=".2"/>`).join('');
   const shape = body(o.cells), clip = `sc-clip-${++clipSeq}`;
-  return `<svg class="sc-piece__svg" viewBox="0 0 ${o.w} ${o.h}" aria-hidden="true">` +
-    `<defs><clipPath id="${clip}">${shape}</clipPath></defs>` +
+  return `<defs><clipPath id="${clip}">${shape}</clipPath></defs>` +
+    (halo ? `<g class="sc-piece__halo">${shape}</g>` : '') +
     `<g class="sc-piece__body">${shape}</g>` +
     `<g class="sc-piece__bevel" clip-path="url(#${clip})">${bevels(o.cells)}</g>` +
     (paths ? `<path class="sc-piece__path" d="${paths}"/>` : '') +
-    `<g class="sc-piece__dots">${dots}</g></svg>`;
+    `<g class="sc-piece__dots">${dots}</g>`;
+}
+
+/** SVG suelto de una orientación (de engine/solver.js#orient), para la bandeja y el arrastre. */
+export function pieceSvg(o){
+  return `<svg class="sc-piece__svg" viewBox="0 0 ${o.w} ${o.h}" aria-hidden="true">${pieceParts(o)}</svg>`;
 }

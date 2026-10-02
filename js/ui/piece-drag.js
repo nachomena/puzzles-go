@@ -9,8 +9,9 @@ const DRAG_THRESHOLD = 6;
  * @param {() => number} o.cellSize           px de una casilla del tablero
  * @param {(piece:number) => void} o.onTap
  * @param {(piece:number, rect:DOMRect) => void} o.onDrop   rect = posición final de la pieza
+ * @param {(el:Element, piece:number) => HTMLElement} [o.ghost]  copia que sigue al dedo (por defecto, un clon)
  */
-export function bindPieceDrag(root, { canMove, cellSize, onTap, onDrop }){
+export function bindPieceDrag(root, { canMove, cellSize, onTap, onDrop, ghost = el => el.cloneNode(true) }){
   let drag = null;
 
   root.addEventListener('pointerdown', e => {
@@ -30,7 +31,7 @@ export function bindPieceDrag(root, { canMove, cellSize, onTap, onDrop }){
     if (!drag.ghost){
       if (Math.hypot(e.clientX - drag.x, e.clientY - drag.y) < DRAG_THRESHOLD) return;
       // Empieza el arrastre: una copia de la pieza a tamaño de tablero sigue al dedo
-      const cell = cellSize(), g = drag.el.cloneNode(true);
+      const cell = cellSize(), g = ghost(drag.el, drag.piece);
       const w = Number(getComputedStyle(drag.el).getPropertyValue('--w')), h = Number(getComputedStyle(drag.el).getPropertyValue('--h'));
       g.classList.remove('is-tray');
       g.classList.add('is-ghost');

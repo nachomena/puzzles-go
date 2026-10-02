@@ -1,25 +1,29 @@
-/* Vista de Smart Circuit: tablero de 8×4, pistas del reto, piezas colocadas y bandeja. */
+/* Vista de Smart Circuit: tablero de 8×4, pistas del reto, piezas colocadas y bandeja.
+   Las piezas del tablero se dibujan todas en un mismo SVG con coordenadas de casilla, así los
+   caminos de piezas vecinas encajan exactos (con una caja por pieza, el redondeo a píxeles de cada
+   caja podía desalinearlos un poco). */
 import { GridBoard } from '../../ui/grid-board.js';
 import { W, H, CELLS, DIRS } from './engine/pieces.js';
 import { orient } from './engine/solver.js';
 import { footprint } from './engine/arrangements.js';
-import { pieceSvg, cellPath } from './piece-svg.js';
+import { pieceSvg, pieceParts, cellPath } from './piece-svg.js';
 
-const pct = (n, of) => (n / of * 100) + '%';
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const layer = cls => {
+  const el = document.createElementNS(SVG_NS, 'svg');
+  el.setAttribute('class', cls);
+  el.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  return el;
+};
 
 export class CircuitBoardView {
   constructor(screen){
     this.screen = screen;
     this.grid = new GridBoard(screen.querySelector('.board'));
     this.board = this.grid.root;
-    this.cluesEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    this.cluesEl.setAttribute('class', 'sc-clues');
-    this.cluesEl.setAttribute('viewBox', `0 0 ${W} ${H}`);
-    this.piecesEl = document.createElement('div');
-    this.piecesEl.className = 'sc-pieces';
-    this.errorsEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    this.errorsEl.setAttribute('class', 'sc-errors');
-    this.errorsEl.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    this.cluesEl = layer('sc-clues');
+    this.piecesEl = layer('sc-pieces');
+    this.errorsEl = layer('sc-errors');
     this.board.append(this.cluesEl, this.piecesEl, this.errorsEl);
     this.tray = screen.querySelector('[data-tray]');
     this.flipBtn = screen.querySelector('[data-action="flip"]');
@@ -65,8 +69,8 @@ export class CircuitBoardView {
       if (!pos) return '';
       const o = orient(piece, pos.face, pos.rot);
       const cls = (fixed.includes(piece) ? ' is-fixed' : '') + (piece === sel ? ' is-selected' : '');
-      return `<div class="sc-piece${cls}" data-piece="${piece}" style="--w:${o.w};--h:${o.h};left:${pct(pos.x, W)};top:${pct(pos.y, H)};` +
-        `width:${pct(o.w, W)};height:${pct(o.h, H)}">${pieceSvg(o)}</div>`;
+      return `<g class="sc-piece${cls}" data-piece="${piece}" transform="translate(${pos.x} ${pos.y})" style="--w:${o.w};--h:${o.h}">` +
+        `${pieceParts(o, { halo: piece === sel })}</g>`;
     }).join('');
     this.tray.innerHTML = place.map((pos, piece) => {
       if (pos) return '';
@@ -82,7 +86,15 @@ export class CircuitBoardView {
   }
 
   pieceEl(piece){ return this.board.querySelector(`[data-piece="${piece}"]`) || this.tray.querySelector(`[data-piece="${piece}"]`); }
-  flash(piece){ const el = this.pieceEl(piece); if (el){ el.classList.remove('is-flash'); void el.offsetWidth; el.classList.add('is-flash'); } }
+  flash(piece){ const el = this.pieceEl(piece); if (el){ el.classList.remove('is-flash'); el.getBoundingClientRect(); el.classList.add('is-flash'); } }
+
+  /** Copia suelta (HTML) de una pieza para seguir al dedo al arrastrarla. */
+  ghostFor(piece, { face, rot }){
+    const el = document.createElement('div');
+    el.className = 'sc-piece';
+    el.innerHTML = pieceSvg(orient(piece, face, rot));
+    return el;
+  }
   celebrate(){ this.grid.celebrate(); }
 
   /** Casilla de la esquina superior izquierda para una pieza soltada en `rect` (o null si cae fuera). */

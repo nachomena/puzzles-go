@@ -14,7 +14,11 @@ export class SmartCircuitController extends GameController {
       canMove: piece => this.active && !this.#isFixed(piece),
       cellSize: () => this.view.cellSize(),
       onTap: piece => this.tap(piece),
-      onDrop: (piece, rect) => this.drop(piece, this.view.cellFor(rect))
+      onDrop: (piece, rect) => this.drop(piece, this.view.cellFor(rect)),
+      ghost: (el, piece) => {
+        const s = this.session, pos = s.place[piece];
+        return this.view.ghostFor(piece, pos || { face: s.tface[piece], rot: s.trot[piece] });
+      }
     });
   }
 
