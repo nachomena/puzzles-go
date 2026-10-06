@@ -21,6 +21,18 @@
 .level__meta{display:block;font-size:14px;color:var(--dim);margin-top:2px;font-weight:500}
 .level:active .level__name{opacity:.7}
 
+/* Estadísticas */
+.stats-game{padding:6px 0 22px}
+.stats-game__name{font-size:clamp(24px,7vw,34px);line-height:1.05;margin:0}
+.stats-game__streak{font-size:14px;color:var(--dim);margin:4px 0 0;font-weight:500}
+.stats-empty{font-size:15px;color:var(--dim);margin:8px 0 0}
+.stats-table{margin-top:10px}
+.stats-row{display:grid;grid-template-columns:1fr repeat(3,minmax(64px,auto));gap:10px;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--divider);font-size:16px;font-variant-numeric:tabular-nums}
+.stats-row span:not(:first-child){text-align:right}
+.stats-row span:first-child{font-weight:600}
+.stats-row--head{font-size:12px;color:var(--dim);font-weight:600;padding:0 0 6px}
+.stats-row--head span:first-child{font-weight:600}
+
 .boot-error{padding:14px 16px;border:2px solid var(--x);border-radius:var(--radius);font-size:14px;line-height:1.5}
 .boot-error b{display:block;margin-bottom:6px;color:var(--x)}
 .boot-error span{display:block;white-space:pre-wrap;word-break:break-word;color:var(--ink-soft);user-select:text;-webkit-user-select:text}

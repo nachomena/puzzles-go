@@ -13,6 +13,8 @@
    @property {{key:string,title:string,desc:string,options?:{value:string,label:string}[]}[]} settings
                                     ajustes: interruptores, o desplegables si traen `options`
    @property {boolean} [hint]       false = sin botón de pista (por defecto lo hay)
+   @property {{key:string,name:string}[]} [statsRows]  filas de estadísticas (por defecto, los niveles)
+   @property {(session:object) => string} [statsKey]   fila en la que se apunta una victoria (por defecto, su nivel)
    @property {URL} workerUrl        worker que llama a serveGenerator(generate)
    @property {(target:number) => Generator} generate   generador del motor
    @property {(p:object, L:string) => boolean} isValidPuzzle

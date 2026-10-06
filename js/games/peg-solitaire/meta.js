@@ -9,5 +9,10 @@ export default Object.freeze({
   levels: Object.freeze({
     classic: Object.freeze({ name: 'Solitario', target: 1, desc: 'Tablero inglés o europeo, en Ajustes' })
   }),
-  levelOrder: Object.freeze(['classic'])
+  levelOrder: Object.freeze(['classic']),
+  /** Las estadísticas van por tablero, no por nivel (ver index.js#statsKey). */
+  statsRows: Object.freeze([
+    Object.freeze({ key: 'english', name: 'Inglés' }),
+    Object.freeze({ key: 'european', name: 'Europeo' })
+  ])
 });

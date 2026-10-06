@@ -24,6 +24,8 @@ segundo plano, historial, cronómetro, estadísticas y pantalla de victoria son 
      (`core/game-definition.js`). `defineGame` falla al arrancar si falta alguno.
      Opcional: `hint: false` quita el botón de pista. En `settings`, un ajuste con `options`
      (`[{ value, label }]`) se muestra como desplegable en vez de interruptor.
+     Las estadísticas van por nivel; para agruparlas de otra forma, declara `statsRows` en `meta.js`
+     (`[{ key, name }]`) y `statsKey(session)` en `index.js` (p. ej. el Solitario, por tablero).
 2. Añade `{ meta, load: () => import('./<id>/index.js') }` a `CATALOG` en `js/games/catalog.js`.
 3. Si necesita estilos, crea `css/games/<id>.css` y enlázalo en `index.html`.
 4. Iconos nuevos: añade un `<symbol id="i-…">` al sprite de `index.html`.

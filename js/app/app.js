@@ -6,6 +6,7 @@ import { PuzzleSupply } from '../core/puzzle-supply.js';
 import { GameHud } from '../ui/game-hud.js';
 import { HubView } from '../ui/hub-view.js';
 import { LevelMenu } from '../ui/level-menu.js';
+import { StatsView } from '../ui/stats-view.js';
 import { Overlays } from '../ui/overlays.js';
 import { SettingsPanel } from '../ui/settings-panel.js';
 import { ConfirmDialog } from '../ui/confirm-dialog.js';
@@ -34,11 +35,13 @@ export class App {
     this.toast = new Toast(byId('toast'));
     this.overlays = new Overlays();
     this.hub = new HubView(byId('games'));
+    this.statsView = new StatsView(byId('statsList'));
     this.levelMenu = new LevelMenu({ title: byId('gameTitle'), levels: byId('levelList'), resume: byId('resume') });
     this.settings = new SettingsPanel(byId('settingsList'));
     this.confirm = new ConfirmDialog(byId('confirm'), this.overlays);
     this.fitHubTitle = keepFitted(byId('title'));
     this.fitGameTitle = keepFitted(byId('gameTitle'));
+    this.fitStatsTitle = keepFitted(byId('statsTitle'));
     this.fitGames = keepNamesFitted(byId('games'));
     this.fitLevels = keepNamesFitted(byId('levelList'));
 
@@ -102,6 +105,7 @@ export class App {
     this.#refreshMenus();
     if (name === 'hub') this.fitHubTitle();
     if (name === 'levels') this.fitGameTitle();
+    if (name === 'stats') this.fitStatsTitle();
     for (const e of this.entries.values()) e.supply.pump();
   }
 
@@ -193,6 +197,7 @@ export class App {
       meta, summary: Store.summarize(this.#menuData(meta))
     })));
     if (this.screen === 'levels' && this.currentMeta) this.levelMenu.render(this.currentMeta, this.#menuData(this.currentMeta));
+    if (this.screen === 'stats') this.statsView.render(this.catalog.map(({ meta }) => ({ meta, data: this.#menuData(meta) })));
     if (this.screen === 'hub') this.fitGames();
     if (this.screen === 'levels') this.fitLevels();
   }
@@ -208,6 +213,7 @@ export class App {
     const cur = this.current;
     return {
       'open-game':    el => this.openGame(el.dataset.game),
+      'open-stats':   () => this.showScreen('stats'),
       'start-level':  el => this.#withGame(entry => this.requestLevel(el.dataset.level, entry)),
       'confirm-accept':    () => this.confirm.answer('accept'),
       'confirm-alternate': () => this.confirm.answer('alternate'),

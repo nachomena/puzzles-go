@@ -13,6 +13,7 @@ export default defineGame({
   defaultSettings: DEFAULT_SETTINGS,
   settings: SETTINGS,
   hint: false,   // sin pistas: no se busca la solución
+  statsKey: s => s.board,   // estadísticas por tablero (meta.statsRows)
 
   workerUrl: new URL('./worker.js', import.meta.url),
   generate,

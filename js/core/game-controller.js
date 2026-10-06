@@ -4,7 +4,8 @@
 import { HISTORY_LIMIT, HINT_COOLDOWN_SEC, TIMING } from '../config.js';
 import { History } from './history.js';
 import { hintWait } from './hint-cooldown.js';
-import { formatTime, plural } from '../lib/format.js';
+import { formatTime } from '../lib/format.js';
+import { statsRows, winDetail } from './stats.js';
 
 export class GameController {
   /**
@@ -175,13 +176,13 @@ export class GameController {
     const s = this.session;
     if (s.done || !this.isSolved()) return;
     s.done = true;
-    const levelName = this.game.levels[s.L].name;
-    const { record, best } = this.store.recordWin(s.L, s.time, s.hints);
+    // las estadísticas van por nivel, salvo que el juego las agrupe de otra forma (p. ej. por tablero)
+    const key = this.game.statsKey?.(s) ?? s.L;
+    const name = statsRows(this.game).find(r => r.key === key)?.name ?? this.game.levels[s.L].name;
+    const result = this.store.recordWin(key, s.time, s.hints);
     this.render();
     this.celebrate();
-    const detail = record
-      ? `Nuevo récord en ${levelName}.`
-      : (s.hints ? `Con ${plural(s.hints, 'pista')}.` : '') + (best ? ` Récord: ${formatTime(best)}.` : '');
+    const detail = winDetail(result, { time: s.time, hints: s.hints, name });
     setTimeout(() => this.onWin({ time: formatTime(s.time), detail }), TIMING.winOverlayDelayMs);
   }
 }

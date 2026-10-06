@@ -40,8 +40,8 @@ test('Store: guarda, carga y filtra datos inválidos', () => {
   a.addPuzzle('easy', { level: 2 });   // nivel equivocado
   a.state.cur = { L: 'easy', p: {}, marks: [0], done: false };
   a.state.tool = 'b';
-  assert.deepEqual(a.recordWin('easy', 90, 0), { record: true, best: 90 });
-  assert.deepEqual(a.recordWin('easy', 60, 2), { record: false, best: 90 }, 'con pistas no hay récord');
+  assert.deepEqual(a.recordWin('easy', 90, 0), { record: true, best: 90, prevBest: null, prevAvg: null });
+  assert.deepEqual(a.recordWin('easy', 60, 2), { record: false, best: 90, prevBest: 90, prevAvg: 90 }, 'con pistas no hay récord');
 
   const b = new Store(storage, fakeGame);
   b.load();
@@ -49,6 +49,7 @@ test('Store: guarda, carga y filtra datos inválidos', () => {
   assert.equal(b.state.tool, 'b');
   assert.ok(b.hasOpenSession);
   assert.equal(b.totalSolved(), 2);
+  assert.equal(b.state.streak.count, 1, 'la racha se guarda');
 });
 
 test('Store: sobrevive a datos corruptos o sin almacenamiento', () => {
