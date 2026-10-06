@@ -1,31 +1,18 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { recordWin, average, currentStreak, emptyStreak, versusAverage, winDetail, statsRows, dayKey } from '../js/core/stats.js';
+import { recordWin, average, versusAverage, winDetail, statsRows } from '../js/core/stats.js';
 
 test('estadísticas: récord sin pistas, media y partidas antiguas sin suma', () => {
-  const stats = { easy: { solved: 3, best: 100 } }, streak = emptyStreak();   // datos de antes: sin suma
+  const stats = { easy: { solved: 3, best: 100 } };   // datos de antes: sin suma
   assert.equal(average(stats.easy), null);
-  let r = recordWin(stats, streak, 'easy', 80, 0, '2026-10-01');
+  let r = recordWin(stats, 'easy', 80, 0);
   assert.deepEqual(r, { record: true, best: 80, prevBest: 100, prevAvg: null });
-  r = recordWin(stats, streak, 'easy', 120, 0, '2026-10-01');
+  r = recordWin(stats, 'easy', 120, 0);
   assert.deepEqual(r, { record: false, best: 80, prevBest: 80, prevAvg: 80 });
   assert.equal(stats.easy.solved, 5);
   assert.equal(average(stats.easy), 100);
-  r = recordWin(stats, streak, 'easy', 50, 1, '2026-10-01');
+  r = recordWin(stats, 'easy', 50, 1);
   assert.equal(r.record, false, 'con pistas no hay récord');
-});
-
-test('estadísticas: racha de días seguidos', () => {
-  const stats = {}, streak = emptyStreak();
-  recordWin(stats, streak, 'a', 10, 0, '2026-09-30');
-  recordWin(stats, streak, 'a', 10, 0, '2026-09-30');      // mismo día: no suma
-  recordWin(stats, streak, 'a', 10, 0, '2026-10-01');      // cambio de mes
-  assert.deepEqual(streak, { last: '2026-10-01', count: 2, best: 2 });
-  assert.equal(currentStreak(streak, '2026-10-02'), 2, 'ayer cuenta');
-  assert.equal(currentStreak(streak, '2026-10-03'), 0, 'se rompió');
-  recordWin(stats, streak, 'a', 10, 0, '2026-10-05');
-  assert.deepEqual(streak, { last: '2026-10-05', count: 1, best: 2 });
-  assert.equal(dayKey(new Date(2026, 0, 5)), '2026-01-05');
 });
 
 test('estadísticas: textos de la victoria', () => {

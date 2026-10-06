@@ -49,7 +49,6 @@ test('Store: guarda, carga y filtra datos inválidos', () => {
   assert.equal(b.state.tool, 'b');
   assert.ok(b.hasOpenSession);
   assert.equal(b.totalSolved(), 2);
-  assert.equal(b.state.streak.count, 1, 'la racha se guarda');
 });
 
 test('Store: sobrevive a datos corruptos o sin almacenamiento', () => {
