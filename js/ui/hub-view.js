@@ -1,15 +1,24 @@
-/* Pantalla inicial: lista de juegos disponibles. */
+/* Pantalla inicial: lista de juegos disponibles. Sin descripciones; solo los juegos sin menú de
+   niveles (p. ej. el Solitario) muestran aquí su récord, porque no tienen otro sitio donde verlo. */
 import { svgIcon } from './templates.js';
-import { plural } from '../lib/format.js';
+import { formatTime } from '../lib/format.js';
+import { statsRows } from '../core/stats.js';
+
+/** "Récord 1:20" o "Récord · Inglés 0:42 · Europeo 3:10" (solo las filas con récord), o ''. */
+export function bestLine(meta, stats = {}){
+  const rows = statsRows(meta), withBest = rows.filter(r => stats[r.key]?.best);
+  if (!withBest.length) return '';
+  if (rows.length === 1) return `Récord ${formatTime(stats[rows[0].key].best)}`;
+  return 'Récord · ' + withBest.map(r => `${r.name} ${formatTime(stats[r.key].best)}`).join(' · ');
+}
 
 export class HubView {
   constructor(listEl){ this.listEl = listEl; }
 
-  /** @param {{ meta: object, summary: { inProgress: boolean, solved: number } }[]} items */
+  /** @param {{ meta: object, data: { stats: object } }[]} items */
   render(items){
-    this.listEl.innerHTML = items.map(({ meta, summary }) => {
-      const info = summary.inProgress ? 'Partida en curso'
-        : summary.solved ? `${meta.tagline} · ${plural(summary.solved, 'resuelto')}` : meta.tagline;
+    this.listEl.innerHTML = items.map(({ meta, data }) => {
+      const info = meta.levelOrder.length === 1 ? bestLine(meta, data.stats) : '';
       return `<button class="level game-card" data-action="open-game" data-game="${meta.id}">` +
         `<span class="level__text"><span class="level__name display">${meta.name.toUpperCase()}</span>` +
         `<span class="level__meta">${info}</span></span>` +

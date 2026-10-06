@@ -45,3 +45,13 @@ test('estadísticas: filas por nivel o las que declare el juego', () => {
   assert.deepEqual(statsRows(meta), [{ key: 'e', name: 'Fácil' }, { key: 'h', name: 'Difícil' }]);
   assert.deepEqual(statsRows({ ...meta, statsRows: [{ key: 'x', name: 'X' }] }), [{ key: 'x', name: 'X' }]);
 });
+
+test('lista de juegos: récord de los juegos sin menú de niveles', async () => {
+  const { bestLine } = await import('../js/ui/hub-view.js');
+  const one = { levelOrder: ['x'], levels: { x: { name: 'X' } } };
+  assert.equal(bestLine(one, {}), '');
+  assert.equal(bestLine(one, { x: { best: 80 } }), 'Récord 1:20');
+  const boards = { ...one, statsRows: [{ key: 'english', name: 'Inglés' }, { key: 'european', name: 'Europeo' }] };
+  assert.equal(bestLine(boards, { english: { best: 42 } }), 'Récord · Inglés 0:42');
+  assert.equal(bestLine(boards, { english: { best: 42 }, european: { best: 190 } }), 'Récord · Inglés 0:42 · Europeo 3:10');
+});

@@ -3,10 +3,9 @@
    @typedef {object} GameDefinition
    @property {string} id            identificador corto (se usa en ids del DOM)
    @property {string} name          nombre visible
-   @property {string} tagline       descripción corta para el selector
    @property {string} icon          símbolo del sprite (#i-<icon>)
    @property {string} storageKey    clave de localStorage
-   @property {Object<string,{name:string,target:number,desc:string}>} levels
+   @property {Object<string,{name:string,target:number}>} levels
    @property {string[]} levelOrder
    @property {string[]} tools       herramientas; la primera es la de por defecto
    @property {object} defaultSettings
@@ -24,7 +23,7 @@
    @property {string} help          marcado de la ayuda
    @property {typeof import('./game-controller.js').GameController} Controller */
 
-const REQUIRED = ['id', 'name', 'tagline', 'icon', 'storageKey', 'levels', 'levelOrder', 'tools', 'defaultSettings',
+const REQUIRED = ['id', 'name', 'icon', 'storageKey', 'levels', 'levelOrder', 'tools', 'defaultSettings',
   'settings', 'workerUrl', 'generate', 'isValidPuzzle', 'restoreSession', 'sizeLabel', 'controls', 'help', 'Controller'];
 
 /** Valida la definición y la congela. Falla pronto si falta algo. */

@@ -7,7 +7,7 @@ segundo plano, historial, cronómetro, estadísticas y pantalla de victoria son 
 ## Pasos
 
 1. Crea `js/games/<id>/` con, como mínimo:
-   - `meta.js` — datos ligeros: `id`, `name`, `tagline`, `icon`, `storageKey`, `levels` y `levelOrder`.
+   - `meta.js` — datos ligeros: `id`, `name`, `icon`, `storageKey`, `levels` y `levelOrder`.
      El selector y el menú de niveles se pintan solo con esto; el resto del juego se importa al
      abrirlo, en segundo plano, y empieza a generar tableros.
    - `engine/` — motor puro (sin DOM) con `generate(target)`: una **función generadora** que cede

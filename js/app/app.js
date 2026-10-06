@@ -193,9 +193,7 @@ export class App {
   }
 
   #refreshMenus(){
-    if (this.screen === 'hub') this.hub.render(this.catalog.map(({ meta }) => ({
-      meta, summary: Store.summarize(this.#menuData(meta))
-    })));
+    if (this.screen === 'hub') this.hub.render(this.catalog.map(({ meta }) => ({ meta, data: this.#menuData(meta) })));
     if (this.screen === 'levels' && this.currentMeta) this.levelMenu.render(this.currentMeta, this.#menuData(this.currentMeta));
     if (this.screen === 'stats') this.statsView.render(this.catalog.map(({ meta }) => ({ meta, data: this.#menuData(meta) })));
     if (this.screen === 'hub') this.fitGames();

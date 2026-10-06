@@ -66,11 +66,6 @@ export class Store {
     } catch (e){ return { stats: {}, streak: emptyStreak(), cur: null }; }
   }
 
-  /** Resumen para el selector a partir de menuData()/peek(). */
-  static summarize({ stats, cur }){
-    return { inProgress: !!cur, solved: Object.values(stats).reduce((n, st) => n + (st.solved || 0), 0) };
-  }
-
   /* ---- Estadísticas ---- */
   statsFor(L){ return this.state.stats[L] || {}; }
   totalSolved(){ return Object.values(this.state.stats).reduce((n, s) => n + (s.solved || 0), 0); }

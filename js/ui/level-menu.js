@@ -1,10 +1,8 @@
 /* Menú de un juego: botón de continuar y lista de niveles. */
-import { formatTime, plural } from '../lib/format.js';
+import { formatTime } from '../lib/format.js';
 
-function levelMeta(level, stats){
-  if (!stats.solved) return level.desc;
-  return plural(stats.solved, 'resuelto') + (stats.best ? `, récord ${formatTime(stats.best)}` : '');
-}
+/** Bajo cada nivel solo va el mejor tiempo (si lo hay). */
+const levelMeta = stats => stats.best ? `Récord ${formatTime(stats.best)}` : '';
 
 export class LevelMenu {
   constructor({ title, levels, resume }){
@@ -21,7 +19,7 @@ export class LevelMenu {
       const lv = meta.levels[L];
       return `<button class="level" data-action="start-level" data-level="${L}">` +
         `<span class="level__text"><span class="level__name display">${lv.name.toUpperCase()}</span>` +
-        `<span class="level__meta">${levelMeta(lv, stats[L] || {})}</span></span>` +
+        `<span class="level__meta">${levelMeta(stats[L] || {})}</span></span>` +
         `</button>`;
     }).join('');
     this.resumeEl.innerHTML = cur

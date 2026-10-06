@@ -19,6 +19,7 @@
 .level__text{min-width:0}
 .level__name{font-size:var(--name-size,clamp(36px,11.2vw,62px));line-height:1.02;display:block}
 .level__meta{display:block;font-size:14px;color:var(--dim);margin-top:2px;font-weight:500}
+.level__meta:empty{display:none}
 .level:active .level__name{opacity:.7}
 
 /* Estadísticas */

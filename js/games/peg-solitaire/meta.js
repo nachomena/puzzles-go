@@ -2,12 +2,11 @@
 export default Object.freeze({
   id: 'peg-solitaire',
   name: 'Solitario',
-  tagline: 'Salta y retira bolas hasta dejar solo una',
   icon: 'peg',
   storageKey: 'puzzlesgo.pegsolitaire.v1',
   /** Un solo nivel, así que no hay menú: se entra directo a la partida. El tablero se elige en Ajustes. */
   levels: Object.freeze({
-    classic: Object.freeze({ name: 'Solitario', target: 1, desc: 'Tablero inglés o europeo, en Ajustes' })
+    classic: Object.freeze({ name: 'Solitario', target: 1 })
   }),
   levelOrder: Object.freeze(['classic']),
   /** Las estadísticas van por tablero, no por nivel (ver index.js#statsKey). */
