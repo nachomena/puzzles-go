@@ -1,5 +1,5 @@
 // Sube la versión cuando publiques cambios para que el iPhone descargue la nueva
-const VERSION = 'pzg-v32';
+const VERSION = 'pzg-v33';
 const FILES = [
   './', './index.html', './manifest.webmanifest',
   './css/base.css', './css/components.css', './css/games/peg-solitaire.css', './css/games/smart-circuit.css', './css/games/smart-dices.css',

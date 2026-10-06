@@ -1,11 +1,13 @@
 /* Reset, elementos base y utilidades de maquetación. */
 :root{box-sizing:border-box;padding-top:var(--safe-top);padding-bottom:var(--safe-bottom)}
 *,*::before,*::after{box-sizing:inherit}
-html{height:100%;background:var(--bg);scroll-padding-top:var(--safe-top)}
+/* Sin zoom por doble toque (al repetir toques rápidos en botones): cada toque es un clic y no hay
+   espera; el zoom con dos dedos sigue funcionando. Los tableros ya usan touch-action:none. */
+html{height:100%;background:var(--bg);scroll-padding-top:var(--safe-top);touch-action:manipulation}
 body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:var(--font-body);
   -webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;
   overscroll-behavior:none;-webkit-font-smoothing:antialiased}
-button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;touch-action:manipulation}
 button:focus-visible,label:focus-within{outline:2px solid var(--wall);outline-offset:3px;border-radius:6px}
 button:disabled{opacity:.35;cursor:default}
 svg{display:block}
