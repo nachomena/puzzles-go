@@ -77,8 +77,10 @@ test('findMistake señala una pieza mal colocada antes de dar una pista', () => 
   // Se deja solo lo fijo y una pieza movible desplazada a un sitio que no es el suyo
   const place = solved.map((pos, i) => p.fixed.includes(i) ? pos : null);
   const piece = p.solution.find(s => !p.fixed.includes(s.piece)).piece;
+  // (con cualquier giro: con el de la solución a veces no queda ningún hueco libre)
+  for (let rot = 0; rot < 4 && !place[piece]; rot++)
   for (let r = 0; r < 6 && !place[piece]; r++) for (let c = 0; c < 6 && !place[piece]; c++){
-    const pos = { rot: p.solution[piece].rot, r, c };
+    const pos = { rot: (p.solution[piece].rot + rot) % 4, r, c };
     const isSolutionSpot = p.solution.some(s => s.type === p.solution[piece].type && s.r === r && s.c === c);
     if (!isSolutionSpot && fits(place, piece, pos)) place[piece] = pos;
   }

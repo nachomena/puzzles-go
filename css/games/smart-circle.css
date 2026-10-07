@@ -1,0 +1,49 @@
+/* Smart Circle: tablero redondo oscuro, bolas de colores tenues con brillo y nervios claros. */
+[data-game="smart-circle"]{
+  --sl-yellow:#d6bf5a; --sl-orange:#d38b48; --sl-red:#c65858; --sl-pink:#cd7ea7; --sl-purple:#9b83bb;
+  --sl-blue:#5576bb; --sl-sky:#5fb0d5; --sl-teal:#42a39c; --sl-green:#4f9965; --sl-lime:#9dba52;
+  --sl-unit:78px;   /* píxeles por radio de tablero en la bandeja */
+}
+
+.sl-area{width:100%}
+.sl-board{position:relative;width:100%;max-width:440px;margin:0 auto;aspect-ratio:1;touch-action:none;user-select:none;-webkit-user-select:none}
+.sl-board svg{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 10px 22px rgba(0,0,0,.5))}
+.sl-disc{fill:#26252b;stroke:#3a3941;stroke-width:.012}
+.sl-holes circle{fill:#141318;stroke:rgba(255,255,255,.06);stroke-width:.006}
+.sl-ribs{transition:transform .35s ease}
+.sl-ribs line{stroke:var(--ink-soft);stroke-width:.026;stroke-linecap:round}
+.sl-marks line{stroke:#e2bf5a;stroke-width:.03;stroke-linecap:round}
+
+/* Piezas (en el tablero, en la bandeja y al arrastrar) */
+.sl-piece{cursor:grab}
+.sl-piece .sl-links line{stroke:var(--sl-c);stroke-linecap:round}
+.sl-piece .sl-balls circle{fill:var(--sl-c)}
+.sl-piece .sl-shine circle{fill:url(#sl-shine-g);pointer-events:none}
+.sl-piece .sl-halo line{stroke:var(--ink);stroke-linecap:round}
+.sl-piece .sl-halo circle{fill:var(--ink)}
+.sl-piece.is-fixed{cursor:default;filter:saturate(.75) brightness(.85)}
+.sl-piece.is-lifted,.sl-tray-piece.is-lifted{opacity:.25}
+.sl-piece.is-preview{opacity:.75;pointer-events:none}
+.sl-piece.is-preview.is-bad{opacity:.45;filter:grayscale(1)}
+.sl-piece.is-flash,.sl-tray-piece.is-flash{animation:sl-flash .5s ease-in-out 3}
+@keyframes sl-flash{50%{opacity:.35}}
+.sl-board.is-won .sl-pieces .sl-balls circle{animation:sl-glow 1.4s ease-in-out 2}
+@keyframes sl-glow{50%{filter:brightness(1.35)}}
+.sl-hue-yellow{--sl-c:var(--sl-yellow)} .sl-hue-orange{--sl-c:var(--sl-orange)} .sl-hue-red{--sl-c:var(--sl-red)}
+.sl-hue-pink{--sl-c:var(--sl-pink)} .sl-hue-purple{--sl-c:var(--sl-purple)} .sl-hue-blue{--sl-c:var(--sl-blue)}
+.sl-hue-sky{--sl-c:var(--sl-sky)} .sl-hue-teal{--sl-c:var(--sl-teal)} .sl-hue-green{--sl-c:var(--sl-green)}
+.sl-hue-lime{--sl-c:var(--sl-lime)}
+
+/* Botones bajo el tablero: reiniciar a la izquierda; nervios y voltear a la derecha */
+.sl-actions{display:flex;justify-content:space-between;align-items:center;padding-top:8px}
+.sl-actions__right{display:flex;gap:8px}
+.sl-actions [hidden]{display:none}
+
+/* Bandeja y copia que sigue al dedo */
+.sl-tray{display:flex;flex-wrap:wrap;gap:10px 14px;justify-content:center;align-items:center;padding:12px 0 4px;min-height:60px;touch-action:none}
+.sl-tray-piece{width:calc(var(--w) * var(--sl-unit));height:calc(var(--h) * var(--sl-unit));touch-action:none;cursor:grab;filter:drop-shadow(0 2px 3px rgba(0,0,0,.45))}
+.sl-tray-piece.is-selected{filter:drop-shadow(0 0 1px var(--ink)) drop-shadow(0 0 1px var(--ink)) drop-shadow(0 2px 3px rgba(0,0,0,.5))}
+.sl-loose{display:block;width:100%;height:100%;overflow:visible}
+.sl-ghost{position:fixed;left:0;top:0;z-index:30;pointer-events:none;filter:drop-shadow(0 10px 16px rgba(0,0,0,.5))}
+.sl-ghost .sl-loose{width:100%;height:100%}
+.sl-tip{font-size:13px;color:var(--dim);text-align:center;margin:4px 0 0}

@@ -6,6 +6,7 @@ Juegos de lógica como web app instalable que funciona sin conexión:
 - **Sudoku** 9×9 (Fácil, Medio, Difícil). El Difícil siempre exige X-Wing o Swordfish.
 - **Smart Dices**: 12 piezas que forman 4 caras de dado con sumas por fila y columna (5 niveles).
 - **Smart Circuit**: 10 piezas de doble cara que unen los puntos con caminos en un tablero de 8×4 (5 niveles).
+- **Smart Circle**: 10 piezas de bolas de doble cara que llenan un tablero redondo de 3 anillos sin cruzar sus nervios (5 niveles; en los dos últimos también hay que encontrar dónde van los nervios).
 - **Solitario**: el clásico de saltar bolas hasta dejar una, en tablero inglés (33) o europeo (37) a elegir en Ajustes.
 
 Todos los tableros se generan en el dispositivo, tienen solución única y su nivel lo garantiza un
@@ -60,6 +61,8 @@ Las 6.288 colocaciones válidas de Smart Dices están precalculadas en
 
 Las 358 colocaciones válidas de Smart Circuit están en `js/games/smart-circuit/engine/arrangements-data.js`
 (`node scripts/build-circuit-arrangements.mjs` las regenera).
+
+Las 274 soluciones de Smart Circle (con los nervios en su posición de partida; las demás son las mismas giradas) están en `js/games/smart-circle/engine/solutions-data.js`, generadas por `node scripts/build-circle-solutions.mjs`.
 
 Los iconos de la app salen de `icons/icon.svg`: `node scripts/make-icons.cjs` regenera los PNG.
 

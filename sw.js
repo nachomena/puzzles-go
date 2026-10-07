@@ -1,8 +1,8 @@
 // Sube la versión cuando publiques cambios para que el iPhone descargue la nueva
-const VERSION = 'pzg-v35';
+const VERSION = 'pzg-v36';
 const FILES = [
   './', './index.html', './manifest.webmanifest',
-  './css/base.css', './css/components.css', './css/games/peg-solitaire.css', './css/games/smart-circuit.css', './css/games/smart-dices.css',
+  './css/base.css', './css/components.css', './css/games/peg-solitaire.css', './css/games/smart-circle.css', './css/games/smart-circuit.css', './css/games/smart-dices.css',
   './css/games/star-battle.css', './css/games/sudoku.css', './css/menu.css', './css/overlays.css',
   './css/play.css', './css/tokens.css', './js/app/app.js', './js/boot-check.js', './js/config.js',
   './js/core/game-controller.js', './js/core/game-definition.js', './js/core/generator-worker.js',
@@ -12,7 +12,13 @@ const FILES = [
   './js/games/peg-solitaire/controller.js', './js/games/peg-solitaire/engine/generator.js',
   './js/games/peg-solitaire/engine/rules.js', './js/games/peg-solitaire/index.js',
   './js/games/peg-solitaire/meta.js', './js/games/peg-solitaire/templates.js',
-  './js/games/peg-solitaire/worker.js', './js/games/smart-circuit/board-view.js',
+  './js/games/peg-solitaire/worker.js', './js/games/smart-circle/board-view.js', './js/games/smart-circle/config.js',
+  './js/games/smart-circle/controller.js', './js/games/smart-circle/engine/generator.js',
+  './js/games/smart-circle/engine/pieces.js', './js/games/smart-circle/engine/solutions-data.js',
+  './js/games/smart-circle/engine/solutions.js', './js/games/smart-circle/engine/solver.js',
+  './js/games/smart-circle/index.js', './js/games/smart-circle/meta.js', './js/games/smart-circle/piece-svg.js',
+  './js/games/smart-circle/rules.js', './js/games/smart-circle/templates.js', './js/games/smart-circle/worker.js',
+  './js/games/smart-circuit/board-view.js',
   './js/games/smart-circuit/config.js', './js/games/smart-circuit/controller.js',
   './js/games/smart-circuit/engine/arrangements-data.js', './js/games/smart-circuit/engine/arrangements.js',
   './js/games/smart-circuit/engine/generator.js', './js/games/smart-circuit/engine/pieces.js',
