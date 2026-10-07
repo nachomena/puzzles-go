@@ -22,6 +22,7 @@ export default defineGame({
   restoreSession: s => {
     if (!Array.isArray(s.place) || s.place.length !== PIECES.length) return null;
     if (!Array.isArray(s.trot)) s.trot = PIECES.map(() => 0);
+    if (typeof s.sel !== 'number') s.sel = -1;
     return s;
   },
   sizeLabel: () => '',   // siempre son 4 dados: no aporta nada en la cabecera

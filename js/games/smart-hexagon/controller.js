@@ -6,6 +6,7 @@ import { HexagonBoardView } from './board-view.js';
 import { PIECES, pointsOf, cellsOf } from './engine/pieces.js';
 import { fits, isSolved, findHint, findMistake, occupancy } from './rules.js';
 import { pointXY } from './piece-svg.js';
+import { FitSpots } from '../../ui/fit-spots.js';
 
 const DRAG_THRESHOLD = 6;
 const samePose = (a, b) => a.m === b.m && a.r === b.r && a.tu === b.tu && a.tv === b.tv;
@@ -33,6 +34,7 @@ export class SmartHexagonController extends GameController {
   constructor(deps){
     super(deps);
     this.view = new HexagonBoardView(deps.screen);
+    this.spots = new FitSpots(samePose);
     this.#bindPointer(deps.screen.querySelector('.wrap'));
   }
 
@@ -47,13 +49,11 @@ export class SmartHexagonController extends GameController {
   }
   mountBoard(){ this.view.build(); }
   renderBoard(){
-    const s = this.session;
-    this.spots = this.#fittingSpots();
-    if (this.chosen && !this.spots.some(p => samePose(p, this.chosen))) this.chosen = null;
+    const s = this.session, spots = this.spots.update(this.#fittingSpots());
     this.view.render({
       place: s.place, tm: s.tm, tr: s.tr, fixed: s.p.fixed, sel: s.sel,
-      spots: this.spots.map(pose => { const [x, y] = centerOf(s.sel, pose); return { x, y, on: !!this.chosen && samePose(pose, this.chosen) }; }),
-      chosen: this.chosen
+      spots: spots.map(pose => { const [x, y] = centerOf(s.sel, pose); return { x, y }; }),
+      chosenSpot: this.spots.chosenIndex, chosen: this.spots.chosen
     });
   }
 
@@ -71,13 +71,12 @@ export class SmartHexagonController extends GameController {
 
   /** Tocar un sitio marcado: la primera vez se ve ahí la pieza; la segunda se coloca. */
   #tapSpot(i){
-    const s = this.session, pose = this.spots?.[i];
-    if (!pose || s.sel < 0) return;
-    if (this.chosen && samePose(this.chosen, pose)){ this.chosen = null; this.drop(s.sel, pose); return; }
-    this.chosen = pose;
-    this.render();
+    const s = this.session;
+    if (s.sel < 0) return;
+    const pose = this.spots.tap(i);
+    if (pose) this.drop(s.sel, pose); else this.render();
   }
-  onSetting(){ this.chosen = null; }
+  onSetting(){ this.spots.clear(); }
   snapshot(){ return { place: this.session.place.map(p => p && { ...p }) }; }
   restore(snap){ this.session.place = snap.place; }
   hasInput(){ return this.session.place.some((pose, p) => pose && !this.#isFixed(p)); }
@@ -136,7 +135,7 @@ export class SmartHexagonController extends GameController {
   tap(piece){
     const s = this.session;
     if (!this.active || this.#isFixed(piece)) return;
-    this.chosen = null;
+    this.spots.clear();
     if (s.sel !== piece){ s.sel = piece; this.render(); return; }
     const pose = s.place[piece], m = pose ? pose.m : s.tm[piece], r = ((pose ? pose.r : s.tr[piece]) + 1) % 6;
     this.#reorient(piece, m, r, 'No cabe girada aquí');
@@ -146,7 +145,7 @@ export class SmartHexagonController extends GameController {
   flip(){
     const s = this.session, piece = s.sel;
     if (!this.active || piece < 0 || this.#isFixed(piece)) return;
-    this.chosen = null;
+    this.spots.clear();
     const pose = s.place[piece], m = 1 - (pose ? pose.m : s.tm[piece]), r = pose ? pose.r : s.tr[piece];
     this.#reorient(piece, m, r, 'No cabe volteada aquí');
   }
@@ -155,7 +154,7 @@ export class SmartHexagonController extends GameController {
   drop(piece, pose){
     const s = this.session;
     if (!this.active || this.#isFixed(piece)) return;
-    this.chosen = null;
+    this.spots.clear();
     s.sel = piece;
     if (!pose){
       if (s.place[piece]){ this.#toTray(piece); this.commit(true); } else this.render();
@@ -185,7 +184,7 @@ export class SmartHexagonController extends GameController {
       const target = e.target.closest('[data-piece]');
       if (!target){
         // tocar el tablero fuera de las piezas suelta la elegida
-        if (e.target.closest('[data-sh-board]') && this.session.sel >= 0){ this.session.sel = -1; this.chosen = null; this.render(); }
+        if (e.target.closest('[data-sh-board]') && this.session.sel >= 0){ this.session.sel = -1; this.spots.clear(); this.render(); }
         return;
       }
       const piece = Number(target.dataset.piece);

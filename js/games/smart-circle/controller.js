@@ -6,6 +6,10 @@ import { PIECES, SECTORS, cellsOf, crossesRib, ribsAt } from './engine/pieces.js
 import { fits, isSolved, findHint, findMistake, occupancy, blockedBy } from './rules.js';
 import { nearestShift } from './piece-svg.js';
 import { plural } from '../../lib/format.js';
+import { FitSpots } from '../../ui/fit-spots.js';
+import { xy } from './piece-svg.js';
+
+const samePose = (a, b) => a.m === b.m && a.s === b.s;
 
 const DRAG_THRESHOLD = 6;
 /** Hasta qué distancia del centro (radio del tablero = 1) se considera que se suelta en el tablero. */
@@ -15,6 +19,7 @@ export class SmartCircleController extends GameController {
   constructor(deps){
     super(deps);
     this.view = new CircleBoardView(deps.screen);
+    this.spots = new FitSpots(samePose);
     this.#bindPointer(deps.screen.querySelector('.wrap'));
   }
 
@@ -38,9 +43,29 @@ export class SmartCircleController extends GameController {
 
   mountBoard(){ this.view.build(this.session.p); }
   renderBoard(){
-    const s = this.session;
-    this.view.render({ place: s.place, tm: s.tm, fixed: s.p.fixed, sel: s.sel, ro: s.ro });
+    const s = this.session, spots = this.spots.update(this.#fittingSpots());
+    this.view.render({
+      place: s.place, tm: s.tm, fixed: s.p.fixed, sel: s.sel, ro: s.ro,
+      spots: spots.map(pose => {
+        const pts = PIECES[s.sel].balls.map(([ring, d]) => xy(ring, pose.m * d + pose.s));
+        return { x: pts.reduce((t, p) => t + p[0], 0) / pts.length, y: pts.reduce((t, p) => t + p[1], 0) / pts.length };
+      }),
+      chosenSpot: this.spots.chosenIndex, chosen: this.spots.chosen
+    });
   }
+
+  /** Sitios donde cabe la pieza elegida con su cara actual (si el ajuste está activo). */
+  #fittingSpots(){
+    const s = this.session, piece = s.sel;
+    if (!this.settings.spots || !this.active || piece < 0 || this.#isFixed(piece)) return [];
+    const cur = s.place[piece], m = cur ? cur.m : s.tm[piece], out = [];
+    for (let sh = 0; sh < SECTORS; sh++){
+      const pose = { m, s: sh };
+      if ((!cur || !samePose(cur, pose)) && fits(s.place, piece, pose, s.ro)) out.push(pose);
+    }
+    return out;
+  }
+  onSetting(){ this.spots.clear(); }
   snapshot(){ return { place: this.session.place.map(p => p && { ...p }) }; }
   restore(snap){ this.session.place = snap.place; }
   hasInput(){ return this.session.place.some((pose, p) => pose && !this.#isFixed(p)); }
@@ -115,6 +140,7 @@ export class SmartCircleController extends GameController {
   tap(piece){
     const s = this.session;
     if (!this.active || this.#isFixed(piece)) return;
+    this.spots.clear();
     s.sel = piece;
     this.flip(piece);
   }
@@ -137,6 +163,7 @@ export class SmartCircleController extends GameController {
   drop(piece, pose){
     const s = this.session;
     if (!this.active || this.#isFixed(piece)) return;
+    this.spots.clear();
     s.sel = piece;
     if (!pose){
       if (s.place[piece]){ this.#toTray(piece); this.commit(true); } else this.render();
@@ -162,8 +189,20 @@ export class SmartCircleController extends GameController {
   #bindPointer(el){
     let drag = null;
     el.addEventListener('pointerdown', e => {
+      if (drag || !this.active) return;
+      const spot = e.target.closest('[data-spot]');
+      if (spot){
+        e.preventDefault();
+        const pose = this.spots.tap(Number(spot.dataset.spot));
+        if (pose) this.drop(this.session.sel, pose); else this.render();
+        return;
+      }
       const target = e.target.closest('[data-piece]');
-      if (!target || drag || !this.active) return;
+      if (!target){
+        // tocar el tablero fuera de las piezas suelta la elegida
+        if (e.target.closest('[data-sl-board]') && this.session.sel >= 0){ this.session.sel = -1; this.spots.clear(); this.render(); }
+        return;
+      }
       const piece = Number(target.dataset.piece);
       if (this.#isFixed(piece)) return;
       const k = Number(e.target.closest('[data-k]')?.dataset.k ?? 0);

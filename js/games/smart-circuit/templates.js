@@ -1,5 +1,6 @@
 /* Marcado propio de Smart Circuit: tablero, botones, bandeja de piezas y ayuda. */
 import { board, iconButton } from '../../ui/templates.js';
+import { SPOTS_HELP } from '../../ui/fit-spots.js';
 
 export const boardHtml = () =>
   `<div class="sc-area">` + board('board--circuit') +
@@ -32,5 +33,6 @@ export const help = () => `
   <ul>
     <li>Arrastra una pieza de la bandeja al tablero; arrástrala fuera para devolverla.</li>
     <li>Toca una pieza para elegirla y otra vez para girarla 90°. <b>Voltear</b> cambia de cara la pieza elegida.</li>
+    <li>${SPOTS_HELP}</li>
     <li>La bombilla señala una pieza mal puesta o coloca una en su sitio. Hay una pista cada 10 minutos de juego.</li>
   </ul>`;

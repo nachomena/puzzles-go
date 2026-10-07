@@ -1,5 +1,5 @@
 // Sube la versión cuando publiques cambios para que el iPhone descargue la nueva
-const VERSION = 'pzg-v39';
+const VERSION = 'pzg-v40';
 const FILES = [
   './', './index.html', './manifest.webmanifest',
   './css/base.css', './css/components.css', './css/games/peg-solitaire.css', './css/games/smart-circle.css', './css/games/smart-hexagon.css', './css/games/smart-circuit.css', './css/games/smart-dices.css',
@@ -52,7 +52,7 @@ const FILES = [
   './js/games/sudoku/templates.js', './js/games/sudoku/worker.js', './js/lib/bits.js', './js/lib/dom.js',
   './js/lib/format.js', './js/lib/grid.js', './js/lib/iter.js', './js/lib/random.js', './js/main.js',
   './js/pwa.js', './js/ui/cell-drag.js', './js/ui/confirm-dialog.js', './js/ui/fit-text.js',
-  './js/ui/game-hud.js', './js/ui/grid-board.js', './js/ui/hub-view.js', './js/ui/level-menu.js',
+  './js/ui/fit-spots.js', './js/ui/game-hud.js', './js/ui/grid-board.js', './js/ui/hub-view.js', './js/ui/level-menu.js',
   './js/ui/overlays.js', './js/ui/piece-drag.js', './js/ui/settings-panel.js', './js/ui/templates.js',
   './js/ui/toast.js',
   './fonts/archivo-black.woff2', './fonts/archivo.woff2',

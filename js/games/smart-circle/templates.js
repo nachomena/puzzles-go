@@ -1,5 +1,6 @@
 /* Marcado propio de Smart Circle: tablero redondo, botones, bandeja de piezas y ayuda. */
 import { iconButton } from '../../ui/templates.js';
+import { SPOTS_HELP } from '../../ui/fit-spots.js';
 
 const chip = (action, icon, text, label) =>
   `<button class="btn-chip" data-action="${action}" aria-label="${label}">` +
@@ -38,5 +39,6 @@ export const help = () => `
   <ul>
     <li>Arrastra una pieza de la bandeja al tablero; arrástrala fuera para devolverla.</li>
     <li>Toca una pieza, en la bandeja o en el tablero, para darle la vuelta.</li>
+    <li>${SPOTS_HELP.replace('tal como está girada', 'con la cara que tiene')}</li>
     <li>La bombilla señala una pieza mal puesta, coloca los nervios o pone una pieza en su sitio. Hay una pista cada 10 minutos de juego.</li>
   </ul>`;

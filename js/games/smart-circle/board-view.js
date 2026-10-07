@@ -3,6 +3,7 @@
    Todo el tablero es un único SVG en unidades de tablero (radio 1). */
 import { PIECES, RINGS, SECTORS, RIB_PATTERN } from './engine/pieces.js';
 import { RING_R, HOLE_R, xy, pieceParts, looseSvg } from './piece-svg.js';
+import { spotsMarkup } from '../../ui/fit-spots.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const DEG = 360 / SECTORS;
@@ -36,10 +37,12 @@ export class CircleBoardView {
       `<circle class="sl-disc" r="1"/><g class="sl-holes">${holes}</g>` +
       `<g class="sl-marks">${marks}</g>` +
       `<g class="sl-ribs">${RIB_PATTERN.map(rib).join('')}</g>` +
-      `<g class="sl-pieces"></g><g class="sl-preview"></g>`;
+      `<g class="sl-pieces"></g><g class="sl-chosen"></g><g class="sl-spots"></g><g class="sl-preview"></g>`;
     this.ribsEl = this.svg.querySelector('.sl-ribs');
     this.piecesEl = this.svg.querySelector('.sl-pieces');
     this.previewEl = this.svg.querySelector('.sl-preview');
+    this.chosenEl = this.svg.querySelector('.sl-chosen');
+    this.spotsEl = this.svg.querySelector('.sl-spots');
     this.root.classList.remove('is-won');
     if (this.ribsBtn) this.ribsBtn.hidden = p.ribsFixed;
   }
@@ -48,8 +51,13 @@ export class CircleBoardView {
    * @param {object} v
    * @param {(null|{m,s})[]} v.place  @param {number[]} v.tm  cara de cada pieza en la bandeja
    * @param {number[]} v.fixed  @param {number} v.sel  @param {number} v.ro  orientación de los nervios
+   * @param {{x:number,y:number}[]} [v.spots]  centros de los sitios donde cabe la pieza elegida
+   * @param {number} [v.chosenSpot]  sitio que se está mirando  @param {object|null} [v.chosen]  su postura
    */
-  render({ place, tm, fixed, sel, ro }){
+  render({ place, tm, fixed, sel, ro, spots = [], chosenSpot = -1, chosen = null }){
+    this.spotsEl.innerHTML = spotsMarkup(spots, chosenSpot, .045);
+    this.chosenEl.innerHTML = chosen && sel >= 0
+      ? `<g class="sl-piece sl-hue-${PIECES[sel].hue} is-chosen">${pieceParts(sel, sectorFor(chosen))}</g>` : '';
     this.ribsEl.style.transform = `rotate(${ro * DEG}deg)`;
     this.piecesEl.innerHTML = place.map((pose, p) => {
       if (!pose) return '';

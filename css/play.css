@@ -21,3 +21,9 @@
 .hint-btn.is-waiting svg{opacity:.35}
 .hint-btn__wait{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);font-size:11px;font-weight:600;color:var(--dim);font-variant-numeric:tabular-nums;white-space:nowrap}
 .dock{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;gap:30px;padding:10px 0 calc(16px + var(--safe-bottom));background:var(--bg);z-index:5}
+
+/* "Mostrar dónde cabe": puntos de los sitios donde cabe la pieza elegida (ui/fit-spots.js) */
+.fit-spot{pointer-events:auto;fill:var(--fit-spot,#e2bf5a);stroke:#1d1c21;cursor:pointer;animation:fit-spot 1.6s ease-in-out infinite;vector-effect:non-scaling-stroke;stroke-width:1.5px}
+.fit-spot.is-on{stroke:var(--ink);stroke-width:2.5px;animation:none}
+@keyframes fit-spot{50%{opacity:.55}}
+.is-chosen{opacity:.6;pointer-events:none}

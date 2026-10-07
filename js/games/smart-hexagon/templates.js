@@ -1,5 +1,6 @@
 /* Marcado propio de Smart Hexagon: tablero hexagonal, botones, bandeja de piezas y ayuda. */
 import { iconButton } from '../../ui/templates.js';
+import { SPOTS_HELP } from '../../ui/fit-spots.js';
 
 export const boardHtml = () =>
   `<div class="sh-area">` +
@@ -27,6 +28,6 @@ export const help = () => `
   <ul>
     <li>Arrastra una pieza de la bandeja al tablero; arrástrala fuera para devolverla.</li>
     <li>Toca una pieza para elegirla y otra vez para girarla 60°. <b>Voltear</b> le da la vuelta a la pieza elegida.</li>
-    <li>Con una pieza elegida, los puntos marcan dónde cabe tal como está girada: toca uno para verla ahí y otra vez para colocarla. Se puede desactivar en Ajustes.</li>
+    <li>${SPOTS_HELP}</li>
     <li>La bombilla señala una pieza mal puesta o coloca una en su sitio. Hay una pista cada 10 minutos de juego.</li>
   </ul>`;

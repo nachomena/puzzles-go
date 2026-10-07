@@ -2,6 +2,7 @@
    al arrastrar y bandeja. Todo el tablero es un único SVG (distancia entre clavijas = 1). */
 import { PIECES, POSTS } from './engine/pieces.js';
 import { postXY, toDoubled, pieceParts, looseSvg } from './piece-svg.js';
+import { spotsMarkup } from '../../ui/fit-spots.js';
 
 /** Radio del marco hexagonal (hasta sus esquinas). */
 const FRAME = 3.3;
@@ -45,11 +46,10 @@ export class HexagonBoardView {
    * @param {(null|{m,r,tu,tv})[]} v.place  @param {number[]} v.tm @param {number[]} v.tr  cara y giro en la bandeja
    * @param {number[]} v.fixed  @param {number} v.sel
    * @param {{x:number,y:number}[]} [v.spots]  centros de los sitios donde cabe la pieza elegida
-   * @param {object|null} [v.chosen]  sitio elegido (postura), que se ve en vista previa
+   * @param {number} [v.chosenSpot]  sitio que se está mirando  @param {object|null} [v.chosen]  su postura
    */
-  render({ place, tm, tr, fixed, sel, spots = [], chosen = null }){
-    this.spotsEl.innerHTML = spots.map(({ x, y, on }, i) =>
-      `<circle class="sh-spot${on ? ' is-on' : ''}" data-spot="${i}" cx="${x.toFixed(4)}" cy="${y.toFixed(4)}" r="${on ? .15 : .1}"/>`).join('');
+  render({ place, tm, tr, fixed, sel, spots = [], chosenSpot = -1, chosen = null }){
+    this.spotsEl.innerHTML = spotsMarkup(spots, chosenSpot, .1);
     this.chosenEl.innerHTML = chosen && sel >= 0
       ? `<g class="sh-piece sh-hue-${PIECES[sel].hue} is-chosen">${pieceParts(sel, chosen)}</g>` : '';
     this.piecesEl.innerHTML = place.map((pose, p) => {
