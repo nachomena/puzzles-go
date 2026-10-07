@@ -32,9 +32,11 @@ export class HexagonBoardView {
     this.svg.innerHTML =
       `<path class="sh-frame" d="${hexPath(0, 0, FRAME)}"/>` +
       `<path class="sh-floor" d="${hexPath(0, 0, FRAME - .16)}"/>` +
-      `<g class="sh-posts">${posts}</g><g class="sh-pieces"></g><g class="sh-preview"></g>`;
+      `<g class="sh-posts">${posts}</g><g class="sh-pieces"></g><g class="sh-chosen"></g><g class="sh-spots"></g><g class="sh-preview"></g>`;
     this.piecesEl = this.svg.querySelector('.sh-pieces');
     this.previewEl = this.svg.querySelector('.sh-preview');
+    this.chosenEl = this.svg.querySelector('.sh-chosen');
+    this.spotsEl = this.svg.querySelector('.sh-spots');
     this.root.classList.remove('is-won');
   }
 
@@ -42,8 +44,14 @@ export class HexagonBoardView {
    * @param {object} v
    * @param {(null|{m,r,tu,tv})[]} v.place  @param {number[]} v.tm @param {number[]} v.tr  cara y giro en la bandeja
    * @param {number[]} v.fixed  @param {number} v.sel
+   * @param {{x:number,y:number}[]} [v.spots]  centros de los sitios donde cabe la pieza elegida
+   * @param {object|null} [v.chosen]  sitio elegido (postura), que se ve en vista previa
    */
-  render({ place, tm, tr, fixed, sel }){
+  render({ place, tm, tr, fixed, sel, spots = [], chosen = null }){
+    this.spotsEl.innerHTML = spots.map(({ x, y, on }, i) =>
+      `<circle class="sh-spot${on ? ' is-on' : ''}" data-spot="${i}" cx="${x.toFixed(4)}" cy="${y.toFixed(4)}" r="${on ? .15 : .1}"/>`).join('');
+    this.chosenEl.innerHTML = chosen && sel >= 0
+      ? `<g class="sh-piece sh-hue-${PIECES[sel].hue} is-chosen">${pieceParts(sel, chosen)}</g>` : '';
     this.piecesEl.innerHTML = place.map((pose, p) => {
       if (!pose) return '';
       const cls = (fixed.includes(p) ? ' is-fixed' : '') + (p === sel ? ' is-selected' : '');

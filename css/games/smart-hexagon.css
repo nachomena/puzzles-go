@@ -42,3 +42,9 @@
 .sh-loose{display:block;width:100%;height:100%;overflow:visible}
 .sh-ghost{position:fixed;left:0;top:0;z-index:30;pointer-events:none;filter:drop-shadow(0 10px 16px rgba(0,0,0,.5))}
 .sh-tip{font-size:13px;color:var(--dim);text-align:center;margin:4px 0 0}
+
+/* Sitios donde cabe la pieza elegida y el que se está mirando */
+.sh-spot{fill:#e2bf5a;stroke:#1d1c21;stroke-width:.035;cursor:pointer;animation:sh-spot 1.6s ease-in-out infinite}
+.sh-spot.is-on{fill:#e2bf5a;stroke:var(--ink);stroke-width:.05;animation:none}
+@keyframes sh-spot{50%{opacity:.55}}
+.sh-piece.is-chosen{opacity:.6;pointer-events:none}

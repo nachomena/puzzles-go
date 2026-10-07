@@ -1,5 +1,6 @@
 /* Partida de Smart Hexagon: arrastrar piezas al tablero, tocar para elegir y otra vez para girar
-   60°, y voltear la elegida con un botón. */
+   60°, y voltear la elegida con un botón. Con la pieza elegida se marcan los sitios donde cabe tal
+   como está girada; tocar uno la muestra ahí y tocarlo otra vez la coloca. */
 import { GameController } from '../../core/game-controller.js';
 import { HexagonBoardView } from './board-view.js';
 import { PIECES, pointsOf, cellsOf } from './engine/pieces.js';
@@ -7,6 +8,7 @@ import { fits, isSolved, findHint, findMistake, occupancy } from './rules.js';
 import { pointXY } from './piece-svg.js';
 
 const DRAG_THRESHOLD = 6;
+const samePose = (a, b) => a.m === b.m && a.r === b.r && a.tu === b.tu && a.tv === b.tv;
 
 /** Centro (en pantalla) de una pieza con una postura. */
 const centerOf = (piece, pose) => {
@@ -46,8 +48,36 @@ export class SmartHexagonController extends GameController {
   mountBoard(){ this.view.build(); }
   renderBoard(){
     const s = this.session;
-    this.view.render({ place: s.place, tm: s.tm, tr: s.tr, fixed: s.p.fixed, sel: s.sel });
+    this.spots = this.#fittingSpots();
+    if (this.chosen && !this.spots.some(p => samePose(p, this.chosen))) this.chosen = null;
+    this.view.render({
+      place: s.place, tm: s.tm, tr: s.tr, fixed: s.p.fixed, sel: s.sel,
+      spots: this.spots.map(pose => { const [x, y] = centerOf(s.sel, pose); return { x, y, on: !!this.chosen && samePose(pose, this.chosen) }; }),
+      chosen: this.chosen
+    });
   }
+
+  /** Sitios donde cabe la pieza elegida, tal como está girada y volteada (si el ajuste está activo). */
+  #fittingSpots(){
+    const s = this.session, piece = s.sel;
+    if (!this.settings.spots || !this.active || piece < 0 || this.#isFixed(piece)) return [];
+    const cur = s.place[piece], m = cur ? cur.m : s.tm[piece], r = cur ? cur.r : s.tr[piece], out = [];
+    for (let tu = -14; tu <= 14; tu += 2) for (let tv = -14; tv <= 14; tv += 2){
+      const pose = { m, r, tu, tv };
+      if ((!cur || !samePose(cur, pose)) && fits(s.place, piece, pose)) out.push(pose);
+    }
+    return out;
+  }
+
+  /** Tocar un sitio marcado: la primera vez se ve ahí la pieza; la segunda se coloca. */
+  #tapSpot(i){
+    const s = this.session, pose = this.spots?.[i];
+    if (!pose || s.sel < 0) return;
+    if (this.chosen && samePose(this.chosen, pose)){ this.chosen = null; this.drop(s.sel, pose); return; }
+    this.chosen = pose;
+    this.render();
+  }
+  onSetting(){ this.chosen = null; }
   snapshot(){ return { place: this.session.place.map(p => p && { ...p }) }; }
   restore(snap){ this.session.place = snap.place; }
   hasInput(){ return this.session.place.some((pose, p) => pose && !this.#isFixed(p)); }
@@ -106,6 +136,7 @@ export class SmartHexagonController extends GameController {
   tap(piece){
     const s = this.session;
     if (!this.active || this.#isFixed(piece)) return;
+    this.chosen = null;
     if (s.sel !== piece){ s.sel = piece; this.render(); return; }
     const pose = s.place[piece], m = pose ? pose.m : s.tm[piece], r = ((pose ? pose.r : s.tr[piece]) + 1) % 6;
     this.#reorient(piece, m, r, 'No cabe girada aquí');
@@ -115,6 +146,7 @@ export class SmartHexagonController extends GameController {
   flip(){
     const s = this.session, piece = s.sel;
     if (!this.active || piece < 0 || this.#isFixed(piece)) return;
+    this.chosen = null;
     const pose = s.place[piece], m = 1 - (pose ? pose.m : s.tm[piece]), r = pose ? pose.r : s.tr[piece];
     this.#reorient(piece, m, r, 'No cabe volteada aquí');
   }
@@ -123,6 +155,7 @@ export class SmartHexagonController extends GameController {
   drop(piece, pose){
     const s = this.session;
     if (!this.active || this.#isFixed(piece)) return;
+    this.chosen = null;
     s.sel = piece;
     if (!pose){
       if (s.place[piece]){ this.#toTray(piece); this.commit(true); } else this.render();
@@ -146,8 +179,15 @@ export class SmartHexagonController extends GameController {
   #bindPointer(el){
     let drag = null;
     el.addEventListener('pointerdown', e => {
+      if (drag || !this.active) return;
+      const spot = e.target.closest('[data-spot]');
+      if (spot){ e.preventDefault(); this.#tapSpot(Number(spot.dataset.spot)); return; }
       const target = e.target.closest('[data-piece]');
-      if (!target || drag || !this.active) return;
+      if (!target){
+        // tocar el tablero fuera de las piezas suelta la elegida
+        if (e.target.closest('[data-sh-board]') && this.session.sel >= 0){ this.session.sel = -1; this.chosen = null; this.render(); }
+        return;
+      }
       const piece = Number(target.dataset.piece);
       if (this.#isFixed(piece)) return;
       const k = Number(e.target.closest('[data-k]')?.dataset.k ?? 0);
