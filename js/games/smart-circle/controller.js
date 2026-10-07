@@ -1,5 +1,5 @@
 /* Partida de Smart Circle: arrastrar piezas alrededor del tablero (moverlas de sector es girarlas),
-   tocar para elegir, voltear la elegida y, en los niveles difíciles, girar los nervios. */
+   tocarlas para voltearlas y, en los niveles difíciles, girar los nervios. */
 import { GameController } from '../../core/game-controller.js';
 import { CircleBoardView } from './board-view.js';
 import { PIECES, SECTORS, cellsOf, crossesRib, ribsAt } from './engine/pieces.js';
@@ -52,7 +52,7 @@ export class SmartCircleController extends GameController {
   isSolved(){ return isSolved(this.session.place, this.session.p.solution); }
   get resetMessage(){ return 'Tablero vacío.'; }
   celebrate(){ this.session.sel = -1; this.renderBoard(); this.view.celebrate(); }
-  get actions(){ return { flip: () => this.flip(), 'turn-ribs': () => this.turnRibs() }; }
+  get actions(){ return { 'turn-ribs': () => this.turnRibs() }; }
 
   findMistake(){
     const s = this.session, m = findMistake(s.place, s.p.solution, s.p.fixed);
@@ -111,26 +111,25 @@ export class SmartCircleController extends GameController {
     }
   }
 
-  /** Tocar una pieza la elige; tocarla otra vez la suelta. */
+  /** Tocar una pieza le da la vuelta (girarla no hace falta: basta moverla alrededor del tablero). */
   tap(piece){
     const s = this.session;
     if (!this.active || this.#isFixed(piece)) return;
-    s.sel = s.sel === piece ? -1 : piece;
-    this.render();
+    s.sel = piece;
+    this.flip(piece);
   }
 
-  /** Da la vuelta a la pieza elegida; en el tablero, buscando el hueco más cercano en el que quepa. */
-  flip(){
-    const s = this.session, piece = s.sel;
-    if (!this.active || piece < 0 || this.#isFixed(piece)) return;
-    const pose = s.place[piece];
+  /** Da la vuelta a una pieza; en el tablero, buscando el hueco más cercano en el que quepa. */
+  flip(piece){
+    const s = this.session, pose = s.place[piece];
     if (!pose){ s.tm[piece] = -s.tm[piece]; this.render(); return; }
     // la nueva cara, centrada en el mismo sitio: el sector de la bola 0 se mantiene y se prueba alrededor
-    const m = -pose.m, anchor = pose.m * PIECES[piece].balls[0][1] + pose.s, s0 = anchor - m * PIECES[piece].balls[0][1];
+    const m = -pose.m, d0 = PIECES[piece].balls[0][1], s0 = pose.m * d0 + pose.s - m * d0;
     for (const d of [0, 1, -1, 2, -2, 3, -3]){
       const next = { m, s: nearestShift(s0 + d) };
       if (fits(s.place, piece, next, s.ro)){ s.place[piece] = next; this.commit(true); return; }
     }
+    this.render();
     this.notify('No cabe volteada aquí');
   }
 
@@ -157,8 +156,8 @@ export class SmartCircleController extends GameController {
   }
 
   /**
-   * Arrastrar: la pieza sigue al dedo y, sobre el tablero, se ve dónde quedaría (en rojo si no
-   * cabe). Un toque sin arrastrar elige la pieza.
+   * Arrastrar: la pieza sigue al dedo y, sobre el tablero, se ve dónde quedaría (en gris si no
+   * cabe). Un toque sin arrastrar le da la vuelta.
    */
   #bindPointer(el){
     let drag = null;

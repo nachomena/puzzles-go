@@ -4,7 +4,7 @@ import { PIECES, SECTORS, bonds } from './engine/pieces.js';
 
 /** Radio de cada anillo, y de sus agujeros y bolas. */
 export const RING_R = [.35, .53, .79];
-export const BALL_R = [.062, .095, .145];
+export const BALL_R = [.056, .087, .133];
 export const HOLE_R = BALL_R.map(r => r * .78);
 
 const STEP = 2 * Math.PI / SECTORS;

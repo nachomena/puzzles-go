@@ -17,7 +17,6 @@ export class CircleBoardView {
     this.root = screen.querySelector('[data-sl-board]');
     this.svg = this.root.querySelector('svg');
     this.tray = screen.querySelector('[data-tray]');
-    this.flipBtn = screen.querySelector('[data-action="flip"]');
     this.ribsBtn = screen.querySelector('[data-action="turn-ribs"]');
     this.ghost = null;
   }
@@ -63,7 +62,6 @@ export class CircleBoardView {
       return `<div class="sl-tray-piece${p === sel ? ' is-selected' : ''}" data-piece="${p}" ` +
         `style="--w:${w.toFixed(3)};--h:${h.toFixed(3)}">${svg}</div>`;
     }).join('');
-    if (this.flipBtn) this.flipBtn.disabled = sel < 0 || fixed.includes(sel);
   }
 
   /** Vista previa de una pieza en el tablero mientras se arrastra (`ok` = cabe ahí). */

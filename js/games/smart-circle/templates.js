@@ -12,18 +12,17 @@ export const boardHtml = () =>
   iconButton('reset', 'reset', 'Quitar todas las piezas') +
   `<div class="sl-actions__right">` +
   chip('turn-ribs', 'turn', 'Nervios', 'Girar los nervios del tablero') +
-  chip('flip', 'flip', 'Voltear', 'Voltear la pieza seleccionada') +
   `</div></div></div>`;
 
 export const controls = () =>
   `<div class="sl-tray" data-tray aria-label="Piezas sin colocar"></div>` +
-  `<p class="sl-tip">Arrastra las piezas al tablero · toca para elegir y voltear</p>`;
+  `<p class="sl-tip">Arrastra las piezas al tablero · tócalas para voltearlas</p>`;
 
 export const help = () => `
   <p>Coloca las <b>10 piezas</b> en el tablero hasta llenar sus <b>48 agujeros</b>.</p>
   <ul>
     <li>Las bolas grandes van en el anillo de fuera, las medianas en el del medio y las pequeñas en el de dentro.</li>
-    <li>Las piezas giran al moverlas alrededor del tablero y tienen dos caras: <b>Voltear</b> les da la vuelta.</li>
+    <li>Las piezas giran al moverlas alrededor del tablero y tienen dos caras: tócalas para darles la vuelta.</li>
     <li>Los <b>nervios</b> del borde no se pueden cruzar: una pieza no puede unir dos bolas grandes a ambos lados de un nervio.</li>
     <li>Cada reto tiene una sola solución.</li>
   </ul>
@@ -38,6 +37,6 @@ export const help = () => `
   <h3>Controles</h3>
   <ul>
     <li>Arrastra una pieza de la bandeja al tablero; arrástrala fuera para devolverla.</li>
-    <li>Toca una pieza para elegirla y <b>Voltear</b> para darle la vuelta.</li>
+    <li>Toca una pieza, en la bandeja o en el tablero, para darle la vuelta.</li>
     <li>La bombilla señala una pieza mal puesta, coloca los nervios o pone una pieza en su sitio. Hay una pista cada 10 minutos de juego.</li>
   </ul>`;
