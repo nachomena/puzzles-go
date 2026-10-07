@@ -7,7 +7,6 @@ import { W, H, CELLS, DIRS } from './engine/pieces.js';
 import { orient } from './engine/solver.js';
 import { footprint } from './engine/arrangements.js';
 import { pieceSvg, pieceParts, cellPath } from './piece-svg.js';
-import { spotsMarkup } from '../../ui/fit-spots.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const layer = cls => {
@@ -25,8 +24,7 @@ export class CircuitBoardView {
     this.cluesEl = layer('sc-clues');
     this.piecesEl = layer('sc-pieces');
     this.errorsEl = layer('sc-errors');
-    this.spotsEl = layer('sc-spots');
-    this.board.append(this.cluesEl, this.piecesEl, this.errorsEl, this.spotsEl);
+    this.board.append(this.cluesEl, this.piecesEl, this.errorsEl);
     this.tray = screen.querySelector('[data-tray]');
     this.flipBtn = screen.querySelector('[data-action="flip"]');
   }
@@ -65,19 +63,15 @@ export class CircuitBoardView {
    * @param {number[]} v.tface @param {number[]} v.trot  cara y giro de cada pieza en la bandeja
    * @param {number[]} v.fixed  @param {number} v.sel  pieza seleccionada (-1 = ninguna)
    * @param {{cell:number, dir:string}[]|null} v.broken  salidas cortadas (null = no resaltar)
-   * @param {{x:number,y:number}[]} [v.spots]  centros de los sitios donde cabe la pieza elegida
-   * @param {number} [v.chosenSpot]  sitio que se está mirando  @param {object|null} [v.chosen]  su posición
    */
-  render({ place, tface, trot, fixed, sel, broken, spots = [], chosenSpot = -1, chosen = null }){
+  render({ place, tface, trot, fixed, sel, broken }){
     this.piecesEl.innerHTML = place.map((pos, piece) => {
       if (!pos) return '';
       const o = orient(piece, pos.face, pos.rot);
       const cls = (fixed.includes(piece) ? ' is-fixed' : '') + (piece === sel ? ' is-selected' : '');
       return `<g class="sc-piece${cls}" data-piece="${piece}" transform="translate(${pos.x} ${pos.y})" style="--w:${o.w};--h:${o.h}">` +
         `${pieceParts(o, { halo: piece === sel })}</g>`;
-    }).join('') + (chosen && sel >= 0
-      ? `<g class="sc-piece is-chosen" transform="translate(${chosen.x} ${chosen.y})">${pieceParts(orient(sel, chosen.face, chosen.rot))}</g>` : '');
-    this.spotsEl.innerHTML = spotsMarkup(spots, chosenSpot, .15);
+    }).join('');
     this.tray.innerHTML = place.map((pos, piece) => {
       if (pos) return '';
       const o = orient(piece, tface[piece], trot[piece]);

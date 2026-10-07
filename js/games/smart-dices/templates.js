@@ -1,6 +1,5 @@
 /* Marcado propio de Smart Dices: tablero con flechas, controles, bandeja de piezas y ayuda. */
 import { board, iconButton } from '../../ui/templates.js';
-import { SPOTS_HELP } from '../../ui/fit-spots.js';
 
 /** Puntos de cada cara (posiciones 0..8 de la rejilla 3×3), como en el reglamento. */
 const FACE_DOTS = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] };
@@ -44,7 +43,6 @@ export const help = () => `
   <ul>
     <li>Arrastra una pieza de la bandeja al tablero para colocarla.</li>
     <li>Toca una pieza para girarla 90°, en la bandeja o en el tablero.</li>
-    <li>${SPOTS_HELP}</li>
     <li>Arrastra una pieza fuera del tablero para devolverla a la bandeja.</li>
     <li>La bombilla coloca una pieza en su sitio. Hay una pista cada 10 minutos de juego.</li>
   </ul>

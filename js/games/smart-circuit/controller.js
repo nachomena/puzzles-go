@@ -5,16 +5,11 @@ import { CircuitBoardView } from './board-view.js';
 import { PIECES, W, H } from './engine/pieces.js';
 import { orient, faceCount } from './engine/solver.js';
 import { fits, isSolved, findHint, findMistake, occupancy, cellsOf, brokenEnds } from './rules.js';
-import { FitSpots } from '../../ui/fit-spots.js';
-
-const samePos = (a, b) => a.face === b.face && a.rot === b.rot && a.x === b.x && a.y === b.y;
 
 export class SmartCircuitController extends GameController {
   constructor(deps){
     super(deps);
     this.view = new CircuitBoardView(deps.screen);
-    this.spots = new FitSpots(samePos);
-    this.#bindSpots(deps.screen.querySelector('.sc-area'));
     bindPieceDrag(deps.screen.querySelector('.wrap'), {
       canMove: piece => this.active && !this.#isFixed(piece),
       cellSize: () => this.view.cellSize(),
@@ -41,47 +36,12 @@ export class SmartCircuitController extends GameController {
   }
   mountBoard(){ this.view.build(this.session.p); }
   renderBoard(){
-    const s = this.session, spots = this.spots.update(this.#fittingSpots());
+    const s = this.session;
     this.view.render({
       place: s.place, tface: s.tface, trot: s.trot, fixed: s.p.fixed, sel: s.sel,
-      broken: this.settings.errors ? brokenEnds(s.place) : null,
-      spots: spots.map(pos => {
-        const o = orient(s.sel, pos.face, pos.rot), n = o.cells.length;
-        return { x: pos.x + o.cells.reduce((t, c) => t + c[0], 0) / n + .5, y: pos.y + o.cells.reduce((t, c) => t + c[1], 0) / n + .5 };
-      }),
-      chosenSpot: this.spots.chosenIndex, chosen: this.spots.chosen
+      broken: this.settings.errors ? brokenEnds(s.place) : null
     });
   }
-
-  /** Sitios donde cabe la pieza elegida, tal como está (si el ajuste está activo). */
-  #fittingSpots(){
-    const s = this.session, piece = s.sel;
-    if (!this.settings.spots || !this.active || piece < 0 || this.#isFixed(piece)) return [];
-    const cur = s.place[piece], face = cur ? cur.face : s.tface[piece], rot = cur ? cur.rot : s.trot[piece], out = [];
-    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++){
-      const pos = { face, rot, x, y };
-      if ((!cur || !samePos(cur, pos)) && fits(s.place, piece, pos)) out.push(pos);
-    }
-    return out;
-  }
-
-  /** Toques en el tablero: en un punto, mirar o colocar ahí la pieza; en un hueco, soltarla. */
-  #bindSpots(area){
-    area.addEventListener('pointerdown', e => {
-      const s = this.session;
-      if (!this.active) return;
-      const spot = e.target.closest('[data-spot]');
-      if (spot){
-        e.preventDefault();
-        const pos = this.spots.tap(Number(spot.dataset.spot));
-        if (pos) this.drop(s.sel, pos); else this.render();
-        return;
-      }
-      if (!e.target.closest('[data-piece]') && e.target.closest('.board') && s.sel >= 0){ s.sel = -1; this.spots.clear(); this.render(); }
-    });
-  }
-  onSetting(){ this.spots.clear(); }
-
   snapshot(){ return { place: this.session.place.map(p => p && { ...p }) }; }
   restore(snap){ this.session.place = snap.place; }
   hasInput(){ const s = this.session; return s.place.some((pos, piece) => pos && !this.#isFixed(piece)); }
@@ -139,7 +99,6 @@ export class SmartCircuitController extends GameController {
   tap(piece){
     const s = this.session;
     if (!this.active || this.#isFixed(piece)) return;
-    this.spots.clear();
     if (s.sel !== piece){ s.sel = piece; this.render(); return; }
     const pos = s.place[piece];
     const face = pos ? pos.face : s.tface[piece], rot = ((pos ? pos.rot : s.trot[piece]) + 1) % 4;
@@ -150,7 +109,6 @@ export class SmartCircuitController extends GameController {
   flip(){
     const s = this.session, piece = s.sel;
     if (!this.active || piece < 0 || this.#isFixed(piece)) return;
-    this.spots.clear();
     const pos = s.place[piece];
     const face = ((pos ? pos.face : s.tface[piece]) + 1) % faceCount(piece), rot = pos ? pos.rot : s.trot[piece];
     this.#reorient(piece, face, rot, 'No cabe volteada aquí');
@@ -160,7 +118,6 @@ export class SmartCircuitController extends GameController {
   drop(piece, cell){
     const s = this.session;
     if (!this.active || this.#isFixed(piece)) return;
-    this.spots.clear();
     s.sel = piece;
     const cur = s.place[piece];
     if (!cell){

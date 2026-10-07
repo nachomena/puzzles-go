@@ -1,7 +1,6 @@
 /* Vista de Smart Dices: tablero de 6×6 con los 4 dados, piezas colocadas, flechas y bandeja. */
 import { GridBoard } from '../../ui/grid-board.js';
 import { SIZE, CELLS, PIECES, shape, dieOf } from './engine/pieces.js';
-import { spotsMarkup } from '../../ui/fit-spots.js';
 
 const REGIONS = Array.from({ length: CELLS }, (_, i) => dieOf(i));
 /** Grosor del marco en unidades de casilla (coincide con .board--dice .board__frame en el CSS). */
@@ -29,10 +28,6 @@ export class DicesBoardView {
     this.piecesEl = document.createElement('div');
     this.piecesEl.className = 'sd-pieces';
     this.board.appendChild(this.piecesEl);
-    this.spotsEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    this.spotsEl.setAttribute('class', 'sd-spots');
-    this.spotsEl.setAttribute('viewBox', `0 0 ${SIZE} ${SIZE}`);
-    this.board.appendChild(this.spotsEl);
     this.diceEl = document.createElement('div');
     this.diceEl.className = 'sd-dice';
     this.diceEl.innerHTML = '<i></i><i></i><i></i><i></i>';
@@ -66,20 +61,17 @@ export class DicesBoardView {
    * @param {number[]} v.trot   giro de cada pieza en la bandeja
    * @param {number[]} v.fixed
    * @param {{ dice: {full,value}[], arrows: {rows: string[], cols: string[]} }|null} v.status  null = no resaltar
-   * @param {number} [v.sel]  pieza elegida (la última tocada)
-   * @param {{x:number,y:number}[]} [v.spots]  centros de los sitios donde cabe la elegida
-   * @param {number} [v.chosenSpot]  sitio que se está mirando  @param {object|null} [v.chosen]  su posición
    */
-  render({ place, trot, fixed, status, sel = -1, spots = [], chosenSpot = -1, chosen = null }){
-    const onBoard = (piece, pos, cls) => {
+  render({ place, trot, fixed, status }){
+    this.piecesEl.innerHTML = place.map((pos, piece) => {
+      if (!pos) return '';
       const s = shape(PIECES[piece], pos.rot);
-      return pieceHtml(piece, pos.rot, { cls, style: `left:${inset(pos.c)};top:${inset(pos.r)};width:${span(s.w)};height:${span(s.h)}` });
-    };
-    this.piecesEl.innerHTML = place.map((pos, piece) => !pos ? '' :
-      onBoard(piece, pos, (fixed.includes(piece) ? 'is-fixed' : '') + (piece === sel ? ' is-selected' : ''))).join('') +
-      (chosen && sel >= 0 ? onBoard(sel, chosen, 'is-chosen') : '');
-    this.spotsEl.innerHTML = spotsMarkup(spots, chosenSpot, .14);
-    this.tray.innerHTML = place.map((pos, piece) => pos ? '' : pieceHtml(piece, trot[piece], { cls: 'is-tray' + (piece === sel ? ' is-selected' : '') })).join('');
+      return pieceHtml(piece, pos.rot, {
+        cls: fixed.includes(piece) ? 'is-fixed' : '',
+        style: `left:${inset(pos.c)};top:${inset(pos.r)};width:${span(s.w)};height:${span(s.h)}`
+      });
+    }).join('');
+    this.tray.innerHTML = place.map((pos, piece) => pos ? '' : pieceHtml(piece, trot[piece], { cls: 'is-tray' })).join('');
     [...this.diceEl.children].forEach((el, d) => el.classList.toggle('is-bad', !!status && status.dice[d].full && !status.dice[d].value));
     for (const kind of ['rows', 'cols']) for (const i of [0, 1]){
       const st = status?.arrows[kind][i] || '';

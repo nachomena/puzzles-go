@@ -67,9 +67,6 @@
 .sd-pieces .sd-piece.is-fixed{background:var(--sd-piece);cursor:default;
   box-shadow:inset 0 0 0 2px var(--sd-piece-line),inset 0 3px 4px rgba(255,255,255,.16),inset 0 -5px 9px rgba(0,0,0,.38),0 3px 6px rgba(0,0,0,.4)}
 .sd-piece.is-lifted{opacity:.2}
-/* Pieza elegida (la última tocada) y puntos de dónde cabe */
-.sd-piece.is-selected{outline:2px solid var(--ink);outline-offset:2px}
-.sd-spots{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;overflow:visible}
 .sd-piece.is-ghost{position:fixed;z-index:30;pointer-events:none;background:rgba(220,219,228,.22);
   box-shadow:inset 0 0 0 2px var(--ink),inset 0 3px 4px rgba(255,255,255,.18),inset 0 -5px 9px rgba(0,0,0,.35),0 10px 24px rgba(0,0,0,.45)}
 .sd-piece.is-flash{animation:flash .5s ease-in-out 3}

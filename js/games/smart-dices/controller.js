@@ -1,24 +1,18 @@
-/* Partida de Smart Dices: arrastrar piezas de la bandeja al tablero y tocar para girarlas. La última
-   pieza tocada queda elegida y, con "Mostrar dónde cabe", se marcan los sitios donde cabe tal como está. */
+/* Partida de Smart Dices: arrastrar piezas de la bandeja al tablero y tocar para girarlas. */
 import { GameController } from '../../core/game-controller.js';
 import { DicesBoardView } from './board-view.js';
 import { bindPieceDrag } from '../../ui/piece-drag.js';
 import { PIECES, SIZE, shape } from './engine/pieces.js';
 import { evaluate, fits, isSolved, findHint, findMistake, occupancy, cellsOf } from './rules.js';
-import { FitSpots } from '../../ui/fit-spots.js';
-
-const samePos = (a, b) => a.rot === b.rot && a.r === b.r && a.c === b.c;
 
 export class SmartDicesController extends GameController {
   constructor(deps){
     super(deps);
     this.view = new DicesBoardView(deps.screen);
-    this.spots = new FitSpots(samePos);
-    this.#bindSpots(deps.screen.querySelector('.board'));
     bindPieceDrag(deps.screen.querySelector('.wrap'), {
       canMove: piece => this.active && !this.#isFixed(piece),
       cellSize: () => this.view.cellSize(),
-      onTap: piece => { this.session.sel = piece; this.rotate(piece); },
+      onTap: piece => this.rotate(piece),
       onDrop: (piece, rect) => this.drop(piece, this.view.cellFor(rect))
     });
   }
@@ -33,51 +27,16 @@ export class SmartDicesController extends GameController {
       const { rot, r, c } = puzzle.solution[piece];
       place[piece] = { rot, r, c };
     }
-    return { L, p: puzzle, place, trot: PIECES.map(() => 0), sel: -1, time: 0, done: false, hints: 0 };
+    return { L, p: puzzle, place, trot: PIECES.map(() => 0), time: 0, done: false, hints: 0 };
   }
   mountBoard(){ this.view.build(this.session.p); }
   renderBoard(){
-    const s = this.session, spots = this.spots.update(this.#fittingSpots());
+    const s = this.session;
     this.view.render({
-      place: s.place, trot: s.trot, fixed: s.p.fixed, sel: s.sel ?? -1,
-      status: this.settings.errors ? evaluate(s.place, s.p.arrows) : null,
-      spots: spots.map(pos => {
-        const sh = shape(PIECES[s.sel], pos.rot), n = sh.cells.length;
-        return { x: pos.c + sh.cells.reduce((t, q) => t + q[1], 0) / n + .5, y: pos.r + sh.cells.reduce((t, q) => t + q[0], 0) / n + .5 };
-      }),
-      chosenSpot: this.spots.chosenIndex, chosen: this.spots.chosen
+      place: s.place, trot: s.trot, fixed: s.p.fixed,
+      status: this.settings.errors ? evaluate(s.place, s.p.arrows) : null
     });
   }
-
-  /** Sitios donde cabe la pieza elegida, tal como está girada (si el ajuste está activo). */
-  #fittingSpots(){
-    const s = this.session, piece = s.sel ?? -1;
-    if (!this.settings.spots || !this.active || piece < 0 || this.#isFixed(piece)) return [];
-    const cur = s.place[piece], rot = cur ? cur.rot : s.trot[piece], out = [];
-    for (let r = 0; r < SIZE; r++) for (let c = 0; c < SIZE; c++){
-      const pos = { rot, r, c };
-      if ((!cur || !samePos(cur, pos)) && fits(s.place, piece, pos)) out.push(pos);
-    }
-    return out;
-  }
-
-  /** Toques en el tablero: en un punto, mirar o colocar ahí la pieza; en un hueco, soltarla. */
-  #bindSpots(board){
-    board.addEventListener('pointerdown', e => {
-      const s = this.session;
-      if (!this.active) return;
-      const spot = e.target.closest('[data-spot]');
-      if (spot){
-        e.preventDefault();
-        const pos = this.spots.tap(Number(spot.dataset.spot));
-        if (pos) this.drop(s.sel, pos); else this.render();
-        return;
-      }
-      if (!e.target.closest('[data-piece]') && s.sel >= 0){ s.sel = -1; this.spots.clear(); this.render(); }
-    });
-  }
-  onSetting(){ this.spots.clear(); }
-
   snapshot(){ return { place: this.session.place.map(p => p && { ...p }), trot: this.session.trot.slice() }; }
   restore(snap){ this.session.place = snap.place; this.session.trot = snap.trot; }
   hasInput(){ const s = this.session; return s.place.some((pos, piece) => pos && !s.p.fixed.includes(piece)); }
@@ -117,7 +76,6 @@ export class SmartDicesController extends GameController {
   rotate(piece){
     const s = this.session;
     if (!this.active || this.#isFixed(piece)) return;
-    this.spots.clear();
     const pos = s.place[piece];
     if (!pos){ s.trot[piece] = (s.trot[piece] + 1) % 4; this.store.save(); this.render(); return; }
     const rot = (pos.rot + 1) % 4, sh = shape(PIECES[piece], rot);
@@ -134,8 +92,6 @@ export class SmartDicesController extends GameController {
   drop(piece, cell){
     const s = this.session;
     if (!this.active || this.#isFixed(piece)) return;
-    this.spots.clear();
-    s.sel = piece;
     const cur = s.place[piece];
     if (!cell){
       if (!cur) return;
