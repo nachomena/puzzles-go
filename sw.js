@@ -1,8 +1,8 @@
 // Sube la versión cuando publiques cambios para que el iPhone descargue la nueva
-const VERSION = 'pzg-v37';
+const VERSION = 'pzg-v38';
 const FILES = [
   './', './index.html', './manifest.webmanifest',
-  './css/base.css', './css/components.css', './css/games/peg-solitaire.css', './css/games/smart-circle.css', './css/games/smart-circuit.css', './css/games/smart-dices.css',
+  './css/base.css', './css/components.css', './css/games/peg-solitaire.css', './css/games/smart-circle.css', './css/games/smart-hexagon.css', './css/games/smart-circuit.css', './css/games/smart-dices.css',
   './css/games/star-battle.css', './css/games/sudoku.css', './css/menu.css', './css/overlays.css',
   './css/play.css', './css/tokens.css', './js/app/app.js', './js/boot-check.js', './js/config.js',
   './js/core/game-controller.js', './js/core/game-definition.js', './js/core/generator-worker.js',
@@ -18,6 +18,12 @@ const FILES = [
   './js/games/smart-circle/engine/solutions.js', './js/games/smart-circle/engine/solver.js',
   './js/games/smart-circle/index.js', './js/games/smart-circle/meta.js', './js/games/smart-circle/piece-svg.js',
   './js/games/smart-circle/rules.js', './js/games/smart-circle/templates.js', './js/games/smart-circle/worker.js',
+  './js/games/smart-hexagon/board-view.js', './js/games/smart-hexagon/config.js',
+  './js/games/smart-hexagon/controller.js', './js/games/smart-hexagon/engine/generator.js',
+  './js/games/smart-hexagon/engine/pieces.js', './js/games/smart-hexagon/engine/solutions-data.js',
+  './js/games/smart-hexagon/engine/solutions.js', './js/games/smart-hexagon/engine/solver.js',
+  './js/games/smart-hexagon/index.js', './js/games/smart-hexagon/meta.js', './js/games/smart-hexagon/piece-svg.js',
+  './js/games/smart-hexagon/rules.js', './js/games/smart-hexagon/templates.js', './js/games/smart-hexagon/worker.js',
   './js/games/smart-circuit/board-view.js',
   './js/games/smart-circuit/config.js', './js/games/smart-circuit/controller.js',
   './js/games/smart-circuit/engine/arrangements-data.js', './js/games/smart-circuit/engine/arrangements.js',
