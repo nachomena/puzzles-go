@@ -18,7 +18,7 @@ export class HashiBoardView {
       const [x1, y1] = at(p.islands[e.a]), [x2, y2] = at(p.islands[e.b]);
       return `<line data-edge="${k}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
     }).join('');
-    const isles = p.islands.map((s, i) => `<g class="hs-island" data-island="${i}" transform="translate(${s.x + .5} ${s.y + .5})"><circle r=".4"/><text dy=".02">${s.n}</text></g>`).join('');
+    const isles = p.islands.map((s, i) => `<g class="hs-island" data-island="${i}" transform="translate(${s.x + .5} ${s.y + .5})"><circle r=".4"/><text dy=".35em">${s.n}</text></g>`).join('');
     this.svg.innerHTML = `<g class="hs-dots">${dots}</g><g class="hs-hits">${hits}</g><g class="hs-bridges"></g><g class="hs-preview"></g><g class="hs-islands">${isles}</g>`;
     this.bridgesEl = this.svg.querySelector('.hs-bridges');
     this.previewEl = this.svg.querySelector('.hs-preview');

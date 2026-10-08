@@ -18,7 +18,7 @@ export class ZipBoardView {
     this.grid.build(n, new Array(n * n).fill(0));
     this.grid.root.style.setProperty('--n', n);
     this.layer.setAttribute('viewBox', `0 0 ${n} ${n}`);
-    const dots = nums.map((c, k) => { const [x, y] = at(n, c); return `<g class="zp-num" transform="translate(${x} ${y})"><circle r=".33"/><text dy=".02">${k + 1}</text></g>`; }).join('');
+    const dots = nums.map((c, k) => { const [x, y] = at(n, c); return `<g class="zp-num" transform="translate(${x} ${y})"><circle r=".33"/><text dy=".35em">${k + 1}</text></g>`; }).join('');
     this.layer.innerHTML = `<path class="zp-path"/><g class="zp-nums">${dots}</g>`;
     this.pathEl = this.layer.querySelector('.zp-path');
   }

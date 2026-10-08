@@ -15,7 +15,8 @@
 .hs-island.is-target circle{stroke:#e2bf5a}
 .hs-island{cursor:pointer}
 .hs-island circle{fill:var(--cell);stroke:var(--wall);stroke-width:.06}
-.hs-island text{fill:var(--ink);font-family:var(--font-display);font-size:.42px;font-weight:900;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+/* centrado con la línea base normal (Safari no respeta igual dominant-baseline): dy = media altura de las cifras */
+.hs-island text{fill:var(--ink);font-family:var(--font-display);font-size:.42px;font-weight:900;text-anchor:middle;pointer-events:none}
 .hs-island.is-done circle{fill:#4a4952;stroke:#6c6a77}
 .hs-island.is-done text{fill:var(--dim)}
 .hs-island.is-over circle{stroke:var(--bad)}
