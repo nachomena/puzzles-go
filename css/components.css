@@ -42,7 +42,8 @@
 .toast.is-on{opacity:1;transform:translate(-50%,0)}
 
 /* Aviso de versión nueva (js/pwa.js) */
-.update-bar{position:fixed;left:50%;top:calc(10px + var(--safe-top));transform:translate(-50%,-140%);display:flex;align-items:center;gap:14px;
+/* escondido: por encima de la pantalla, contando la barra de estado del iPhone (--safe-top) */
+.update-bar{position:fixed;left:50%;top:calc(10px + var(--safe-top));transform:translate(-50%,calc(-100% - 20px - var(--safe-top)));display:flex;align-items:center;gap:14px;
   background:var(--ink);color:var(--bg);padding:8px 8px 8px 16px;border-radius:var(--radius);font-weight:600;font-size:15px;z-index:25;
   white-space:nowrap;transition:transform .3s}
 .update-bar.is-on{transform:translate(-50%,0)}

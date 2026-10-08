@@ -1,5 +1,5 @@
 // Sube la versión cuando publiques cambios para que el iPhone descargue la nueva
-const VERSION = 'pzg-v43';
+const VERSION = 'pzg-v44';
 const FILES = [
   './', './index.html', './manifest.webmanifest',
   './css/base.css', './css/components.css', './css/games/katamino.css', './css/games/peg-solitaire.css', './css/games/smart-circle.css', './css/games/smart-hexagon.css', './css/games/smart-circuit.css', './css/games/smart-dices.css',
@@ -64,23 +64,25 @@ const FILES = [
   './fonts/archivo-black.woff2', './fonts/archivo.woff2',
   './icons/icon.svg', './icons/apple-touch-icon.png', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png'
 ];
+// Cada versión guarda todos sus archivos pedidos al servidor (no a la caché HTTP del navegador,
+// que podría devolver los de la versión anterior)
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(VERSION).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(VERSION)
+    .then(c => c.addAll(FILES.map(f => new Request(f, { cache: 'reload' }))))
+    .then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys()
     .then(keys => Promise.all(keys.filter(k => k !== VERSION).map(k => caches.delete(k))))
     .then(() => self.clients.claim()));
 });
-// Red primero para la página (así ves las actualizaciones) y caché si no hay conexión
+// Página y archivos salen siempre de la caché de la versión instalada, así nunca se mezclan dos
+// versiones. Las nuevas llegan instalando otro service worker: la app avisa y se recarga (js/pwa.js).
 self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
   if (req.mode === 'navigate'){
-    e.respondWith(fetch(req).then(res => {
-      const copy = res.clone(); caches.open(VERSION).then(c => c.put('./index.html', copy));
-      return res;
-    }).catch(() => caches.match('./index.html')));
+    e.respondWith(caches.match('./index.html').then(hit => hit || fetch(req)));
     return;
   }
   e.respondWith(caches.match(req).then(hit => hit || fetch(req)));

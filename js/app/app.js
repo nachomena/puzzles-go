@@ -96,8 +96,21 @@ export class App {
 
   /* ---------- Versión nueva ---------- */
 
-  /** Hay una versión nueva lista: se avisa y se aplica al recargar (el progreso se conserva). */
-  showUpdate(){ byId('updateBar').classList.add('is-on'); }
+  /**
+   * Hay una versión nueva lista: se avisa y se aplica al recargar (el progreso se conserva).
+   * El aviso se crea aquí y no en el HTML, para que nunca aparezca con los estilos o el código
+   * de otra versión.
+   */
+  showUpdate(){
+    if (byId('updateBar')) return;
+    const bar = document.createElement('div');
+    bar.id = 'updateBar';
+    bar.className = 'update-bar';
+    bar.setAttribute('role', 'status');
+    bar.innerHTML = '<span>Hay una versión nueva</span><button data-action="apply-update">Actualizar</button>';
+    document.body.appendChild(bar);
+    requestAnimationFrame(() => requestAnimationFrame(() => bar.classList.add('is-on')));
+  }
 
   #saveAll(){ for (const e of this.entries.values()) e.store.save(); }
 
