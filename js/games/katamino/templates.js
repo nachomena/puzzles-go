@@ -21,7 +21,7 @@ export const help = () => `
     <li>Un PENTA puede tener varias soluciones: vale cualquiera.</li>
   </ul>
   <h3>Desafíos</h3>
-  <p>Cada desafío tiene varias filas (A, B, C…). En cada fila empiezas con unas pocas piezas y, al resolver un PENTA, el siguiente añade una pieza nueva y una fila más de tablero. Tus piezas se quedan donde estaban: puedes reacomodarlas. Del <b>Pequeño Slam</b> al <b>Desafío</b>, cada vez es más difícil.</p>
+  <p>Cada desafío tiene varias filas (A, B, C…). En cada fila empiezas con unas pocas piezas y, al resolver un PENTA, el siguiente añade una pieza nueva y una fila más de tablero, y empiezas con el tablero vacío. Del <b>Pequeño Slam</b> al <b>Desafío</b>, cada vez es más difícil.</p>
   <p>Puedes jugar cualquier PENTA desde la tabla. Los que has resuelto quedan marcados y la partida a medias se guarda para continuarla.</p>
   <h3>Controles</h3>
   <ul>

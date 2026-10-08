@@ -60,9 +60,8 @@ test('desafíos: el siguiente PENTA suma una pieza en la fila y luego pasa a la 
   const a3 = penta('small', 'A', 3), a4 = nextPenta('small', 'A', 3);
   assert.deepEqual(a4.pieces.slice(0, 3), a3.pieces);
   assert.equal(a4.n, 4);
-  assert.equal(a4.sameRow, true);
   const b = nextPenta('small', 'A', 8);
-  assert.equal(b.label, 'B'); assert.equal(b.n, 3); assert.equal(b.sameRow, false);
+  assert.equal(b.label, 'B'); assert.equal(b.n, 3);
   // del primer bloque del Slam al segundo (que empieza en el PENTA 6)
   const o = nextPenta('slam', 'N', 9);
   assert.equal(o.label, 'O'); assert.equal(o.n, 6);

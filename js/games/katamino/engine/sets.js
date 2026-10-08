@@ -30,17 +30,17 @@ export function penta(L, label, n){
 
 /**
  * El PENTA que sigue: el siguiente de la misma fila o, al acabarla, el primero de la fila siguiente.
- * Devuelve { label, n, pieces, sameRow } o null si era el último del desafío.
+ * Devuelve { label, n, pieces } o null si era el último del desafío.
  */
 export function nextPenta(L, label, n){
   const f = findRow(L, label);
   if (!f) return null;
-  if (n < f.block.to) return { ...penta(L, label, n + 1), sameRow: true };
+  if (n < f.block.to) return penta(L, label, n + 1);
   const blocks = BLOCKS[L], all = blocks.flatMap(b => b.rows.map(row => ({ b, row })));
   const k = all.findIndex(x => x.row === f.row) + 1;
   if (k >= all.length) return null;
   const { b, row } = all[k];
-  return { ...penta(L, row.label, b.from), sameRow: false };
+  return penta(L, row.label, b.from);
 }
 
 export { BLOCKS };

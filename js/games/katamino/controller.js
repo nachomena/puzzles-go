@@ -1,6 +1,6 @@
 /* Partida de Katamino: arrastrar pentominós al tablero, tocar para elegir y otra vez para girar,
-   y voltear la elegida con un botón. Al resolver un PENTA, el siguiente de la fila conserva las
-   piezas puestas: el tablero crece una fila y llega una pieza nueva. */
+   y voltear la elegida con un botón. Al resolver un PENTA, el siguiente de la fila empieza con el
+   tablero vacío, una fila más y una pieza nueva. */
 import { GameController } from '../../core/game-controller.js';
 import { bindPieceDrag } from '../../ui/piece-drag.js';
 import { KataminoBoardView } from './board-view.js';
@@ -52,22 +52,15 @@ export class KataminoController extends GameController {
   get actions(){ return { flip: () => this.flip() }; }
 
   /**
-   * Siguiente PENTA: en la misma fila se quedan las piezas (el tablero crece una fila); al acabar
-   * la fila, se empieza la siguiente con el tablero vacío. false si era el último del desafío.
+   * Siguiente PENTA, con el tablero vacío: el siguiente de la fila o, al acabarla, el primero de la
+   * fila siguiente. false si era el último del desafío.
    */
   next(){
     const s = this.session;
     if (!s) return false;
-    const nx = nextPenta(s.L, s.p.label, s.p.n);
-    if (!nx) return false;
-    const { sameRow, ...puzzle } = nx;
+    const puzzle = nextPenta(s.L, s.p.label, s.p.n);
+    if (!puzzle) return false;
     this.begin(s.L, puzzle);
-    if (sameRow){
-      const t = this.session;
-      t.place = s.place.map(p => p && { ...p });
-      t.tm = s.tm.slice(); t.tr = s.tr.slice();
-      this.store.save();
-    }
     return true;
   }
 

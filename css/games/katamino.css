@@ -17,6 +17,9 @@
   --km-max-h:max(220px, calc(100svh - 430px));
 }
 
+/* Cabecera: el PENTA que se juega, más pequeño que el nombre del desafío */
+[data-game="katamino"] .hud [data-hud="size"]{font-size:.72em;color:var(--ink-soft)}
+
 /* El tablero crece hacia abajo con el PENTA; se estrecha para caber en alto */
 .board--katamino{--n:5;aspect-ratio:5/var(--rows,5);width:min(100%, calc(var(--km-max-h) * 5 / var(--rows,5)), 340px)}
 .board--katamino .board__grid{stroke-width:.03}
