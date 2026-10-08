@@ -16,6 +16,10 @@ solucionador lógico que usa técnicas humanas.
 
 Publicado con GitHub Pages. En iPhone: abrir en Safari → Compartir → "Añadir a pantalla de inicio".
 
+El progreso se guarda en el dispositivo y se conserva al actualizar: cuando hay una versión nueva,
+la app avisa ("Hay una versión nueva · Actualizar") y no hace falta volver a añadirla a la pantalla
+de inicio (borrar el icono borra también su progreso).
+
 ## Desarrollo
 
 Sin dependencias ni paso de compilación: HTML, CSS y ES modules nativos.

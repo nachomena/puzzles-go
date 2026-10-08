@@ -94,6 +94,13 @@ export class App {
 
   start(){ this.#refreshMenus(); }
 
+  /* ---------- Versión nueva ---------- */
+
+  /** Hay una versión nueva lista: se avisa y se aplica al recargar (el progreso se conserva). */
+  showUpdate(){ byId('updateBar').classList.add('is-on'); }
+
+  #saveAll(){ for (const e of this.entries.values()) e.store.save(); }
+
   /* ---------- Navegación ---------- */
 
   showScreen(name){
@@ -252,6 +259,7 @@ export class App {
       'continue':     () => this.#withGame(entry => { this.current = entry; this.continueGame(); }),
       'back':         () => this.back(),
       'open':         el => this.#withGame(entry => { this.current = entry; this.#openOverlay(el.dataset.target); }),
+      'apply-update': () => { this.#saveAll(); location.reload(); },
       'close':        () => this.overlays.closeDismissable(),
       'cancel-generation': () => { this.overlays.close('loading'); cur.supply.cancelRequest(); },
       'next-puzzle':  () => { this.overlays.close('win'); this.#next(); },

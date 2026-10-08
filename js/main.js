@@ -2,7 +2,9 @@
 import { App } from './app/app.js';
 import { CATALOG } from './games/catalog.js';
 import { safeStorage } from './lib/dom.js';
-import { registerServiceWorker } from './pwa.js';
+import { registerServiceWorker, requestPersistentStorage } from './pwa.js';
 
-new App({ catalog: CATALOG, storage: safeStorage() }).start();
-registerServiceWorker();
+const app = new App({ catalog: CATALOG, storage: safeStorage() });
+app.start();
+registerServiceWorker({ onUpdate: () => app.showUpdate() });
+requestPersistentStorage();
