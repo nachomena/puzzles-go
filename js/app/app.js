@@ -260,6 +260,7 @@ export class App {
     const cur = this.current;
     return {
       'open-game':    el => this.openGame(el.dataset.game),
+      'toggle-group': el => { this.hub.toggle(el.dataset.group); this.#refreshMenus(); },
       'start-level':  el => this.#withGame(entry => entry.game.picker
         ? this.openPicker(el.dataset.level, entry)
         : this.requestLevel(el.dataset.level, entry)),

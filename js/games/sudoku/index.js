@@ -25,7 +25,7 @@ export default defineGame({
     return s;
   },
   sizeLabel: () => '',   // siempre es 9×9: no aporta nada en la cabecera
-  boardClass: 'board--sudoku',
+  boardClass: 'board--digits board--sudoku',
 
   controls: controls(),
   help: help(),

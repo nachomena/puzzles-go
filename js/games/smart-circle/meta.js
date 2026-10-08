@@ -4,6 +4,9 @@ export default Object.freeze({
   name: 'Smart Circle',
   icon: 'circle',
   storageKey: 'puzzlesgo.smartcircle.v1',
+  /** Grupo del selector de juegos (ver ui/hub-view.js); dentro se muestra con su nombre corto. */
+  group: 'smart',
+  shortName: 'Circle',
   /** `target` es el nivel del generador; las pistas siguen el cuadernillo original. */
   levels: Object.freeze({
     starter: Object.freeze({ name: 'Principiante', target: 1 }),

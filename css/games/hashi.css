@@ -1,0 +1,25 @@
+/* Hashi: mar oscuro con puntos de cuadrícula, islas claras con su número y puentes claros. */
+.hs-board{position:relative;width:100%;max-width:520px;margin:0 auto;aspect-ratio:1;background:#26252b;border-radius:14px;padding:4px;box-sizing:border-box;
+  touch-action:none;user-select:none;-webkit-user-select:none}
+.hs-board svg{display:block;width:100%;height:100%;overflow:visible}
+.hs-dots circle{fill:#3b3a42}
+.hs-hits line{stroke:transparent;stroke-width:.7;stroke-linecap:butt;pointer-events:stroke;cursor:pointer}
+.hs-bridges line{stroke:var(--ink-soft);stroke-width:.075;stroke-linecap:round;pointer-events:stroke;cursor:pointer}
+.hs-bridges line.is-flash{animation:hs-flash .5s ease-in-out 3}
+@keyframes hs-flash{50%{stroke:#e2bf5a}}
+/* Vista previa al arrastrar desde una isla */
+.hs-preview line{stroke:#e2bf5a;stroke-width:.09;stroke-linecap:round;pointer-events:none}
+.hs-preview line.is-free{stroke:var(--dim);stroke-dasharray:.12 .12}
+.hs-preview line.is-remove{stroke:var(--dim);stroke-dasharray:.12 .12}
+.hs-preview line.is-bad{stroke:var(--bad)}
+.hs-island.is-target circle{stroke:#e2bf5a}
+.hs-island{cursor:pointer}
+.hs-island circle{fill:var(--cell);stroke:var(--wall);stroke-width:.06}
+.hs-island text{fill:var(--ink);font-family:var(--font-display);font-size:.42px;font-weight:900;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.hs-island.is-done circle{fill:#4a4952;stroke:#6c6a77}
+.hs-island.is-done text{fill:var(--dim)}
+.hs-island.is-over circle{stroke:var(--bad)}
+.hs-island.is-over text{fill:var(--bad)}
+.hs-board.is-won .hs-island circle{animation:hs-won 1.2s ease-in-out both}
+@keyframes hs-won{40%{fill:#6c6a77}}
+.hs-tip{font-size:13px;color:var(--dim);text-align:center;margin:10px 0 0;line-height:1.4}

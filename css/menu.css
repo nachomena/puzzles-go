@@ -5,6 +5,9 @@
 
 .game-card .level__name{font-size:var(--name-size,clamp(30px,9vw,54px));white-space:nowrap}
 .game-card__icon svg{width:40px;height:40px;stroke:var(--dim);fill:none;stroke-width:1.5;stroke-linejoin:round}
+/* Grupo de juegos (p. ej. Smart Games): al desplegarse, sus juegos van debajo con una raya a la izquierda */
+.game-group__items{margin:2px 0 8px 4px;padding-left:16px;border-left:3px solid var(--rule)}
+.game-group.is-open .level__meta{visibility:hidden}
 
 .menu{padding-top:34px;padding-bottom:40px}
 .menu__label{font-size:19px;font-weight:600;color:var(--ink-label);margin:0 0 10px}

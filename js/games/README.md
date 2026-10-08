@@ -32,6 +32,8 @@ segundo plano, historial, cronómetro, estadísticas y pantalla de victoria son 
      `puzzle(L, dataset)` da el tablero tocado y `same(session, puzzle)` dice si es la partida abierta),
      y en `meta.js` `menuLabel`, `levelMeta(L, stats)`, `sessionLabel(session)` y `resumeLabel(session)` para el menú.
      El controlador puede definir `next()` para el botón "Siguiente tablero" (ver `core/game-controller.js`).
+     Para que un juego vaya dentro de un grupo del selector (p. ej. los SmartGames), `group` y opcionalmente
+     `shortName` (su nombre dentro del grupo) en `meta.js`; los grupos están en `ui/hub-view.js#GROUPS`.
 2. Añade `{ meta, load: () => import('./<id>/index.js') }` a `CATALOG` en `js/games/catalog.js`.
 3. Si necesita estilos, crea `css/games/<id>.css` y enlázalo en `index.html`.
 4. Iconos nuevos: añade un `<symbol id="i-…">` al sprite de `index.html`.
@@ -44,5 +46,8 @@ segundo plano, historial, cronómetro, estadísticas y pantalla de victoria son 
   ola de victoria y `cellAt(x, y)`. Star Battle y Sudoku heredan de él.
 - `ui/cell-drag.js` — tocar y arrastrar sobre una rejilla.
 - `ui/piece-drag.js` — arrastrar piezas de una bandeja a un tablero de casillas y tocarlas.
+- `core/grid-pieces-controller.js` — partida de piezas sobre cuadrícula (arrastrar, girar, voltear, piezas fijas): Katamino, IQ Puzzler Pro.
+- `core/digit-grid-controller.js` y `ui/templates.js#digitControls` — números en una cuadrícula con teclado, lápiz y goma: Sudoku, KenKen.
+- `lib/polyomino.js` — orientaciones de poliominós y buscador de soluciones para llenar un tablero (Katamino, IQ Puzzler Pro).
 - `ui/cube-svg.js` — piezas hechas de cubitos con bisel (Smart Circuit).
 - `lib/bits.js` — `popcount`, `bitIndices`, `someCombination`.

@@ -34,3 +34,23 @@
 .cube-bevel--right{fill:rgba(0,0,0,.2)}
 .cube-bevel--bottom{fill:rgba(0,0,0,.32)}
 .cube-bevel--face{fill:rgba(0,0,0,.1)}
+
+/* Números en una cuadrícula con teclado (Sudoku, KenKen: core/digit-grid-controller.js) */
+.board--digits .cell{position:relative;font-variant-numeric:tabular-nums;cursor:pointer}
+.board--digits .cell.is-peer{background:var(--cell-peer)}
+.board--digits .cell.is-same{background:var(--cell-same)}
+.board--digits .cell.is-selected{background:var(--cell-selected)}
+.sd-digit{font-size:clamp(20px,6.6vw,30px);line-height:1;font-weight:500;color:var(--entry)}
+.cell.is-given .sd-digit{color:var(--ink);font-weight:700}
+.cell.is-bad .sd-digit{color:var(--bad)}
+.cell.is-entry .sd-digit{animation:pop .2s ease-out}
+.board.is-won .sd-digit{animation:win 1s ease-in-out both;animation-delay:var(--wave-delay)}
+.sd-notes{position:absolute;inset:6%;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr)}
+.sd-notes i{font-style:normal;font-size:clamp(8px,2.4vw,11px);line-height:1;color:var(--dim);display:grid;place-items:center;font-weight:600}
+/* El selector de herramientas va más estrecho para que quepa la goma */
+.board--digits ~ .toolbar .segmented button{width:64px}
+.keypad{display:grid;grid-template-columns:repeat(var(--keys,9),1fr);gap:4px;padding-top:14px}
+.keypad__key{height:52px;border-radius:var(--radius-sm);background:var(--seg);font-size:24px;font-weight:600;color:var(--entry);font-variant-numeric:tabular-nums}
+.keypad__key:active{background:var(--seg-on)}
+.keypad.is-pencil .keypad__key{font-size:15px;color:var(--dim)}
+.keypad__key.is-done{opacity:.3}

@@ -4,6 +4,9 @@ export default Object.freeze({
   name: 'Smart Dices',
   icon: 'dice',
   storageKey: 'puzzlesgo.smartdices.v1',
+  /** Grupo del selector de juegos (ver ui/hub-view.js); dentro se muestra con su nombre corto. */
+  group: 'smart',
+  shortName: 'Dices',
   /** `target` es el nivel del generador (más alto = menos pistas). */
   levels: Object.freeze({
     starter: Object.freeze({ name: 'Principiante', target: 1 }),

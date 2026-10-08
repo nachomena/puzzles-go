@@ -1,0 +1,18 @@
+/* Datos mínimos de IQ Puzzler Pro para el selector y el menú de niveles: se cargan sin el motor ni la interfaz. */
+export default Object.freeze({
+  id: 'iq-puzzler',
+  name: 'IQ Puzzler Pro',
+  icon: 'iqpuzzler',
+  storageKey: 'puzzlesgo.iqpuzzler.v1',
+  /** Grupo del selector de juegos (ver ui/hub-view.js). */
+  group: 'smart',
+  /** `target` es el nivel del generador (más alto = menos piezas puestas, como en el cuadernillo). */
+  levels: Object.freeze({
+    starter: Object.freeze({ name: 'Principiante', target: 1 }),
+    junior:  Object.freeze({ name: 'Fácil',        target: 2 }),
+    expert:  Object.freeze({ name: 'Medio',        target: 3 }),
+    master:  Object.freeze({ name: 'Difícil',      target: 4 }),
+    wizard:  Object.freeze({ name: 'Experto',      target: 5 })
+  }),
+  levelOrder: Object.freeze(['starter', 'junior', 'expert', 'master', 'wizard'])
+});

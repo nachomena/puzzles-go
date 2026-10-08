@@ -1,12 +1,13 @@
 /* Configuración del Sudoku. */
 import meta from './meta.js';
+import { PEN, PENCIL } from '../../core/digit-grid-controller.js';
 
 /** Niveles: viven en meta.js para que el menú se pinte sin cargar el juego. */
 export const LEVELS = meta.levels;
 export const LEVEL_ORDER = meta.levelOrder;
 
 /** Herramientas: escribir el número o anotarlo como candidato. */
-export const TOOL = Object.freeze({ PEN: 'pen', PENCIL: 'pencil' });
+export const TOOL = Object.freeze({ PEN, PENCIL });
 
 export const DEFAULT_SETTINGS = Object.freeze({ errors: false, autoNotes: true, sameDigit: true, timer: true });
 

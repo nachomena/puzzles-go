@@ -39,3 +39,23 @@ export const dock = ({ hint = true } = {}) =>
 export const playScreen = ({ id, name, boardClass = '', boardHtml = null, controls, hint = true }) =>
   `<section id="play-${id}" class="screen" data-game="${id}" aria-label="${name}">` +
   `<div class="wrap wrap--game">${hud()}${boardHtml ?? board(boardClass)}${controls}${dock({ hint })}</div></section>`;
+
+/**
+ * Barra de herramientas y teclado de números del 1 al n (Sudoku, KenKen): reiniciar, número o lápiz,
+ * goma, deshacer y rehacer.
+ */
+export const digitControls = n =>
+  `<div class="toolbar">` +
+  iconButton('reset', 'reset', 'Reiniciar tablero') +
+  toolPicker([
+    { tool: 'pen', icon: 'number', label: 'Escribir número' },
+    { tool: 'pencil', icon: 'pencil', label: 'Anotar candidatos' }
+  ]) +
+  `<div class="toolbar__group">` +
+  iconButton('erase', 'erase', 'Borrar casilla') +
+  iconButton('undo', 'undo', 'Deshacer') +
+  iconButton('redo', 'redo', 'Rehacer') +
+  `</div></div>` +
+  `<div class="keypad" data-keypad style="--keys:${n}">` +
+  Array.from({ length: n }, (_, k) => k + 1).map(d => `<button class="keypad__key" data-action="digit" data-digit="${d}" aria-label="${d}">${d}</button>`).join('') +
+  `</div>`;

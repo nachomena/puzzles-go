@@ -1,0 +1,41 @@
+/* IQ Puzzler Pro: tablero oscuro de agujeros y piezas de bolas de colores tenues con brillo. */
+[data-game="iq-puzzler"]{
+  --iq-yellow:#d6bf5a; --iq-orange:#d58c45; --iq-red:#c65454; --iq-maroon:#94403a; --iq-pink:#cd77a3; --iq-purple:#9273b0;
+  --iq-navy:#4561a3; --iq-blue:#4e91cc; --iq-sky:#7dbbd8; --iq-aqua:#72b3a9; --iq-green:#4f9665; --iq-lime:#9db94f;
+}
+.iq-hue-yellow{--iq-c:var(--iq-yellow)} .iq-hue-orange{--iq-c:var(--iq-orange)} .iq-hue-red{--iq-c:var(--iq-red)}
+.iq-hue-maroon{--iq-c:var(--iq-maroon)} .iq-hue-pink{--iq-c:var(--iq-pink)} .iq-hue-purple{--iq-c:var(--iq-purple)}
+.iq-hue-navy{--iq-c:var(--iq-navy)} .iq-hue-blue{--iq-c:var(--iq-blue)} .iq-hue-sky{--iq-c:var(--iq-sky)}
+.iq-hue-aqua{--iq-c:var(--iq-aqua)} .iq-hue-green{--iq-c:var(--iq-green)} .iq-hue-lime{--iq-c:var(--iq-lime)}
+
+.iq-area{width:100%}
+.iq-board{position:relative;width:100%;max-width:520px;margin:0 auto;touch-action:none;user-select:none;-webkit-user-select:none}
+.iq-board svg{display:block;width:100%;height:auto;overflow:visible}
+.iq-frame{fill:#26252b;stroke:#3a3941;stroke-width:.03}
+.iq-holes circle{fill:#141318;stroke:rgba(255,255,255,.06);stroke-width:.02}
+
+/* Piezas (en el tablero, en la bandeja y al arrastrar) */
+.iq-piece{touch-action:none;cursor:grab}
+div.iq-piece{position:absolute}
+.iq-piece__svg{display:block;width:100%;height:100%;overflow:visible}
+.iq-links line{stroke:var(--iq-c);stroke-linecap:round}
+.iq-balls circle{fill:var(--iq-c)}
+.iq-shine circle{fill:url(#iq-shine-g);pointer-events:none}
+.iq-halo line{stroke:var(--ink);stroke-linecap:round}
+.iq-halo circle{fill:var(--ink)}
+.iq-piece.is-fixed{cursor:default;filter:saturate(.75) brightness(.85)}
+div.iq-piece.is-selected{filter:drop-shadow(0 0 1px var(--ink)) drop-shadow(0 0 1px var(--ink))}
+.iq-piece.is-lifted{opacity:.2}
+div.iq-piece.is-ghost{position:fixed;z-index:30;pointer-events:none}
+.iq-piece.is-flash{animation:iq-flash .5s ease-in-out 3}
+@keyframes iq-flash{50%{opacity:.35}}
+.iq-board.is-won .iq-balls circle{animation:iq-glow 1.4s ease-in-out 2}
+@keyframes iq-glow{50%{filter:brightness(1.35)}}
+
+/* Botones bajo el tablero: reiniciar a la izquierda, voltear a la derecha */
+.iq-actions{display:flex;justify-content:space-between;align-items:center;padding-top:8px}
+
+/* Bandeja */
+.iq-tray{--iq-tray-cell:21px;display:flex;flex-wrap:wrap;gap:12px 14px;justify-content:center;align-items:center;padding:10px 0 4px;min-height:60px;touch-action:none}
+.iq-piece.is-tray{position:relative;width:calc(var(--w) * var(--iq-tray-cell));height:calc(var(--h) * var(--iq-tray-cell))}
+.iq-tip{font-size:13px;color:var(--dim);text-align:center;margin:4px 0 0}

@@ -1,21 +1,8 @@
 /* Marcado propio del Sudoku: barra de herramientas, teclado numérico y ayuda. */
-import { iconButton, toolPicker, svgIcon } from '../../ui/templates.js';
+import { digitControls, svgIcon } from '../../ui/templates.js';
 
-export const controls = () =>
-  `<div class="toolbar">` +
-  iconButton('reset', 'reset', 'Reiniciar tablero') +
-  toolPicker([
-    { tool: 'pen', icon: 'number', label: 'Escribir número' },
-    { tool: 'pencil', icon: 'pencil', label: 'Anotar candidatos' }
-  ]) +
-  `<div class="toolbar__group">` +
-  iconButton('erase', 'erase', 'Borrar casilla') +
-  iconButton('undo', 'undo', 'Deshacer') +
-  iconButton('redo', 'redo', 'Rehacer') +
-  `</div></div>` +
-  `<div class="keypad" data-keypad>` +
-  [1, 2, 3, 4, 5, 6, 7, 8, 9].map(d => `<button class="keypad__key" data-action="digit" data-digit="${d}" aria-label="${d}">${d}</button>`).join('') +
-  `</div>`;
+/** Barra de herramientas y teclado del 1 al 9 (ui/templates.js). */
+export const controls = () => digitControls(9);
 
 export const help = () => `
   <p>Rellena el tablero para que cada <b>fila</b>, cada <b>columna</b> y cada <b>caja</b> de 3×3 tenga los números del 1 al 9 sin repetir. Cada tablero tiene una única solución.</p>

@@ -1,0 +1,37 @@
+/* Rush Hour: aparcamiento oscuro, coches y camiones de colores tenues y el rojo para sacar. */
+:root{
+  --rh-red:#d0544c; --rh-yellow:#d6bf5a; --rh-blue:#4e91cc; --rh-green:#4f9665; --rh-orange:#d58c45; --rh-purple:#9273b0;
+  --rh-aqua:#72b3a9; --rh-pink:#cd77a3; --rh-lime:#9db94f; --rh-navy:#4561a3; --rh-sky:#7dbbd8;
+  --rh-gray:#8a8995; --rh-sand:#b49a72; --rh-teal:#3f8f8a;
+}
+.rh-hue-red{--rh-c:var(--rh-red)} .rh-hue-yellow{--rh-c:var(--rh-yellow)} .rh-hue-blue{--rh-c:var(--rh-blue)}
+.rh-hue-green{--rh-c:var(--rh-green)} .rh-hue-orange{--rh-c:var(--rh-orange)} .rh-hue-purple{--rh-c:var(--rh-purple)}
+.rh-hue-aqua{--rh-c:var(--rh-aqua)} .rh-hue-pink{--rh-c:var(--rh-pink)} .rh-hue-lime{--rh-c:var(--rh-lime)}
+.rh-hue-navy{--rh-c:var(--rh-navy)} .rh-hue-sky{--rh-c:var(--rh-sky)}
+.rh-hue-gray{--rh-c:var(--rh-gray)} .rh-hue-sand{--rh-c:var(--rh-sand)} .rh-hue-teal{--rh-c:var(--rh-teal)}
+
+.rh-area{width:100%}
+/* el marco deja sitio a la derecha para la salida */
+.rh-board{position:relative;width:100%;max-width:440px;margin:0 auto;padding:10px 18px 10px 10px;background:#26252b;border-radius:16px;
+  box-sizing:border-box;touch-action:none;user-select:none;-webkit-user-select:none}
+.rh-lot{position:relative;width:100%;aspect-ratio:1}
+.rh-cells{position:absolute;inset:0;display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(6,1fr)}
+.rh-cells i{margin:2px;border-radius:6px;background:var(--cell)}
+.rh-exit{position:absolute;right:-14px;width:10px;height:calc(100% / 6);display:flex;align-items:center}
+.rh-exit::before{content:"";width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:10px solid var(--rh-red)}
+
+/* Vehículos: bloque del color con el techo un poco más oscuro */
+.rh-car{position:absolute;padding:4px;box-sizing:border-box;cursor:grab;touch-action:none;transition:left .18s ease,top .18s ease}
+.rh-car span{display:block;width:100%;height:100%;border-radius:10px;background:var(--rh-c);position:relative;container-type:size}
+/* Techo: del mismo tamaño en todos (medido con el lado corto, cqh/cqw) y en el frente, a la misma
+   distancia del borde delantero que de los laterales */
+.rh-car span::after{content:"";position:absolute;top:22cqh;bottom:22cqh;right:22cqh;width:34cqh;border-radius:5px;background:color-mix(in srgb, var(--rh-c) 70%, #000)}
+.rh-car.is-v span::after{top:auto;left:22cqw;right:22cqw;bottom:22cqw;width:auto;height:34cqw}
+.rh-car.is-dragging{transition:none;z-index:2}
+.rh-car.is-dragging span{box-shadow:0 0 0 2px var(--ink)}
+.rh-car.is-flash span{animation:rh-flash .5s ease-in-out 3}
+@keyframes rh-flash{50%{opacity:.35}}
+/* Al ganar, el coche rojo sale por la derecha */
+.rh-board.is-won .rh-car.is-red{transition:left .6s ease-in,opacity .6s ease-in;left:calc(100% + 10px) !important;opacity:0}
+
+.rh-moves{font-size:15px;color:var(--dim);font-variant-numeric:tabular-nums;text-align:center;flex:1}

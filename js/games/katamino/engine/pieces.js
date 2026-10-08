@@ -1,7 +1,8 @@
 /* Los 12 pentominós de Katamino y sus orientaciones. Sin DOM.
    El tablero es de W = 5 columnas por n filas (n = número de piezas del PENTA): casilla i = y * W + x.
    Una pieza colocada es { m, r, x, y }: m = cara (0, 1 = volteada), r = giro de 90° (0..3) y
-   (x, y) la esquina superior izquierda de su caja. */
+   (x, y) la esquina superior izquierda de su caja (lib/polyomino.js). */
+import { orientCells, orientationsOf } from '../../../lib/polyomino.js';
 
 export const W = 5;
 /** Tamaños de PENTA posibles (filas del tablero). */
@@ -27,23 +28,10 @@ export const PIECES = Object.freeze([
  * Casillas [x, y] de una pieza con cara `m` y giro `r`, desde la esquina de su caja y en orden de
  * lectura, con su ancho y alto.
  */
-export function orient(piece, m, r){
-  let cells = PIECES[piece].cells.map(([x, y]) => [m ? -x : x, y]);
-  for (let k = 0; k < r; k++) cells = cells.map(([x, y]) => [-y, x]);   // 90° en sentido horario
-  const minX = Math.min(...cells.map(c => c[0])), minY = Math.min(...cells.map(c => c[1]));
-  cells = cells.map(([x, y]) => [x - minX, y - minY]).sort((a, b) => a[1] - b[1] || a[0] - b[0]);
-  return { cells, w: Math.max(...cells.map(c => c[0])) + 1, h: Math.max(...cells.map(c => c[1])) + 1 };
-}
+export const orient = (piece, m, r) => orientCells(PIECES[piece].cells, m, r);
 
 /** Orientaciones distintas de cada pieza: [{ m, r, cells, w, h }] (las repetidas por simetría se quitan). */
-export const ORIENTATIONS = PIECES.map((_, piece) => {
-  const seen = new Set(), out = [];
-  for (let m = 0; m < 2; m++) for (let r = 0; r < 4; r++){
-    const o = orient(piece, m, r), key = JSON.stringify(o.cells);
-    if (!seen.has(key)){ seen.add(key); out.push({ m, r, ...o }); }
-  }
-  return out;
-});
+export const ORIENTATIONS = PIECES.map(p => orientationsOf(p.cells));
 
 /** Casillas (índices) de una pieza colocada en un tablero de n filas, o null si se sale. */
 export function cellsOf(piece, { m, r, x, y }, n){
