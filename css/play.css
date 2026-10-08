@@ -27,3 +27,10 @@
 .fit-spot.is-on{stroke:var(--ink);stroke-width:2.5px;animation:none}
 @keyframes fit-spot{50%{opacity:.55}}
 .is-chosen{opacity:.6;pointer-events:none}
+
+/* Bisel de las piezas de cubitos (ui/cube-svg.js) */
+.cube-bevel--top{fill:rgba(255,255,255,.16)}
+.cube-bevel--left{fill:rgba(255,255,255,.08)}
+.cube-bevel--right{fill:rgba(0,0,0,.2)}
+.cube-bevel--bottom{fill:rgba(0,0,0,.32)}
+.cube-bevel--face{fill:rgba(0,0,0,.1)}

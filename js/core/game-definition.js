@@ -14,6 +14,15 @@
    @property {boolean} [hint]       false = sin botón de pista (por defecto lo hay)
    @property {{key:string,name:string}[]} [statsRows]  filas de estadísticas (por defecto, los niveles)
    @property {(session:object) => string} [statsKey]   fila en la que se apunta una victoria (por defecto, su nivel)
+   @property {(session:object) => string} [statsName]  nombre de esa fila en la pantalla de victoria
+   @property {string} [menuLabel]   título sobre la lista de niveles (por defecto, "Nueva partida")
+   @property {(L:string, stats:object) => string} [levelMeta]  texto bajo cada nivel del menú (por defecto, el récord)
+   @property {(session:object) => string} [sessionLabel]       texto de "Continuar" (por defecto, el nivel)
+   @property {{ render:(L:string, data:{stats:object,cur:object|null}) => string,
+                puzzle:(L:string, dataset:DOMStringMap) => object|null,
+                same:(session:object, puzzle:object) => boolean }} [picker]
+                                    al elegir un nivel se abre una tabla de tableros (sus botones llevan
+                                    data-action="pick-puzzle") en vez de empezar una partida
    @property {URL} workerUrl        worker que llama a serveGenerator(generate)
    @property {(target:number) => Generator} generate   generador del motor
    @property {(p:object, L:string) => boolean} isValidPuzzle

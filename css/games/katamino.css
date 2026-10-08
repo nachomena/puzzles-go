@@ -1,0 +1,70 @@
+/* Katamino: tablero alargado de 5 columnas con listón, pentominós de madera de colores y la tabla
+   de PENTAS de cada desafío. */
+/* Tonos apagados para el modo oscuro, los mismos que Smart Hexagon. En :root porque también los
+   usa la tabla de PENTAS, que está fuera de la pantalla del juego. */
+:root{
+  --km-yellow:#d6bf5a; --km-orange:#d58c45; --km-red:#c65454; --km-maroon:#94403a; --km-pink:#cd77a3; --km-purple:#9273b0;
+  --km-navy:#4561a3; --km-blue:#4e91cc; --km-aqua:#72b3a9; --km-gray:#8a8995; --km-green:#4f9665; --km-lime:#9db94f;
+}
+.km-hue-yellow{--km-c:var(--km-yellow)} .km-hue-orange{--km-c:var(--km-orange)} .km-hue-red{--km-c:var(--km-red)}
+.km-hue-maroon{--km-c:var(--km-maroon)} .km-hue-pink{--km-c:var(--km-pink)} .km-hue-purple{--km-c:var(--km-purple)}
+.km-hue-navy{--km-c:var(--km-navy)} .km-hue-blue{--km-c:var(--km-blue)} .km-hue-aqua{--km-c:var(--km-aqua)}
+.km-hue-gray{--km-c:var(--km-gray)} .km-hue-green{--km-c:var(--km-green)} .km-hue-lime{--km-c:var(--km-lime)}
+
+[data-game="katamino"]{
+  --km-wood:#a88c5f;
+  /* alto disponible para el tablero: lo que deja la cabecera, los botones, la bandeja y el dock */
+  --km-max-h:max(220px, calc(100svh - 430px));
+}
+
+/* El tablero crece hacia abajo con el PENTA; se estrecha para caber en alto */
+.board--katamino{--n:5;aspect-ratio:5/var(--rows,5);width:min(100%, calc(var(--km-max-h) * 5 / var(--rows,5)), 340px)}
+.board--katamino .board__grid{stroke-width:.03}
+.board--katamino .board__frame{stroke-width:.06}
+/* Listón al final del tablero */
+.km-slider{width:min(100%, calc(var(--km-max-h) * 5 / var(--rows,5)), 340px);margin:0 auto;height:9px;border-radius:0 0 4px 4px;
+  background:var(--km-wood)}
+
+/* Piezas. En el tablero, grupos <g> de un mismo SVG; en la bandeja y al arrastrar, un <div> con su SVG */
+.km-pieces{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.km-piece{touch-action:none;cursor:grab}
+div.km-piece{position:absolute}
+.km-piece__svg{display:block;width:100%;height:100%;overflow:visible}
+.km-piece__body{fill:var(--km-c)}
+/* Ranura interior más oscura, como el surco de los tubos de Smart Hexagon */
+.km-piece__groove{fill:none;stroke:color-mix(in srgb, var(--km-c) 72%, #000);stroke-width:.24;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.km-piece__halo{fill:none;stroke:var(--ink);stroke-width:.16;stroke-linejoin:round}
+div.km-piece.is-selected{filter:drop-shadow(0 0 1px var(--ink)) drop-shadow(0 0 1px var(--ink))}
+.km-piece.is-lifted{opacity:.2}
+div.km-piece.is-ghost{position:fixed;z-index:30;pointer-events:none}
+.km-piece.is-flash{animation:km-flash .5s ease-in-out 3}
+@keyframes km-flash{50%{opacity:.35}}
+.board.is-won .km-piece{animation:km-glow 1.1s ease-in-out both}
+@keyframes km-glow{40%{filter:brightness(1.35)}}
+
+/* Botones bajo el tablero: reiniciar a la izquierda, voltear a la derecha */
+.km-actions{display:flex;justify-content:space-between;align-items:center;padding-top:8px}
+
+/* Bandeja: piezas más pequeñas que en el tablero */
+.km-tray{--km-tray-cell:17px;display:flex;flex-wrap:wrap;gap:12px 14px;justify-content:center;align-items:center;padding:10px 0 4px;min-height:60px;touch-action:none}
+.km-piece.is-tray{position:relative;width:calc(var(--w) * var(--km-tray-cell));height:calc(var(--h) * var(--km-tray-cell))}
+.km-tip{font-size:13px;color:var(--dim);text-align:center;margin:4px 0 0}
+
+/* Tabla de PENTAS (pantalla #pick) */
+.km-pick__count{font-size:15px;color:var(--dim);font-weight:600;margin:0 0 14px}
+/* Columnas con tope de ancho: un bloque de pocas columnas no estira sus casillas */
+.km-pick{display:grid;grid-template-columns:1.6em repeat(var(--base), minmax(0, 28px)) repeat(var(--cols), minmax(0, 46px));
+  justify-content:space-between;gap:4px 3px;align-items:center;margin-bottom:22px}
+.km-pick__row{display:contents}
+.km-pick__head{font-size:12px;font-weight:700;color:var(--dim)}
+.km-pick__penta{grid-column:span var(--base);text-align:center;letter-spacing:.08em}
+.km-pick__num{text-align:center;font-variant-numeric:tabular-nums}
+.km-pick__label{font-family:var(--font-display);font-size:15px;text-align:center}
+.km-pick__base{display:grid;place-items:center;aspect-ratio:1;opacity:.75}
+.km-pick__cell{display:grid;place-items:center;aspect-ratio:1;border-radius:7px;background:var(--seg);padding:3px;position:relative}
+.km-pick__cell:active{background:var(--surface-press)}
+.km-pick__cell.is-done{background:var(--seg-on)}
+.km-pick__cell.is-done::after{content:"";position:absolute;right:2px;top:2px;width:7px;height:7px;border-radius:50%;background:var(--wall)}
+.km-pick__cell.is-current{box-shadow:inset 0 0 0 2px var(--wall)}
+.km-icon{width:100%;height:100%;display:block}
+.km-icon path{fill:var(--km-c)}

@@ -27,11 +27,6 @@ div.sc-piece{position:absolute;filter:drop-shadow(0 1.5px 2px rgba(0,0,0,.45))}
 .sc-piece__body{fill:var(--sc-piece)}
 .sc-piece__halo{fill:none;stroke:var(--wall);stroke-width:.1;stroke-linejoin:round}
 .sc-piece__bevel{pointer-events:none}
-.sc-bevel--top{fill:rgba(255,255,255,.16)}
-.sc-bevel--left{fill:rgba(255,255,255,.08)}
-.sc-bevel--right{fill:rgba(0,0,0,.2)}
-.sc-bevel--bottom{fill:rgba(0,0,0,.32)}
-.sc-bevel--face{fill:rgba(0,0,0,.1)}
 .sc-piece__path{fill:none;stroke:var(--sc-path);stroke-width:.2;stroke-linecap:round;stroke-linejoin:round}
 .sc-piece__dots{fill:var(--sc-path)}
 .sc-piece.is-fixed{cursor:default}

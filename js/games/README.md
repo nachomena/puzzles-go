@@ -25,7 +25,13 @@ segundo plano, historial, cronómetro, estadísticas y pantalla de victoria son 
      Opcional: `hint: false` quita el botón de pista. En `settings`, un ajuste con `options`
      (`[{ value, label }]`) se muestra como desplegable en vez de interruptor.
      Las estadísticas van por nivel; para agruparlas de otra forma, declara `statsRows` en `meta.js`
-     (`[{ key, name }]`) y `statsKey(session)` en `index.js` (p. ej. el Solitario, por tablero).
+     (`[{ key, name }]`) y `statsKey(session)` en `index.js` (p. ej. el Solitario, por tablero), y si
+     hace falta `statsName(session)` para el texto de la victoria.
+     Juegos con retos fijos que se eligen uno a uno (p. ej. Katamino): `picker` en `index.js`
+     (`render(L, data)` dibuja la tabla de un nivel con botones `data-action="pick-puzzle"`,
+     `puzzle(L, dataset)` da el tablero tocado y `same(session, puzzle)` dice si es la partida abierta),
+     y en `meta.js` `menuLabel`, `levelMeta(L, stats)` y `sessionLabel(session)` para el menú.
+     El controlador puede definir `next()` para el botón "Siguiente tablero" (ver `core/game-controller.js`).
 2. Añade `{ meta, load: () => import('./<id>/index.js') }` a `CATALOG` en `js/games/catalog.js`.
 3. Si necesita estilos, crea `css/games/<id>.css` y enlázalo en `index.html`.
 4. Iconos nuevos: añade un `<symbol id="i-…">` al sprite de `index.html`.
@@ -37,4 +43,6 @@ segundo plano, historial, cronómetro, estadísticas y pantalla de victoria son 
 - `ui/grid-board.js` — tablero N×N con paredes entre regiones, repintado incremental, destello,
   ola de victoria y `cellAt(x, y)`. Star Battle y Sudoku heredan de él.
 - `ui/cell-drag.js` — tocar y arrastrar sobre una rejilla.
+- `ui/piece-drag.js` — arrastrar piezas de una bandeja a un tablero de casillas y tocarlas.
+- `ui/cube-svg.js` — piezas hechas de cubitos con bisel (Smart Circuit).
 - `lib/bits.js` — `popcount`, `bitIndices`, `someCombination`.

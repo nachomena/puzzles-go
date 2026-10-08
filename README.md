@@ -8,6 +8,7 @@ Juegos de lógica como web app instalable que funciona sin conexión:
 - **Smart Circuit**: 10 piezas de doble cara que unen los puntos con caminos en un tablero de 8×4 (5 niveles).
 - **Smart Circle**: 10 piezas de bolas de doble cara que llenan un tablero redondo de 3 anillos sin cruzar sus nervios (5 niveles; en los dos últimos también hay que encontrar dónde van los nervios).
 - **Smart Hexagon**: 12 piezas de doble cara en forma de trazo que llenan los huecos entre las clavijas de un tablero hexagonal (5 niveles).
+- **Katamino**: llenar un tablero de 5 columnas con pentominós; cada PENTA suma una pieza y una fila. 512 retos en 5 desafíos (del Pequeño Slam al Desafío) que se eligen en una tabla; los resueltos quedan marcados.
 - **Solitario**: el clásico de saltar bolas hasta dejar una, en tablero inglés (33) o europeo (37) a elegir en Ajustes.
 
 Todos los tableros se generan en el dispositivo, tienen solución única y su nivel lo garantiza un
@@ -66,6 +67,8 @@ Las 358 colocaciones válidas de Smart Circuit están en `js/games/smart-circuit
 Las 274 soluciones de Smart Circle (con los nervios en su posición de partida; las demás son las mismas giradas) están en `js/games/smart-circle/engine/solutions-data.js`, generadas por `node scripts/build-circle-solutions.mjs`.
 
 Las 8.124 soluciones de Smart Hexagon se guardan como 677, una por cada grupo de soluciones que son la misma girada o volteada, en `js/games/smart-hexagon/engine/solutions-data.js` (`node scripts/build-hexagon-solutions.mjs`, unos 3 minutos).
+
+Los 512 PENTAS de Katamino (filas de piezas, con solución comprobada y la dificultad medida por el número de soluciones) están en `js/games/katamino/engine/sets-data.js`, generados por `node scripts/build-katamino-sets.mjs` (unos 20 segundos).
 
 Los iconos de la app salen de `icons/icon.svg`: `node scripts/make-icons.cjs` regenera los PNG.
 

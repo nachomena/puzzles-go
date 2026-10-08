@@ -66,6 +66,11 @@ export class GameController {
   get actions(){ return {}; }
   /** Teclado (opcional). Devuelve true si consumió la tecla. */
   onKey(e){ return false; }
+  /**
+   * "Siguiente tablero" propio del juego: true = ya ha empezado otro, false = no hay más (se vuelve
+   * al menú), null = el siguiente tablero generado del mismo nivel (lo normal).
+   */
+  next(){ return null; }
 
   /* ---------- Ciclo de vida ---------- */
 
@@ -178,7 +183,7 @@ export class GameController {
     s.done = true;
     // las estadísticas van por nivel, salvo que el juego las agrupe de otra forma (p. ej. por tablero)
     const key = this.game.statsKey?.(s) ?? s.L;
-    const name = statsRows(this.game).find(r => r.key === key)?.name ?? this.game.levels[s.L].name;
+    const name = this.game.statsName?.(s) ?? statsRows(this.game).find(r => r.key === key)?.name ?? this.game.levels[s.L].name;
     const result = this.store.recordWin(key, s.time, s.hints);
     this.render();
     this.celebrate();

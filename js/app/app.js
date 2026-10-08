@@ -34,11 +34,13 @@ export class App {
     this.toast = new Toast(byId('toast'));
     this.overlays = new Overlays();
     this.hub = new HubView(byId('games'));
-    this.levelMenu = new LevelMenu({ title: byId('gameTitle'), levels: byId('levelList'), resume: byId('resume') });
+    this.levelMenu = new LevelMenu({ title: byId('gameTitle'), label: byId('levelsLabel'), levels: byId('levelList'), resume: byId('resume') });
     this.settings = new SettingsPanel(byId('settingsList'));
     this.confirm = new ConfirmDialog(byId('confirm'), this.overlays);
     this.fitHubTitle = keepFitted(byId('title'));
     this.fitGameTitle = keepFitted(byId('gameTitle'));
+    this.fitPickTitle = keepFitted(byId('pickTitle'));
+    this.pickLevel = null;      // nivel cuya tabla de tableros está abierta (juegos con picker)
     this.fitGames = keepNamesFitted(byId('games'));
     this.fitLevels = keepNamesFitted(byId('levelList'));
 
@@ -102,6 +104,7 @@ export class App {
     this.#refreshMenus();
     if (name === 'hub') this.fitHubTitle();
     if (name === 'levels') this.fitGameTitle();
+    if (name === 'pick') this.fitPickTitle();
     for (const e of this.entries.values()) e.supply.pump();
   }
 
@@ -141,27 +144,43 @@ export class App {
   }
 
   continueGame(){
-    if (this.current.controller.mount()) this.showScreen('play');
+    const { controller, game } = this.current;
+    if (!controller.mount()) return;
+    if (game.picker) this.pickLevel = controller.session.L;   // al volver, a la tabla de su nivel
+    this.showScreen('play');
+  }
+
+  /** Tabla de tableros de un nivel (juegos con picker, p. ej. Katamino). */
+  openPicker(L, entry){
+    this.current = entry;
+    this.pickLevel = L;
+    this.showScreen('pick');
   }
 
   /**
-   * Nueva partida desde el menú. Si hay una partida a medias, pregunta antes para no perderla:
-   * se puede empezar la nueva o seguir con la actual.
+   * Nueva partida desde el menú (o un tablero concreto de la tabla, `puzzle`). Si hay una partida a
+   * medias, pregunta antes para no perderla: se puede empezar la nueva o seguir con la actual.
    */
-  async requestLevel(L, entry){
+  async requestLevel(L, entry, puzzle = null){
     const cur = entry.store.hasOpenSession ? entry.store.state.cur : null;
+    const screen = this.screen;
+    if (cur && puzzle && cur.L === L && entry.game.picker.same(cur, puzzle)){ this.current = entry; this.continueGame(); return; }
     if (cur){
       const choice = await this.confirm.ask({
         title: '¿Empezar otra partida?',
-        text: `Tienes una partida de ${entry.game.levels[cur.L].name} en curso (${formatTime(cur.time || 0)}). Si empiezas otra, se perderá.`,
+        text: `Tienes una partida de ${entry.game.sessionLabel?.(cur) ?? entry.game.levels[cur.L].name} en curso (${formatTime(cur.time || 0)}). Si empiezas otra, se perderá.`,
         accept: 'Empezar nueva',
         alternate: 'Seguir con la actual'
       });
-      if (this.currentMeta?.id !== entry.game.id || this.screen !== 'levels') return;
+      if (this.currentMeta?.id !== entry.game.id || this.screen !== screen) return;
       if (choice === 'alternate'){ this.current = entry; this.continueGame(); return; }
       if (choice !== 'accept') return;
     }
-    this.startLevel(L, entry);
+    if (puzzle){
+      this.current = entry;
+      entry.controller.begin(L, puzzle);
+      this.continueGame();
+    } else this.startLevel(L, entry);
   }
 
   startLevel(L, entry = this.current){
@@ -178,19 +197,34 @@ export class App {
 
   back(){
     if (this.screen === 'play') this.current.store.save();
-    if (this.screen === 'play' && !this.#isDirect()) this.showScreen('levels');
+    if (this.screen === 'play') this.#toMenu();
+    else if (this.screen === 'pick') this.showScreen('levels');
     else { this.currentMeta = null; this.showScreen('hub'); }
   }
 
-  /** Menú del juego actual (o el selector, si el juego no tiene menú de niveles). */
+  /** Menú del juego actual: su tabla de tableros, sus niveles o el selector si no tiene menú. */
   #toMenu(){
     if (this.#isDirect()){ this.currentMeta = null; this.showScreen('hub'); }
+    else if (this.current?.game.picker && this.pickLevel) this.showScreen('pick');
     else this.showScreen('levels');
+  }
+
+  /** "Siguiente tablero" tras ganar: el que diga el juego o uno nuevo del mismo nivel. */
+  #next(){
+    const { controller, store } = this.current, r = controller.next();
+    if (r === null) this.startLevel(store.state.cur.L);
+    else if (r) this.continueGame();
+    else this.#toMenu();
   }
 
   #refreshMenus(){
     if (this.screen === 'hub') this.hub.render(this.catalog.map(({ meta }) => ({ meta, data: this.#menuData(meta) })));
     if (this.screen === 'levels' && this.currentMeta) this.levelMenu.render(this.currentMeta, this.#menuData(this.currentMeta));
+    if (this.screen === 'pick' && this.current){
+      const { game, store } = this.current;
+      byId('pickTitle').textContent = game.levels[this.pickLevel].name.toUpperCase();
+      byId('pickBody').innerHTML = game.picker.render(this.pickLevel, store.menuData());
+    }
     if (this.screen === 'hub') this.fitGames();
     if (this.screen === 'levels') this.fitLevels();
   }
@@ -206,7 +240,13 @@ export class App {
     const cur = this.current;
     return {
       'open-game':    el => this.openGame(el.dataset.game),
-      'start-level':  el => this.#withGame(entry => this.requestLevel(el.dataset.level, entry)),
+      'start-level':  el => this.#withGame(entry => entry.game.picker
+        ? this.openPicker(el.dataset.level, entry)
+        : this.requestLevel(el.dataset.level, entry)),
+      'pick-puzzle':  el => this.#withGame(entry => {
+        const puzzle = entry.game.picker.puzzle(this.pickLevel, el.dataset);
+        if (puzzle) this.requestLevel(this.pickLevel, entry, puzzle);
+      }),
       'confirm-accept':    () => this.confirm.answer('accept'),
       'confirm-alternate': () => this.confirm.answer('alternate'),
       'continue':     () => this.#withGame(entry => { this.current = entry; this.continueGame(); }),
@@ -214,7 +254,7 @@ export class App {
       'open':         el => this.#withGame(entry => { this.current = entry; this.#openOverlay(el.dataset.target); }),
       'close':        () => this.overlays.closeDismissable(),
       'cancel-generation': () => { this.overlays.close('loading'); cur.supply.cancelRequest(); },
-      'next-puzzle':  () => { this.overlays.close('win'); this.startLevel(cur.store.state.cur.L); },
+      'next-puzzle':  () => { this.overlays.close('win'); this.#next(); },
       'to-menu':      () => { this.overlays.close('win'); this.#toMenu(); },
       'wipe-stats':   () => { cur.store.clearStats(); this.#refreshMenus(); this.toast.show('Estadísticas borradas'); },
       'undo':         () => cur.controller.undo(),

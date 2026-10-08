@@ -7,6 +7,7 @@ import smartDices from './smart-dices/meta.js';
 import smartCircuit from './smart-circuit/meta.js';
 import smartCircle from './smart-circle/meta.js';
 import smartHexagon from './smart-hexagon/meta.js';
+import katamino from './katamino/meta.js';
 import pegSolitaire from './peg-solitaire/meta.js';
 
 export const CATALOG = [
@@ -16,5 +17,6 @@ export const CATALOG = [
   { meta: smartCircuit, load: () => import('./smart-circuit/index.js') },
   { meta: smartCircle,  load: () => import('./smart-circle/index.js') },
   { meta: smartHexagon, load: () => import('./smart-hexagon/index.js') },
+  { meta: katamino,     load: () => import('./katamino/index.js') },
   { meta: pegSolitaire, load: () => import('./peg-solitaire/index.js') }
 ];
