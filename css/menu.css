@@ -11,13 +11,14 @@
 .menu__icons{display:flex;gap:26px;padding-top:22px}
 .rule{height:3px;background:var(--rule);margin:26px 0 0;border:0}
 
-.resume{display:flex;justify-content:space-between;align-items:center;width:100%;padding:14px 16px;margin:4px 0 22px;background:var(--ink);color:var(--bg);text-align:left}
-.resume b{font-size:20px}
-.resume span{font-size:15px;font-weight:600}
+.resume{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;padding:14px 16px;margin:4px 0 22px;background:var(--ink);color:var(--bg);text-align:left}
+.resume b{font-size:20px;flex-shrink:0}
+/* en una línea: si no cabe, la app reduce la letra (ui/fit-text.js) */
+.resume span{font-size:15px;font-weight:600;white-space:nowrap}
 
 .level{display:flex;align-items:center;justify-content:space-between;width:100%;padding:8px 0;text-align:left;gap:16px}
 .level__text{min-width:0}
-.level__name{font-size:var(--name-size,clamp(36px,11.2vw,62px));line-height:1.02;display:block}
+.level__name{font-size:var(--name-size,clamp(36px,11.2vw,62px));line-height:1.02;display:block;white-space:nowrap}
 .level__meta{display:block;font-size:14px;color:var(--dim);margin-top:2px;font-weight:500}
 .level__meta:empty{display:none}
 .level:active .level__name{opacity:.7}

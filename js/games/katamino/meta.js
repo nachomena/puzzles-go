@@ -28,6 +28,8 @@ export default Object.freeze({
   menuLabel: 'Desafíos',
   /** Bajo cada desafío: cuántos PENTAS llevas resueltos. */
   levelMeta: (L, stats) => `${solvedIn(L, stats)} de ${LEVELS[L].total} resueltos`,
-  /** Texto de "Continuar". */
-  sessionLabel: cur => `${LEVELS[cur.L].name} ${rowName(cur.p.label)} · PENTA ${cur.p.n}`
+  /** Partida a medias, en la confirmación de empezar otra. */
+  sessionLabel: cur => `${LEVELS[cur.L].name} ${rowName(cur.p.label)} · PENTA ${cur.p.n}`,
+  /** Lo mismo, corto, para el botón de continuar (fila y número del PENTA). */
+  resumeLabel: cur => `${LEVELS[cur.L].name} ${rowName(cur.p.label)} · ${cur.p.n}`
 });

@@ -17,7 +17,8 @@
    @property {(session:object) => string} [statsName]  nombre de esa fila en la pantalla de victoria
    @property {string} [menuLabel]   título sobre la lista de niveles (por defecto, "Nueva partida")
    @property {(L:string, stats:object) => string} [levelMeta]  texto bajo cada nivel del menú (por defecto, el récord)
-   @property {(session:object) => string} [sessionLabel]       texto de "Continuar" (por defecto, el nivel)
+   @property {(session:object) => string} [sessionLabel]       nombre de la partida a medias (por defecto, el nivel)
+   @property {(session:object) => string} [resumeLabel]        versión corta para el botón "Continuar"
    @property {{ render:(L:string, data:{stats:object,cur:object|null}) => string,
                 puzzle:(L:string, dataset:DOMStringMap) => object|null,
                 same:(session:object, puzzle:object) => boolean }} [picker]

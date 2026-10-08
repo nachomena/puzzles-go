@@ -12,7 +12,8 @@ export class LevelMenu {
   }
 
   /**
-   * @param {{ name: string, levels: object, levelOrder: string[], menuLabel?: string, levelMeta?: Function, sessionLabel?: Function }} meta
+   * @param {{ name: string, levels: object, levelOrder: string[], menuLabel?: string, levelMeta?: Function,
+   *   sessionLabel?: Function, resumeLabel?: Function }} meta
    *   datos del juego (meta.js)
    * @param {{ stats: object, cur: object|null }} data  de Store#menuData o Store.peek
    */
@@ -27,7 +28,7 @@ export class LevelMenu {
         `</button>`;
     }).join('');
     this.resumeEl.innerHTML = cur
-      ? `<button class="resume" data-action="continue"><b class="display">CONTINUAR</b><span>${meta.sessionLabel?.(cur) ?? meta.levels[cur.L].name}, ${formatTime(cur.time || 0)}</span></button>`
+      ? `<button class="resume" data-action="continue"><b class="display">CONTINUAR</b><span>${(meta.resumeLabel ?? meta.sessionLabel)?.(cur) ?? meta.levels[cur.L].name}, ${formatTime(cur.time || 0)}</span></button>`
       : '';
   }
 }

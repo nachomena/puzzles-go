@@ -30,7 +30,7 @@ segundo plano, historial, cronómetro, estadísticas y pantalla de victoria son 
      Juegos con retos fijos que se eligen uno a uno (p. ej. Katamino): `picker` en `index.js`
      (`render(L, data)` dibuja la tabla de un nivel con botones `data-action="pick-puzzle"`,
      `puzzle(L, dataset)` da el tablero tocado y `same(session, puzzle)` dice si es la partida abierta),
-     y en `meta.js` `menuLabel`, `levelMeta(L, stats)` y `sessionLabel(session)` para el menú.
+     y en `meta.js` `menuLabel`, `levelMeta(L, stats)`, `sessionLabel(session)` y `resumeLabel(session)` para el menú.
      El controlador puede definir `next()` para el botón "Siguiente tablero" (ver `core/game-controller.js`).
 2. Añade `{ meta, load: () => import('./<id>/index.js') }` a `CATALOG` en `js/games/catalog.js`.
 3. Si necesita estilos, crea `css/games/<id>.css` y enlázalo en `index.html`.

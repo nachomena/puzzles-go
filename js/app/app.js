@@ -11,7 +11,7 @@ import { SettingsPanel } from '../ui/settings-panel.js';
 import { ConfirmDialog } from '../ui/confirm-dialog.js';
 import { formatTime } from '../lib/format.js';
 import { Toast } from '../ui/toast.js';
-import { keepFitted, keepNamesFitted } from '../ui/fit-text.js';
+import { keepFitted, keepNamesFitted, fitToWidth } from '../ui/fit-text.js';
 import { playScreen } from '../ui/templates.js';
 
 const htmlToElement = html => {
@@ -246,7 +246,7 @@ export class App {
       byId('pickBody').innerHTML = game.picker.render(this.pickLevel, store.menuData());
     }
     if (this.screen === 'hub') this.fitGames();
-    if (this.screen === 'levels') this.fitLevels();
+    if (this.screen === 'levels'){ this.fitLevels(); fitToWidth(byId('resume').querySelector('span')); }
   }
 
   /** Estadísticas y partida abierta: del store si el juego ya está cargado, si no del almacenamiento. */

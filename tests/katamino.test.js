@@ -112,6 +112,7 @@ test('menú: progreso por desafío, nombres y partida guardada', () => {
   const s = { L: 'grand', p: penta('grand', 'B', 7), place: PIECES.map(() => null), tm: [], tr: [], time: 3, done: false, hints: 0 };
   assert.equal(game.statsKey(s), 'grand:B:7');
   assert.equal(meta.sessionLabel(s), 'Gran Slam B · PENTA 7');
+  assert.equal(meta.resumeLabel(s), 'Gran Slam B · 7');
   assert.ok(game.restoreSession(structuredClone(s)));
   const bad = structuredClone(s);
   bad.place[s.p.pieces[0]] = { m: 0, r: 0, x: 4, y: 0 };   // se sale por la derecha
