@@ -1,5 +1,5 @@
 // Sube la versión cuando publiques cambios para que el iPhone descargue la nueva
-const VERSION = 'pzg-v49';
+const VERSION = 'pzg-v50';
 const FILES = [
   './', './index.html', './manifest.webmanifest',
   './css/base.css', './css/components.css', './css/games/akari.css', './css/games/hashi.css', './css/games/iq-puzzler.css', './css/games/katamino.css', './css/games/kenken.css', './css/games/peg-solitaire.css', './css/games/rush-hour.css', './css/games/smart-circle.css', './css/games/smart-hexagon.css', './css/games/smart-circuit.css', './css/games/smart-dices.css',
@@ -7,7 +7,7 @@ const FILES = [
   './css/play.css', './css/tokens.css', './js/app/app.js', './js/boot-check.js', './js/config.js',
   './js/core/digit-grid-controller.js', './js/core/game-controller.js', './js/core/grid-pieces-controller.js', './js/core/game-definition.js', './js/core/generator-worker.js',
   './js/core/hint-cooldown.js', './js/core/history.js', './js/core/puzzle-supply.js', './js/core/runners.js',
-  './js/core/stats.js', './js/core/store.js', './js/games/catalog.js',
+  './js/core/stats.js', './js/core/progress.js', './js/core/store.js', './js/games/catalog.js',
   './js/games/iq-puzzler/board-view.js', './js/games/iq-puzzler/config.js', './js/games/iq-puzzler/controller.js',
   './js/games/iq-puzzler/engine/generator.js', './js/games/iq-puzzler/engine/pieces.js', './js/games/iq-puzzler/index.js',
   './js/games/iq-puzzler/meta.js', './js/games/iq-puzzler/piece-svg.js', './js/games/iq-puzzler/rules.js',
@@ -76,7 +76,7 @@ const FILES = [
   './js/games/sudoku/index.js', './js/games/sudoku/meta.js', './js/games/sudoku/rules.js',
   './js/games/sudoku/templates.js', './js/games/sudoku/worker.js', './js/lib/bits.js', './js/lib/dom.js',
   './js/lib/format.js', './js/lib/grid.js', './js/lib/iter.js', './js/lib/polyomino.js', './js/lib/random.js', './js/main.js',
-  './js/pwa.js', './js/ui/cell-drag.js', './js/ui/confirm-dialog.js', './js/ui/cube-svg.js', './js/ui/fit-text.js', './js/ui/fit-play.js', './js/ui/edge-back.js',
+  './js/pwa.js', './js/ui/cell-drag.js', './js/ui/confirm-dialog.js', './js/ui/cube-svg.js', './js/ui/fit-text.js', './js/ui/fit-play.js', './js/ui/edge-back.js', './js/ui/win-strip.js',
   './js/ui/fit-spots.js', './js/ui/game-hud.js', './js/ui/grid-board.js', './js/ui/hub-view.js', './js/ui/level-menu.js',
   './js/ui/overlays.js', './js/ui/piece-drag.js', './js/ui/settings-panel.js', './js/ui/templates.js',
   './js/ui/toast.js',

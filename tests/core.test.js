@@ -49,6 +49,9 @@ test('Store: guarda, carga y filtra datos inválidos', () => {
   assert.equal(b.state.tool, 'b');
   assert.ok(b.hasOpenSession);
   assert.equal(b.totalSolved(), 2);
+  assert.deepEqual(b.state.log.map(e => [e.k, e.t, e.h]), [['easy', 90, 0], ['easy', 60, 2]], 'cada victoria queda en el registro');
+  b.clearStats();
+  assert.equal(b.state.log.length, 0);
 });
 
 test('Store: una partida de menos de 5 s no se ofrece para continuar y su tablero vuelve a la reserva', () => {

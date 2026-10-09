@@ -9,6 +9,7 @@ import { BUFFER_CAP, MIN_RESUME_SEC } from '../config.js';
  */
 const resumable = cur => !!cur && !cur.done && ((cur.time || 0) >= MIN_RESUME_SEC || !!cur.input);
 import { recordWin } from './stats.js';
+import { logWin, isEntry, LOG_CAP } from './progress.js';
 
 export class Store {
   /**
@@ -21,6 +22,7 @@ export class Store {
     this.state = {
       settings: { ...game.defaultSettings },
       stats: {},
+      log: [],          // partidas resueltas, para el progreso (core/progress.js)
       buffers: Object.fromEntries(game.levelOrder.map(L => [L, []])),
       cur: null,
       tool: game.tools[0]
@@ -34,6 +36,7 @@ export class Store {
       const st = this.state, g = this.game;
       Object.assign(st.settings, s.settings || {});
       st.stats = s.stats || {};
+      if (Array.isArray(s.log)) st.log = s.log.filter(isEntry).slice(-LOG_CAP);
       for (const L of g.levelOrder){
         if (Array.isArray(s.buffers?.[L])) st.buffers[L] = s.buffers[L].filter(p => p && g.isValidPuzzle(p, L)).slice(0, BUFFER_CAP);
       }
@@ -88,13 +91,14 @@ export class Store {
   /* ---- Estadísticas ---- */
   statsFor(L){ return this.state.stats[L] || {}; }
   totalSolved(){ return Object.values(this.state.stats).reduce((n, s) => n + (s.solved || 0), 0); }
-  clearStats(){ this.state.stats = {}; this.save(); }
+  clearStats(){ this.state.stats = {}; this.state.log = []; this.save(); }
   /**
    * Registra una victoria en `key` (el nivel, o el grupo que diga el juego). Solo es récord sin pistas.
    * Devuelve { record, best, prevBest, prevAvg } (ver core/stats.js).
    */
   recordWin(key, time, hints, extra){
     const r = recordWin(this.state.stats, key, time, hints, extra);
+    logWin(this.state.log, { key, time, hints, moves: extra?.moves });
     this.save();
     return r;
   }

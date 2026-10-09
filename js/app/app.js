@@ -14,6 +14,7 @@ import { Toast } from '../ui/toast.js';
 import { keepFitted, keepNamesFitted, fitToWidth } from '../ui/fit-text.js';
 import { playScreen } from '../ui/templates.js';
 import { fitPlay } from '../ui/fit-play.js';
+import { winStripSvg } from '../ui/win-strip.js';
 import { bindEdgeBack } from '../ui/edge-back.js';
 
 const htmlToElement = html => {
@@ -85,9 +86,10 @@ export class App {
       game, store, screen,
       hud: new GameHud(screen),
       notify: msg => this.toast.show(msg),
-      onWin: ({ time, detail }) => {
+      onWin: ({ time, detail, strip }) => {
         byId('winTime').textContent = time;
         byId('winDetail').textContent = detail;
+        byId('winStrip').innerHTML = winStripSvg(strip);
         this.overlays.open('win');
       }
     });

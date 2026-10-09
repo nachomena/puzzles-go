@@ -24,3 +24,14 @@
 .loader p{font-size:18px;margin:0 0 6px}
 .loader small{display:block;color:var(--dim);font-size:14px;margin-bottom:22px}
 @keyframes spin{to{transform:rotate(360deg)}}
+/* Tira de la victoria: dónde queda esta partida entre las últimas (ui/win-strip.js) */
+#winStrip:empty{display:none}
+.win-strip{display:block;width:100%;margin:-8px 0 4px;overflow:visible}
+.win-strip__cap{font-size:12px;color:var(--dim);margin:0 0 22px}
+.win-strip__axis{stroke:var(--divider);stroke-width:1}
+.win-strip__dot{fill:var(--dim);stroke:var(--surface);stroke-width:2}
+.win-strip__avg{stroke:var(--ink-soft);stroke-width:1.5}
+.win-strip__today{fill:var(--accent);stroke:var(--surface);stroke-width:2}
+.win-strip__today.is-hints{fill:var(--surface);stroke:var(--accent);stroke-width:2.5}
+.win-strip__label{font-family:var(--font-body);font-size:10.5px;fill:var(--dim);font-variant-numeric:tabular-nums}
+.win-strip__label--today{fill:var(--ink);font-weight:700}

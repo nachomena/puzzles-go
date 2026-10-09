@@ -6,6 +6,7 @@ import { History } from './history.js';
 import { hintWait } from './hint-cooldown.js';
 import { formatTime } from '../lib/format.js';
 import { statsRows, winDetail } from './stats.js';
+import { winStrip } from './progress.js';
 
 export class GameController {
   /**
@@ -14,7 +15,7 @@ export class GameController {
    * @param {import('./store.js').Store} deps.store
    * @param {import('../ui/game-hud.js').GameHud} deps.hud
    * @param {(msg:string) => void} deps.notify
-   * @param {(result:{time:string, detail:string}) => void} deps.onWin
+   * @param {(result:{time:string, detail:string, strip:object|null}) => void} deps.onWin  strip: ver core/progress.js#winStrip
    */
   constructor({ game, store, hud, notify, onWin }){
     Object.assign(this, { game, store, hud, notify, onWin });
@@ -206,6 +207,7 @@ export class GameController {
     this.render();
     this.celebrate();
     const detail = winDetail(result, { time: s.time, hints: s.hints, name });
-    setTimeout(() => this.onWin({ time: formatTime(s.time), detail }), TIMING.winOverlayDelayMs);
+    const strip = winStrip(this.store.state.log);
+    setTimeout(() => this.onWin({ time: formatTime(s.time), detail, strip }), TIMING.winOverlayDelayMs);
   }
 }
