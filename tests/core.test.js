@@ -38,7 +38,7 @@ test('Store: guarda, carga y filtra datos inválidos', () => {
   assert.equal(a.state.tool, 'a', 'la primera herramienta es la de por defecto');
   a.addPuzzle('easy', { level: 1 });
   a.addPuzzle('easy', { level: 2 });   // nivel equivocado
-  a.state.cur = { L: 'easy', p: {}, marks: [0], done: false };
+  a.state.cur = { L: 'easy', p: {}, marks: [0], time: 30, done: false };
   a.state.tool = 'b';
   assert.deepEqual(a.recordWin('easy', 90, 0), { record: true, best: 90, prevBest: null, prevAvg: null });
   assert.deepEqual(a.recordWin('easy', 60, 2), { record: false, best: 90, prevBest: 90, prevAvg: 90 }, 'con pistas no hay récord');
@@ -49,6 +49,26 @@ test('Store: guarda, carga y filtra datos inválidos', () => {
   assert.equal(b.state.tool, 'b');
   assert.ok(b.hasOpenSession);
   assert.equal(b.totalSolved(), 2);
+});
+
+test('Store: una partida de menos de 5 s no se ofrece para continuar y su tablero vuelve a la reserva', () => {
+  const storage = memoryStorage();
+  const a = new Store(storage, fakeGame);
+  a.state.cur = { L: 'easy', p: { level: 1 }, marks: [0], time: 3, done: false };
+  a.save();
+  assert.equal(a.hasOpenSession, false);
+  assert.equal(Store.peek(storage, fakeGame.storageKey).cur, null);
+  a.dropFreshSession({ keepPuzzle: true });
+  assert.equal(a.state.cur, null);
+  assert.deepEqual(a.takePuzzle('easy'), { level: 1 });
+  // con 5 s o más sí queda, y no se descarta
+  a.state.cur = { L: 'easy', p: { level: 1 }, marks: [0], time: 5, done: false };
+  assert.ok(a.hasOpenSession);
+  a.dropFreshSession({ keepPuzzle: true });
+  assert.ok(a.state.cur);
+  // y si ya tiene algo puesto, aunque lleve menos
+  a.state.cur = { L: 'easy', p: { level: 1 }, marks: [1], time: 2, input: true, done: false };
+  assert.ok(a.hasOpenSession);
 });
 
 test('Store: sobrevive a datos corruptos o sin almacenamiento', () => {

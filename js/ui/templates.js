@@ -38,12 +38,21 @@ export const dock = ({ hint = true } = {}) =>
  */
 export const playScreen = ({ id, name, boardClass = '', boardHtml = null, controls, hint = true }) =>
   `<section id="play-${id}" class="screen" data-game="${id}" aria-label="${name}">` +
-  `<div class="wrap wrap--game">${hud()}${boardHtml ?? board(boardClass)}${controls}${dock({ hint })}</div></section>`;
+  `<div class="wrap wrap--game">${hud()}<div class="play-fit">${boardHtml ?? board(boardClass)}</div>${controls}${dock({ hint })}</div></section>`;
 
 /**
  * Barra de herramientas y teclado de números del 1 al n (Sudoku, KenKen): reiniciar, número o lápiz,
  * goma, deshacer y rehacer.
  */
+/**
+ * Notas de lápiz de una casilla (Sudoku, KenKen): la cifra k en su hueco si está en `mask`. La del
+ * número resaltado (`same`) va destacada, como las casillas con ese número.
+ */
+export const notesHtml = (mask, n, same = 0, cls = '') =>
+  `<span class="sd-notes${cls ? ' ' + cls : ''}">` +
+  Array.from({ length: n }, (_, k) => mask & (1 << k) ? `<i${k + 1 === same ? ' class="is-same"' : ''}>${k + 1}</i>` : '<i></i>').join('') +
+  '</span>';
+
 export const digitControls = n =>
   `<div class="toolbar">` +
   iconButton('reset', 'reset', 'Reiniciar tablero') +

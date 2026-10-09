@@ -1,4 +1,4 @@
-/* Definición de IQ Puzzler Pro para el registro de juegos (contrato en js/games/README.md). */
+/* Definición de Puzzler Pro para el registro de juegos (contrato en js/games/README.md). */
 import { defineGame } from '../../core/game-definition.js';
 import { generate } from './engine/generator.js';
 import { PIECES, cellsOf } from './engine/pieces.js';

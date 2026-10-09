@@ -9,9 +9,10 @@
 .game-group__items{margin:2px 0 8px 4px;padding-left:16px;border-left:3px solid var(--rule)}
 .game-group.is-open .level__meta{visibility:hidden}
 
-.menu{padding-top:34px;padding-bottom:40px}
+.menu{padding-top:34px;padding-bottom:24px}
 .menu__label{font-size:19px;font-weight:600;color:var(--ink-label);margin:0 0 10px}
-.menu__icons{display:flex;gap:26px;padding-top:22px}
+/* Volver, ajustes y ayuda: al final de la lista, y pegados abajo si la lista es larga (siempre a mano) */
+.menu__icons{display:flex;gap:26px;padding:22px 0 calc(10px + var(--safe-bottom));position:sticky;bottom:0;background:var(--bg);z-index:2}
 .rule{height:3px;background:var(--rule);margin:26px 0 0;border:0}
 
 .resume{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;padding:14px 16px;margin:4px 0 22px;background:var(--ink);color:var(--bg);text-align:left}

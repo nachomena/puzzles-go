@@ -1,5 +1,5 @@
 /* Piezas de casillas (poliominós) y búsqueda de soluciones para llenar un tablero con ellas.
-   Sin DOM. Lo usan Katamino (5 × n) e IQ Puzzler Pro (11 × 5).
+   Sin DOM. Lo usan Katamino (5 × n) e Puzzler Pro (11 × 5).
 
    Una pieza colocada es { m, r, x, y }: m = cara (0, 1 = volteada), r = giro de 90° en sentido
    horario (0..3) y (x, y) la esquina superior izquierda de su caja. */

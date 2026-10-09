@@ -1,10 +1,9 @@
 /* Menú de un juego: botón de continuar y lista de niveles. */
 import { formatTime } from '../lib/format.js';
+import { levelSummary } from '../core/stats.js';
 
-/** Bajo cada nivel solo va el mejor tiempo (si lo hay), salvo que el juego diga otra cosa. */
-const levelMeta = (meta, L, stats) => meta.levelMeta
-  ? meta.levelMeta(L, stats)
-  : stats[L]?.best ? `Récord ${formatTime(stats[L].best)}` : '';
+/** Bajo cada nivel va el récord (ver levelSummary), salvo que el juego diga otra cosa. */
+const levelMeta = (meta, L, stats) => meta.levelMeta ? meta.levelMeta(L, stats) : levelSummary(stats[L]);
 
 export class LevelMenu {
   constructor({ title, label, levels, resume }){

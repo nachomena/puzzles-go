@@ -1,4 +1,6 @@
 /* Datos mínimos de Rush Hour para el selector y el menú de niveles: se cargan sin el motor ni la interfaz. */
+import { levelSummary } from '../../core/stats.js';
+
 export default Object.freeze({
   id: 'rush-hour',
   name: 'Rush Hour',
@@ -12,5 +14,7 @@ export default Object.freeze({
     master:  Object.freeze({ name: 'Difícil',      target: 4 }),
     wizard:  Object.freeze({ name: 'Experto',      target: 5 })
   }),
-  levelOrder: Object.freeze(['starter', 'junior', 'expert', 'master', 'wizard'])
+  levelOrder: Object.freeze(['starter', 'junior', 'expert', 'master', 'wizard']),
+  /** Bajo cada nivel, el récord de tiempo y la partida con menos movimientos. */
+  levelMeta: (L, stats) => [levelSummary(stats[L]), stats[L]?.bestMoves ? `${stats[L].bestMoves} mov.` : ''].filter(Boolean).join(' · ')
 });

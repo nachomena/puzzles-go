@@ -1,4 +1,4 @@
-/* Vista de IQ Puzzler Pro: tablero de 11 × 5 agujeros, piezas de bolas y bandeja.
+/* Vista de Puzzler Pro: tablero de 11 × 5 agujeros, piezas de bolas y bandeja.
    Las piezas del tablero van en un mismo SVG con coordenadas de casilla. */
 import { W, H, orient } from './engine/pieces.js';
 import { pieceParts, pieceSvg } from './piece-svg.js';

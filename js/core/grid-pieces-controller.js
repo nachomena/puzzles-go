@@ -1,4 +1,4 @@
-/* Partida de piezas sobre una cuadrícula (Katamino, IQ Puzzler Pro): arrastrar de la bandeja al
+/* Partida de piezas sobre una cuadrícula (Katamino, Puzzler Pro): arrastrar de la bandeja al
    tablero, tocar para elegir y otra vez para girar 90°, y voltear la elegida con un botón.
    La pieza colocada es { m, r, x, y } (lib/polyomino.js); en la bandeja se guarda su cara y giro.
 

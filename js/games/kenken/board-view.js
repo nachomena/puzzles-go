@@ -1,6 +1,7 @@
 /* Tablero de KenKen: las jaulas con borde grueso (GridBoard con una región por jaula), la operación
    en la primera casilla de cada una, y los números y notas como en el Sudoku. */
 import { GridBoard } from '../../ui/grid-board.js';
+import { notesHtml } from '../../ui/templates.js';
 import { cageLabel } from './rules.js';
 
 export class KenKenBoard extends GridBoard {
@@ -15,15 +16,16 @@ export class KenKenBoard extends GridBoard {
 
   /** @param {{ values, notes, sel, bad, same }} v  (como el Sudoku; peers = misma fila o columna) */
   render({ values, notes, sel, bad, same }){
-    const n = this.n, digits = [...Array(n).keys()].map(k => k + 1);
+    const n = this.n;
     const sees = (a, b) => ((a / n) | 0) === ((b / n) | 0) || a % n === b % n;
     for (let i = 0; i < n * n; i++){
       const d = values[i];
       const flags = (d ? ' is-entry' : '') + (bad && bad[i] ? ' is-bad' : '') +
         (i === sel ? ' is-selected' : sel >= 0 && sees(i, sel) ? ' is-peer' : '') + (same && d === same ? ' is-same' : '');
-      const note = notes[i] ? `<span class="sd-notes kk-notes">${digits.map(k => `<i>${notes[i] & (1 << (k - 1)) ? k : ''}</i>`).join('')}</span>` : '';
+      const noteSame = !d && same && notes[i] & (1 << (same - 1)) ? same : 0;
+      const note = notes[i] ? notesHtml(notes[i], n, noteSame, 'kk-notes') : '';
       const html = (this.labels[i] ? `<b class="kk-label">${this.labels[i]}</b>` : '') + (d ? `<span class="sd-digit">${d}</span>` : note);
-      this.paint(i, `${d}|${notes[i]}|${flags}`, 'cell' + flags, html);
+      this.paint(i, `${d}|${notes[i]}|${flags}|${noteSame}`, 'cell' + flags, html);
     }
   }
 }

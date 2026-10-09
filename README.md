@@ -8,7 +8,7 @@ Juegos de lógica como web app instalable que funciona sin conexión:
 - **Smart Circuit**: 10 piezas de doble cara que unen los puntos con caminos en un tablero de 8×4 (5 niveles).
 - **Smart Circle**: 10 piezas de bolas de doble cara que llenan un tablero redondo de 3 anillos sin cruzar sus nervios (5 niveles; en los dos últimos también hay que encontrar dónde van los nervios).
 - **Smart Hexagon**: 12 piezas de doble cara en forma de trazo que llenan los huecos entre las clavijas de un tablero hexagonal (5 niveles).
-- **IQ Puzzler Pro** (2D): 12 piezas de bolas que llenan un tablero de 11×5; de 9 a 3 piezas puestas al empezar (5 niveles).
+- **Puzzler Pro** (2D): 12 piezas de bolas que llenan un tablero de 11×5; de 9 a 3 piezas puestas al empezar (5 niveles).
 - **Katamino**: llenar un tablero de 5 columnas con pentominós; cada PENTA suma una pieza y una fila. 512 retos en 5 desafíos (del Pequeño Slam al Desafío) que se eligen en una tabla; los resueltos quedan marcados.
 - **Rush Hour**: deslizar coches y camiones en un 6×6 hasta sacar el rojo; niveles por movimientos mínimos (de 4 a más de 30).
 - **Zip**: un camino que pasa por todas las casillas tocando los números en orden (de 5×5 a 7×7).
@@ -80,7 +80,7 @@ Las 8.124 soluciones de Smart Hexagon se guardan como 677, una por cada grupo de
 
 Los 512 PENTAS de Katamino (filas de piezas, con solución comprobada y la dificultad medida por el número de soluciones) están en `js/games/katamino/engine/sets-data.js`, generados por `node scripts/build-katamino-sets.mjs` (unos 20 segundos).
 
-Los SmartGames (Dices, Circuit, Circle, Hexagon e IQ Puzzler Pro) van juntos en el selector, en una fila "Smart Games" que se despliega (`group` en su `meta.js`).
+Los SmartGames (Dices, Circuit, Circle, Hexagon e Puzzler Pro) van juntos en el selector, en una fila "Smart Games" que se despliega (`group` en su `meta.js`).
 
 Los retos de Rush Hour de los niveles Difícil y Experto, que tardarían varios segundos en generarse en el momento, están ya calculados en `js/games/rush-hour/engine/bank-data.js` (`node scripts/build-rush-hour-bank.mjs`, ver el script). Los demás niveles y juegos se generan en el dispositivo.
 

@@ -1,12 +1,9 @@
 /* Tablero de Sudoku: pistas fijas, números del jugador, notas y resaltados. */
 import { GridBoard } from '../../ui/grid-board.js';
+import { notesHtml } from '../../ui/templates.js';
 import { SIZE, CELLS, boxOf, rowOf, colOf } from './engine/grid.js';
 
 const REGIONS = Array.from({ length: CELLS }, (_, i) => boxOf(i));
-const DIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-const notesHtml = mask =>
-  `<span class="sd-notes">${DIGITS.map(d => `<i>${mask & (1 << (d - 1)) ? d : ''}</i>`).join('')}</span>`;
 
 /** ¿Comparten fila, columna o caja? */
 const sees = (a, b) => rowOf(a) === rowOf(b) || colOf(a) === colOf(b) || boxOf(a) === boxOf(b);
@@ -31,8 +28,9 @@ export class SudokuBoard extends GridBoard {
         (bad && bad[i] ? ' is-bad' : '') +
         (i === sel ? ' is-selected' : sel >= 0 && sees(i, sel) ? ' is-peer' : '') +
         (same && d === same ? ' is-same' : '');
-      const html = d ? `<span class="sd-digit">${d}</span>` : notes[i] ? notesHtml(notes[i]) : '';
-      this.paint(i, `${d}|${notes[i]}|${flags}`, 'cell' + flags, html);
+      const noteSame = !d && same && notes[i] & (1 << (same - 1)) ? same : 0;
+      const html = d ? `<span class="sd-digit">${d}</span>` : notes[i] ? notesHtml(notes[i], SIZE, noteSame) : '';
+      this.paint(i, `${d}|${notes[i]}|${flags}|${noteSame}`, 'cell' + flags, html);
     }
   }
 }

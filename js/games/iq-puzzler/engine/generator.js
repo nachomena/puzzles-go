@@ -1,4 +1,4 @@
-/* Generador de retos de IQ Puzzler Pro: un tablero lleno al azar y, de él, unas piezas ya puestas
+/* Generador de retos de Puzzler Pro: un tablero lleno al azar y, de él, unas piezas ya puestas
    que dejan una sola solución. Más nivel = menos piezas puestas (como en el cuadernillo). */
 import { ALL, packer } from './pieces.js';
 import { shuffle } from '../../../lib/random.js';

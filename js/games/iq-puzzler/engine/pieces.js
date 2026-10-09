@@ -1,4 +1,4 @@
-/* Las 12 piezas de bolas de IQ Puzzler Pro y su tablero de 11 × 5 (55 bolas). Sin DOM.
+/* Las 12 piezas de bolas de Puzzler Pro y su tablero de 11 × 5 (55 bolas). Sin DOM.
    Una pieza colocada es { m, r, x, y } (lib/polyomino.js); casilla i = y * W + x. */
 import { createPacker, orientCells } from '../../../lib/polyomino.js';
 

@@ -62,6 +62,8 @@ export class GameController {
   onSetting(key){}
   /** Animación de victoria. */
   celebrate(){}
+  /** Datos extra de la victoria para las estadísticas, p. ej. { moves } (ver core/stats.js). */
+  winExtra(){ return undefined; }
   /** Acciones propias del juego: { nombre: (el) => void }, para los [data-action] de su pantalla. */
   get actions(){ return {}; }
   /** Teclado (opcional). Devuelve true si consumió la tecla. */
@@ -104,11 +106,27 @@ export class GameController {
   commit(final){
     this.normalize();
     this.render();
-    if (final){ this.store.save(); this.#checkWin(); }
+    if (final){
+      this.session.input = this.hasInput();   // una partida con algo puesto se ofrece para continuar (Store)
+      this.store.save();
+      this.#checkWin();
+    }
   }
 
   /** Guarda el estado actual en el historial antes de modificarlo. */
   record(){ this.history.record(this.snapshot()); }
+
+  /**
+   * Historial de un toque en una casilla de las que van vacía → marca → pieza (estrella, bombilla).
+   * `before`: instantánea de antes del toque. `step`: 'mark' si puso la marca en una casilla vacía,
+   * 'piece' si cambió esa marca por la pieza, null si otra cosa. Un 'piece' justo después del 'mark'
+   * en la misma casilla no se apunta aparte, así deshacer vacía la casilla en vez de dejar la marca.
+   */
+  recordTap(cell, before, step){
+    const t = this.markTap;
+    if (!(step === 'piece' && t?.cell === cell && t.stamp === this.history.stamp)) this.history.record(before);
+    this.markTap = step === 'mark' ? { cell, stamp: this.history.stamp } : null;
+  }
 
   applySettings(key){
     if (!this.session) return;
@@ -184,7 +202,7 @@ export class GameController {
     // las estadísticas van por nivel, salvo que el juego las agrupe de otra forma (p. ej. por tablero)
     const key = this.game.statsKey?.(s) ?? s.L;
     const name = this.game.statsName?.(s) ?? statsRows(this.game).find(r => r.key === key)?.name ?? this.game.levels[s.L].name;
-    const result = this.store.recordWin(key, s.time, s.hints);
+    const result = this.store.recordWin(key, s.time, s.hints, this.winExtra());
     this.render();
     this.celebrate();
     const detail = winDetail(result, { time: s.time, hints: s.hints, name });

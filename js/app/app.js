@@ -13,6 +13,8 @@ import { formatTime } from '../lib/format.js';
 import { Toast } from '../ui/toast.js';
 import { keepFitted, keepNamesFitted, fitToWidth } from '../ui/fit-text.js';
 import { playScreen } from '../ui/templates.js';
+import { fitPlay } from '../ui/fit-play.js';
+import { bindEdgeBack } from '../ui/edge-back.js';
 
 const htmlToElement = html => {
   const t = document.createElement('template');
@@ -168,6 +170,7 @@ export class App {
     if (!controller.mount()) return;
     if (game.picker) this.pickLevel = controller.session.L;   // al volver, a la tabla de su nivel
     this.showScreen('play');
+    fitPlay(this.current.screen);
   }
 
   /** Tabla de tableros de un nivel (juegos con picker, p. ej. Katamino). */
@@ -216,8 +219,13 @@ export class App {
   }
 
   back(){
-    if (this.screen === 'play') this.current.store.save();
-    if (this.screen === 'play') this.#toMenu();
+    if (this.screen === 'play'){
+      const { store, game } = this.current;
+      store.save();
+      // apenas empezada: no queda para continuar (el tablero de la tabla de un picker no va a la reserva)
+      store.dropFreshSession({ keepPuzzle: !game.picker });
+      this.#toMenu();
+    }
     else if (this.screen === 'pick') this.showScreen('levels');
     else { this.currentMeta = null; this.showScreen('hub'); }
   }
@@ -310,6 +318,14 @@ export class App {
       if (e.key === 'Escape'){ this.confirm.answer('cancel'); this.overlays.closeDismissable(); return; }
       if (this.screen !== 'play' || this.overlays.anyOpen() || e.metaKey || e.ctrlKey || e.altKey) return;
       if (this.current.controller.onKey(e)) e.preventDefault();
+    });
+
+    // Volver deslizando desde el borde izquierdo (no con una hoja abierta)
+    bindEdgeBack({ enabled: () => this.screen !== 'hub' && !this.overlays.anyOpen(), onBack: () => this.back() });
+    let resizeTimer = 0;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => { if (this.screen === 'play') fitPlay(this.current.screen); }, 150);
     });
 
     // Cronómetro: solo corre con la partida a la vista

@@ -48,3 +48,10 @@
   white-space:nowrap;transition:transform .3s}
 .update-bar.is-on{transform:translate(-50%,0)}
 .update-bar button{background:var(--bg);color:var(--ink);border-radius:var(--radius-sm);padding:8px 12px;font-weight:700}
+
+/* Volver deslizando desde el borde izquierdo (ui/edge-back.js) */
+.edge-back{position:fixed;left:0;top:50%;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--cell);color:var(--ink);
+  transform:translate(-56px,-50%);opacity:0;pointer-events:none;z-index:30;transition:opacity .15s,background .15s,color .15s;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.edge-back svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.edge-back.is-on{opacity:1}
+.edge-back.is-armed{background:var(--ink);color:var(--bg)}

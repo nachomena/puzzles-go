@@ -1,4 +1,4 @@
-/* Dibujo de una pieza de IQ Puzzler Pro en SVG (unidades = casillas): bolas de color unidas, con
+/* Dibujo de una pieza de Puzzler Pro en SVG (unidades = casillas): bolas de color unidas, con
    brillo, como las de Smart Circle. */
 import { PIECES, orient } from './engine/pieces.js';
 

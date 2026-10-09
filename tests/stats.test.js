@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { recordWin, average, versusAverage, winDetail, statsRows } from '../js/core/stats.js';
+import { recordWin, average, versusAverage, winDetail, statsRows, levelSummary } from '../js/core/stats.js';
 
 test('estadísticas: récord sin pistas, media y partidas antiguas sin suma', () => {
   const stats = { easy: { solved: 3, best: 100 } };   // datos de antes: sin suma
@@ -41,4 +41,23 @@ test('lista de juegos: récord de los juegos sin menú de niveles', async () => 
   const boards = { ...one, statsRows: [{ key: 'english', name: 'Inglés' }, { key: 'european', name: 'Europeo' }] };
   assert.equal(bestLine(boards, { english: { best: 42 } }), 'Récord · Inglés 0:42');
   assert.equal(bestLine(boards, { english: { best: 42 }, european: { best: 190 } }), 'Récord · Inglés 0:42 · Europeo 3:10');
+});
+
+test('bajo el nivel: el récord, o si solo hay victorias con pistas, cuántas y su media', () => {
+  const stats = {};
+  assert.equal(levelSummary(stats.easy), '');
+  recordWin(stats, 'easy', 100, 2);
+  assert.equal(levelSummary(stats.easy), '1 resuelto con pistas · 1:40');
+  recordWin(stats, 'easy', 80, 0);
+  assert.equal(levelSummary(stats.easy), 'Récord 1:20');
+});
+
+test('movimientos: se guarda la partida con menos, sin pistas', () => {
+  const stats = {};
+  recordWin(stats, 'easy', 60, 0, { moves: 20 });
+  recordWin(stats, 'easy', 50, 0, { moves: 25 });
+  recordWin(stats, 'easy', 50, 1, { moves: 12 });
+  assert.equal(stats.easy.bestMoves, 20);
+  recordWin(stats, 'easy', 70, 0, { moves: 18 });
+  assert.equal(stats.easy.bestMoves, 18);
 });

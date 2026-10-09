@@ -88,7 +88,7 @@ export class StarBattleController extends GameController {
       value = s.hl[i] ? 0 : 1;
       s.hl[i] = value;
     }
-    this.stroke = { value, before };
+    this.stroke = { value, before, cell: i, from: before.m[i], dragged: false };
     this.commit(false);
   }
 
@@ -105,14 +105,18 @@ export class StarBattleController extends GameController {
         marks[i] = MARK.EMPTY; changed = true;
       }
     }
-    if (changed) this.commit(false);
+    if (changed){ this.stroke.dragged = true; this.commit(false); }
   }
 
   release(){
     if (!this.stroke) return;
-    const { before } = this.stroke;
+    const { before, cell, from, dragged } = this.stroke, to = this.session.marks[cell];
     this.stroke = null;
-    if (!this.sameAs(before)) this.history.record(before);
+    if (!this.sameAs(before)){
+      // un toque suelto con la estrella: X → estrella se deshace de una vez con el toque que puso la X
+      const tap = this.tool === TOOL.STAR && !dragged;
+      this.recordTap(cell, before, !tap ? null : from === MARK.EMPTY && to === MARK.X ? 'mark' : from === MARK.X && to === MARK.STAR ? 'piece' : null);
+    }
     this.commit(true);
   }
 }

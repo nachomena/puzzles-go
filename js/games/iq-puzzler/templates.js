@@ -1,4 +1,4 @@
-/* Marcado propio de IQ Puzzler Pro: tablero de bolas, botones, bandeja de piezas y ayuda. */
+/* Marcado propio de Puzzler Pro: tablero de bolas, botones, bandeja de piezas y ayuda. */
 import { iconButton } from '../../ui/templates.js';
 
 export const boardHtml = () =>

@@ -4,12 +4,13 @@ export class History {
     this.limit = limit;
     this.clear();
   }
-  clear(){ this.past = []; this.future = []; }
+  clear(){ this.past = []; this.future = []; this.stamp = 0; }
   get canUndo(){ return this.past.length > 0; }
   get canRedo(){ return this.future.length > 0; }
 
   /** Guarda el estado anterior a un cambio nuevo (invalida el rehacer). */
   record(snapshot){
+    this.stamp++;   // cambia con cada paso (apuntar, deshacer, rehacer): ver GameController#recordTap
     this.past.push(snapshot);
     if (this.past.length > this.limit) this.past.shift();
     this.future = [];
@@ -20,6 +21,7 @@ export class History {
 
   #move(from, to, current){
     if (!from.length) return null;
+    this.stamp++;
     to.push(current);
     return from.pop();
   }

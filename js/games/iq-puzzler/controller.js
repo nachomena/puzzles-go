@@ -1,4 +1,4 @@
-/* Partida de IQ Puzzler Pro (arrastrar, girar y voltear: core/grid-pieces-controller.js).
+/* Partida de Puzzler Pro (arrastrar, girar y voltear: core/grid-pieces-controller.js).
    Las piezas que trae el reto están fijas; hay una sola solución. */
 import { GridPiecesController } from '../../core/grid-pieces-controller.js';
 import { IqPuzzlerBoardView } from './board-view.js';

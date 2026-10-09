@@ -43,8 +43,9 @@ export class AkariController extends GameController {
   toggle(i){
     const s = this.session;
     if (!this.active || i < 0 || isBlack(s.p.cells[i])) return;
-    this.record();
-    s.marks[i] = NEXT[s.marks[i]];
+    const before = this.snapshot(), from = s.marks[i];
+    s.marks[i] = NEXT[from];
+    this.recordTap(i, before, from === 0 ? 'mark' : from === 2 ? 'piece' : null);
     this.commit(true);
   }
 

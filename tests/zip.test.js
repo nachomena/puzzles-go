@@ -7,7 +7,9 @@ import { runToEnd } from '../js/lib/iter.js';
 
 test('camino al azar: recorre todo el tablero de casilla vecina en casilla vecina', () => {
   for (const n of [4, 5, 6, 7]){
-    const p = randomPath(n);
+    // a veces se rinde (presupuesto de búsqueda) y devuelve null: el generador lo vuelve a intentar
+    let p = null;
+    for (let k = 0; k < 20 && !p; k++) p = randomPath(n);
     assert.ok(p, `n = ${n}`);
     assert.equal(new Set(p).size, n * n);
     p.forEach((c, k) => { if (k) assert.ok(adjacent(n, p[k - 1], c)); });

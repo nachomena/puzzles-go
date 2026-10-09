@@ -1,4 +1,4 @@
-/* Configuración de IQ Puzzler Pro. */
+/* Configuración de Puzzler Pro. */
 import meta from './meta.js';
 
 export const LEVELS = meta.levels;

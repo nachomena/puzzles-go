@@ -46,8 +46,8 @@ segundo plano, historial, cronómetro, estadísticas y pantalla de victoria son 
   ola de victoria y `cellAt(x, y)`. Star Battle y Sudoku heredan de él.
 - `ui/cell-drag.js` — tocar y arrastrar sobre una rejilla.
 - `ui/piece-drag.js` — arrastrar piezas de una bandeja a un tablero de casillas y tocarlas.
-- `core/grid-pieces-controller.js` — partida de piezas sobre cuadrícula (arrastrar, girar, voltear, piezas fijas): Katamino, IQ Puzzler Pro.
+- `core/grid-pieces-controller.js` — partida de piezas sobre cuadrícula (arrastrar, girar, voltear, piezas fijas): Katamino, Puzzler Pro.
 - `core/digit-grid-controller.js` y `ui/templates.js#digitControls` — números en una cuadrícula con teclado, lápiz y goma: Sudoku, KenKen.
-- `lib/polyomino.js` — orientaciones de poliominós y buscador de soluciones para llenar un tablero (Katamino, IQ Puzzler Pro).
+- `lib/polyomino.js` — orientaciones de poliominós y buscador de soluciones para llenar un tablero (Katamino, Puzzler Pro).
 - `ui/cube-svg.js` — piezas hechas de cubitos con bisel (Smart Circuit).
 - `lib/bits.js` — `popcount`, `bitIndices`, `someCombination`.

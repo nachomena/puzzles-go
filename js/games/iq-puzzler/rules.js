@@ -1,4 +1,4 @@
-/* Reglas de IQ Puzzler Pro sobre lo que coloca el jugador. Funciones puras, sin DOM.
+/* Reglas de Puzzler Pro sobre lo que coloca el jugador. Funciones puras, sin DOM.
    `place[piece]` es null (en la bandeja) o { m, r, x, y }. Cada reto tiene una sola solución. */
 import { CELLS, cellsOf } from './engine/pieces.js';
 

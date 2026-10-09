@@ -1,7 +1,13 @@
 /* Estado persistente de un juego (ajustes, estadísticas, tableros en reserva y partida en curso).
    Es genérico: lo que cambia entre juegos se inyecta con la definición del juego.
    El almacenamiento también se inyecta para poder probarlo o cambiarlo sin tocar el resto. */
-import { BUFFER_CAP } from '../config.js';
+import { BUFFER_CAP, MIN_RESUME_SEC } from '../config.js';
+
+/**
+ * ¿Se ofrece seguir esta partida? Sin terminar y, o jugada al menos MIN_RESUME_SEC, o con algo puesto
+ * (`input`, lo apunta GameController#commit).
+ */
+const resumable = cur => !!cur && !cur.done && ((cur.time || 0) >= MIN_RESUME_SEC || !!cur.input);
 import { recordWin } from './stats.js';
 
 export class Store {
@@ -49,7 +55,22 @@ export class Store {
   }
 
   /* ---- Partida en curso ---- */
-  get hasOpenSession(){ return !!this.state.cur && !this.state.cur.done; }
+  get hasOpenSession(){ return resumable(this.state.cur); }
+
+  /**
+   * Al salir de una partida recién empezada (ver MIN_RESUME_SEC): se descarta y, si `keepPuzzle`, su
+   * tablero vuelve a la reserva para la próxima vez.
+   */
+  dropFreshSession({ keepPuzzle }){
+    const cur = this.state.cur;
+    if (!cur || cur.done || resumable(cur)) return;
+    if (keepPuzzle){
+      this.addPuzzle(cur.L, cur.p, { front: true });
+      this.state.buffers[cur.L].length = Math.min(this.bufferSize(cur.L), BUFFER_CAP);
+    }
+    this.state.cur = null;
+    this.save();
+  }
 
   /* ---- Datos para el selector y el menú de niveles ---- */
 
@@ -60,7 +81,7 @@ export class Store {
   static peek(storage, key){
     try {
       const s = JSON.parse(storage?.getItem(key) || 'null') || {};
-      return { stats: s.stats || {}, cur: s.cur && !s.cur.done ? s.cur : null };
+      return { stats: s.stats || {}, cur: resumable(s.cur) ? s.cur : null };
     } catch (e){ return { stats: {}, cur: null }; }
   }
 
@@ -72,8 +93,8 @@ export class Store {
    * Registra una victoria en `key` (el nivel, o el grupo que diga el juego). Solo es récord sin pistas.
    * Devuelve { record, best, prevBest, prevAvg } (ver core/stats.js).
    */
-  recordWin(key, time, hints){
-    const r = recordWin(this.state.stats, key, time, hints);
+  recordWin(key, time, hints, extra){
+    const r = recordWin(this.state.stats, key, time, hints, extra);
     this.save();
     return r;
   }

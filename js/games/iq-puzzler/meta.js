@@ -1,7 +1,7 @@
-/* Datos mínimos de IQ Puzzler Pro para el selector y el menú de niveles: se cargan sin el motor ni la interfaz. */
+/* Datos mínimos de Puzzler Pro para el selector y el menú de niveles: se cargan sin el motor ni la interfaz. */
 export default Object.freeze({
   id: 'iq-puzzler',
-  name: 'IQ Puzzler Pro',
+  name: 'Puzzler Pro',
   icon: 'iqpuzzler',
   storageKey: 'puzzlesgo.iqpuzzler.v1',
   /** Grupo del selector de juegos (ver ui/hub-view.js). */
