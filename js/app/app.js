@@ -15,6 +15,8 @@ import { keepFitted, keepNamesFitted, fitToWidth } from '../ui/fit-text.js';
 import { playScreen } from '../ui/templates.js';
 import { fitPlay } from '../ui/fit-play.js';
 import { winStripSvg } from '../ui/win-strip.js';
+import { gameHtml, levelHtml, bindChartTips } from '../ui/progress-view.js';
+import { progressRows } from '../core/progress.js';
 import { bindEdgeBack } from '../ui/edge-back.js';
 
 const htmlToElement = html => {
@@ -44,7 +46,10 @@ export class App {
     this.fitGameTitle = keepFitted(byId('gameTitle'));
     this.fitPickTitle = keepFitted(byId('pickTitle'));
     this.pickLevel = null;      // nivel cuya tabla de tableros está abierta (juegos con picker)
-    this.fitGames = keepNamesFitted(byId('games'));
+    // pantallas de progreso: juego y fila elegidos, periodo, y a qué pantalla se vuelve
+    this.progress = { game: null, key: null, range: 'last20', from: 'hub' };
+    // los nombres de juegos y el de Progreso, del mismo tamaño
+    this.fitGames = keepNamesFitted(byId('games').parentElement);
     this.fitLevels = keepNamesFitted(byId('levelList'));
 
     this.entries = new Map();   // juegos ya abiertos: id → entrada
@@ -229,7 +234,49 @@ export class App {
       this.#toMenu();
     }
     else if (this.screen === 'pick') this.showScreen('levels');
+    else if (this.screen === 'progress-level') this.showScreen('progress');
+    else if (this.screen === 'progress' && this.progress.from === 'levels') this.showScreen('levels');
     else { this.currentMeta = null; this.showScreen('hub'); }
+  }
+
+  /* ---------- Progreso ---------- */
+
+  /** Abre el progreso: del juego del menú abierto, o del último jugado si se viene del selector. */
+  openProgress(){
+    const from = this.screen === 'levels' ? 'levels' : 'hub';
+    let game = from === 'levels' ? this.currentMeta?.id : this.progress.game;
+    if (!game){
+      // el juego con la partida más reciente
+      let latest = -1;
+      for (const { meta } of this.catalog){
+        const at = this.#menuData(meta).log?.at(-1)?.at ?? -1;
+        if (at > latest){ latest = at; game = meta.id; }
+      }
+    }
+    this.progress = { ...this.progress, game: game ?? this.catalog[0].meta.id, from };
+    this.showScreen('progress');
+  }
+
+  #progressRows(){
+    const meta = this.catalog.find(c => c.meta.id === this.progress.game).meta, data = this.#menuData(meta);
+    return { meta, data, rows: progressRows(meta, data.stats, data.log) };
+  }
+
+  #renderProgress(){
+    const { meta, data, rows } = this.#progressRows();
+    byId('progressBody').innerHTML = gameHtml({
+      games: this.catalog.map(({ meta: m }) => ({ id: m.id, name: m.shortName ?? m.name })),
+      game: meta.id, name: meta.name, stats: data.stats, rows
+    });
+    byId('progressBody').querySelector('[aria-pressed="true"]')?.scrollIntoView({ block: 'nearest', inline: 'center' });
+  }
+
+  #renderProgressLevel(){
+    const { meta, rows } = this.#progressRows(), row = rows.find(r => r.key === this.progress.key);
+    if (!row) return;
+    byId('progressGame').textContent = meta.name;
+    byId('progressLevelTitle').textContent = row.name.toUpperCase();
+    byId('progressLevelBody').innerHTML = levelHtml({ row, range: this.progress.range });
   }
 
   /** Menú del juego actual: su tabla de tableros, sus niveles o el selector si no tiene menú. */
@@ -255,6 +302,8 @@ export class App {
       byId('pickTitle').textContent = game.levels[this.pickLevel].name.toUpperCase();
       byId('pickBody').innerHTML = game.picker.render(this.pickLevel, store.menuData());
     }
+    if (this.screen === 'progress') this.#renderProgress();
+    if (this.screen === 'progress-level') this.#renderProgressLevel();
     if (this.screen === 'hub') this.fitGames();
     if (this.screen === 'levels'){ this.fitLevels(); fitToWidth(byId('resume').querySelector('span')); }
   }
@@ -270,6 +319,10 @@ export class App {
     const cur = this.current;
     return {
       'open-game':    el => this.openGame(el.dataset.game),
+      'open-progress':  () => this.openProgress(),
+      'progress-game':  el => { this.progress.game = el.dataset.pgGame; this.#renderProgress(); },
+      'progress-level': el => { this.progress.key = el.dataset.key; this.showScreen('progress-level'); },
+      'progress-range': el => { this.progress.range = el.dataset.range; this.#renderProgressLevel(); },
       'toggle-group': el => { this.hub.toggle(el.dataset.group); this.#refreshMenus(); },
       'start-level':  el => this.#withGame(entry => entry.game.picker
         ? this.openPicker(el.dataset.level, entry)
@@ -321,6 +374,8 @@ export class App {
       if (this.screen !== 'play' || this.overlays.anyOpen() || e.metaKey || e.ctrlKey || e.altKey) return;
       if (this.current.controller.onKey(e)) e.preventDefault();
     });
+
+    bindChartTips(byId('progressLevelBody'));
 
     // Volver deslizando desde el borde izquierdo (no con una hoja abierta)
     bindEdgeBack({ enabled: () => this.screen !== 'hub' && !this.overlays.anyOpen(), onBack: () => this.back() });

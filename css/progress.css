@@ -1,0 +1,72 @@
+/* Pantallas de progreso (ui/progress-view.js): un juego con sus niveles y un nivel en detalle. */
+.hub-progress{margin-top:10px}
+.pg-over{margin:0 0 8px;font-size:15px;font-weight:600;color:var(--dim)}
+
+.pg-chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -2px 22px;padding:2px}
+.pg-chips::-webkit-scrollbar{display:none}
+.pg-chip{flex:none;font-size:14px;font-weight:700;padding:8px 13px;border-radius:999px;background:var(--seg);color:var(--ink-soft)}
+.pg-chip[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+
+.pg-seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--seg);border-radius:12px;padding:4px;margin-bottom:22px}
+.pg-seg button{font-size:14px;font-weight:700;padding:9px 4px;border-radius:9px;color:var(--ink-soft)}
+.pg-seg button[aria-pressed="true"]{background:var(--seg-on);color:var(--ink)}
+
+.pg-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px}
+.pg-kpi b{display:block;font-size:24px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pg-kpi span{display:block;font-size:13px;color:var(--dim);margin-top:6px;font-weight:500}
+
+.pg-empty{color:var(--dim);font-size:15px;line-height:1.5;margin:6px 0 10px}
+
+.pg-pill{display:inline-flex;align-items:center;font-size:12.5px;font-weight:700;border-radius:999px;padding:2px 9px;white-space:nowrap;color:var(--dim);background:var(--seg)}
+.pg-pill--faster{color:var(--good);background:color-mix(in srgb,var(--good) 14%,transparent)}
+.pg-pill--slower{color:var(--slow);background:color-mix(in srgb,var(--slow) 14%,transparent)}
+.pg-pill--best{color:var(--bg);background:var(--accent)}
+
+/* Filas de niveles */
+.pg-rows{display:flex;flex-direction:column}
+.pg-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;width:100%;padding:14px 0;text-align:left;border-top:1px solid var(--divider)}
+.pg-row:first-child{border-top:0;padding-top:0}
+.pg-row__name{font-size:clamp(22px,6.6vw,30px);line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pg-row__best{text-align:right;font-size:12.5px;color:var(--dim);font-variant-numeric:tabular-nums}
+.pg-row__best b{display:block;font-size:18px;color:var(--ink);font-weight:700}
+.pg-row__meta{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13.5px;color:var(--dim);font-variant-numeric:tabular-nums}
+.pg-row:disabled{cursor:default}
+.pg-row:disabled .pg-row__name{color:var(--dim)}
+.pg-row:not(:disabled):active .pg-row__name{opacity:.7}
+.pg-spark{grid-column:1/-1;width:100%;height:40px;display:block;overflow:visible}
+.pg-spark path{fill:none;stroke:var(--dim);stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
+.pg-spark circle{fill:var(--accent);stroke:var(--bg);stroke-width:2}
+
+/* Gráficos del nivel */
+.pg-chart{position:relative}
+.pg-chart svg{display:block;width:100%;overflow:visible}
+.pg-axis{font-family:var(--font-body);font-size:10.5px;fill:var(--dim);font-variant-numeric:tabular-nums}
+.pg-axis--best{fill:var(--ink-soft)}
+.pg-grid{stroke:var(--divider);stroke-width:1}
+.pg-base{stroke:var(--rule);stroke-width:1}
+.pg-best{stroke:var(--ink-soft);stroke-width:1}
+.pg-avg{fill:none;stroke:var(--accent);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.pg-pt{fill:var(--dim);stroke:var(--bg);stroke-width:2}
+.pg-pt.is-hints{fill:var(--bg);stroke:var(--dim);stroke-width:2}
+.pg-hl{fill:none;stroke:var(--ink);stroke-width:2}
+.pg-bar{fill:var(--dim)}
+.pg-bar.is-last{fill:var(--accent)}
+.pg-tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);border-radius:8px;padding:6px 9px;font-size:13px;font-weight:600;line-height:1.35;white-space:nowrap;transform:translate(-50%,calc(-100% - 12px));z-index:2}
+.pg-tip b{font-size:15px}
+.pg-legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--dim);margin:12px 0 0}
+.pg-legend span{display:inline-flex;align-items:center;gap:6px}
+.pg-key-dot,.pg-key-hollow{width:9px;height:9px;border-radius:50%}
+.pg-key-dot{background:var(--dim)}
+.pg-key-hollow{border:2px solid var(--dim)}
+.pg-key-avg{width:16px;height:2px;border-radius:1px;background:var(--accent)}
+.pg-key-best{width:16px;height:1px;background:var(--ink-soft)}
+.pg-rule{height:3px;background:var(--rule);border:0;margin:24px 0 16px}
+.pg-label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-weight:700;margin:0 0 12px}
+
+/* Últimas partidas */
+.pg-games{display:flex;flex-direction:column}
+.pg-game{display:grid;grid-template-columns:62px 1fr auto;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--divider);font-size:14px;font-variant-numeric:tabular-nums}
+.pg-game:first-child{border-top:0;padding-top:0}
+.pg-game__day{color:var(--dim)}
+.pg-game__t{font-weight:700;font-size:16px}
+.pg-game__t small{font-weight:500;font-size:13px;color:var(--dim)}

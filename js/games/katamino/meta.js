@@ -31,5 +31,7 @@ export default Object.freeze({
   /** Partida a medias, en la confirmación de empezar otra. */
   sessionLabel: cur => `${LEVELS[cur.L].name} ${rowName(cur.p.label)} · PENTA ${cur.p.n}`,
   /** Lo mismo, corto, para el botón de continuar (fila y número del PENTA). */
-  resumeLabel: cur => `${LEVELS[cur.L].name} ${rowName(cur.p.label)} · ${cur.p.n}`
+  resumeLabel: cur => `${LEVELS[cur.L].name} ${rowName(cur.p.label)} · ${cur.p.n}`,
+  /** Progreso: cada PENTA se juega una vez, así que se comparan los del mismo tamaño (de todos los desafíos). */
+  progressRow: key => { const n = Number(key.split(':')[2]); return n ? { key: `n${n}`, name: `PENTA ${n}`, order: n } : null; }
 });

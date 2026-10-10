@@ -32,6 +32,8 @@
   --bad:#ff5b4f;
   --star:#fff;
   --accent:#e2bf5a;           /* lo destacado de un gráfico (la partida de hoy) */
+  --good:#7fc79a;             /* más rápido */
+  --slow:#e3907f;             /* más lento */
 
   /* Controles */
   --seg:#302f36;
