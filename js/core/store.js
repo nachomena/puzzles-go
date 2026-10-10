@@ -98,7 +98,7 @@ export class Store {
    */
   recordWin(key, time, hints, extra){
     const r = recordWin(this.state.stats, key, time, hints, extra);
-    logWin(this.state.log, { key, time, hints, moves: extra?.moves });
+    logWin(this.state.log, { key, time, hints, moves: extra?.moves, min: extra?.min });
     this.save();
     return r;
   }

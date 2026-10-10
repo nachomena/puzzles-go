@@ -63,7 +63,7 @@ export class GameController {
   onSetting(key){}
   /** Animación de victoria. */
   celebrate(){}
-  /** Datos extra de la victoria para las estadísticas, p. ej. { moves } (ver core/stats.js). */
+  /** Datos extra de la victoria para las estadísticas, p. ej. { moves, min } (ver core/stats.js y core/progress.js). */
   winExtra(){ return undefined; }
   /** Acciones propias del juego: { nombre: (el) => void }, para los [data-action] de su pantalla. */
   get actions(){ return {}; }

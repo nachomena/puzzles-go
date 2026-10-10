@@ -2,7 +2,7 @@
    los datos salen de core/progress.js. Gráficos en SVG, una escala por eje; la única nota de color
    (--accent) es la media o la última partida. */
 import { formatTime } from '../lib/format.js';
-import { clean, meanTime, trend, inRange, movingAverage, timeStep, histogram, RANGES } from '../core/progress.js';
+import { clean, meanTime, trend, inRange, movingAverage, timeStep, histogram, movesSummary, RANGES } from '../core/progress.js';
 
 const MONTHS = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 
@@ -28,14 +28,14 @@ function trendHtml(tr){
     : `<span class="pg-pill pg-pill--slower">↑ ${tr.pct} % más lento</span>`;
 }
 
-/** Línea pequeña de los últimos 20 tiempos sin pistas, con el último en --accent. */
-function sparkSvg(entries, W = 300, H = 40){
-  const c = clean(entries).slice(-20);
+/** Línea pequeña de los últimos `n` tiempos sin pistas, con el último en --accent ('' si hay menos de 2). */
+export function sparkSvg(entries, { W = 300, H = 40, n = 20, cls = 'pg-spark' } = {}){
+  const c = clean(entries).slice(-n);
   if (c.length < 2) return '';
   const ts = c.map(e => e.t), lo = Math.min(...ts), hi = Math.max(...ts);
   const x = i => 4 + i * (W - 8) / (c.length - 1), y = v => 4 + (hi === lo ? .5 : (hi - v) / (hi - lo)) * (H - 8);
   const d = c.map((e, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)} ${y(e.t).toFixed(1)}`).join('');
-  return `<svg class="pg-spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">` +
+  return `<svg class="${cls}" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">` +
     `<path d="${d}" vector-effect="non-scaling-stroke"/>` +
     `<circle cx="${x(c.length - 1).toFixed(1)}" cy="${y(ts[ts.length - 1]).toFixed(1)}" r="4"/></svg>`;
 }
@@ -91,7 +91,8 @@ function chartSvg(list, best){
   for (const [at, a] of ticks) s += `<text class="pg-axis" x="${x(at)}" y="${H - 6}" text-anchor="${a}">${dayLabel(at)}</text>`;
   if (best){
     s += `<line class="pg-best" x1="${L}" x2="${W - R}" y1="${y(best)}" y2="${y(best)}"/>` +
-      `<text class="pg-axis pg-axis--best" x="${W - R}" y="${y(best) + 13}" text-anchor="end">Récord ${formatTime(best)}</text>`;
+      // debajo de la raya si cabe; si no (récord en el fondo del eje), encima, para no pisar las fechas
+      `<text class="pg-axis pg-axis--best" x="${W - R}" y="${y(best) + 13 <= H - B - 2 ? y(best) + 13 : y(best) - 5}" text-anchor="end">Récord ${formatTime(best)}</text>`;
   }
   const c = clean(list);
   if (c.length > 1) s += `<path class="pg-avg" d="${movingAverage(c).map((p, i) => `${i ? 'L' : 'M'}${x(p.at).toFixed(1)} ${y(p.t).toFixed(1)}`).join('')}"/>`;
@@ -119,12 +120,49 @@ function histogramSvg(c){
   return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Partidas por tramo de tiempo, desde ${formatTime(start)} cada ${formatTime(step)}">${s}</svg>`;
 }
 
+/** Rush Hour y otros que cuentan movimientos: cuántos de más en cada partida (sin barra = los justos). */
+function movesHtml(entries){
+  const s = movesSummary(entries);
+  if (!s) return '';
+  const games = s.games.slice(-16), max = Math.max(2, ...games.map(g => g.extra)), stepY = max > 6 ? Math.ceil(max / 3) : 2, top = Math.ceil(max / stepY) * stepY;
+  const W = 320, H = 110, L = 28, B = 20, T = 12, slot = (W - L) / games.length, bw = Math.min(14, slot - 2);
+  const y = v => H - B - v / top * (H - B - T);
+  let svg = '';
+  for (let v = 0; v <= top; v += stepY) svg += `<line class="pg-grid" x1="${L}" x2="${W}" y1="${y(v)}" y2="${y(v)}"/><text class="pg-axis" x="${L - 6}" y="${y(v) + 3.5}" text-anchor="end">+${v}</text>`;
+  games.forEach((g, i) => {
+    const cx = L + slot * i + slot / 2, last = i === games.length - 1;
+    if (g.extra){
+      const r = Math.min(4, bw / 2);
+      svg += `<path class="pg-bar${last ? ' is-last' : ''}" d="M${cx - bw / 2} ${y(0)}V${y(g.extra) + r}q0 -${r} ${r} -${r}H${cx + bw / 2 - r}q${r} 0 ${r} ${r}V${y(0)}Z"/>`;
+    } else svg += `<circle class="pg-perfect${last ? ' is-last' : ''}" cx="${cx}" cy="${y(0)}" r="4"/>`;
+  });
+  svg += `<text class="pg-axis" x="${L}" y="${H - 4}">${games.length > 1 ? `hace ${games.length} partidas` : ''}</text><text class="pg-axis" x="${W}" y="${H - 4}" text-anchor="end">la última</text>`;
+  const n = s.games.length;
+  return `<hr class="pg-rule"><p class="pg-label">Movimientos de más</p>` +
+    `<div class="pg-kpis"><div class="pg-kpi"><b>${s.perfect} de ${n}</b><span>con los justos</span></div>` +
+    `<div class="pg-kpi"><b>+${s.avgExtra.toFixed(1).replace('.', ',')}</b><span>de más, de media</span></div>` +
+    `<div class="pg-kpi"><b>${Math.round(s.avgMoves)}</b><span>movimientos de media</span></div></div>` +
+    `<div class="pg-chart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Movimientos de más en las últimas ${games.length} partidas">${svg}</svg></div>` +
+    `<p class="pg-note">Cada barra es una partida; un punto, que la resolviste con los movimientos mínimos.</p>`;
+}
+
+/** Desglose que da el propio juego (meta.progressBreakdown), p. ej. Katamino: el PENTA en cada desafío. */
+function breakdownHtml(meta, stats, row){
+  const b = meta?.progressBreakdown?.(row.key, stats);
+  if (!b?.items.length) return '';
+  return `<hr class="pg-rule"><p class="pg-label">${b.title}</p><div class="pg-games">` +
+    b.items.map(it => `<div class="pg-game pg-game--wide"><span class="pg-game__name">${it.name}</span>` +
+      `<span class="pg-game__t">${it.best ? formatTime(it.best) : '—'}</span>${it.best ? '' : '<span class="pg-pill">con pistas</span>'}</div>`).join('') + `</div>`;
+}
+
 /**
  * @param {object} m
  * @param {{ key, name, entries, best }} m.row
  * @param {string} m.range  clave de RANGES
+ * @param {object} [m.meta]   datos del juego (para su desglose propio)
+ * @param {object} [m.stats]  sus estadísticas
  */
-export function levelHtml({ row, range, now = Date.now() }){
+export function levelHtml({ row, range, meta, stats = {}, now = Date.now() }){
   const list = inRange(row.entries, range, now), c = clean(list), avg = meanTime(c);
   const seg = `<div class="pg-seg" role="group" aria-label="Periodo">` +
     Object.entries(RANGES).map(([k, label]) => `<button type="button" data-action="progress-range" data-range="${k}" aria-pressed="${k === range}">${label}</button>`).join('') + `</div>`;
@@ -148,7 +186,8 @@ export function levelHtml({ row, range, now = Date.now() }){
     return `<div class="pg-game"><span class="pg-game__day">${dayLabel(e.at, now)}</span>` +
       `<span class="pg-game__t">${formatTime(e.t)}${Number.isInteger(e.m) ? `<small> · ${e.m} mov.</small>` : ''}</span>${tag}</div>`;
   }).join('');
-  return seg + kpis + chart + hist + `<hr class="pg-rule"><p class="pg-label">Últimas partidas</p><div class="pg-games">${last}</div>`;
+  return seg + kpis + chart + movesHtml(list) + breakdownHtml(meta, stats, row) + hist +
+    `<hr class="pg-rule"><p class="pg-label">Últimas partidas</p><div class="pg-games">${last}</div>`;
 }
 
 /** Al tocar o pasar por el gráfico, la partida más cercana: su tiempo y su fecha. */

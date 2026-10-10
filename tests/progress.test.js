@@ -58,3 +58,16 @@ test('filas del progreso: por nivel, o agrupadas como diga el juego', async () =
   const k = progressRows(kat, {}, [{ k: 'grand:B:7', t: 90, h: 0, at: 1 }, { k: 'small:A:5', t: 30, h: 0, at: 2 }, { k: 'slam:C:7', t: 70, h: 0, at: 3 }]);
   assert.deepEqual(k.map(r => [r.name, r.entries.length, r.best]), [['PENTA 5', 1, 30], ['PENTA 7', 2, 70]]);
 });
+
+test('movimientos de más y desglose de Katamino', async () => {
+  const { logWin, movesSummary } = await import('../js/core/progress.js');
+  const log = [];
+  logWin(log, { key: 'a', time: 30, hints: 0, moves: 12, min: 10, at: 1 });
+  logWin(log, { key: 'a', time: 25, hints: 0, moves: 10, min: 10, at: 2 });
+  logWin(log, { key: 'a', time: 20, hints: 0, moves: 9, at: 3 });   // sin mínimo apuntado: no cuenta
+  assert.deepEqual(movesSummary(log), { games: [{ at: 1, extra: 2 }, { at: 2, extra: 0 }], perfect: 1, avgExtra: 1, avgMoves: 11 });
+  assert.equal(movesSummary([{ k: 'a', t: 1, h: 0, at: 1 }]), null);
+  const kat = (await import('../js/games/katamino/meta.js')).default;
+  const b = kat.progressBreakdown('n7', { 'grand:B:7': { solved: 1, best: 90 }, 'small:A:7': { solved: 2, best: 70 }, 'small:A:6': { solved: 1, best: 50 }, 'challenge:12:7': { solved: 1, best: null } });
+  assert.deepEqual(b.items, [{ name: 'Pequeño Slam A', best: 70 }, { name: 'Gran Slam B', best: 90 }, { name: 'Desafío N°12', best: null }]);
+});

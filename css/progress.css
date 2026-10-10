@@ -70,3 +70,13 @@
 .pg-game__day{color:var(--dim)}
 .pg-game__t{font-weight:700;font-size:16px}
 .pg-game__t small{font-weight:500;font-size:13px;color:var(--dim)}
+
+/* Línea de las últimas partidas al lado de cada nivel del menú (ui/level-menu.js) */
+.level__spark{flex:none;width:72px;height:30px;overflow:visible}
+.level__spark path{fill:none;stroke:var(--dim);stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
+.level__spark circle{fill:var(--accent);stroke:var(--bg);stroke-width:2}
+.pg-perfect{fill:var(--ink-soft);stroke:var(--bg);stroke-width:2}
+.pg-perfect.is-last{fill:var(--accent)}
+.pg-note{font-size:13px;color:var(--dim);line-height:1.45;margin:10px 0 0}
+.pg-game--wide{grid-template-columns:1fr auto auto}
+.pg-game__name{color:var(--ink-soft);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

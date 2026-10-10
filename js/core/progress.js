@@ -3,7 +3,8 @@
 
    entrada = { k, t, h, at, m? }
      k  clave de estadísticas (el nivel, o la que diga game.statsKey) · t  segundos · h  pistas
-     at  fecha (ms) · m  movimientos (solo los juegos que los cuentan, ver controller.winExtra) */
+     at  fecha (ms) · m  movimientos y mm  los mínimos del reto (solo los juegos que los cuentan, ver
+     controller.winExtra) */
 
 import { statsRows } from './stats.js';
 
@@ -14,9 +15,10 @@ export const LOG_CAP = 500;
 export const isEntry = e => !!e && typeof e.k === 'string' && Number.isFinite(e.t) && Number.isFinite(e.at) && Number.isInteger(e.h);
 
 /** Apunta una partida. Modifica `log`. */
-export function logWin(log, { key, time, hints, moves, at = Date.now() }){
+export function logWin(log, { key, time, hints, moves, min, at = Date.now() }){
   const e = { k: key, t: time, h: hints, at };
   if (Number.isInteger(moves)) e.m = moves;
+  if (Number.isInteger(moves) && Number.isInteger(min)) e.mm = min;
   log.push(e);
   if (log.length > LOG_CAP) log.splice(0, log.length - LOG_CAP);
 }
@@ -106,4 +108,20 @@ export function progressRows(meta, stats = {}, log = []){
     const entries = log.filter(e => e.k === key), st = stats[key], b = [st?.best, bestTime(entries)].filter(Boolean);
     return { key, name, entries, best: b.length ? Math.min(...b) : null, solved: st?.solved || entries.length };
   });
+}
+
+/**
+ * Movimientos de más (juegos que los cuentan, p. ej. Rush Hour): de las partidas con movimientos y
+ * mínimo apuntados, { games: [{ at, extra }], perfect, avgExtra, avgMoves } o null si no hay ninguna.
+ */
+export function movesSummary(entries){
+  const g = entries.filter(e => Number.isInteger(e.m) && Number.isInteger(e.mm));
+  if (!g.length) return null;
+  const extra = g.map(e => Math.max(0, e.m - e.mm));
+  return {
+    games: g.map((e, i) => ({ at: e.at, extra: extra[i] })),
+    perfect: extra.filter(x => !x).length,
+    avgExtra: extra.reduce((s, x) => s + x, 0) / g.length,
+    avgMoves: g.reduce((s, e) => s + e.m, 0) / g.length
+  };
 }

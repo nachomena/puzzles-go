@@ -28,7 +28,7 @@ export function fitNames(list, fill = .82){
   const range = document.createRange();
   let size = Infinity;
   for (const name of list.querySelectorAll('.level__name')){
-    const row = name.closest('.level'), icon = row.querySelector('.game-card__icon');
+    const row = name.closest('.level'), icon = row.querySelector('.game-card__icon, .level__spark');
     const avail = row.clientWidth - (icon ? icon.offsetWidth + (parseFloat(getComputedStyle(row).columnGap) || 0) : 0);
     range.selectNodeContents(name);
     const width = range.getBoundingClientRect().width, base = parseFloat(getComputedStyle(name).fontSize);

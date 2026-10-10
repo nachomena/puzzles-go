@@ -272,11 +272,11 @@ export class App {
   }
 
   #renderProgressLevel(){
-    const { meta, rows } = this.#progressRows(), row = rows.find(r => r.key === this.progress.key);
+    const { meta, data, rows } = this.#progressRows(), row = rows.find(r => r.key === this.progress.key);
     if (!row) return;
     byId('progressGame').textContent = meta.name;
     byId('progressLevelTitle').textContent = row.name.toUpperCase();
-    byId('progressLevelBody').innerHTML = levelHtml({ row, range: this.progress.range });
+    byId('progressLevelBody').innerHTML = levelHtml({ row, range: this.progress.range, meta, stats: data.stats });
   }
 
   /** Menú del juego actual: su tabla de tableros, sus niveles o el selector si no tiene menú. */

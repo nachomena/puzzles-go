@@ -33,5 +33,15 @@ export default Object.freeze({
   /** Lo mismo, corto, para el botón de continuar (fila y número del PENTA). */
   resumeLabel: cur => `${LEVELS[cur.L].name} ${rowName(cur.p.label)} · ${cur.p.n}`,
   /** Progreso: cada PENTA se juega una vez, así que se comparan los del mismo tamaño (de todos los desafíos). */
-  progressRow: key => { const n = Number(key.split(':')[2]); return n ? { key: `n${n}`, name: `PENTA ${n}`, order: n } : null; }
+  progressRow: key => { const n = Number(key.split(':')[2]); return n ? { key: `n${n}`, name: `PENTA ${n}`, order: n } : null; },
+  /** Y en el detalle, ese PENTA en cada desafío y fila donde se ha resuelto, con su récord. */
+  progressBreakdown: (rowKey, stats) => {
+    const n = rowKey.slice(1), order = Object.keys(LEVELS);
+    const items = Object.entries(stats)
+      .map(([k, s]) => ({ k: k.split(':'), s }))
+      .filter(({ k, s }) => k.length === 3 && k[2] === n && LEVELS[k[0]] && s.solved)
+      .sort((a, b) => order.indexOf(a.k[0]) - order.indexOf(b.k[0]) || a.k[1].localeCompare(b.k[1], 'es', { numeric: true }))
+      .map(({ k, s }) => ({ name: `${LEVELS[k[0]].name} ${rowName(k[1])}`, best: s.best }));
+    return { title: `PENTA ${n} en cada desafío`, items };
+  }
 });

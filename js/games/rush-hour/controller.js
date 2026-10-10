@@ -27,7 +27,7 @@ export class RushHourController extends GameController {
   isSolved(){ return isSolved(this.session.p.cars, this.session.pos); }
   get resetMessage(){ return 'Vuelta a empezar. Puedes deshacerlo.'; }
   celebrate(){ this.view.celebrate(); }
-  winExtra(){ return { moves: this.session.moves }; }
+  winExtra(){ return { moves: this.session.moves, min: this.session.p.min }; }
 
   /** Pista: el siguiente movimiento de la solución más corta desde donde está el tablero. */
   giveHint(){
