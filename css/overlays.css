@@ -35,3 +35,25 @@
 .win-strip__today.is-hints{fill:var(--surface);stroke:var(--accent);stroke-width:2.5}
 .win-strip__label{font-family:var(--font-body);font-size:10.5px;fill:var(--dim);font-variant-numeric:tabular-nums}
 .win-strip__label--today{fill:var(--ink);font-weight:700}
+/* Figuras de la ayuda (ui/help-figure.js): un ejemplo pequeño con los colores de cada juego */
+.help-fig{margin:14px 0 16px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.help-fig svg{display:block;max-width:100%;height:auto;overflow:visible}
+.help-fig figcaption{font-size:14px;line-height:1.45;color:var(--dim);text-align:center;max-width:34ch}
+.hf-cell{fill:var(--cell)}
+.hf-lit{fill:color-mix(in srgb,var(--cell) 70%,#d6bf5a 30%)}
+.hf-black{fill:#141318}
+.hf-bulb{fill:#e2c45a}
+.hf-num{font-family:var(--font-display);font-size:.5px;fill:var(--ink)}
+.hf-red{fill:#c8604e}
+.hf-blue{fill:#4b82c3}
+.hf-ok,.hf-no{font-family:var(--font-body);font-weight:800;font-size:.62px}
+.hf-ok{fill:var(--good)}
+.hf-no{fill:var(--bad)}
+.hf-isle circle{fill:var(--cell);stroke:var(--wall);stroke-width:.07}
+.hf-isle text{font-family:var(--font-display);font-size:.46px;fill:var(--ink)}
+.hf-bridge{stroke:var(--ink-soft);stroke-width:.08}
+.hf-cellbg{fill:var(--cell)}
+.hf-grid{stroke:var(--grid);stroke-width:.03}
+.hf-wall{fill:none;stroke:var(--wall);stroke-width:.08;stroke-linecap:square}
+.hf-digit{font-family:var(--font-display);font-size:.46px;fill:var(--entry)}
+.hf-label{font-family:var(--font-body);font-weight:700;font-size:.2px;fill:var(--ink-soft)}
