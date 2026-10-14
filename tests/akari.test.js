@@ -59,3 +59,17 @@ test('reglas: choques, números de más, error y pista', () => {
   assert.deepEqual([...r.clash].slice(0, 3), [1, 0, 1]);
   assert.equal(isSolved(n, p.cells, p.solution.map(v => v ? 1 : 0)), true);
 });
+
+test('números que ya no pueden cumplirse: de más, o sin sitio para las que faltan', () => {
+  //  W W W      el 1 (centro) solo tiene una vecina blanca: la de arriba (1)
+  //  B 1 B
+  //  B B B
+  const cells = [W, W, W, B, 1, B, B, B, B], m = (...on) => { const a = new Array(9).fill(0); on.forEach(([i, v]) => a[i] = v); return a; };
+  assert.equal(evaluate(3, cells, m()).over[4], 0, 'sin nada, aún puede');
+  assert.equal(evaluate(3, cells, m([1, 1])).over[4], 0, 'con su bombilla, se cumple');
+  assert.equal(evaluate(3, cells, m([0, 1])).over[4], 1, 'una bombilla en la esquina ilumina la única vecina: ya no puede');
+  assert.equal(evaluate(3, cells, m([1, 2])).over[4], 1, 'la única vecina marcada con un punto: ya no puede');
+  // la solución no marca nada
+  const p = runToEnd(generate(1));
+  assert.ok(!evaluate(p.n, p.cells, p.solution.map(v => v ? 1 : 0)).over.some(Boolean));
+});

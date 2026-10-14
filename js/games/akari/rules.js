@@ -4,12 +4,21 @@ import { isBlack, around, sights, lit } from './engine/light.js';
 
 const bulbsOf = marks => marks.map(m => m === 1 ? 1 : 0);
 
-/** Luz, bombillas que se ven entre sí y números con más bombillas de la cuenta. */
+/**
+ * Luz, bombillas que se ven entre sí y números que no pueden cumplirse: con más bombillas de la
+ * cuenta, o con menos y sin sitio para las que faltan (las casillas de al lado que quedan ya están
+ * iluminadas o marcadas con un punto). `over` marca esos números.
+ */
 export function evaluate(n, cells, marks, see = sights(n, cells)){
   const bulbs = bulbsOf(marks), light = lit(n, cells, bulbs, see);
   const clash = new Uint8Array(n * n), over = new Uint8Array(n * n);
   bulbs.forEach((b, i) => { if (b && see[i].some(j => bulbs[j])) clash[i] = 1; });
-  cells.forEach((v, i) => { if (v >= 0 && v <= 4 && around(n, i).filter(j => bulbs[j]).length > v) over[i] = 1; });
+  cells.forEach((v, i) => {
+    if (!(v >= 0 && v <= 4)) return;
+    const near = around(n, i), have = near.filter(j => bulbs[j]).length;
+    const room = near.filter(j => !isBlack(cells[j]) && !bulbs[j] && !light[j] && marks[j] !== 2).length;
+    if (have > v || have + room < v) over[i] = 1;
+  });
   return { light, clash, over };
 }
 
