@@ -1,6 +1,7 @@
 /* Marcado propio de Smart Hexagon: tablero hexagonal, botones, bandeja de piezas y ayuda. */
 import { iconButton } from '../../ui/templates.js';
 import { SPOTS_HELP } from '../../ui/fit-spots.js';
+import { gestureStrip } from '../../ui/help-figure.js';
 
 export const boardHtml = () =>
   `<div class="sh-area">` +
@@ -25,6 +26,7 @@ export const help = () => `
   <h3>Niveles</h3>
   <p>Del <b>Principiante</b> al <b>Experto</b> cada vez hay menos piezas colocadas al empezar: de 8 a 10 en Principiante, y solo 2 a 4 en Experto.</p>
   <h3>Controles</h3>
+  ${gestureStrip([{ icon: 'drag', piece: 'hexagon', text: 'Arrastra al tablero' }, { icon: 'turn', text: 'Toca dos veces: gira 60°' }, { icon: 'flip', text: 'Voltear' }])}
   <ul>
     <li>Arrastra una pieza de la bandeja al tablero; arrástrala fuera para devolverla.</li>
     <li>Toca una pieza para elegirla y otra vez para girarla 60°. <b>Voltear</b> le da la vuelta a la pieza elegida.</li>

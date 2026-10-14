@@ -57,3 +57,17 @@
 .hf-wall{fill:none;stroke:var(--wall);stroke-width:.08;stroke-linecap:square}
 .hf-digit{font-family:var(--font-display);font-size:.46px;fill:var(--entry)}
 .hf-label{font-family:var(--font-body);font-weight:700;font-size:.2px;fill:var(--ink-soft)}
+.hf-path{fill:none;stroke:#d58c45;stroke-width:.34;stroke-linecap:round;stroke-linejoin:round}
+.hf-dot{fill:var(--ink)}
+.hf-dotnum{font-family:var(--font-display);font-size:.34px;fill:var(--bg)}
+.hf-car-red{fill:#c8604e}
+.hf-car{fill:#6f8fb0}
+.hf-move,.hf-exit,.hf-arrow{fill:none;stroke:var(--ink-soft);stroke-width:.08;stroke-linecap:round;stroke-linejoin:round}
+.hf-ball{fill:var(--ink-soft)}
+.hf-hole{fill:#141318}
+.hf-jump{fill:none;stroke:var(--accent);stroke-width:.07;stroke-dasharray:.14 .1}
+/* Tira de gestos de los juegos de piezas */
+.help-gestures{display:flex;justify-content:center;gap:10px;margin:8px 0 14px}
+.help-gestures div{flex:1;max-width:120px;display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 6px;background:var(--seg);border-radius:var(--radius-sm)}
+.help-gestures svg{width:38px;height:38px;fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.help-gestures span{font-size:12.5px;line-height:1.3;color:var(--ink-soft);text-align:center}

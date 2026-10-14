@@ -1,5 +1,6 @@
 /* Marcado propio del Solitario: tablero redondo, botones y ayuda. */
 import { iconButton } from '../../ui/templates.js';
+import { helpFigure } from '../../ui/help-figure.js';
 
 export const boardHtml = () =>
   `<div class="ps-area">` +
@@ -14,8 +15,18 @@ export const boardHtml = () =>
 export const controls = () =>
   `<p class="ps-tip">Toca una bola y luego el agujero al que salta, o arrástrala</p>`;
 
+/** Ejemplo: bola, bola y hueco; la primera salta a la vecina y esta se quita. */
+const figure = () => {
+  const row = (x0, balls) => balls.map((b, k) => `<circle class="${b ? 'hf-ball' : 'hf-hole'}" cx="${x0 + k}" cy=".9" r=".36"/>`).join('');
+  return helpFigure(`<svg viewBox="-.5 0 7.6 1.4" width="230" aria-hidden="true">` +
+    row(0, [1, 1, 0]) + `<path class="hf-jump" d="M0 .42Q1 -.25 2 .42"/>` +
+    `<path class="hf-arrow" d="M3.05 .9H4M3.75 .68 4 .9l-.25 .22"/>` + row(5.1, [0, 0, 1]) + `</svg>`,
+    'Salta sobre la bola de al lado hasta el hueco; la bola saltada se quita.');
+};
+
 export const help = () => `
   <p>Una bola salta sobre otra vecina, en horizontal o en vertical, hasta un agujero vacío justo detrás. La bola saltada se retira y va a la ranura del borde.</p>
+  ${figure()}
   <ul>
     <li>El objetivo es dejar <b>una sola bola</b>. Lo ideal es que quede en el centro.</li>
     <li>No se salta en diagonal ni sobre más de una bola.</li>

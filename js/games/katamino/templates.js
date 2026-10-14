@@ -1,5 +1,6 @@
 /* Marcado propio de Katamino: tablero con listón, botones, bandeja de piezas y ayuda. */
 import { board, iconButton } from '../../ui/templates.js';
+import { gestureStrip } from '../../ui/help-figure.js';
 
 export const boardHtml = () =>
   `<div class="km-area">` + board('board--katamino') +
@@ -24,6 +25,7 @@ export const help = () => `
   <p>Cada desafío tiene varias filas (A, B, C…). En cada fila empiezas con unas pocas piezas y, al resolver un PENTA, el siguiente añade una pieza nueva y una fila más de tablero, y empiezas con el tablero vacío. Del <b>Pequeño Slam</b> al <b>Desafío</b>, cada vez es más difícil.</p>
   <p>Puedes jugar cualquier PENTA desde la tabla. Los que has resuelto quedan marcados y la partida a medias se guarda para continuarla.</p>
   <h3>Controles</h3>
+  ${gestureStrip([{ icon: 'drag', piece: 'squares', text: 'Arrastra al tablero' }, { icon: 'turn', text: 'Toca dos veces: gira' }, { icon: 'flip', text: 'Voltear' }])}
   <ul>
     <li>Arrastra una pieza de la bandeja al tablero; arrástrala fuera para devolverla.</li>
     <li>Toca una pieza para elegirla y otra vez para girarla 90°. <b>Voltear</b> le da la vuelta a la pieza elegida.</li>

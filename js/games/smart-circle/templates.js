@@ -1,6 +1,7 @@
 /* Marcado propio de Smart Circle: tablero redondo, botones, bandeja de piezas y ayuda. */
 import { iconButton } from '../../ui/templates.js';
 import { SPOTS_HELP } from '../../ui/fit-spots.js';
+import { gestureStrip } from '../../ui/help-figure.js';
 
 const chip = (action, icon, text, label) =>
   `<button class="btn-chip" data-action="${action}" aria-label="${label}">` +
@@ -36,6 +37,7 @@ export const help = () => `
     <li><b>Experto:</b> dos piezas y ninguna marca: también hay que encontrar dónde van los nervios.</li>
   </ul>
   <h3>Controles</h3>
+  ${gestureStrip([{ icon: 'drag', piece: 'rings', text: 'Arrastra al tablero' }, { icon: 'flip', text: 'Toca: da la vuelta' }])}
   <ul>
     <li>Arrastra una pieza de la bandeja al tablero; arrástrala fuera para devolverla.</li>
     <li>Toca una pieza, en la bandeja o en el tablero, para darle la vuelta.</li>
