@@ -23,4 +23,3 @@
 .hs-island.is-over text{fill:var(--bad)}
 .hs-board.is-won .hs-island circle{animation:hs-won 1.2s ease-in-out both}
 @keyframes hs-won{40%{fill:#6c6a77}}
-.hs-tip{font-size:13px;color:var(--dim);text-align:center;margin:10px 0 0;line-height:1.4}

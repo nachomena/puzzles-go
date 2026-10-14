@@ -1,5 +1,4 @@
 /* Pantallas de progreso (ui/progress-view.js): un juego con sus niveles y un nivel en detalle. */
-.hub-progress{margin-top:10px}
 .pg-over{margin:0 0 8px;font-size:15px;font-weight:600;color:var(--dim)}
 
 .pg-chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -2px 22px;padding:2px}
@@ -76,3 +75,10 @@
 .pg-note{font-size:13px;color:var(--dim);line-height:1.45;margin:10px 0 0}
 .pg-game--wide{grid-template-columns:1fr auto auto}
 .pg-game__name{color:var(--ink-soft);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Volver junto al título (estas pantallas no tienen barra de abajo) */
+.pg-head{display:flex;align-items:center;gap:6px}
+.pg-back{flex:none;margin-left:-14px}
+.pg-head .hero__title{min-width:0}
+.pg-over{padding-left:34px}
+.menu.menu--bare{padding-bottom:calc(32px + var(--safe-bottom))}

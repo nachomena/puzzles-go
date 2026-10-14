@@ -16,8 +16,7 @@ export const boardHtml = () =>
   `<div class="hs-board" data-hs-board role="application" aria-label="Islas"><svg></svg></div>`;
 
 export const controls = () =>
-  `<div class="toolbar">${iconButton('reset', 'reset', 'Quitar todos los puentes')}${undoRedo()}</div>` +
-  `<p class="hs-tip">Desliza de una isla a otra para poner un puente · otra vez para el segundo, y otra para quitarlos</p>`;
+  `<div class="toolbar">${undoRedo()}</div>`;
 
 export const help = () => `
   <p>Une todas las <b>islas</b> con <b>puentes</b>. El número de cada isla dice cuántos puentes salen de ella.</p>

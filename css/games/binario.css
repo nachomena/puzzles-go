@@ -15,4 +15,3 @@
 /* error: rayas oscuras, que se ven en los dos colores */
 .cell.is-bad .bn-tile{background-image:repeating-linear-gradient(45deg,rgba(0,0,0,.38) 0 4px,transparent 4px 9px)}
 .board.is-won .bn-tile{animation:win 1s ease-in-out both;animation-delay:var(--wave-delay)}
-.bn-tip{font-size:13px;color:var(--dim);text-align:center;margin:10px 0 0}

@@ -23,22 +23,27 @@ export const board = (extraClass = '') =>
 export const undoRedo = () =>
   `<div class="toolbar__group">${iconButton('undo', 'undo', 'Deshacer')}${iconButton('redo', 'redo', 'Rehacer')}</div>`;
 
-/** Barra inferior fija: volver, pista (si el juego la tiene), ajustes, ayuda. */
-export const dock = ({ hint = true } = {}) =>
-  `<nav class="dock">` +
-  iconButton('back', 'back', 'Volver') +
+/** Botón de volver con texto (a dónde se vuelve), a la izquierda de las barras de abajo. */
+export const backPill = (label, attrs = '') =>
+  `<button class="back-pill" data-action="back"${attrs ? ' ' + attrs : ''}>${svgIcon('back')}<span>${label}</span></button>`;
+
+/** Barra inferior fija: a la izquierda, volver; a la derecha, pista (si el juego la tiene), ajustes, ayuda y reiniciar. */
+export const dock = ({ hint = true, back = 'Menú' } = {}) =>
+  `<nav class="dock">` + backPill(back) +
+  `<div class="dock__actions">` +
   (hint ? `<button class="icon-btn hint-btn" data-action="hint" aria-label="Pista">${svgIcon('hint')}<span class="hint-btn__wait" data-hud="hint-wait"></span></button>` : '') +
   iconButton('open', 'gear', 'Ajustes', { attrs: 'data-target="settings"' }) +
   iconButton('open', 'help', 'Cómo se juega', { attrs: 'data-target="help"' }) +
-  `</nav>`;
+  iconButton('reset', 'reset', 'Reiniciar la partida') +
+  `</div></nav>`;
 
 /**
  * Pantalla de juego completa: cabecera, tablero, lo propio del juego y barra inferior.
  * `boardHtml` sustituye al tablero estándar si el juego necesita otro marco (p. ej. flechas alrededor).
  */
-export const playScreen = ({ id, name, boardClass = '', boardHtml = null, controls, hint = true }) =>
+export const playScreen = ({ id, name, boardClass = '', boardHtml = null, controls, hint = true, back = 'Menú' }) =>
   `<section id="play-${id}" class="screen" data-game="${id}" aria-label="${name}">` +
-  `<div class="wrap wrap--game">${hud()}<div class="play-fit">${boardHtml ?? board(boardClass)}</div>${controls}${dock({ hint })}</div></section>`;
+  `<div class="wrap wrap--game">${hud()}<div class="play-fit">${boardHtml ?? board(boardClass)}</div>${controls}${dock({ hint, back })}</div></section>`;
 
 /**
  * Barra de herramientas y teclado de números del 1 al n (Sudoku, KenKen): reiniciar, número o lápiz,
@@ -55,7 +60,6 @@ export const notesHtml = (mask, n, same = 0, cls = '') =>
 
 export const digitControls = n =>
   `<div class="toolbar">` +
-  iconButton('reset', 'reset', 'Reiniciar tablero') +
   toolPicker([
     { tool: 'pen', icon: 'number', label: 'Escribir número' },
     { tool: 'pencil', icon: 'pencil', label: 'Anotar candidatos' }

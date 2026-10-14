@@ -3,7 +3,6 @@ import { iconButton, toolPicker, undoRedo, svgIcon } from '../../ui/templates.js
 
 export const controls = () =>
   `<div class="toolbar">` +
-  iconButton('reset', 'reset', 'Reiniciar tablero') +
   toolPicker([
     { tool: 'star', icon: 'star', label: 'Estrellas y X' },
     { tool: 'brush', icon: 'brush', label: 'Pintar casillas' }

@@ -80,18 +80,13 @@
 
 <!-- SELECTOR DE JUEGOS -->
 <section id="hub" class="screen is-on" aria-label="Juegos">
-  <header class="hero"><div class="wrap">
+  <header class="hero"><div class="wrap hub-head">
     <h1 class="hero__title display" id="title">PUZZLES GO</h1>
+    <button class="icon-btn hub-progress" data-action="open-progress" aria-label="Progreso"><svg viewBox="0 0 24 24"><use href="#i-chart"/></svg></button>
   </div></header>
-  <div class="wrap menu">
-    <p class="menu__label">Elige un juego</p>
-    <div id="games"></div>
-    <hr class="rule">
-    <button class="level game-card hub-progress" data-action="open-progress">
-      <span class="level__text"><span class="level__name display">PROGRESO</span><span class="level__meta">Tus tiempos en cada juego</span></span>
-      <span class="game-card__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chart"/></svg></span>
-    </button>
-  </div>
+  <div class="wrap"><p class="menu__label">Elige un juego</p></div>
+  <!-- solo la lista se desplaza; el título y "Elige un juego" quedan fijos -->
+  <div class="hub-list"><div class="wrap"><div id="games"></div></div></div>
 </section>
 
 <!-- MENÚ DE UN JUEGO -->
@@ -103,12 +98,13 @@
     <div id="resume"></div>
     <p class="menu__label" id="levelsLabel">Nueva partida</p>
     <div id="levelList"></div>
-    <hr class="rule">
     <nav class="menu__icons">
-      <button class="icon-btn" data-action="back" aria-label="Volver a los juegos"><svg viewBox="0 0 24 24"><use href="#i-back"/></svg></button>
-      <button class="icon-btn" data-action="open-progress" aria-label="Progreso de este juego"><svg viewBox="0 0 24 24"><use href="#i-chart"/></svg></button>
-      <button class="icon-btn" data-action="open" data-target="settings" aria-label="Ajustes"><svg viewBox="0 0 24 24"><use href="#i-gear"/></svg></button>
-      <button class="icon-btn" data-action="open" data-target="help" aria-label="Cómo se juega"><svg viewBox="0 0 24 24"><use href="#i-help"/></svg></button>
+      <button class="back-pill" data-action="back"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-back"/></svg><span>Juegos</span></button>
+      <div class="dock__actions">
+        <button class="icon-btn" data-action="open-progress" aria-label="Progreso de este juego"><svg viewBox="0 0 24 24"><use href="#i-chart"/></svg></button>
+        <button class="icon-btn" data-action="open" data-target="settings" aria-label="Ajustes"><svg viewBox="0 0 24 24"><use href="#i-gear"/></svg></button>
+        <button class="icon-btn" data-action="open" data-target="help" aria-label="Cómo se juega"><svg viewBox="0 0 24 24"><use href="#i-help"/></svg></button>
+      </div>
     </nav>
   </div>
 </section>
@@ -120,26 +116,25 @@
   </div></header>
   <div class="wrap menu">
     <div id="pickBody"></div>
-    <hr class="rule">
     <nav class="menu__icons">
-      <button class="icon-btn" data-action="back" aria-label="Volver a los desafíos"><svg viewBox="0 0 24 24"><use href="#i-back"/></svg></button>
-      <button class="icon-btn" data-action="open" data-target="settings" aria-label="Ajustes"><svg viewBox="0 0 24 24"><use href="#i-gear"/></svg></button>
-      <button class="icon-btn" data-action="open" data-target="help" aria-label="Cómo se juega"><svg viewBox="0 0 24 24"><use href="#i-help"/></svg></button>
+      <button class="back-pill" data-action="back"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-back"/></svg><span id="pickBack">Niveles</span></button>
+      <div class="dock__actions">
+        <button class="icon-btn" data-action="open" data-target="settings" aria-label="Ajustes"><svg viewBox="0 0 24 24"><use href="#i-gear"/></svg></button>
+        <button class="icon-btn" data-action="open" data-target="help" aria-label="Cómo se juega"><svg viewBox="0 0 24 24"><use href="#i-help"/></svg></button>
+      </div>
     </nav>
   </div>
 </section>
 
 <!-- PROGRESO: un juego con sus niveles (ui/progress-view.js) -->
 <section id="progress" class="screen" aria-label="Progreso">
-  <header class="hero"><div class="wrap">
+  <!-- sin más acciones que volver: el botón va junto al título, no en una barra abajo -->
+  <header class="hero"><div class="wrap pg-head">
+    <button class="icon-btn pg-back" data-action="back" aria-label="Volver"><svg viewBox="0 0 24 24"><use href="#i-back"/></svg></button>
     <h1 class="hero__title display">PROGRESO</h1>
   </div></header>
-  <div class="wrap menu">
+  <div class="wrap menu menu--bare">
     <div id="progressBody"></div>
-    <hr class="rule">
-    <nav class="menu__icons">
-      <button class="icon-btn" data-action="back" aria-label="Volver"><svg viewBox="0 0 24 24"><use href="#i-back"/></svg></button>
-    </nav>
   </div>
 </section>
 
@@ -147,14 +142,13 @@
 <section id="progress-level" class="screen" aria-label="Progreso de un nivel">
   <header class="hero"><div class="wrap">
     <p class="pg-over" id="progressGame"></p>
-    <h1 class="hero__title display" id="progressLevelTitle"></h1>
+    <div class="pg-head">
+      <button class="icon-btn pg-back" data-action="back" aria-label="Volver al progreso del juego"><svg viewBox="0 0 24 24"><use href="#i-back"/></svg></button>
+      <h1 class="hero__title display" id="progressLevelTitle"></h1>
+    </div>
   </div></header>
-  <div class="wrap menu">
+  <div class="wrap menu menu--bare">
     <div id="progressLevelBody"></div>
-    <hr class="rule">
-    <nav class="menu__icons">
-      <button class="icon-btn" data-action="back" aria-label="Volver al progreso del juego"><svg viewBox="0 0 24 24"><use href="#i-back"/></svg></button>
-    </nav>
   </div>
 </section>
 

@@ -33,9 +33,8 @@ div.iq-piece.is-ghost{position:fixed;z-index:30;pointer-events:none}
 @keyframes iq-glow{50%{filter:brightness(1.35)}}
 
 /* Botones bajo el tablero: reiniciar a la izquierda, voltear a la derecha */
-.iq-actions{display:flex;justify-content:space-between;align-items:center;padding-top:8px}
+.iq-actions{display:flex;justify-content:flex-end;align-items:center;padding-top:8px}
 
 /* Bandeja */
 .iq-tray{--iq-tray-cell:21px;display:flex;flex-wrap:wrap;gap:12px 14px;justify-content:center;align-items:center;padding:10px 0 4px;min-height:60px;touch-action:none}
 .iq-piece.is-tray{position:relative;width:calc(var(--w) * var(--iq-tray-cell));height:calc(var(--h) * var(--iq-tray-cell))}
-.iq-tip{font-size:13px;color:var(--dim);text-align:center;margin:4px 0 0}

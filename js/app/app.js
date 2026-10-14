@@ -48,8 +48,7 @@ export class App {
     this.pickLevel = null;      // nivel cuya tabla de tableros está abierta (juegos con picker)
     // pantallas de progreso: juego y fila elegidos, periodo, y a qué pantalla se vuelve
     this.progress = { game: null, key: null, range: 'last20', from: 'hub' };
-    // los nombres de juegos y el de Progreso, del mismo tamaño
-    this.fitGames = keepNamesFitted(byId('games').parentElement);
+    this.fitGames = keepNamesFitted(byId('games'));
     this.fitLevels = keepNamesFitted(byId('levelList'));
 
     this.entries = new Map();   // juegos ya abiertos: id → entrada
@@ -76,7 +75,8 @@ export class App {
 
   /** Todo lo que vive por juego: estado, generación, pantalla y controlador. */
   #createEntry(game, storage){
-    const screen = htmlToElement(playScreen({ id: game.id, name: game.name, boardClass: game.boardClass || '', boardHtml: game.boardHtml, controls: game.controls, hint: game.hint !== false }));
+    const screen = htmlToElement(playScreen({ id: game.id, name: game.name, boardClass: game.boardClass || '', boardHtml: game.boardHtml, controls: game.controls, hint: game.hint !== false,
+      back: game.levelOrder.length === 1 ? 'Juegos' : 'Menú' }));   // sin menú de niveles, se vuelve al selector
     byId('app').appendChild(screen);
     const store = new Store(storage, game);
     store.load();
@@ -239,6 +239,19 @@ export class App {
     else { this.currentMeta = null; this.showScreen('hub'); }
   }
 
+  /** Reiniciar la partida (botón de la barra de abajo), pidiendo confirmación. */
+  async #confirmReset(){
+    const c = this.current?.controller;
+    if (this.screen !== 'play' || !c?.active) return;
+    if (!c.hasInput()){ this.toast.show('El tablero ya está vacío'); return; }
+    const choice = await this.confirm.ask({
+      title: '¿Reiniciar la partida?',
+      text: 'Se quita todo lo que has puesto en el tablero. El tiempo sigue contando.',
+      accept: 'Reiniciar'
+    });
+    if (choice === 'accept' && this.current?.controller === c) c.reset();
+  }
+
   /* ---------- Progreso ---------- */
 
   /** Abre el progreso: del juego del menú abierto, o del último jugado si se viene del selector. */
@@ -276,6 +289,7 @@ export class App {
     if (!row) return;
     byId('progressGame').textContent = meta.name;
     byId('progressLevelTitle').textContent = row.name.toUpperCase();
+    fitToWidth(byId('progressLevelTitle'));   // junto al botón de volver: que quepa en una línea
     byId('progressLevelBody').innerHTML = levelHtml({ row, range: this.progress.range, meta, stats: data.stats });
   }
 
@@ -300,6 +314,7 @@ export class App {
     if (this.screen === 'pick' && this.current){
       const { game, store } = this.current;
       byId('pickTitle').textContent = game.levels[this.pickLevel].name.toUpperCase();
+      byId('pickBack').textContent = game.menuLabel ?? 'Niveles';
       byId('pickBody').innerHTML = game.picker.render(this.pickLevel, store.menuData());
     }
     if (this.screen === 'progress') this.#renderProgress();
@@ -344,7 +359,7 @@ export class App {
       'wipe-stats':   () => { cur.store.clearStats(); this.#refreshMenus(); this.toast.show('Estadísticas borradas'); },
       'undo':         () => cur.controller.undo(),
       'redo':         () => cur.controller.redo(),
-      'reset':        () => cur.controller.reset(),
+      'reset':        () => this.#confirmReset(),
       'hint':         () => cur.controller.hint(),
       ...cur?.controller.actions
     };

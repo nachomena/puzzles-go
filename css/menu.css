@@ -4,6 +4,8 @@
 .hero__title svg{width:1em;height:1em;fill:var(--ink);flex-shrink:0}
 
 .game-card .level__name{font-size:var(--name-size,clamp(30px,9vw,54px));white-space:nowrap}
+/* Caja del ancho del botón de Progreso, para que los iconos queden centrados bajo él */
+.game-card__icon{flex:none;width:52px;display:flex;justify-content:center}
 .game-card__icon svg{width:40px;height:40px;stroke:var(--dim);fill:none;stroke-width:1.5;stroke-linejoin:round}
 /* Grupo de juegos (p. ej. Smart Games): al desplegarse, sus juegos van debajo con una raya a la izquierda */
 .game-group__items{margin:2px 0 8px 4px;padding-left:16px;border-left:3px solid var(--rule)}
@@ -11,8 +13,21 @@
 
 .menu{padding-top:34px;padding-bottom:24px}
 .menu__label{font-size:19px;font-weight:600;color:var(--ink-label);margin:0 0 10px}
-/* Volver, ajustes y ayuda: al final de la lista, y pegados abajo si la lista es larga (siempre a mano) */
-.menu__icons{display:flex;gap:26px;padding:22px 0 calc(10px + var(--safe-bottom));position:sticky;bottom:0;background:var(--bg);z-index:2}
+/* Volver, ajustes y ayuda: barra fija abajo, como en las partidas (.dock) */
+.menu__icons{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px max(10px, calc(50% - var(--content-max) / 2 + 10px)) calc(16px + var(--safe-bottom)) max(14px, calc(50% - var(--content-max) / 2 + 14px));background:var(--bg);z-index:5}
+.menu{padding-bottom:100px}
+
+/* Selector: título y "Elige un juego" fijos; solo la lista se desplaza */
+#hub.is-on{display:flex;flex-direction:column;height:calc(100dvh - var(--safe-top) - var(--safe-bottom))}
+#hub .hero{flex:none}
+#hub > .wrap{width:100%;flex:none}   /* en columna flex, el margen automático la encogería */
+#hub .menu__label{margin:34px 0 10px}
+.hub-list{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-bottom:calc(24px + var(--safe-bottom))}
+.hub-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+/* Progreso: con borde de botón, para que se vea que se puede tocar */
+.hub-progress{flex:none;width:52px;height:52px;border:2px solid var(--outline);border-radius:var(--radius)}
+.hub-progress svg{width:28px;height:28px}
+.hub-progress:active{background:var(--surface-press)}
 .rule{height:3px;background:var(--rule);margin:26px 0 0;border:0}
 
 .resume{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;padding:14px 16px;margin:4px 0 22px;background:var(--ink);color:var(--bg);text-align:left;border-radius:var(--radius)}

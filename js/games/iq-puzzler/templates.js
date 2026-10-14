@@ -6,14 +6,12 @@ export const boardHtml = () =>
   `<div class="iq-area">` +
   `<div class="iq-board" data-iq-board role="application" aria-label="Tablero"><svg></svg></div>` +
   `<div class="iq-actions">` +
-  iconButton('reset', 'reset', 'Quitar todas las piezas') +
   `<button class="btn-chip" data-action="flip" aria-label="Voltear la pieza seleccionada">` +
   `<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-flip"/></svg><span>Voltear</span></button>` +
   `</div></div>`;
 
 export const controls = () =>
-  `<div class="iq-tray" data-tray aria-label="Piezas sin colocar"></div>` +
-  `<p class="iq-tip">Arrastra para colocar · toca para elegir y otra vez para girar</p>`;
+  `<div class="iq-tray" data-tray aria-label="Piezas sin colocar"></div>`;
 
 export const help = () => `
   <p>Coloca las <b>12 piezas</b> de bolas en el tablero de 11 × 5 hasta llenarlo, sin dejar ningún hueco.</p>

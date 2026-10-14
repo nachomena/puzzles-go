@@ -21,7 +21,6 @@
 [data-game="smart-dices"].sd-no-rows .hud{padding-left:calc((var(--arrow-long) + var(--sd-gap)) / 2);padding-right:calc((var(--arrow-long) + var(--sd-gap)) / 2)}
 .sd-area.is-no-rows .sd-arrows--rows{display:none}
 /* Reiniciar: abajo a la izquierda, a la altura de las flechas de columna */
-.sd-reset{grid-area:2/1;justify-self:start;align-self:center;position:relative;z-index:1;margin-left:-6px}
 .sd-area .board{grid-area:1/1}
 .board--dice{--n:6;margin:0 auto}
 .board--dice .board__grid{stroke-width:.02}
@@ -73,7 +72,6 @@
 .board.is-won .sd-piece i{animation:win 1s ease-in-out both}
 
 /* Bandeja y ayuda breve debajo */
-.sd-tip{font-size:13px;color:var(--dim);text-align:center;margin:4px 0 0}
 .sd-tray{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center;padding:10px 0 4px;min-height:60px;touch-action:none}
 .sd-piece.is-tray{position:relative;width:calc(var(--w) * var(--sd-tray-cell));height:calc(var(--h) * var(--sd-tray-cell));border-radius:8px}
 

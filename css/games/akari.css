@@ -9,4 +9,3 @@
 .cell.is-bad .ak-bulb{background:var(--bad);box-shadow:0 0 0 3px rgba(255,91,79,.25)}
 .ak-mark{width:16%;aspect-ratio:1;border-radius:50%;background:var(--dim)}
 .board.is-won .ak-bulb{animation:win 1s ease-in-out both;animation-delay:var(--wave-delay)}
-.ak-tip{font-size:13px;color:var(--dim);text-align:center;margin:10px 0 0}

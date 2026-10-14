@@ -5,14 +5,12 @@ import { gestureStrip } from '../../ui/help-figure.js';
 export const boardHtml = () =>
   `<div class="sc-area">` + board('board--circuit') +
   `<div class="sc-actions">` +
-  iconButton('reset', 'reset', 'Quitar todas las piezas') +
   `<button class="btn-chip" data-action="flip" aria-label="Voltear la pieza seleccionada">` +
   `<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-flip"/></svg><span>Voltear</span></button>` +
   `</div></div>`;
 
 export const controls = () =>
-  `<div class="sc-tray" data-tray aria-label="Piezas sin colocar"></div>` +
-  `<p class="sc-tip">Arrastra para colocar · toca para elegir y otra vez para girar</p>`;
+  `<div class="sc-tray" data-tray aria-label="Piezas sin colocar"></div>`;
 
 export const help = () => `
   <p>Coloca las <b>10 piezas</b> en el tablero para unir los <b>puntos</b> por parejas con caminos: con 2 puntos hay 1 camino, con 4 hay 2 y con 6 hay 3.</p>

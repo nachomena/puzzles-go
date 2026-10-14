@@ -42,11 +42,10 @@ div.sc-piece.is-ghost{position:fixed;z-index:30;pointer-events:none;filter:drop-
 @keyframes sc-glow{40%{stroke:#ffe9a0;stroke-width:.28}}
 
 /* Botones bajo el tablero: reiniciar a la izquierda, voltear a la derecha */
-.sc-actions{display:flex;justify-content:space-between;align-items:center;padding-top:8px}
+.sc-actions{display:flex;justify-content:flex-end;align-items:center;padding-top:8px}
 .btn-chip{display:flex;align-items:center;gap:6px;height:40px;padding:0 14px;border-radius:20px;background:var(--seg);font-weight:600;font-size:15px}
 .btn-chip svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round}
 
 /* Bandeja */
 .sc-tray{--sc-tray-cell:26px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center;padding:12px 0 4px;min-height:60px;touch-action:none}
 .sc-piece.is-tray{position:relative;width:calc(var(--w) * var(--sc-tray-cell));height:calc(var(--h) * var(--sc-tray-cell))}
-.sc-tip{font-size:13px;color:var(--dim);text-align:center;margin:4px 0 0}

@@ -28,13 +28,11 @@ export const boardHtml = () =>
   board('board--dice') +
   `<div class="sd-arrows sd-arrows--rows">${arrow('rows', 0)}${arrow('rows', 1)}</div>` +
   `<div class="sd-arrows sd-arrows--cols">${arrow('cols', 0)}${arrow('cols', 1)}</div>` +
-  iconButton('reset', 'reset', 'Quitar todas las piezas', { cls: 'icon-btn sd-reset' }) +
   `</div>`;
 
 /** Bajo el tablero solo va la bandeja, para que las piezas se vean sin hacer scroll. */
 export const controls = () =>
-  `<div class="sd-tray" data-tray aria-label="Piezas sin colocar"></div>` +
-  `<p class="sd-tip">Arrastra para colocar · toca para girar</p>`;
+  `<div class="sd-tray" data-tray aria-label="Piezas sin colocar"></div>`;
 
 export const help = () => `
   <p>Coloca las 12 piezas en el tablero para que cada una de las <b>4 casillas</b> muestre una <b>cara de dado</b> válida, en cualquier orientación.</p>

@@ -6,8 +6,7 @@ export const boardHtml = () =>
   `<div class="rh-area"><div class="rh-board" data-rh-board role="application" aria-label="Aparcamiento"><div class="rh-lot"></div></div></div>`;
 
 export const controls = () =>
-  `<div class="toolbar">${iconButton('reset', 'reset', 'Volver a empezar')}` +
-  `<span class="rh-moves" data-rh-moves></span>${undoRedo()}</div>`;
+  `<div class="toolbar"><span class="rh-moves" data-rh-moves></span>${undoRedo()}</div>`;
 
 /** Ejemplo: un coche tapa el paso; al bajarlo, el rojo llega a la salida. */
 const figure = () => {

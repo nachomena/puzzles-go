@@ -7,13 +7,12 @@ export const boardHtml = () =>
   `<div class="ps-board" data-ps-board role="application" aria-label="Tablero">` +
   `<svg class="ps-wood" viewBox="-4.5 -4.5 9 9" aria-hidden="true"></svg><div class="ps-balls"></div></div>` +
   `<div class="ps-actions">` +
-  iconButton('reset', 'reset', 'Empezar de nuevo') +
   `<span class="ps-status" data-ps-status aria-live="polite"></span>` +
   `<div class="toolbar__group">${iconButton('undo', 'undo', 'Deshacer')}${iconButton('redo', 'redo', 'Rehacer')}</div>` +
   `</div></div>`;
 
 export const controls = () =>
-  `<p class="ps-tip">Toca una bola y luego el agujero al que salta, o arrástrala</p>`;
+  '';
 
 /** Ejemplo: bola, bola y hueco; la primera salta a la vecina y esta se quita. */
 const figure = () => {

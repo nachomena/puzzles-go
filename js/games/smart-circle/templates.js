@@ -11,14 +11,12 @@ export const boardHtml = () =>
   `<div class="sl-area">` +
   `<div class="sl-board" data-sl-board role="application" aria-label="Tablero"><svg viewBox="-1.04 -1.04 2.08 2.08"></svg></div>` +
   `<div class="sl-actions">` +
-  iconButton('reset', 'reset', 'Quitar todas las piezas') +
   `<div class="sl-actions__right">` +
   chip('turn-ribs', 'turn', 'Nervios', 'Girar los nervios del tablero') +
   `</div></div></div>`;
 
 export const controls = () =>
-  `<div class="sl-tray" data-tray aria-label="Piezas sin colocar"></div>` +
-  `<p class="sl-tip">Arrastra las piezas al tablero · tócalas para voltearlas</p>`;
+  `<div class="sl-tray" data-tray aria-label="Piezas sin colocar"></div>`;
 
 export const help = () => `
   <p>Coloca las <b>10 piezas</b> en el tablero hasta llenar sus <b>48 agujeros</b>.</p>

@@ -7,14 +7,12 @@ export const boardHtml = () =>
   `<div class="sh-area">` +
   `<div class="sh-board" data-sh-board role="application" aria-label="Tablero"><svg viewBox="-3.4 -2.98 6.8 5.96"></svg></div>` +
   `<div class="sh-actions">` +
-  iconButton('reset', 'reset', 'Quitar todas las piezas') +
   `<button class="btn-chip" data-action="flip" aria-label="Voltear la pieza seleccionada">` +
   `<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-flip"/></svg><span>Voltear</span></button>` +
   `</div></div>`;
 
 export const controls = () =>
-  `<div class="sh-tray" data-tray aria-label="Piezas sin colocar"></div>` +
-  `<p class="sh-tip">Arrastra para colocar · toca para elegir y otra vez para girar</p>`;
+  `<div class="sh-tray" data-tray aria-label="Piezas sin colocar"></div>`;
 
 export const help = () => `
   <p>Coloca las <b>12 piezas</b> en el tablero hasta llenarlo: los trazos pasan entre las clavijas y no puede quedar ningún hueco.</p>

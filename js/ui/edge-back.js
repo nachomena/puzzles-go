@@ -2,7 +2,6 @@
    flecha y, si se suelta pasada la mitad del recorrido, se vuelve atrás. */
 const EDGE = 20;          // px desde el borde donde empieza el gesto
 const TRIGGER = .3;       // fracción del ancho que hay que recorrer
-const MAX_PULL = 90;      // px que se mueve la flecha como mucho
 
 /**
  * @param {{ enabled: () => boolean, onBack: () => void }} o
@@ -15,8 +14,13 @@ export function bindEdgeBack({ enabled, onBack }){
   document.body.appendChild(tip);
   let g = null;
 
+  // la flecha se para en el mismo borde que el botón de volver de las barras de abajo (.back-pill)
+  const stopAt = () => {
+    const max = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--content-max')) || 560;
+    return Math.max(14, window.innerWidth / 2 - max / 2 + 14);
+  };
   const show = (dx, armed) => {
-    tip.style.transform = `translate(${Math.min(dx, MAX_PULL) - 56}px, -50%)`;
+    tip.style.transform = `translate(${Math.min(dx - 56, stopAt())}px, -50%)`;
     tip.classList.toggle('is-armed', armed);
   };
   const end = fire => {

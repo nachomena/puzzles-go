@@ -34,14 +34,13 @@ export class BinarioController extends GameController {
   onSetting(){ this.board.invalidate(); }
   celebrate(){ this.board.celebrate(); }
 
-  /** Un toque: vacía → rojo → azul → vacía. Llegar al azul con dos toques seguidos se deshace de una vez. */
+  /** Un toque: vacía → rojo → azul → vacía. Cada toque es un paso: deshacer el azul vuelve al rojo. */
   toggle(i){
     const s = this.session;
     if (!this.active || i < 0) return;
     if (s.p.givens[i]){ this.board.flash(i); return; }
-    const before = this.snapshot(), from = s.g[i];
-    s.g[i] = (from + 1) % 3;
-    this.recordTap(i, before, from === 0 ? 'mark' : from === 1 ? 'piece' : null);
+    this.record();
+    s.g[i] = (s.g[i] + 1) % 3;
     this.commit(true);
   }
 

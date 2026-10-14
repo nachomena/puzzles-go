@@ -6,14 +6,12 @@ export const boardHtml = () =>
   `<div class="km-area">` + board('board--katamino') +
   `<div class="km-slider" aria-hidden="true"></div>` +
   `<div class="km-actions">` +
-  iconButton('reset', 'reset', 'Quitar todas las piezas') +
   `<button class="btn-chip" data-action="flip" aria-label="Voltear la pieza seleccionada">` +
   `<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-flip"/></svg><span>Voltear</span></button>` +
   `</div></div>`;
 
 export const controls = () =>
-  `<div class="km-tray" data-tray aria-label="Piezas sin colocar"></div>` +
-  `<p class="km-tip">Arrastra para colocar · toca para elegir y otra vez para girar</p>`;
+  `<div class="km-tray" data-tray aria-label="Piezas sin colocar"></div>`;
 
 export const help = () => `
   <p>Un <b>PENTA</b> es un reto: llenar el tablero con las piezas que te da, sin dejar huecos. En el PENTA 5 hay que cubrir 5 filas con 5 piezas; en el PENTA 8, 8 filas con 8 piezas.</p>

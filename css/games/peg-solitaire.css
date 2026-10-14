@@ -27,4 +27,3 @@
 
 .ps-actions{display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:12px}
 .ps-status{flex:1;text-align:center;font-size:15px;font-weight:600;color:var(--ink-soft);font-variant-numeric:tabular-nums}
-.ps-tip{font-size:13px;color:var(--dim);text-align:center;margin:10px 0 0}

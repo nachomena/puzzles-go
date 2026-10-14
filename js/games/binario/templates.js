@@ -11,8 +11,7 @@ const figure = () => {
 };
 
 export const controls = () =>
-  `<div class="toolbar">${iconButton('reset', 'reset', 'Vaciar el tablero')}${undoRedo()}</div>` +
-  `<p class="bn-tip">Toca una casilla: rojo · azul · vacía</p>`;
+  `<div class="toolbar">${undoRedo()}</div>`;
 
 export const help = () => `
   <p>Llena el tablero de <b>rojo</b> y <b>azul</b>.</p>

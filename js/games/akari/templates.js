@@ -17,8 +17,7 @@ const figure = () => {
 };
 
 export const controls = () =>
-  `<div class="toolbar">${iconButton('reset', 'reset', 'Vaciar el tablero')}${undoRedo()}</div>` +
-  `<p class="ak-tip">Toca una casilla: marca · bombilla · vacía</p>`;
+  `<div class="toolbar">${undoRedo()}</div>`;
 
 export const help = () => `
   <p>Pon <b>bombillas</b> en las casillas blancas hasta que <b>todas queden iluminadas</b>.</p>

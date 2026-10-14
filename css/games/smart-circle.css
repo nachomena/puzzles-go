@@ -35,7 +35,7 @@
 .sl-hue-lime{--sl-c:var(--sl-lime)}
 
 /* Botones bajo el tablero: reiniciar a la izquierda; nervios y voltear a la derecha */
-.sl-actions{display:flex;justify-content:space-between;align-items:center;padding-top:8px}
+.sl-actions{display:flex;justify-content:flex-end;align-items:center;padding-top:8px}
 .sl-actions__right{display:flex;gap:8px}
 .sl-actions [hidden]{display:none}
 
@@ -46,4 +46,3 @@
 .sl-loose{display:block;width:100%;height:100%;overflow:visible}
 .sl-ghost{position:fixed;left:0;top:0;z-index:30;pointer-events:none;filter:drop-shadow(0 10px 16px rgba(0,0,0,.5))}
 .sl-ghost .sl-loose{width:100%;height:100%}
-.sl-tip{font-size:13px;color:var(--dim);text-align:center;margin:4px 0 0}

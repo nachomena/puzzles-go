@@ -3,8 +3,7 @@ import { iconButton, undoRedo } from '../../ui/templates.js';
 import { helpFigure, hfCell, hfText } from '../../ui/help-figure.js';
 
 export const controls = () =>
-  `<div class="toolbar">${iconButton('reset', 'reset', 'Borrar el camino')}${undoRedo()}</div>` +
-  `<p class="zp-tip">Arrastra desde el 1 · vuelve atrás sobre el camino para borrar</p>`;
+  `<div class="toolbar">${undoRedo()}</div>`;
 
 /** Ejemplo de 3 × 3: el camino pasa por todas las casillas y toca 1, 2 y 3 en orden. */
 const figure = () => {

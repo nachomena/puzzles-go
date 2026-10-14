@@ -46,12 +46,11 @@ div.km-piece.is-ghost{position:fixed;z-index:30;pointer-events:none}
 @keyframes km-glow{40%{filter:brightness(1.35)}}
 
 /* Botones bajo el tablero: reiniciar a la izquierda, voltear a la derecha */
-.km-actions{display:flex;justify-content:space-between;align-items:center;padding-top:8px}
+.km-actions{display:flex;justify-content:flex-end;align-items:center;padding-top:8px}
 
 /* Bandeja: piezas más pequeñas que en el tablero */
 .km-tray{--km-tray-cell:17px;display:flex;flex-wrap:wrap;gap:12px 14px;justify-content:center;align-items:center;padding:10px 0 4px;min-height:60px;touch-action:none}
 .km-piece.is-tray{position:relative;width:calc(var(--w) * var(--km-tray-cell));height:calc(var(--h) * var(--km-tray-cell))}
-.km-tip{font-size:13px;color:var(--dim);text-align:center;margin:4px 0 0}
 
 /* Tabla de PENTAS (pantalla #pick) */
 .km-pick__count{font-size:15px;color:var(--dim);font-weight:600;margin:0 0 14px}

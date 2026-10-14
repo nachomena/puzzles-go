@@ -10,7 +10,7 @@ export const HISTORY_LIMIT = 400;
 export const MIN_RESUME_SEC = 5;
 
 /** Segundos de juego entre una pista y la siguiente. */
-export const HINT_COOLDOWN_SEC = 10 * 60;
+export const HINT_COOLDOWN_SEC = 3 * 60;
 
 export const TIMING = Object.freeze({
   toastMs: 1900,

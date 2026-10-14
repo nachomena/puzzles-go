@@ -8,4 +8,3 @@
 .zp-num text{fill:var(--bg);font-family:var(--font-display);font-size:.36px;font-weight:900;text-anchor:middle}
 .board.is-won .zp-path{animation:zp-glow 1.2s ease-in-out both}
 @keyframes zp-glow{40%{stroke:#f0b878;stroke-width:.5}}
-.zp-tip{font-size:13px;color:var(--dim);text-align:center;margin:10px 0 0}
