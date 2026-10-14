@@ -14,6 +14,7 @@ import zip from './zip/meta.js';
 import hashi from './hashi/meta.js';
 import kenken from './kenken/meta.js';
 import akari from './akari/meta.js';
+import binario from './binario/meta.js';
 import pegSolitaire from './peg-solitaire/meta.js';
 
 export const CATALOG = [
@@ -30,5 +31,6 @@ export const CATALOG = [
   { meta: hashi,        load: () => import('./hashi/index.js') },
   { meta: kenken,       load: () => import('./kenken/index.js') },
   { meta: akari,        load: () => import('./akari/index.js') },
+  { meta: binario,      load: () => import('./binario/index.js') },
   { meta: pegSolitaire, load: () => import('./peg-solitaire/index.js') }
 ];

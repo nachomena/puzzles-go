@@ -15,6 +15,7 @@ Juegos de lógica como web app instalable que funciona sin conexión:
 - **Hashi**: unir islas con puentes de 1 o 2 que no se cruzan (de 6×6 a 10×10).
 - **KenKen**: del 1 al N sin repetir por fila y columna, con jaulas de sumas, restas, productos y divisiones (de 4×4 a 7×7).
 - **Akari**: bombillas que iluminan todo el tablero sin verse entre ellas (de 7×7 a 10×10).
+- **Binario** (las reglas de 0h h1): rojo y azul, sin tres iguales seguidos, mitad y mitad en cada línea y sin dos filas o columnas iguales (de 6×6 a 12×12).
 - **Solitario**: el clásico de saltar bolas hasta dejar una, en tablero inglés (33) o europeo (37) a elegir en Ajustes.
 
 Todos los tableros se generan en el dispositivo, tienen solución única y su nivel lo garantiza un

@@ -1,8 +1,8 @@
 // Sube la versión cuando publiques cambios para que el iPhone descargue la nueva
-const VERSION = 'pzg-v52';
+const VERSION = 'pzg-v53';
 const FILES = [
   './', './index.html', './manifest.webmanifest',
-  './css/base.css', './css/components.css', './css/games/akari.css', './css/games/hashi.css', './css/games/iq-puzzler.css', './css/games/katamino.css', './css/games/kenken.css', './css/games/peg-solitaire.css', './css/games/rush-hour.css', './css/games/smart-circle.css', './css/games/smart-hexagon.css', './css/games/smart-circuit.css', './css/games/smart-dices.css',
+  './css/base.css', './css/components.css', './css/games/akari.css', './css/games/binario.css', './css/games/hashi.css', './css/games/iq-puzzler.css', './css/games/katamino.css', './css/games/kenken.css', './css/games/peg-solitaire.css', './css/games/rush-hour.css', './css/games/smart-circle.css', './css/games/smart-hexagon.css', './css/games/smart-circuit.css', './css/games/smart-dices.css',
   './css/games/star-battle.css', './css/games/zip.css', './css/menu.css', './css/overlays.css', './css/progress.css',
   './css/play.css', './css/tokens.css', './js/app/app.js', './js/boot-check.js', './js/config.js',
   './js/core/digit-grid-controller.js', './js/core/game-controller.js', './js/core/grid-pieces-controller.js', './js/core/game-definition.js', './js/core/generator-worker.js',
@@ -27,6 +27,9 @@ const FILES = [
   './js/games/akari/board-view.js', './js/games/akari/config.js', './js/games/akari/controller.js',
   './js/games/akari/engine/generator.js', './js/games/akari/engine/light.js', './js/games/akari/index.js',
   './js/games/akari/meta.js', './js/games/akari/rules.js', './js/games/akari/templates.js', './js/games/akari/worker.js',
+  './js/games/binario/board-view.js', './js/games/binario/config.js', './js/games/binario/controller.js',
+  './js/games/binario/engine/generator.js', './js/games/binario/engine/grid.js', './js/games/binario/index.js',
+  './js/games/binario/meta.js', './js/games/binario/rules.js', './js/games/binario/templates.js', './js/games/binario/worker.js',
   './js/games/hashi/board-view.js', './js/games/hashi/config.js', './js/games/hashi/controller.js',
   './js/games/hashi/engine/generator.js', './js/games/hashi/engine/graph.js', './js/games/hashi/index.js',
   './js/games/hashi/meta.js', './js/games/hashi/rules.js', './js/games/hashi/templates.js', './js/games/hashi/worker.js',
