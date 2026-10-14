@@ -17,5 +17,4 @@ export const help = () => `
   <ul>
     <li>Arrastra desde el 1 para dibujar; puedes soltar y seguir desde el final.</li>
     <li>Vuelve hacia atrás sobre el camino para borrar, o toca una casilla del camino para dejarlo acabando ahí.</li>
-    <li>La bombilla señala dónde se desvía el camino o lo alarga hasta el siguiente número. Hay una pista cada 10 minutos de juego.</li>
   </ul>`;

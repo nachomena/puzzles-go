@@ -19,5 +19,4 @@ export const help = () => `
   <h3>Controles</h3>
   <ul>
     <li>Deshacer, rehacer y volver a empezar están bajo el tablero.</li>
-    <li>La bombilla hace por ti el mejor movimiento posible desde donde estás. Hay una pista cada 10 minutos de juego.</li>
   </ul>`;

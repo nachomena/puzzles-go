@@ -29,5 +29,4 @@ export const help = () => `
     <li>Arrastra una pieza de la bandeja al tablero; arrástrala fuera para devolverla.</li>
     <li>Toca una pieza para elegirla y otra vez para girarla 60°. <b>Voltear</b> le da la vuelta a la pieza elegida.</li>
     <li>${SPOTS_HELP}</li>
-    <li>La bombilla señala una pieza mal puesta o coloca una en su sitio. Hay una pista cada 10 minutos de juego.</li>
   </ul>`;

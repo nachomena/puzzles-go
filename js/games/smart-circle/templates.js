@@ -40,5 +40,4 @@ export const help = () => `
     <li>Arrastra una pieza de la bandeja al tablero; arrástrala fuera para devolverla.</li>
     <li>Toca una pieza, en la bandeja o en el tablero, para darle la vuelta.</li>
     <li>${SPOTS_HELP.replace('tal como está girada', 'con la cara que tiene')}</li>
-    <li>La bombilla señala una pieza mal puesta, coloca los nervios o pone una pieza en su sitio. Hay una pista cada 10 minutos de juego.</li>
   </ul>`;

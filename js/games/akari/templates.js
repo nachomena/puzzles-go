@@ -16,5 +16,4 @@ export const help = () => `
   <h3>Controles</h3>
   <ul>
     <li>Toca una casilla para marcarla con un punto (aquí no va); otra vez, para poner una bombilla; otra más, para dejarla vacía.</li>
-    <li>La bombilla de abajo señala un error o pone una bombilla que falta. Hay una pista cada 10 minutos de juego.</li>
   </ul>`;

@@ -1,5 +1,5 @@
 // Sube la versión cuando publiques cambios para que el iPhone descargue la nueva
-const VERSION = 'pzg-v55';
+const VERSION = 'pzg-v56';
 const FILES = [
   './', './index.html', './manifest.webmanifest',
   './css/base.css', './css/components.css', './css/games/akari.css', './css/games/binario.css', './css/games/hashi.css', './css/games/iq-puzzler.css', './css/games/katamino.css', './css/games/kenken.css', './css/games/peg-solitaire.css', './css/games/rush-hour.css', './css/games/smart-circle.css', './css/games/smart-hexagon.css', './css/games/smart-circuit.css', './css/games/smart-dices.css',

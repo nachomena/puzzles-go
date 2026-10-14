@@ -21,5 +21,4 @@ export const help = () => `
     <li>Desliza desde una isla hacia la de al lado, o toca el hueco entre las dos, para poner un puente. Repite para el segundo; una tercera vez los quita.</li>
     <li>Toca dos veces seguidas una isla para quitar todos sus puentes.</li>
     <li>Las islas que ya tienen todos sus puentes se ven más apagadas.</li>
-    <li>La bombilla señala un puente que sobra o pone uno que falta. Hay una pista cada 10 minutos de juego.</li>
   </ul>`;

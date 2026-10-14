@@ -44,7 +44,6 @@ export const help = () => `
     <li>Arrastra una pieza de la bandeja al tablero para colocarla.</li>
     <li>Toca una pieza para girarla 90°, en la bandeja o en el tablero.</li>
     <li>Arrastra una pieza fuera del tablero para devolverla a la bandeja.</li>
-    <li>La bombilla coloca una pieza en su sitio. Hay una pista cada 10 minutos de juego.</li>
   </ul>
   <h3>Truco de inicio</h3>
   <p>Los puntos suman siempre 12 entre los 4 dados. Si una fila suma 9, la otra suma 3.</p>`;

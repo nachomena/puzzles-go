@@ -16,5 +16,4 @@ export const help = () => `
   <h3>Controles</h3>
   <ul>
     <li>Toca una casilla para ponerla roja; otra vez, azul; otra más, vacía. Las que vienen dadas (con un punto) no se pueden cambiar.</li>
-    <li>La bombilla señala un error o pone una casilla que se puede deducir, y te dice por qué. Hay una pista cada 10 minutos de juego.</li>
   </ul>`;

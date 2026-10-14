@@ -17,5 +17,4 @@ export const help = () => `
   <ul>
     <li>Toca una casilla y después un número. Toca el mismo número otra vez para quitarlo.</li>
     <li>Con el lápiz ${svgIcon('pencil').replace('<svg', '<svg class="inline-icon"')} anotas candidatos; la goma borra la casilla.</li>
-    <li>La bombilla señala un número equivocado o pone uno que falta. Hay una pista cada 10 minutos de juego.</li>
   </ul>`;
