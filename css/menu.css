@@ -15,7 +15,7 @@
 .menu__icons{display:flex;gap:26px;padding:22px 0 calc(10px + var(--safe-bottom));position:sticky;bottom:0;background:var(--bg);z-index:2}
 .rule{height:3px;background:var(--rule);margin:26px 0 0;border:0}
 
-.resume{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;padding:14px 16px;margin:4px 0 22px;background:var(--ink);color:var(--bg);text-align:left}
+.resume{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;padding:14px 16px;margin:4px 0 22px;background:var(--ink);color:var(--bg);text-align:left;border-radius:var(--radius)}
 .resume b{font-size:20px;flex-shrink:0}
 /* en una línea: si no cabe, la app reduce la letra (ui/fit-text.js) */
 .resume span{font-size:15px;font-weight:600;white-space:nowrap}
