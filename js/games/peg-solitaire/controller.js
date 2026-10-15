@@ -23,7 +23,7 @@ export class PegSolitaireController extends GameController {
   }
   mount(){
     if (!super.mount()) return false;
-    this.hud.setHeader(BOARDS[this.session.board].name, '');
+    this.hud.size.setAttribute('aria-live', 'polite');   // bolas que quedan
     return true;
   }
   mountBoard(){ this.view.build(this.session.board); }
@@ -33,7 +33,8 @@ export class PegSolitaireController extends GameController {
     let status = plural(n, 'bola');
     if (n === 1) status = s.balls[CENTER] >= 0 ? '¡Una bola, en el centro!' : '¡Una sola bola!';
     else if (!anyMove(s.board, s.balls)) status = `Sin saltos · ${status}`;
-    this.view.render({ balls: s.balls, out: s.out, sel: s.sel, targets, status });
+    this.view.render({ balls: s.balls, out: s.out, sel: s.sel, targets });
+    this.hud.setHeader(BOARDS[s.board].name, status);   // cabecera: tablero · bolas · tiempo
   }
   /**
    * Reiniciar pone el cronómetro a 0. Las instantáneas llevan el tiempo y cuántos reinicios

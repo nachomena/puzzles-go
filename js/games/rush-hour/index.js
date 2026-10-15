@@ -28,7 +28,7 @@ export default defineGame({
     if (!Number.isInteger(s.moves)) s.moves = 0;
     return s;
   },
-  sizeLabel: p => `${p.min} mov.`,
+  sizeLabel: () => '',   // el mínimo de movimientos ya se ve bajo el tablero
 
   boardHtml: boardHtml(),
   controls: controls(),

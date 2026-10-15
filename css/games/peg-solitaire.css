@@ -25,5 +25,7 @@
 .ps-board.is-won .ps-ball:not(.is-out){animation:ps-glow 1.4s ease-in-out 2}
 @keyframes ps-glow{50%{box-shadow:0 0 0 3px #e2bf5a,0 0 22px 6px rgba(226,191,90,.6)}}
 
-.ps-actions{display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:12px}
-.ps-status{flex:1;text-align:center;font-size:15px;font-weight:600;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.ps-actions{display:flex;justify-content:flex-end;align-items:center;gap:8px;padding-top:12px}
+/* Cabecera: tablero, bolas que quedan y cronómetro, en ese orden */
+[data-game="peg-solitaire"] .hud [data-hud="size"]{order:1;font-size:.85em;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+[data-game="peg-solitaire"] .hud__time{order:2}

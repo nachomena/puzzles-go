@@ -14,7 +14,6 @@ export class PegBoardView {
     this.root = screen.querySelector('[data-ps-board]');
     this.wood = this.root.querySelector('.ps-wood');
     this.layer = this.root.querySelector('.ps-balls');
-    this.status = screen.querySelector('[data-ps-status]');
     this.board = null;
     this.balls = [];     // elemento de cada bola, por id
     this.targets = [];   // marcas de los agujeros a los que se puede saltar
@@ -60,9 +59,8 @@ export class PegBoardView {
    * @param {number[]} v.out    ids de las bolas retiradas, en orden
    * @param {number} v.sel      casilla elegida (-1 = ninguna)
    * @param {number[]} v.targets  casillas a las que puede saltar la elegida
-   * @param {string} v.status
    */
-  render({ balls, out, sel, targets, status }){
+  render({ balls, out, sel, targets }){
     const place = (el, [x, y]) => { el.style.left = pct(x); el.style.top = pct(y); };
     // hay un elemento por agujero, pero una bola menos (la del agujero que empieza vacío)
     const shown = new Set(out);
@@ -93,7 +91,6 @@ export class PegBoardView {
       t.hidden = k >= targets.length;
       if (k < targets.length) place(t, holeXY(targets[k]));
     });
-    this.status.textContent = status;
   }
 
   /** Agujero bajo unas coordenadas de pantalla (o -1). */
