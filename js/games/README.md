@@ -34,10 +34,11 @@ segundo plano, historial, cronómetro, estadísticas y pantalla de victoria son 
      El controlador puede definir `next()` para el botón "Siguiente tablero" (ver `core/game-controller.js`).
      Para que un juego vaya dentro de un grupo del selector (p. ej. los SmartGames), `group` y opcionalmente
      `shortName` (su nombre dentro del grupo) en `meta.js`; los grupos están en `ui/hub-view.js#GROUPS`.
-2. Añade `{ meta, load: () => import('./<id>/index.js') }` a `CATALOG` en `js/games/catalog.js`.
-3. Si necesita estilos, crea `css/games/<id>.css` y enlázalo en `index.html`.
+2. Añade `{ meta, load: () => import('./<id>/index.js'), css: 'css/games/<id>.css' }` a `CATALOG` en `js/games/catalog.js`.
+3. Si necesita estilos, crea `css/games/<id>.css` (se carga al abrir el juego, con su código; sin estilos, quita `css`).
+   Lo que use más de un juego va en `css/components.css`: la hoja de un juego puede no estar cargada.
 4. Iconos nuevos: añade un `<symbol id="i-…">` al sprite de `index.html`.
-5. Añade sus archivos a `FILES` en `sw.js` y sube `VERSION` (`npm run check:sw`).
+5. `sw.js` se pone al día solo al hacer commit (lista de archivos y versión, ver `scripts/build-sw.mjs`).
 6. Pruebas en `tests/<id>-*.test.js`.
 
 ## Reutilizable

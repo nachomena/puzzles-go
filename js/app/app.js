@@ -1,6 +1,6 @@
 /* Carcasa de la app: selector de juegos, menú de niveles, pantallas de juego y capas comunes.
    No sabe nada de ningún juego en concreto: todo lo recibe de sus definiciones. */
-import { byId } from '../lib/dom.js';
+import { byId, loadStylesheet } from '../lib/dom.js';
 import { Store } from '../core/store.js';
 import { PuzzleSupply } from '../core/puzzle-supply.js';
 import { GameHud } from '../ui/game-hud.js';
@@ -28,7 +28,7 @@ const htmlToElement = html => {
 export class App {
   /**
    * @param {object} deps
-   * @param {{ meta: object, load: () => Promise<{ default: object }> }[]} deps.catalog  (js/games/catalog.js)
+   * @param {{ meta: object, load: () => Promise<{ default: object }>, css?: string }[]} deps.catalog  (js/games/catalog.js)
    * @param {Storage|null} deps.storage
    */
   constructor({ catalog, storage }){
@@ -62,7 +62,8 @@ export class App {
     if (!this.loading.has(id)){
       const item = this.catalog.find(c => c.meta.id === id);
       if (!item) return Promise.resolve(null);
-      this.loading.set(id, item.load().then(({ default: game }) => {
+      // su hoja de estilos se pide a la vez que el código: la partida no se pinta sin ella
+      this.loading.set(id, Promise.all([item.load(), item.css && loadStylesheet(item.css)]).then(([{ default: game }]) => {
         const entry = this.#createEntry(game, this.storage);
         this.entries.set(id, entry);
         this.loading.delete(id);

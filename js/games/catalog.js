@@ -1,5 +1,5 @@
 /* Catálogo de juegos. El selector solo necesita los datos de meta.js; el resto del juego
-   (motor, controlador, plantillas) se importa al abrirlo por primera vez.
+   (motor, controlador, plantillas y su hoja de estilos `css`) se carga al abrirlo por primera vez.
    Para añadir un juego: crea su carpeta (ver README.md) y añade aquí su entrada. */
 import starBattle from './star-battle/meta.js';
 import sudoku from './sudoku/meta.js';
@@ -18,19 +18,19 @@ import binario from './binario/meta.js';
 import pegSolitaire from './peg-solitaire/meta.js';
 
 export const CATALOG = [
-  { meta: starBattle, load: () => import('./star-battle/index.js') },
+  { meta: starBattle, load: () => import('./star-battle/index.js'), css: 'css/games/star-battle.css' },
   { meta: sudoku,     load: () => import('./sudoku/index.js') },
-  { meta: smartDices,   load: () => import('./smart-dices/index.js') },
-  { meta: smartCircuit, load: () => import('./smart-circuit/index.js') },
-  { meta: smartCircle,  load: () => import('./smart-circle/index.js') },
-  { meta: smartHexagon, load: () => import('./smart-hexagon/index.js') },
-  { meta: iqPuzzler,    load: () => import('./iq-puzzler/index.js') },
-  { meta: katamino,     load: () => import('./katamino/index.js') },
-  { meta: rushHour,     load: () => import('./rush-hour/index.js') },
-  { meta: zip,          load: () => import('./zip/index.js') },
-  { meta: hashi,        load: () => import('./hashi/index.js') },
-  { meta: kenken,       load: () => import('./kenken/index.js') },
-  { meta: akari,        load: () => import('./akari/index.js') },
-  { meta: binario,      load: () => import('./binario/index.js') },
-  { meta: pegSolitaire, load: () => import('./peg-solitaire/index.js') }
+  { meta: smartDices,   load: () => import('./smart-dices/index.js'), css: 'css/games/smart-dices.css' },
+  { meta: smartCircuit, load: () => import('./smart-circuit/index.js'), css: 'css/games/smart-circuit.css' },
+  { meta: smartCircle,  load: () => import('./smart-circle/index.js'), css: 'css/games/smart-circle.css' },
+  { meta: smartHexagon, load: () => import('./smart-hexagon/index.js'), css: 'css/games/smart-hexagon.css' },
+  { meta: iqPuzzler,    load: () => import('./iq-puzzler/index.js'), css: 'css/games/iq-puzzler.css' },
+  { meta: katamino,     load: () => import('./katamino/index.js'), css: 'css/games/katamino.css' },
+  { meta: rushHour,     load: () => import('./rush-hour/index.js'), css: 'css/games/rush-hour.css' },
+  { meta: zip,          load: () => import('./zip/index.js'), css: 'css/games/zip.css' },
+  { meta: hashi,        load: () => import('./hashi/index.js'), css: 'css/games/hashi.css' },
+  { meta: kenken,       load: () => import('./kenken/index.js'), css: 'css/games/kenken.css' },
+  { meta: akari,        load: () => import('./akari/index.js'), css: 'css/games/akari.css' },
+  { meta: binario,      load: () => import('./binario/index.js'), css: 'css/games/binario.css' },
+  { meta: pegSolitaire, load: () => import('./peg-solitaire/index.js'), css: 'css/games/peg-solitaire.css' }
 ];

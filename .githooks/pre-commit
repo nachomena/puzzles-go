@@ -1,0 +1,3 @@
+#!/bin/sh
+# Pone al día la versión y la lista de archivos de sw.js antes de cada commit.
+node scripts/build-sw.mjs && git add sw.js

@@ -29,16 +29,26 @@ de inicio (borrar el icono borra también su progreso).
 
 ## Desarrollo
 
-Sin dependencias ni paso de compilación: HTML, CSS y ES modules nativos.
+Sin paso de compilación: HTML, CSS y ES modules nativos. La única dependencia es Playwright, para las
+pruebas en el navegador (la app no la usa).
 
 ```sh
+npm install        # Playwright y el gancho de pre-commit (.githooks)
 npm start          # servidor local en http://localhost:8000 (los módulos no cargan con file://)
 npm test           # pruebas de motores, reglas e infraestructura (node:test)
-npm run check:sw   # comprueba que sw.js precachea todos los archivos
+npm run test:e2e   # pruebas en el navegador (Playwright): cada juego, acciones y uso sin conexión
+npm run check      # sintaxis e imports de todo el JS, y sw.js al día
 ```
 
-Al publicar cambios, sube `VERSION` en `sw.js`. Si añades un archivo en `css/` o `js/`, añádelo también
-a `FILES` en `sw.js` (`npm run check:sw` te avisa).
+`sw.js` no se edita a mano: al hacer commit, el gancho de pre-commit (`scripts/build-sw.mjs`) escribe la
+lista de archivos que se guardan para jugar sin conexión y una `VERSION` que es la huella de su contenido,
+así cada cambio publicado llega solo al iPhone. `npm run build:sw` hace lo mismo a mano.
+
+GitHub Actions (`.github/workflows/ci.yml`) pasa `check`, `test` y `test:e2e` en cada push y pull request.
+
+El CSS de cada juego (`css/games/<id>.css`) se carga al abrirlo; lo que comparten varios juegos va en
+`css/components.css`. Las fuentes de `fonts/` son un recorte de Archivo y Archivo Black con solo los
+caracteres que usa la app (`python3 scripts/build-fonts.py` las rehace).
 
 ## Estructura
 
@@ -46,8 +56,8 @@ a `FILES` en `sw.js` (`npm run check:sw` te avisa).
 index.html              carcasa: selector de juegos, menú de niveles, capas comunes y sprite de iconos
 css/
   tokens.css            colores, fuentes y medidas (variables CSS)
-  base.css · components.css · menu.css · play.css · overlays.css
-  games/<juego>.css     estilos propios de cada juego
+  base.css · components.css · menu.css · play.css · overlays.css · progress.css
+  games/<juego>.css     estilos propios de cada juego (se cargan al abrirlo)
 js/
   main.js               punto de entrada
   config.js             constantes comunes (tiempos, historial, reserva)
@@ -67,6 +77,8 @@ js/
     star-battle/        motor, reglas, controlador, vista, plantillas y definición
     sudoku/             ídem
 tests/                  pruebas con node:test
+  e2e/                  pruebas en el navegador (Playwright)
+scripts/                generadores de datos, de sw.js y de las fuentes; comprobación del JS
 ```
 
 Las 6.288 colocaciones válidas de Smart Dices están precalculadas en

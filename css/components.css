@@ -55,3 +55,7 @@
 .edge-back svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .edge-back.is-on{opacity:1}
 .edge-back.is-armed{background:var(--ink);color:var(--bg)}
+
+/* Botón pequeño con icono y texto bajo el tablero (girar, voltear) en los juegos de piezas */
+.btn-chip{display:flex;align-items:center;gap:6px;height:40px;padding:0 14px;border-radius:20px;background:var(--seg);font-weight:600;font-size:15px}
+.btn-chip svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round}
