@@ -22,3 +22,23 @@ export function requestPersistentStorage(){
     navigator.storage?.persisted?.().then(done => done || navigator.storage.persist()).catch(() => {});
   } catch (e){ /* sin soporte */ }
 }
+
+/**
+ * iOS, en la app de la pantalla de inicio con barra de estado translúcida, a veces calcula la ventana
+ * más corta que la pantalla (le resta la barra de estado) y lo fijo abajo queda flotando por encima del
+ * borde. Mide ese hueco y lo deja en --viewport-gap para que las barras de abajo bajen hasta el borde.
+ * Solo en modo app: en el navegador la diferencia es la de sus barras, que sí ocupan sitio.
+ */
+export function fixStandaloneViewport(){
+  const standalone = navigator.standalone || matchMedia('(display-mode: standalone)').matches;
+  if (!standalone) return;
+  const probe = document.createElement('div');
+  probe.style.cssText = 'position:fixed;top:0;left:0;width:0;height:100lvh;visibility:hidden;pointer-events:none';
+  document.body.appendChild(probe);
+  const update = () => {
+    const gap = Math.max(0, Math.round(probe.getBoundingClientRect().height - window.innerHeight));
+    document.documentElement.style.setProperty('--viewport-gap', gap + 'px');
+  };
+  update();
+  window.addEventListener('resize', update);
+}

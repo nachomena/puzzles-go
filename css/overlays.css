@@ -1,5 +1,5 @@
 /* Capas modales: hojas inferiores, tarjetas y pantalla de carga. */
-.overlay{position:fixed;inset:0;background:var(--backdrop);display:none;z-index:10;padding-top:var(--safe-top);padding-bottom:var(--safe-bottom)}
+.overlay{position:fixed;inset:0 0 calc(-1 * var(--viewport-gap, 0px));background:var(--backdrop);display:none;z-index:10;padding-top:var(--safe-top);padding-bottom:var(--safe-bottom)}
 .overlay.is-on{display:flex}
 
 .sheet{margin:auto auto 0;width:100%;max-width:var(--content-max);background:var(--surface);border-radius:var(--radius-lg) var(--radius-lg) 0 0;padding:26px var(--gutter) 30px;max-height:88vh;overflow:auto}
