@@ -22,7 +22,7 @@
 #hub .hero{flex:none}
 #hub > .wrap{width:100%;flex:none}   /* en columna flex, el margen automático la encogería */
 #hub .menu__label{margin:34px 0 10px}
-.hub-list{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-bottom:calc(24px + var(--safe-bottom))}
+.hub-list{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;margin-bottom:var(--gutter);padding-bottom:12px}   /* abajo, el mismo margen que a los lados */
 .hub-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
 /* Progreso: con borde de botón, para que se vea que se puede tocar */
 .hub-progress{flex:none;width:52px;height:52px;border:2px solid var(--outline);border-radius:var(--radius)}

@@ -7,6 +7,8 @@ html{height:100%;background:var(--bg);scroll-padding-top:var(--safe-top);touch-a
 body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:var(--font-body);
   -webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;
   overscroll-behavior:none;-webkit-font-smoothing:antialiased}
+/* iPhone, app instalada: con la página tan alta como la pantalla, iOS deja de recortar la ventana (js/pwa.js) */
+.has-viewport-gap body{min-height:calc(100lvh - var(--safe-top) - var(--safe-bottom))}   /* + el relleno de :root = la pantalla */
 button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;touch-action:manipulation}
 button:focus-visible,label:focus-within{outline:2px solid var(--wall);outline-offset:3px;border-radius:6px}
 button:disabled{opacity:.35;cursor:default}

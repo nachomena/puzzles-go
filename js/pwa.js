@@ -24,10 +24,13 @@ export function requestPersistentStorage(){
 }
 
 /**
- * iOS, en la app de la pantalla de inicio con barra de estado translúcida, a veces calcula la ventana
- * más corta que la pantalla (le resta la barra de estado) y no dibuja nada en la franja de abajo que
- * queda fuera. Mide esa franja y la deja en --viewport-gap: como ya cubre el indicador de inicio, se
- * descuenta del margen inferior (--safe-bottom en css/tokens.css) en vez de sumarse a él.
+ * iOS, en la app de la pantalla de inicio con barra de estado translúcida, calcula la ventana más
+ * corta que la pantalla (le resta la barra de estado) mientras la página no pase de ese alto: lo fijo
+ * abajo flota por encima del borde y la franja de abajo queda sin dibujar. En las pantallas más altas
+ * que la ventana (p. ej. la tabla de Katamino) llega hasta el borde. Así que, si hay hueco, la página
+ * mide como mínimo la pantalla entera (clase has-viewport-gap, css/base.css).
+ * El hueco se guarda en --viewport-gap y no vuelve a bajar aunque la ventana crezca: con la barra ya en
+ * el borde, la franja cubre el indicador de inicio y se descuenta del margen (--safe-bottom, css/tokens.css).
  * Solo en modo app: en el navegador la diferencia es la de sus barras, que sí ocupan sitio.
  */
 export function fixStandaloneViewport(){
@@ -36,9 +39,13 @@ export function fixStandaloneViewport(){
   const probe = document.createElement('div');
   probe.style.cssText = 'position:fixed;top:0;left:0;width:0;height:100lvh;visibility:hidden;pointer-events:none';
   document.body.appendChild(probe);
+  let gap = 0;
   const update = () => {
-    const gap = Math.max(0, Math.round(probe.getBoundingClientRect().height - window.innerHeight));
+    const now = Math.round(probe.getBoundingClientRect().height - window.innerHeight);
+    if (now <= gap) return;
+    gap = now;
     document.documentElement.style.setProperty('--viewport-gap', gap + 'px');
+    document.documentElement.classList.add('has-viewport-gap');
   };
   update();
   window.addEventListener('resize', update);
