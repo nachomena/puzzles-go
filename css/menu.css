@@ -14,7 +14,7 @@
 .menu{padding-top:34px;padding-bottom:24px}
 .menu__label{font-size:19px;font-weight:600;color:var(--ink-label);margin:0 0 10px}
 /* Volver, ajustes y ayuda: barra fija abajo, como en las partidas (.dock) */
-.menu__icons{position:fixed;left:0;right:0;bottom:calc(-1 * var(--viewport-gap, 0px));display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px max(10px, calc(50% - var(--content-max) / 2 + 10px)) max(16px, calc(var(--safe-bottom) + 8px)) max(14px, calc(50% - var(--content-max) / 2 + 14px));background:var(--bg);z-index:5}
+.menu__icons{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px max(10px, calc(50% - var(--content-max) / 2 + 10px)) max(16px, calc(var(--safe-bottom) + 8px)) max(14px, calc(50% - var(--content-max) / 2 + 14px));background:var(--bg);z-index:5}
 .menu{padding-bottom:100px}
 
 /* Selector: título y "Elige un juego" fijos; solo la lista se desplaza */

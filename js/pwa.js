@@ -25,8 +25,9 @@ export function requestPersistentStorage(){
 
 /**
  * iOS, en la app de la pantalla de inicio con barra de estado translúcida, a veces calcula la ventana
- * más corta que la pantalla (le resta la barra de estado) y lo fijo abajo queda flotando por encima del
- * borde. Mide ese hueco y lo deja en --viewport-gap para que las barras de abajo bajen hasta el borde.
+ * más corta que la pantalla (le resta la barra de estado) y no dibuja nada en la franja de abajo que
+ * queda fuera. Mide esa franja y la deja en --viewport-gap: como ya cubre el indicador de inicio, se
+ * descuenta del margen inferior (--safe-bottom en css/tokens.css) en vez de sumarse a él.
  * Solo en modo app: en el navegador la diferencia es la de sus barras, que sí ocupan sitio.
  */
 export function fixStandaloneViewport(){

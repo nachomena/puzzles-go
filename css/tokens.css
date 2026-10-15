@@ -53,7 +53,8 @@
   --radius:12px;
   --radius-lg:20px;
   --safe-top:env(safe-area-inset-top,0px);
-  --safe-bottom:env(safe-area-inset-bottom,0px);
+  /* --viewport-gap (js/pwa.js): franja de abajo que iOS no dibuja en la app instalada; ya hace de margen */
+  --safe-bottom:max(0px, calc(env(safe-area-inset-bottom,0px) - var(--viewport-gap, 0px)));
 }
 
 /* Sudoku */
