@@ -77,8 +77,12 @@
 .pg-game__name{color:var(--ink-soft);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* Volver junto al título (estas pantallas no tienen barra de abajo) */
-.pg-head{display:flex;align-items:center;gap:6px}
-.pg-back{flex:none;margin-left:-14px}
+/* rejilla: la flecha en su columna, y el título y el nombre del juego encima alineados en la otra */
+.pg-head{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:2px}
+.pg-over{grid-column:2}
+/* la flecha (no la caja del botón) empieza en el margen, como el resto de la pantalla; el toque sigue siendo amplio */
+.pg-back{position:relative;width:32px;margin-left:-8px}
+.pg-back::after{content:"";position:absolute;inset:0 -10px}
 .pg-head .hero__title{min-width:0}
-.pg-over{padding-left:34px}
-.menu.menu--bare{padding-bottom:calc(32px + var(--safe-bottom))}
+/* sin barra de abajo ni etiqueta de sección, el contenido va más cerca del título */
+.menu.menu--bare{padding-top:6px;padding-bottom:calc(32px + var(--safe-bottom))}

@@ -7,17 +7,18 @@ import { CELLS, SIZE, ALL, ROWS, COLS, BOXES, UNITS, PEERS, rowOf, colOf, boxOf,
 import { popcount, lowBit, bitIndices, someCombination } from '../../../lib/bits.js';
 
 export const MAX_LEVEL = 3;
-const CONTRA = { contra: true };
+/** Se lanza al llegar a una contradicción (el Killer Sudoku reutiliza el estado y las técnicas). */
+export const CONTRA = { contra: true };
 const DIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 /* ---------- Estado: valores + candidatos ---------- */
 
-function createState(grid){
+export function createState(grid){
   const s = { val: new Int8Array(CELLS), cand: new Uint16Array(CELLS).fill(ALL) };
   for (let i = 0; i < CELLS; i++) if (grid[i]) place(s, i, grid[i]);
   return s;
 }
-function place(s, i, d){
+export function place(s, i, d){
   const b = bit(d);
   if (s.val[i] === d) return;
   if (s.val[i] || !(s.cand[i] & b)) throw CONTRA;
@@ -28,7 +29,7 @@ function place(s, i, d){
   }
 }
 /** Quita los dígitos `mask` de la casilla i. true si cambió algo. */
-function eliminate(s, i, mask){
+export function eliminate(s, i, mask){
   if (!(s.cand[i] & mask)) return false;
   s.cand[i] &= ~mask;
   if (!s.cand[i]) throw CONTRA;

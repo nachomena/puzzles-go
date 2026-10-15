@@ -1,14 +1,14 @@
 // Versión y lista de archivos: no se editan a mano, las escribe scripts/build-sw.mjs al hacer commit
 // <generado por scripts/build-sw.mjs>
-const VERSION = 'pzg-7131155e43';
+const VERSION = 'pzg-23a7540c20';
 const FILES = [
   './', './index.html', './manifest.webmanifest', './css/base.css', './css/components.css',
   './css/games/akari.css', './css/games/binario.css', './css/games/hashi.css', './css/games/iq-puzzler.css',
-  './css/games/katamino.css', './css/games/kenken.css', './css/games/peg-solitaire.css',
-  './css/games/rush-hour.css', './css/games/smart-circle.css', './css/games/smart-circuit.css',
-  './css/games/smart-dices.css', './css/games/smart-hexagon.css', './css/games/star-battle.css',
-  './css/games/zip.css', './css/menu.css', './css/overlays.css', './css/play.css', './css/progress.css',
-  './css/tokens.css', './js/app/app.js', './js/boot-check.js', './js/config.js',
+  './css/games/katamino.css', './css/games/kenken.css', './css/games/killer-sudoku.css',
+  './css/games/peg-solitaire.css', './css/games/rush-hour.css', './css/games/smart-circle.css',
+  './css/games/smart-circuit.css', './css/games/smart-dices.css', './css/games/smart-hexagon.css',
+  './css/games/star-battle.css', './css/games/zip.css', './css/menu.css', './css/overlays.css', './css/play.css',
+  './css/progress.css', './css/tokens.css', './js/app/app.js', './js/boot-check.js', './js/config.js',
   './js/core/digit-grid-controller.js', './js/core/game-controller.js', './js/core/game-definition.js',
   './js/core/generator-worker.js', './js/core/grid-pieces-controller.js', './js/core/hint-cooldown.js',
   './js/core/history.js', './js/core/progress.js', './js/core/puzzle-supply.js', './js/core/runners.js',
@@ -36,6 +36,11 @@ const FILES = [
   './js/games/kenken/config.js', './js/games/kenken/controller.js', './js/games/kenken/engine/cages.js',
   './js/games/kenken/engine/generator.js', './js/games/kenken/index.js', './js/games/kenken/meta.js',
   './js/games/kenken/rules.js', './js/games/kenken/templates.js', './js/games/kenken/worker.js',
+  './js/games/killer-sudoku/board-view.js', './js/games/killer-sudoku/config.js',
+  './js/games/killer-sudoku/controller.js', './js/games/killer-sudoku/engine/cages.js',
+  './js/games/killer-sudoku/engine/generator.js', './js/games/killer-sudoku/engine/logic-solver.js',
+  './js/games/killer-sudoku/index.js', './js/games/killer-sudoku/meta.js', './js/games/killer-sudoku/rules.js',
+  './js/games/killer-sudoku/templates.js', './js/games/killer-sudoku/worker.js',
   './js/games/peg-solitaire/board-view.js', './js/games/peg-solitaire/config.js',
   './js/games/peg-solitaire/controller.js', './js/games/peg-solitaire/engine/generator.js',
   './js/games/peg-solitaire/engine/rules.js', './js/games/peg-solitaire/index.js',

@@ -1,0 +1,8 @@
+/* Killer Sudoku: jaulas con borde punteado metido en las casillas y la suma pequeña en su esquina. */
+.ks-cage{fill:none;stroke:var(--ink-soft);stroke-width:.035;stroke-dasharray:.1 .07;stroke-linecap:butt}
+/* la suma va sobre la esquina del punteado: por encima de las líneas (z-index) y con el fondo de su
+   casilla, así corta el punteado justo donde está y deja sitio al número y a las notas. Empieza un poco
+   hacia dentro para no tapar la rejilla ni el borde grueso de las cajas, que llegan hasta ~4 % */
+.ks-sum{position:absolute;z-index:1;left:5%;top:5%;padding:0 .2em 0 .15em;background:inherit;font-size:clamp(8px,2.3vw,11px);font-weight:500;color:var(--ink-soft);line-height:1.15;pointer-events:none}
+.board--killer .sd-digit{margin-top:6%}
+.board--killer .ks-notes{inset:27% 10% 6% 10%}

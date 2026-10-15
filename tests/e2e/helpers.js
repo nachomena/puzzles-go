@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 
-export const GAMES = ['star-battle', 'sudoku', 'smart-dices', 'smart-circuit', 'smart-circle', 'smart-hexagon',
+export const GAMES = ['star-battle', 'sudoku', 'killer-sudoku', 'smart-dices', 'smart-circuit', 'smart-circle', 'smart-hexagon',
   'iq-puzzler', 'katamino', 'rush-hour', 'zip', 'hashi', 'kenken', 'akari', 'binario', 'peg-solitaire'];
 
 /** Abre la app y falla la prueba si la página lanza algún error. */
