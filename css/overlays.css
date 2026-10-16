@@ -57,6 +57,7 @@
 .hf-wall{fill:none;stroke:var(--wall);stroke-width:.08;stroke-linecap:square}
 .hf-digit{font-family:var(--font-display);font-size:.46px;fill:var(--entry)}
 .hf-cage{fill:none;stroke:var(--ink-soft);stroke-width:.035;stroke-dasharray:.1 .07}
+.hf-loop{fill:none;stroke:var(--entry);stroke-width:.1;stroke-linecap:round}
 .hf-label{font-family:var(--font-body);font-weight:700;font-size:.2px;fill:var(--ink-soft)}
 .hf-path{fill:none;stroke:#d58c45;stroke-width:.34;stroke-linecap:round;stroke-linejoin:round}
 .hf-dot{fill:var(--ink)}

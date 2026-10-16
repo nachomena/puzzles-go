@@ -28,7 +28,7 @@ function extremeSum(mask, k, high){
  * need: números que salen en todas las formas de rellenarlo }. null si no hay ninguna.
  * `clash[a][b]` dice si las casillas a y b del grupo no pueden repetir número.
  */
-function analyse(masks, sum, clash, allDistinct){
+export function analyse(masks, sum, clash, allDistinct){
   const k = masks.length, poss = new Uint16Array(k), vals = new Int8Array(k);
   let need = ALL, found = false;
   const go = (j, total, used) => {

@@ -4,6 +4,8 @@
 import starBattle from './star-battle/meta.js';
 import sudoku from './sudoku/meta.js';
 import killerSudoku from './killer-sudoku/meta.js';
+import kakuro from './kakuro/meta.js';
+import slitherlink from './slitherlink/meta.js';
 import smartDices from './smart-dices/meta.js';
 import smartCircuit from './smart-circuit/meta.js';
 import smartCircle from './smart-circle/meta.js';
@@ -22,6 +24,8 @@ export const CATALOG = [
   { meta: starBattle, load: () => import('./star-battle/index.js'), css: 'css/games/star-battle.css' },
   { meta: sudoku,     load: () => import('./sudoku/index.js') },
   { meta: killerSudoku, load: () => import('./killer-sudoku/index.js'), css: 'css/games/killer-sudoku.css' },
+  { meta: kakuro,       load: () => import('./kakuro/index.js'), css: 'css/games/kakuro.css' },
+  { meta: slitherlink,  load: () => import('./slitherlink/index.js'), css: 'css/games/slitherlink.css' },
   { meta: smartDices,   load: () => import('./smart-dices/index.js'), css: 'css/games/smart-dices.css' },
   { meta: smartCircuit, load: () => import('./smart-circuit/index.js'), css: 'css/games/smart-circuit.css' },
   { meta: smartCircle,  load: () => import('./smart-circle/index.js'), css: 'css/games/smart-circle.css' },

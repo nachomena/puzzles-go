@@ -1,0 +1,11 @@
+/* Kakuro: casillas negras con las sumas separadas por una diagonal; los tamaños siguen al de la casilla
+   (el tablero va de 6 × 6 a 12 × 12). */
+.board--kakuro{container-type:inline-size}
+.board--kakuro .cell{--cs:calc(100cqw / var(--n))}
+.kr-black{background:color-mix(in srgb,var(--bg) 82%,black);cursor:default}
+.kr-clue{background:linear-gradient(to top right,transparent calc(50% - .6px),var(--rule) 50%,transparent calc(50% + .6px)) ,color-mix(in srgb,var(--bg) 82%,black)}
+.kr-a,.kr-d{position:absolute;font-size:min(13px,calc(var(--cs) * .3));font-weight:600;color:var(--ink);line-height:1;font-variant-numeric:tabular-nums;pointer-events:none}
+.kr-a{right:10%;top:10%}
+.kr-d{left:10%;bottom:10%}
+.board--kakuro .sd-digit{font-size:min(30px,calc(var(--cs) * .6))}
+.board--kakuro .kr-notes i{font-size:min(11px,calc(var(--cs) * .27))}

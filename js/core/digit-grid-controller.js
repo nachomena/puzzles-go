@@ -2,7 +2,9 @@
    lápiz para notas, goma, teclado físico y deshacer.
 
    La subclase da el tablero (`board`, con build/render/flash/celebrate/cellAt/cellSize/invalidate) y:
-     n                         lado (y dígitos del 1 al n)
+     n                         lado (y, si no se dice otra cosa, dígitos del 1 al n)
+     digits                    (opcional) números del teclado, del 1 a digits; por defecto n
+     digitCap                  (opcional) veces que va cada número en el tablero, para apagar su tecla
      givensOf(puzzle)          números fijos del reto (0 = casilla libre)
      conflicts(values)         Uint8Array con 1 en las casillas repetidas
      peersOf(i)                casillas que ven a i (para limpiar notas)
@@ -29,6 +31,8 @@ export class DigitGridController extends GameController {
   }
 
   get #keys(){ return [...this.keypad.querySelectorAll('[data-digit]')]; }
+  get digits(){ return this.n; }
+  get digitCap(){ return this.n; }
 
   /* ---------- Pasos de la plantilla ---------- */
 
@@ -39,7 +43,7 @@ export class DigitGridController extends GameController {
   /** Lo que la subclase pase de más al tablero (p. ej. las jaulas del KenKen). */
   boardExtras(){ return {}; }
   renderBoard(){
-    const s = this.session, { values, notes, sel } = s, n = this.n;
+    const s = this.session, { values, notes, sel } = s;
     this.board.render({
       values, notes, sel,
       givens: this.givensOf(s.p),
@@ -47,11 +51,11 @@ export class DigitGridController extends GameController {
       same: this.settings.sameDigit && sel >= 0 ? values[sel] : 0,
       ...this.boardExtras()
     });
-    const counts = new Array(n + 1).fill(0);
-    for (const v of values) if (v) counts[v]++;
+    const digits = this.digits, counts = new Array(digits + 1).fill(0);
+    for (const v of values) if (v > 0) counts[v]++;
     // el teclado puede traer más números que el tablero (KenKen de distintos tamaños)
-    this.keypad.style.setProperty('--keys', n);
-    this.#keys.forEach(k => { k.hidden = Number(k.dataset.digit) > n; k.classList.toggle('is-done', counts[k.dataset.digit] >= n); });
+    this.keypad.style.setProperty('--keys', digits);
+    this.#keys.forEach(k => { k.hidden = Number(k.dataset.digit) > digits; k.classList.toggle('is-done', counts[k.dataset.digit] >= this.digitCap); });
     this.keypad.classList.toggle('is-pencil', this.tool === PENCIL);
   }
   snapshot(){ return { v: this.session.values.slice(), n: this.session.notes.slice() }; }
@@ -84,7 +88,7 @@ export class DigitGridController extends GameController {
   onKey(e){
     if (!this.active) return false;
     const d = Number(e.key);
-    if (Number.isInteger(d) && d >= 1 && d <= this.n){ this.input(d); return true; }
+    if (Number.isInteger(d) && d >= 1 && d <= this.digits){ this.input(d); return true; }
     if (['Backspace', 'Delete', '0'].includes(e.key)){ this.erase(); return true; }
     const arrows = { ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0] };
     if (e.key in arrows){ this.#move(...arrows[e.key]); return true; }

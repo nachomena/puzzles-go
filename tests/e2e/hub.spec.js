@@ -1,6 +1,6 @@
 // Selector de juegos y pantallas de Progreso.
 import { test, expect } from '@playwright/test';
-import { openApp } from './helpers.js';
+import { openApp, startGame } from './helpers.js';
 
 test('el título queda fijo y solo se desplaza la lista', async ({ page }) => {
   const errors = await openApp(page);
@@ -32,4 +32,17 @@ test('Progreso se abre desde el selector y vuelve con su botón', async ({ page 
 test('al abrir la app no se carga el CSS de ningún juego', async ({ page }) => {
   await openApp(page);
   await expect(page.locator('link[href^="css/games/"]')).toHaveCount(0);
+});
+
+test('la tarjeta Continuar lleva a la última partida a medias', async ({ page }) => {
+  const errors = await openApp(page);
+  await expect(page.locator('.hub-resume')).toHaveCount(0);
+  const play = await startGame(page, 'akari');
+  await play.locator('.cell:not(.ak-black)').first().click();
+  await play.locator('.back-pill').click();
+  await page.locator('#levels .back-pill').click();
+  await expect(page.locator('.hub-resume')).toContainText('Akari');
+  await page.locator('.hub-resume').click();
+  await expect(page.locator('#play-akari')).toHaveClass(/is-on/);
+  expect(errors).toEqual([]);
 });

@@ -38,7 +38,7 @@ export class App {
     this.current = null;
     this.toast = new Toast(byId('toast'));
     this.overlays = new Overlays();
-    this.hub = new HubView(byId('games'));
+    this.hub = new HubView(byId('games'), byId('resumeLast'));
     this.levelMenu = new LevelMenu({ title: byId('gameTitle'), label: byId('levelsLabel'), levels: byId('levelList'), resume: byId('resume') });
     this.settings = new SettingsPanel(byId('settingsList'));
     this.confirm = new ConfirmDialog(byId('confirm'), this.overlays);
@@ -162,6 +162,19 @@ export class App {
       if (this.currentMeta?.id !== id) return;   // se cambió de juego mientras cargaba
       this.current = entry;
       this.#refreshMenus();
+    });
+  }
+
+  /** "Continuar" del selector: directo a la partida a medias del juego (o a su menú si ya no la hay). */
+  resumeGame(id){
+    const item = this.catalog.find(c => c.meta.id === id);
+    if (!item) return;
+    this.currentMeta = item.meta;
+    this.#entryFor(id).then(entry => {
+      if (this.currentMeta?.id !== id || this.screen !== 'hub') return;
+      this.current = entry;
+      if (entry.store.hasOpenSession) this.continueGame();
+      else this.openGame(id);
     });
   }
 
@@ -335,6 +348,7 @@ export class App {
     const cur = this.current;
     return {
       'open-game':    el => this.openGame(el.dataset.game),
+      'resume-last':  el => this.resumeGame(el.dataset.game),
       'open-progress':  () => this.openProgress(),
       'progress-game':  el => { this.progress.game = el.dataset.pgGame; this.#renderProgress(); },
       'progress-level': el => { this.progress.key = el.dataset.key; this.showScreen('progress-level'); },

@@ -18,6 +18,40 @@ export function bestLine(meta, stats = {}){
   return 'Récord · ' + withBest.map(r => `${r.name} ${formatTime(stats[r.key].best)}`).join(' · ');
 }
 
+/** "ahora", "hace 5 min", "hace 2 h", "ayer", "hace 3 días". */
+export function ago(at, now = Date.now()){
+  const min = Math.floor((now - at) / 60000);
+  if (min < 1) return 'ahora';
+  if (min < 60) return `hace ${min} min`;
+  const h = Math.floor(min / 60);
+  if (h < 24) return `hace ${h} h`;
+  const d = Math.floor(h / 24);
+  return d === 1 ? 'ayer' : `hace ${d} días`;
+}
+
+/** La partida a medias jugada más recientemente, o null. */
+export function lastSession(items){
+  let best = null;
+  for (const item of items){
+    const cur = item.data.cur;
+    if (cur && (!best || (cur.at || 0) > (best.data.cur.at || 0))) best = item;
+  }
+  return best;
+}
+
+/** Tarjeta "Continuar" de la última partida a medias (opción A del boceto), o '' si no hay. */
+export function resumeCard(item){
+  if (!item) return '';
+  const { meta, data: { cur } } = item;
+  const level = (meta.resumeLabel ?? meta.sessionLabel)?.(cur) ?? meta.levels[cur.L]?.name ?? '';
+  const detail = [meta.levelOrder.length > 1 ? level : '', formatTime(cur.time || 0), cur.at ? ago(cur.at) : ''].filter(Boolean).join(' · ');
+  return `<button class="hub-resume" data-action="resume-last" data-game="${meta.id}">` +
+    `<span class="hub-resume__icon">${svgIcon(meta.icon)}</span>` +
+    `<span class="hub-resume__text"><span class="hub-resume__kicker">Continuar</span>` +
+    `<span class="hub-resume__name">${meta.name}</span><span class="hub-resume__detail">${detail}</span></span>` +
+    `<span class="hub-resume__play" aria-hidden="true">${svgIcon('play')}</span></button>`;
+}
+
 const gameCard = ({ meta, data }, inGroup) => {
   const info = meta.levelOrder.length === 1 ? bestLine(meta, data.stats) : '';
   const name = inGroup ? meta.shortName ?? meta.name : meta.name;
@@ -28,8 +62,9 @@ const gameCard = ({ meta, data }, inGroup) => {
 };
 
 export class HubView {
-  constructor(listEl){
+  constructor(listEl, resumeEl){
     this.listEl = listEl;
+    this.resumeEl = resumeEl;
     this.open = new Set();   // grupos desplegados
   }
 
@@ -38,6 +73,7 @@ export class HubView {
 
   /** @param {{ meta: object, data: { stats: object } }[]} items  en el orden del catálogo */
   render(items){
+    this.resumeEl.innerHTML = resumeCard(lastSession(items));
     const done = new Set();
     this.listEl.innerHTML = items.map(item => {
       const g = item.meta.group;

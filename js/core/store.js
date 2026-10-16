@@ -45,6 +45,8 @@ export class Store {
     } catch (e){ /* datos corruptos: se empieza de cero */ }
   }
   save(){
+    const cur = this.state.cur;
+    if (cur && !cur.done) cur.at = Date.now();   // para "Continuar" en el selector: la última partida jugada
     try { this.storage?.setItem(this.game.storageKey, JSON.stringify(this.state)); } catch (e){ /* sin espacio o bloqueado */ }
   }
 
