@@ -1,6 +1,6 @@
 // Versión y lista de archivos: no se editan a mano, las escribe scripts/build-sw.mjs al hacer commit
 // <generado por scripts/build-sw.mjs>
-const VERSION = 'pzg-8f8287a1c8';
+const VERSION = 'pzg-fc34d5e493';
 const FILES = [
   './', './index.html', './manifest.webmanifest', './css/base.css', './css/components.css',
   './css/games/akari.css', './css/games/binario.css', './css/games/gears.css', './css/games/hashi.css',

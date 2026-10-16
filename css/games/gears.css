@@ -18,7 +18,8 @@
 .gr-gear.gr-lock .gr-teeth{fill:var(--gr-lock)}
 .gr-gear.jam .gr-teeth{fill:var(--bad)}
 .gr-hub{fill:var(--bg)}
-.gr-arrow{fill:none;stroke:var(--bg);stroke-width:.11;stroke-linecap:round;stroke-linejoin:round}
+.gr-arrow{fill:none;stroke:var(--bg);stroke-width:.1;stroke-linecap:round}
+.gr-arrow-head{fill:var(--bg);stroke:var(--bg);stroke-width:.03;stroke-linejoin:round}
 .gr-pad rect{fill:var(--bg)}
 .gr-shackle{fill:none;stroke:var(--bg);stroke-width:.07}
 .gr-flash path{fill:none;stroke:var(--accent);stroke-width:.1;animation:gr-flash .5s ease-in-out 3}

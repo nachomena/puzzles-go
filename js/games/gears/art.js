@@ -29,12 +29,18 @@ function teeth(r, n){
 }
 const TEETH = { 10: teeth(.86, 10), 12: teeth(.86, 12) };
 
-/** Flecha curva de giro en la mitad de arriba: 0 = a la derecha (como la manivela), 1 = a la izquierda. */
+/**
+ * Flecha curva de giro en la mitad de arriba, alrededor del eje: 0 = a la derecha (como la manivela, de
+ * izquierda a derecha por arriba), 1 = a la izquierda. Un arco y una punta triangular en su extremo.
+ */
 function arrow(dir){
-  const r = .42, a0 = dir ? -.6 : -2.55, a1 = dir ? -2.55 : -.6;
-  const x0 = r * Math.cos(a0), y0 = r * Math.sin(a0), x1 = r * Math.cos(a1), y1 = r * Math.sin(a1), s = dir ? 1 : -1;
-  return `<path class="gr-arrow" d="M${f(x0)} ${f(y0)}A${r} ${r} 0 0 ${dir ? 0 : 1} ${f(x1)} ${f(y1)}` +
-    `M${f(x1 + s * .2)} ${f(y1 - .06)}L${f(x1)} ${f(y1)}L${f(x1 + s * .04)} ${f(y1 + .2)}"/>`;
+  const r = .44, deg = Math.PI / 180, a0 = (dir ? -35 : -145) * deg, a1 = (dir ? -145 : -35) * deg, s = dir ? -1 : 1;
+  const [x0, y0] = [r * Math.cos(a0), r * Math.sin(a0)], [x1, y1] = [r * Math.cos(a1), r * Math.sin(a1)];
+  // dirección de avance (tangente) y hacia fuera (radio) en el extremo
+  const tx = -Math.sin(a1) * s, ty = Math.cos(a1) * s, nx = Math.cos(a1), ny = Math.sin(a1);
+  const tip = [x1 + tx * .17, y1 + ty * .17], b1 = [x1 - tx * .03 + nx * .15, y1 - ty * .03 + ny * .15], b2 = [x1 - tx * .03 - nx * .15, y1 - ty * .03 - ny * .15];
+  return `<path class="gr-arrow" d="M${f(x0)} ${f(y0)}A${r} ${r} 0 0 ${dir ? 0 : 1} ${f(x1)} ${f(y1)}"/>` +
+    `<path class="gr-arrow-head" d="M${f(tip[0])} ${f(tip[1])}L${f(b1[0])} ${f(b1[1])}L${f(b2[0])} ${f(b2[1])}Z"/>`;
 }
 
 /** Candado pequeño del cerrojo, bajo la flecha. */
