@@ -6,6 +6,7 @@ Juegos de lógica como web app instalable que funciona sin conexión:
 - **Sudoku** 9×9 (Fácil, Medio, Difícil). El Difícil siempre exige X-Wing o Swordfish.
 - **Kakuro** de 6×6 a 12×12: sumas en casillas negras y tramos sin números repetidos (Fácil, Medio, Difícil, Experto).
 - **Slitherlink** de 5×5 a 10×10: un único lazo entre los puntos según los números de las casillas (Fácil, Medio, Difícil, Experto).
+- **Engranajes** (invento propio) de 5×5 a 8×8: engranajes en un panel hexagonal que llevan el giro de la manivela al cerrojo, en una sola cadena sin círculos, con números que cuentan los engranajes de alrededor (Fácil, Medio, Difícil, Experto).
 - **Killer Sudoku** 9×9 con jaulas de suma y casi sin números puestos (Fácil, Medio, Difícil, Experto). El Difícil siempre exige la regla del 45; el Experto, aplicarla a varias filas, columnas o cajas a la vez.
 - **Smart Dices**: 12 piezas que forman 4 caras de dado con sumas por fila y columna (5 niveles).
 - **Smart Circuit**: 10 piezas de doble cara que unen los puntos con caminos en un tablero de 8×4 (5 niveles).
@@ -99,6 +100,8 @@ Los 512 PENTAS de Katamino (filas de piezas, con solución comprobada y la dific
 Los SmartGames (Dices, Circuit, Circle, Hexagon e Puzzler Pro) van juntos en el selector, en una fila "Smart Games" que se despliega (`group` en su `meta.js`).
 
 Los retos de Kakuro Experto (12×12) también vienen calculados, en `js/games/kakuro/engine/bank-data.js` (`node scripts/build-kakuro-bank.mjs`, unos minutos); cada uno sale en 4 versiones (traspuesto y con los números cambiados por 10 − n), que conservan la solución única.
+
+Los retos de Engranajes de todos los niveles vienen calculados en `js/games/gears/engine/bank-data.js` (`node scripts/build-gears-bank.mjs`, unos 15 minutos): en el ordenador el solucionador demuestra la solución única sin el límite de pasos del teléfono, y el Experto queda con menos números. Cada uno sale en 2 versiones (al revés de arriba abajo o girado media vuelta con la manivela y el cerrojo cambiados).
 
 Los retos de Rush Hour de los niveles Difícil y Experto, que tardarían varios segundos en generarse en el momento, están ya calculados en `js/games/rush-hour/engine/bank-data.js` (`node scripts/build-rush-hour-bank.mjs`, ver el script). Los demás niveles y juegos se generan en el dispositivo.
 

@@ -1,0 +1,41 @@
+/* Engranajes: huecos hexagonales oscuros, engranajes de latón (unidos a la manivela), grises (sueltos) y
+   rojos (atascados); la manivela plateada y el cerrojo verde. */
+[data-game="gears"], .gr-fig{--gr-sock:#2d2c33;--gr-brass:#d2a64b;--gr-loose:#9a9aa6;--gr-steel:#b9b8c4;--gr-lock:#79c08a}
+.gr-board{width:100%;max-width:560px;margin:0 auto;background:var(--cell);border-radius:18px;padding:8px;
+  touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.gr-board svg{display:block;width:100%;height:auto}
+.gr-sock{fill:var(--gr-sock);stroke:var(--cell);stroke-width:.08;cursor:pointer}
+.gr-sock.is-fixed{cursor:default}
+.gr-fig .gr-sock{stroke:var(--surface)}
+.gr-num{font-family:var(--font-display);font-size:.72px;fill:var(--ink);text-anchor:middle;pointer-events:none}
+.gr-num.is-done{fill:var(--dim)}
+.gr-num.is-bad{fill:var(--bad)}
+.gr-dot{fill:var(--dim);pointer-events:none}
+.gr-gear{pointer-events:none}
+.gr-teeth{stroke:var(--bg);stroke-width:.05;fill:var(--gr-loose)}
+.gr-gear.on .gr-teeth,.gr-fixed .gr-teeth{fill:var(--gr-brass)}
+.gr-gear.gr-crank .gr-teeth{fill:var(--gr-steel)}
+.gr-gear.gr-lock .gr-teeth{fill:var(--gr-lock)}
+.gr-gear.jam .gr-teeth{fill:var(--bad)}
+.gr-hub{fill:var(--bg)}
+.gr-arrow{fill:none;stroke:var(--bg);stroke-width:.11;stroke-linecap:round;stroke-linejoin:round}
+.gr-pad rect{fill:var(--bg)}
+.gr-shackle{fill:none;stroke:var(--bg);stroke-width:.07}
+.gr-flash path{fill:none;stroke:var(--accent);stroke-width:.1;animation:gr-flash .5s ease-in-out 3}
+@keyframes gr-flash{50%{opacity:.2}}
+
+/* Girar: lo unido a la manivela da una vuelta (cada uno en su sentido); si se atasca, tiembla */
+.gr-rot{transform-box:fill-box;transform-origin:center}
+.gr-board.is-turning .gr-gear.on .gr-rot{animation:gr-cw 2.4s ease-in-out}
+.gr-board.is-turning .gr-gear.on.ccw .gr-rot{animation-name:gr-ccw}
+.gr-board.is-stuck .gr-gear.on .gr-rot{animation:gr-stuck .5s ease-in-out}
+.gr-board.is-won .gr-gear.on .gr-rot{animation:gr-cw 2.4s linear infinite}
+.gr-board.is-won .gr-gear.on.ccw .gr-rot{animation-name:gr-ccw}
+.gr-board.is-won .gr-shackle{transform:translateY(-.32px);transition:transform .5s .6s ease-out}
+@keyframes gr-cw{to{transform:rotate(360deg)}}
+@keyframes gr-ccw{to{transform:rotate(-360deg)}}
+@keyframes gr-stuck{25%{transform:rotate(8deg)}50%{transform:rotate(-6deg)}75%{transform:rotate(4deg)}}
+@media (prefers-reduced-motion:reduce){
+  .gr-board .gr-gear .gr-rot{animation:none !important}
+  .gr-board.is-won .gr-shackle{transition:none}
+}
