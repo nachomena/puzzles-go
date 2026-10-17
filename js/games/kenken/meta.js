@@ -4,6 +4,8 @@ import { difficulty, LEVEL_ORDER, OLD_LEVELS } from '../../core/levels.js';
 export default Object.freeze({
   id: 'kenken',
   name: 'KenKen',
+  /** Frase corta bajo el nombre en el selector. */
+  tagline: 'Operaciones en jaulas',
   icon: 'kenken',
   storageKey: 'puzzlesgo.kenken.v1',
   /** `target` es el nivel del generador: tablero más grande y más operaciones cuanto más alto. */

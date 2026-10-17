@@ -4,6 +4,8 @@ import { difficulty, LEVEL_ORDER, OLD_LEVELS } from '../../core/levels.js';
 export default Object.freeze({
   id: 'sudoku',
   name: 'Sudoku',
+  /** Frase corta bajo el nombre en el selector. */
+  tagline: 'Del 1 al 9 sin repetir',
   icon: 'grid',
   storageKey: 'puzzlesgo.sudoku.v1',
   /** `target` es el nivel del solucionador lógico que exige el tablero. */

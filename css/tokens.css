@@ -10,6 +10,12 @@
   --surface:#2a2930;          /* hojas y tarjetas */
   --surface-press:#2e2d34;    /* botón pulsado */
   --backdrop:rgba(18,17,22,.72);
+  /* Cristal (components.css .glass): fondo oscuro casi opaco, un poco de desenfoque y un canto de 1 px */
+  --glass:rgba(38,37,43,.66);
+  --glass-rim-top:rgba(255,255,255,.18);
+  --glass-rim:rgba(255,255,255,.05);
+  --glass-hover:rgba(255,255,255,.06);
+  --glass-on:rgba(255,255,255,.13);     /* opción elegida dentro del cristal */
   --cell:#39383d;
   --cell-flash:#6c6a77;
   --cell-paint:#5f5933;
@@ -53,6 +59,7 @@
   --radius-sm:10px;
   --radius:12px;
   --radius-lg:20px;
+  --radius-board:clamp(14px,4.6vw,22px);
   --safe-top:env(safe-area-inset-top,0px);
   /* --viewport-gap (js/pwa.js): franja de abajo que iOS no dibuja en la app instalada; ya hace de margen */
   --safe-bottom:max(0px, calc(env(safe-area-inset-bottom,0px) - var(--viewport-gap, 0px)));
@@ -72,6 +79,10 @@
   --bg:#1c1612;
   --surface:#261e18;
   --surface-press:#2c231c;
+  --glass:rgba(40,31,24,.7);
+  --glass-rim-top:rgba(255,226,180,.16);
+  --glass-rim:rgba(255,226,180,.04);
+  --glass-on:rgba(255,226,180,.12);
   --backdrop:rgba(14,10,8,.76);
   --cell:#30261e;
   --cell-flash:#5a4636;

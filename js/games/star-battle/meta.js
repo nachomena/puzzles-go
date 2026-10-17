@@ -4,6 +4,8 @@ import { difficulty, LEVEL_ORDER } from '../../core/levels.js';
 export default Object.freeze({
   id: 'star-battle',
   name: 'Star Battle',
+  /** Frase corta bajo el nombre en el selector. */
+  tagline: 'Estrellas que no se tocan',
   icon: 'star',
   storageKey: 'starbattlego.v2',   // clave antigua: conserva partidas y estadísticas
   /** `target` es el nivel del solucionador lógico que exige el tablero. */

@@ -4,6 +4,8 @@ import { difficulty, LEVEL_ORDER, OLD_LEVELS } from '../../core/levels.js';
 export default Object.freeze({
   id: 'hashi',
   name: 'Hashi',
+  /** Frase corta bajo el nombre en el selector. */
+  tagline: 'Puentes entre islas',
   icon: 'hashi',
   storageKey: 'puzzlesgo.hashi.v1',
   /** `target` es el nivel del generador: tablero más grande y más islas cuanto más alto. */

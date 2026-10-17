@@ -9,7 +9,7 @@ export async function openApp(page, url = './'){
   page.on('pageerror', e => errors.push(String(e)));
   page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
   await page.goto(url);
-  await expect(page.locator('#games .game-card').first()).toBeVisible();
+  await expect(page.locator('#games .game-row').first()).toBeVisible();
   return errors;
 }
 

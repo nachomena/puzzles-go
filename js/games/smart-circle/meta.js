@@ -4,6 +4,8 @@ import { difficulty, LEVEL_ORDER, OLD_LEVELS } from '../../core/levels.js';
 export default Object.freeze({
   id: 'smart-circle',
   name: 'Smart Circle',
+  /** Frase corta bajo el nombre en el selector. */
+  tagline: 'Anillos sin cruzar nervios',
   icon: 'circle',
   storageKey: 'puzzlesgo.smartcircle.v1',
   /** Grupo del selector de juegos (ver ui/hub-view.js); dentro se muestra con su nombre corto. */

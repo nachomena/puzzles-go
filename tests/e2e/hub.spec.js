@@ -13,11 +13,11 @@ test('el título queda fijo y solo se desplaza la lista', async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
-test('los iconos de los juegos se alinean con el botón de Progreso', async ({ page }) => {
+test('cada juego del selector lleva su frase', async ({ page }) => {
   await openApp(page);
-  const centre = async loc => { const b = await loc.boundingBox(); return Math.round(b.x + b.width / 2); };
-  const progress = await centre(page.locator('.hub-progress[data-action="open-progress"] svg'));
-  for (const icon of await page.locator('.game-card__icon svg').all()) expect(await centre(icon)).toBe(progress);
+  const first = page.locator('#games .game-row').first();
+  await expect(first.locator('.game-row__name')).toHaveText('Star Battle');
+  await expect(first.locator('.game-row__info')).not.toBeEmpty();
 });
 
 test('Progreso se abre desde el selector y vuelve con su botón', async ({ page }) => {
@@ -36,13 +36,13 @@ test('al abrir la app no se carga el CSS de ningún juego', async ({ page }) => 
 
 test('la tarjeta Continuar lleva a la última partida a medias', async ({ page }) => {
   const errors = await openApp(page);
-  await expect(page.locator('.hub-resume')).toHaveCount(0);
+  await expect(page.locator('#hub .resume-card')).toHaveCount(0);
   const play = await startGame(page, 'akari');
   await play.locator('.cell:not(.ak-black)').first().click();
   await play.locator('.back-pill').click();
   await page.locator('#levels .back-pill').click();
-  await expect(page.locator('.hub-resume')).toContainText('Akari');
-  await page.locator('.hub-resume').click();
+  await expect(page.locator('#hub .resume-card')).toContainText('Akari');
+  await page.locator('#hub .resume-card').click();
   await expect(page.locator('#play-akari')).toHaveClass(/is-on/);
   expect(errors).toEqual([]);
 });

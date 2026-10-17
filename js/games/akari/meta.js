@@ -4,6 +4,8 @@ import { difficulty, LEVEL_ORDER, OLD_LEVELS } from '../../core/levels.js';
 export default Object.freeze({
   id: 'akari',
   name: 'Akari',
+  /** Frase corta bajo el nombre en el selector. */
+  tagline: 'Ilumina todo el tablero',
   icon: 'bulb',
   storageKey: 'puzzlesgo.akari.v1',
   /** `target` es el nivel del generador: tablero más grande y menos números cuanto más alto. */

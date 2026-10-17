@@ -4,6 +4,8 @@ import { difficulty, LEVEL_ORDER, OLD_LEVELS } from '../../core/levels.js';
 export default Object.freeze({
   id: 'kakuro',
   name: 'Kakuro',
+  /** Frase corta bajo el nombre en el selector. */
+  tagline: 'Sumas cruzadas',
   icon: 'kakuro',
   storageKey: 'puzzlesgo.kakuro.v1',
   /** `target` es el nivel del generador (engine/levels.js): tablero más grande y más técnicas. */

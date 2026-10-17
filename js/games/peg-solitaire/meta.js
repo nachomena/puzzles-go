@@ -2,6 +2,8 @@
 export default Object.freeze({
   id: 'peg-solitaire',
   name: 'Solitario',
+  /** Frase corta bajo el nombre en el selector. */
+  tagline: 'Salta hasta dejar una bola',
   icon: 'peg',
   storageKey: 'puzzlesgo.pegsolitaire.v1',
   /** Un solo nivel, así que no hay menú: se entra directo a la partida. El tablero se elige en Ajustes. */

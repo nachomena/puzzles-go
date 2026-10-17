@@ -2,7 +2,8 @@
 .overlay{position:fixed;inset:0;background:var(--backdrop);display:none;z-index:10;padding-top:var(--safe-top);padding-bottom:var(--safe-bottom)}
 .overlay.is-on{display:flex}
 
-.sheet{margin:auto auto 0;width:100%;max-width:var(--content-max);background:var(--surface);border-radius:var(--radius-lg) var(--radius-lg) 0 0;padding:26px var(--gutter) 30px;max-height:88vh;overflow:auto}
+/* hojas y tarjetas son de cristal (.glass): flotan sobre la pantalla, con margen y esquinas redondeadas */
+.sheet{margin:auto auto 8px;width:calc(100% - 16px);max-width:var(--content-max);border-radius:32px;padding:26px var(--gutter) 24px;max-height:86vh;overflow:auto}
 .sheet h2{margin:0 0 16px;font-size:30px}
 .sheet h3{font-size:16px;margin:22px 0 6px;color:var(--ink)}
 .sheet p,.sheet li{font-size:16px;line-height:1.5;color:var(--ink-soft)}
@@ -11,7 +12,7 @@
 .demo{display:flex;gap:14px;align-items:center;margin:10px 0}
 .demo .cell{width:38px;height:38px}
 
-.card{margin:auto;width:min(88vw,380px);background:var(--surface);padding:30px 26px;border-radius:var(--radius-lg);text-align:center}
+.card{margin:auto;width:min(88vw,380px);padding:30px 26px;border-radius:30px;text-align:center}
 .card h2{font-size:40px;margin:0 0 6px}
 .card .card__title{font-size:28px;line-height:1.15;margin-bottom:12px}
 .card__big{font-size:48px;font-weight:700;font-variant-numeric:tabular-nums;margin:12px 0 2px}

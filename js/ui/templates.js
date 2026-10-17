@@ -29,7 +29,7 @@ export const backPill = (label, attrs = '') =>
 
 /** Barra inferior fija: a la izquierda, volver; a la derecha, pista (si el juego la tiene), ajustes, ayuda y reiniciar. */
 export const dock = ({ hint = true, back = 'Menú' } = {}) =>
-  `<nav class="dock">` + backPill(back) +
+  `<nav class="dock glass">` + backPill(back) +
   `<div class="dock__actions">` +
   (hint ? `<button class="icon-btn hint-btn" data-action="hint" aria-label="Pista">${svgIcon('hint')}<span class="hint-btn__wait" data-hud="hint-wait"></span></button>` : '') +
   iconButton('open', 'gear', 'Ajustes', { attrs: 'data-target="settings"' }) +

@@ -4,6 +4,8 @@ import { difficulty, LEVEL_ORDER, OLD_LEVELS } from '../../core/levels.js';
 export default Object.freeze({
   id: 'slitherlink',
   name: 'Slitherlink',
+  /** Frase corta bajo el nombre en el selector. */
+  tagline: 'Un solo lazo entre los puntos',
   icon: 'slither',
   storageKey: 'puzzlesgo.slitherlink.v1',
   /** `target` es el nivel del generador (engine/generator.js): tablero más grande y más técnicas. */

@@ -33,7 +33,7 @@ test('sin conexión abre y empieza una partida sin que falte ningún archivo', a
   const failed = [];
   page.on('requestfailed', r => failed.push(r.url()));
   await page.reload();
-  await expect(page.locator('#games .game-card').first()).toBeVisible();
+  await expect(page.locator('#games .game-row').first()).toBeVisible();
   const play = await startGame(page, 'hashi');
   await expect(play.locator('.hs-island').first()).toBeVisible();
   expect(failed).toEqual([]);

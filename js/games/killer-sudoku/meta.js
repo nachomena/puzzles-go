@@ -4,6 +4,8 @@ import { difficulty, LEVEL_ORDER, OLD_LEVELS } from '../../core/levels.js';
 export default Object.freeze({
   id: 'killer-sudoku',
   name: 'Killer Sudoku',
+  /** Frase corta bajo el nombre en el selector. */
+  tagline: 'Sudoku con jaulas de suma',
   icon: 'killer',
   storageKey: 'puzzlesgo.killersudoku.v1',
   /** `target` es el nivel del solucionador lógico que exige el tablero (ver engine/logic-solver.js). */

@@ -4,6 +4,8 @@ import { difficulty, LEVEL_ORDER, OLD_LEVELS } from '../../core/levels.js';
 export default Object.freeze({
   id: 'smart-hexagon',
   name: 'Smart Hexagon',
+  /** Frase corta bajo el nombre en el selector. */
+  tagline: 'Trazos entre las clavijas',
   icon: 'hexagon',
   storageKey: 'puzzlesgo.smarthexagon.v1',
   /** Grupo del selector de juegos (ver ui/hub-view.js); dentro se muestra con su nombre corto. */

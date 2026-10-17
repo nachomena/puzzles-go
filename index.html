@@ -46,7 +46,6 @@
   <symbol id="i-katamino" viewBox="0 0 24 24"><path d="M3.5 3.5h6v11h11v6h-17zM3.5 9h6M3.5 14.5h6M9.5 14.5v6M15 14.5v6"/></symbol>
   <symbol id="i-iqpuzzler" viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="12" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="12" cy="12" r="3"/><circle cx="12" cy="18" r="3"/><circle cx="18" cy="18" r="3"/></symbol>
   <symbol id="i-smart" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><circle cx="17" cy="17" r="3.5"/></symbol>
-  <symbol id="i-chevron-up" viewBox="0 0 24 24"><path d="M5 15l7-7 7 7"/></symbol>
   <symbol id="i-play" viewBox="0 0 24 24"><path d="M8.5 5.5v13l10-6.5z"/></symbol>
   <symbol id="i-car" viewBox="0 0 24 24"><path d="M4.5 16.5v-5l2-5h11l2 5v5zM4.5 11.5h15M7 19.5v-3M17 19.5v-3"/><circle cx="8" cy="14" r=".8"/><circle cx="16" cy="14" r=".8"/></symbol>
   <symbol id="i-zip" viewBox="0 0 24 24"><path d="M8 6h10v6H6v6h10"/><circle cx="6" cy="6" r="2"/><circle cx="18" cy="18" r="2"/></symbol>
@@ -74,8 +73,8 @@
   <header class="hero"><div class="wrap hub-head">
     <h1 class="hero__title display" id="title">PUZZLES GO</h1>
     <div class="hub-tools">
-      <button class="icon-btn hub-progress" data-action="night" aria-pressed="false" aria-label="Modo noche"><svg viewBox="0 0 24 24"><use href="#i-moon"/></svg></button>
-      <button class="icon-btn hub-progress" data-action="open-progress" aria-label="Progreso"><svg viewBox="0 0 24 24"><use href="#i-chart"/></svg></button>
+      <button class="icon-btn hub-progress glass" data-action="night" aria-pressed="false" aria-label="Modo noche"><svg viewBox="0 0 24 24"><use href="#i-moon"/></svg></button>
+      <button class="icon-btn hub-progress glass" data-action="open-progress" aria-label="Progreso"><svg viewBox="0 0 24 24"><use href="#i-chart"/></svg></button>
     </div>
   </div></header>
   <!-- la última partida a medias, si la hay (ui/hub-view.js#resumeCard) -->
@@ -93,8 +92,8 @@
   <div class="wrap menu">
     <div id="resume"></div>
     <p class="menu__label" id="levelsLabel">Nueva partida</p>
-    <div id="levelList"></div>
-    <nav class="menu__icons">
+    <div class="levels" id="levelList"></div>
+    <nav class="dock glass">
       <button class="back-pill" data-action="back"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-back"/></svg><span>Juegos</span></button>
       <div class="dock__actions">
         <button class="icon-btn" data-action="open-progress" aria-label="Progreso de este juego"><svg viewBox="0 0 24 24"><use href="#i-chart"/></svg></button>
@@ -112,7 +111,7 @@
   </div></header>
   <div class="wrap menu">
     <div id="pickBody"></div>
-    <nav class="menu__icons">
+    <nav class="dock glass">
       <button class="back-pill" data-action="back"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-back"/></svg><span id="pickBack">Niveles</span></button>
       <div class="dock__actions">
         <button class="icon-btn" data-action="open" data-target="settings" aria-label="Ajustes"><svg viewBox="0 0 24 24"><use href="#i-gear"/></svg></button>
@@ -151,7 +150,7 @@
 
 <!-- AJUSTES (los interruptores los declara cada juego) -->
 <div class="overlay" id="settings" role="dialog" aria-label="Ajustes" data-dismissable>
-  <div class="sheet">
+  <div class="sheet glass">
     <h2 class="display">Ajustes</h2>
     <div id="settingsList"></div>
     <!-- ajuste de toda la app (ui/night-mode.js) -->
@@ -163,7 +162,7 @@
 
 <!-- AYUDA (el texto lo aporta cada juego) -->
 <div class="overlay" id="help" role="dialog" aria-label="Cómo se juega" data-dismissable>
-  <div class="sheet">
+  <div class="sheet glass">
     <h2 class="display">Cómo se juega</h2>
     <div id="helpBody"></div>
     <button class="btn-primary" data-action="close">Entendido</button>
@@ -182,7 +181,7 @@
 
 <!-- CONFIRMACIÓN -->
 <div class="overlay" id="confirm" role="alertdialog" aria-labelledby="confirmTitle" aria-describedby="confirmText">
-  <div class="card">
+  <div class="card glass">
     <h2 class="display card__title" id="confirmTitle" data-confirm="title"></h2>
     <p class="card__sub" id="confirmText" data-confirm="text"></p>
     <button class="btn-primary" data-action="confirm-accept" data-confirm="accept"></button>
@@ -192,7 +191,7 @@
 
 <!-- RESUELTO -->
 <div class="overlay" id="win" role="dialog" aria-label="Tablero resuelto">
-  <div class="card">
+  <div class="card glass">
     <h2 class="display">Resuelto</h2>
     <div class="card__big" id="winTime">0:00</div>
     <div class="card__sub" id="winDetail"></div>

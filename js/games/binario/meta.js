@@ -4,6 +4,8 @@ import { difficulty, LEVEL_ORDER, OLD_LEVELS } from '../../core/levels.js';
 export default Object.freeze({
   id: 'binario',
   name: 'Binario',
+  /** Frase corta bajo el nombre en el selector. */
+  tagline: 'Rojo y azul, mitad y mitad',
   icon: 'binario',
   storageKey: 'puzzlesgo.binario.v1',
   /** `target` es el nivel del generador: tablero más grande cuanto más alto; el último pide mirar un paso más allá. */

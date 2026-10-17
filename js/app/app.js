@@ -12,7 +12,7 @@ import { NightMode } from '../ui/night-mode.js';
 import { ConfirmDialog } from '../ui/confirm-dialog.js';
 import { formatTime } from '../lib/format.js';
 import { Toast } from '../ui/toast.js';
-import { keepFitted, keepNamesFitted, fitToWidth } from '../ui/fit-text.js';
+import { keepFitted, fitToWidth } from '../ui/fit-text.js';
 import { playScreen } from '../ui/templates.js';
 import { fitPlay } from '../ui/fit-play.js';
 import { winStripSvg } from '../ui/win-strip.js';
@@ -51,8 +51,6 @@ export class App {
     this.pickLevel = null;      // nivel cuya tabla de tableros está abierta (juegos con picker)
     // pantallas de progreso: juego y fila elegidos, periodo, y a qué pantalla se vuelve
     this.progress = { game: null, key: null, range: 'last20', from: 'hub' };
-    this.fitGames = keepNamesFitted(byId('games'));
-    this.fitLevels = keepNamesFitted(byId('levelList'));
 
     this.entries = new Map();   // juegos ya abiertos: id → entrada
     this.loading = new Map();   // importaciones en curso: id → promesa
@@ -336,8 +334,6 @@ export class App {
     }
     if (this.screen === 'progress') this.#renderProgress();
     if (this.screen === 'progress-level') this.#renderProgressLevel();
-    if (this.screen === 'hub') this.fitGames();
-    if (this.screen === 'levels'){ this.fitLevels(); fitToWidth(byId('resume').querySelector('span')); }
   }
 
   /** Estadísticas y partida abierta: del store si el juego ya está cargado, si no del almacenamiento. */

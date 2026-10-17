@@ -4,6 +4,8 @@ import { difficulty, LEVEL_ORDER, OLD_LEVELS } from '../../core/levels.js';
 export default Object.freeze({
   id: 'smart-dices',
   name: 'Smart Dices',
+  /** Frase corta bajo el nombre en el selector. */
+  tagline: 'Cuatro caras de dado',
   icon: 'dice',
   storageKey: 'puzzlesgo.smartdices.v1',
   /** Grupo del selector de juegos (ver ui/hub-view.js); dentro se muestra con su nombre corto. */

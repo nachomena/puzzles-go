@@ -22,8 +22,6 @@
 
 /* El tablero crece hacia abajo con el PENTA; se estrecha para caber en alto */
 .board--katamino{--n:5;aspect-ratio:5/var(--rows,5);width:min(100%, calc(var(--km-max-h) * 5 / var(--rows,5)), 340px)}
-.board--katamino .board__grid{stroke-width:.03}
-.board--katamino .board__frame{stroke-width:.06}
 /* Listón al final del tablero */
 .km-slider{width:min(100%, calc(var(--km-max-h) * 5 / var(--rows,5)), 340px);margin:0 auto;height:9px;border-radius:0 0 4px 4px;
   background:var(--km-wood)}
@@ -36,7 +34,8 @@ div.km-piece{position:absolute}
 .km-piece__body{fill:var(--km-c)}
 /* Ranura interior más oscura, como el surco de los tubos de Smart Hexagon */
 .km-piece__groove{fill:none;stroke:color-mix(in srgb, var(--km-c) 72%, #000);stroke-width:.24;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
-.km-piece__halo{fill:none;stroke:var(--ink);stroke-width:.16;stroke-linejoin:round}
+/* contorno de la pieza elegida: un trazo bajo el cuerpo, en píxeles; solo asoma la mitad (unos 2 px) */
+.km-piece__halo{fill:none;stroke:var(--ink);stroke-width:4px;vector-effect:non-scaling-stroke;stroke-linejoin:round}
 div.km-piece.is-selected{filter:drop-shadow(0 0 1px var(--ink)) drop-shadow(0 0 1px var(--ink))}
 .km-piece.is-lifted{opacity:.2}
 div.km-piece.is-ghost{position:fixed;z-index:30;pointer-events:none}

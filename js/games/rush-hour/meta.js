@@ -5,6 +5,8 @@ import { levelSummary } from '../../core/stats.js';
 export default Object.freeze({
   id: 'rush-hour',
   name: 'Rush Hour',
+  /** Frase corta bajo el nombre en el selector. */
+  tagline: 'Saca el coche rojo',
   icon: 'car',
   storageKey: 'puzzlesgo.rushhour.v1',
   /** `target` es el nivel del generador: más alto = más movimientos para sacar el coche rojo. */

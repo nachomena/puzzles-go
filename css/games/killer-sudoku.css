@@ -6,3 +6,5 @@
 .ks-sum{position:absolute;z-index:1;left:5%;top:5%;padding:0 .2em 0 .15em;background:inherit;font-size:clamp(8px,2.3vw,11px);font-weight:500;color:var(--ink-soft);line-height:1.15;pointer-events:none}
 .board--killer .sd-digit{margin-top:6%}
 .board--killer .ks-notes{inset:27% 10% 6% 10%}
+/* la casilla de la esquina redondeada del tablero: la suma, algo más hacia dentro para que no se corte */
+.cell[data-corner="tl"] .ks-sum{left:calc(var(--radius-board) * .45);top:calc(var(--radius-board) * .4)}

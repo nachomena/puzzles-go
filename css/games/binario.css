@@ -1,12 +1,16 @@
 /* Binario: fichas rojas y azules sobre casillas oscuras; las dadas llevan un punto. */
 [data-game="binario"]{--bn-1:#c8604e;--bn-2:#4b82c3}
-.board--binario .board__grid{stroke-width:.03}
 /* el marco va por fuera de las casillas (no las tapa): así las fichas del borde tienen el mismo hueco que las demás */
-.board--binario{width:calc(100% - 10px);outline:5px solid var(--wall)}
-.board--binario .board__frame{stroke:none}
+.board--binario{width:calc(100% - 4px)}
+.board--binario::after{inset:-2px;border-radius:calc(var(--radius-board) + 2px);--frame:2px}
 .board--binario .cell{cursor:pointer;position:relative}
 .board--binario .cell.is-given{cursor:default}
 .bn-tile{position:absolute;inset:7%;border-radius:14%;animation:pop .16s ease-out}
+/* en las esquinas del tablero, la esquina de fuera sigue su redondeo (un poco menos, por el hueco) */
+[data-corner="tl"] .bn-tile{border-top-left-radius:calc(var(--radius-board) - 4px)}
+[data-corner="tr"] .bn-tile{border-top-right-radius:calc(var(--radius-board) - 4px)}
+[data-corner="bl"] .bn-tile{border-bottom-left-radius:calc(var(--radius-board) - 4px)}
+[data-corner="br"] .bn-tile{border-bottom-right-radius:calc(var(--radius-board) - 4px)}
 
 .bn-1{background:var(--bn-1)}
 .bn-2{background:var(--bn-2)}

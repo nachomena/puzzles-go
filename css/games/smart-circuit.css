@@ -7,7 +7,6 @@
 }
 
 .board--circuit{aspect-ratio:2/1;--n:8}
-.board--circuit .board__grid{stroke-width:.02}
 
 /* Pistas del reto */
 .sc-clues,.sc-errors{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}

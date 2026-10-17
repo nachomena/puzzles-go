@@ -4,6 +4,8 @@ import { difficulty, LEVEL_ORDER, OLD_LEVELS } from '../../core/levels.js';
 export default Object.freeze({
   id: 'zip',
   name: 'Zip',
+  /** Frase corta bajo el nombre en el selector. */
+  tagline: 'Un camino por todas las casillas',
   icon: 'zip',
   storageKey: 'puzzlesgo.zip.v1',
   /** `target` es el nivel del generador: tablero más grande y menos números cuanto más alto. */

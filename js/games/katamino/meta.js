@@ -20,6 +20,8 @@ export const rowName = label => /^\d+$/.test(label) ? `N°${label}` : label;
 export default Object.freeze({
   id: 'katamino',
   name: 'Katamino',
+  /** Frase corta bajo el nombre en el selector. */
+  tagline: 'Pentominós en un tablero',
   icon: 'katamino',
   storageKey: 'puzzlesgo.katamino.v1',
   /** Cada nivel es un desafío; dentro se elige fila y PENTA (picker.js). `target` solo numera los niveles. */

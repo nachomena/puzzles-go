@@ -23,10 +23,9 @@
 /* Reiniciar: abajo a la izquierda, a la altura de las flechas de columna */
 .sd-area .board{grid-area:1/1}
 .board--dice{--n:6;margin:0 auto}
-.board--dice .board__grid{stroke-width:.02}
 /* Separaciones entre dados finas y marco por fuera: así las 36 casillas se ven iguales */
-.board--dice .board__wall{stroke-width:.035;stroke-linecap:butt}
-.board--dice .board__frame{stroke-width:.08}
+.board--dice .board__wall{stroke-width:1px;stroke-linecap:butt}
+.board--dice::after{inset:-2px;border-radius:calc(var(--radius-board) + 2px);--frame:2px}
 .sd-arrows{display:flex}
 .sd-arrows--rows{grid-area:1/2;flex-direction:column}
 .sd-arrows--cols{grid-area:2/1}

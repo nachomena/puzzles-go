@@ -4,6 +4,8 @@ import { difficulty, LEVEL_ORDER, OLD_LEVELS } from '../../core/levels.js';
 export default Object.freeze({
   id: 'gears',
   name: 'Engranajes',
+  /** Frase corta bajo el nombre en el selector. */
+  tagline: 'De la manivela al cerrojo',
   icon: 'gears',
   storageKey: 'puzzlesgo.gears.v1',
   /** `target` es el nivel del generador (engine/generator.js): panel más grande y menos pistas. */

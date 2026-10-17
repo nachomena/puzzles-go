@@ -4,6 +4,8 @@ import { difficulty, LEVEL_ORDER, OLD_LEVELS } from '../../core/levels.js';
 export default Object.freeze({
   id: 'smart-circuit',
   name: 'Smart Circuit',
+  /** Frase corta bajo el nombre en el selector. */
+  tagline: 'Caminos entre los puntos',
   icon: 'circuit',
   storageKey: 'puzzlesgo.smartcircuit.v1',
   /** Grupo del selector de juegos (ver ui/hub-view.js); dentro se muestra con su nombre corto. */

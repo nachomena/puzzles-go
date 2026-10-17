@@ -39,10 +39,13 @@ export class GridBoard {
     this.cellsEl.style.setProperty('--n', N);
     this.cellsEl.style.setProperty('--rows', R);
     const frag = document.createDocumentFragment();
+    // las cuatro esquinas (redondeadas): cada juego ajusta lo que pinta en ellas (etiquetas, fichas)
+    const corners = { 0: 'tl', [N - 1]: 'tr', [(R - 1) * N]: 'bl', [N * R - 1]: 'br' };
     this.cells = [];
     for (let i = 0; i < N * R; i++){
       const d = document.createElement('div');
       d.className = 'cell';
+      if (corners[i]) d.dataset.corner = corners[i];
       // retardo de la ola de victoria, en diagonal
       d.style.setProperty('--wave-delay', (colOf(N, i) + rowOf(N, i)) * TIMING.winWaveStepMs + 'ms');
       decorate?.(d, i);
@@ -56,8 +59,7 @@ export class GridBoard {
     this.linesEl.setAttribute('viewBox', `0 0 ${N} ${R}`);
     this.linesEl.innerHTML =
       `<path class="board__grid" d="${thin}"/>` +
-      `<path class="board__wall" d="${thick}"/>` +
-      `<rect class="board__frame" x="0" y="0" width="${N}" height="${R}"/>`;
+      `<path class="board__wall" d="${thick}"/>`;   // el marco lo pinta el CSS (.board::after), con las esquinas redondeadas
     this.root.classList.remove('is-won');
   }
 

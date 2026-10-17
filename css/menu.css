@@ -1,62 +1,64 @@
-/* Pantalla de menú. */
-.hero{padding:40px 0 34px}
+/* Pantallas de menú: el selector de juegos, el menú de niveles de un juego y la tabla de retos (Katamino). */
+
+/* ---------- Cabecera ---------- */
+.hero{padding:40px 0 30px}
 .hero__title{margin:0;display:flex;align-items:center;gap:.28em;white-space:nowrap;font-size:clamp(22px,7.4vw,48px);line-height:1;color:var(--ink)}
 .hero__title svg{width:1em;height:1em;fill:var(--ink);flex-shrink:0}
 
-.game-card .level__name{font-size:var(--name-size,clamp(30px,9vw,54px));white-space:nowrap}
-/* Caja del ancho del botón de Progreso, para que los iconos queden centrados bajo él */
-.game-card__icon{flex:none;width:52px;display:flex;justify-content:center}
-.game-card__icon svg{width:40px;height:40px;stroke:var(--dim);fill:none;stroke-width:1.5;stroke-linejoin:round}
-/* Grupo de juegos (p. ej. Smart Games): al desplegarse, sus juegos van debajo con una raya a la izquierda */
-.game-group__items{margin:2px 0 8px 4px;padding-left:16px;border-left:3px solid var(--rule)}
-.game-group.is-open .level__meta{visibility:hidden}
+.menu{padding-top:6px;padding-bottom:100px}   /* abajo, sitio para la barra flotante (.dock) */
+.menu__label{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:0 0 8px 4px}
 
-.menu{padding-top:34px;padding-bottom:24px}
-.menu__label{font-size:19px;font-weight:600;color:var(--ink-label);margin:0 0 10px}
-/* Volver, ajustes y ayuda: barra fija abajo, como en las partidas (.dock) */
-.menu__icons{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px max(10px, calc(50% - var(--content-max) / 2 + 10px)) max(16px, calc(var(--safe-bottom) + 8px)) max(14px, calc(50% - var(--content-max) / 2 + 14px));background:var(--bg);z-index:5}
-.menu{padding-bottom:100px}
-
-/* Selector: título y "Elige un juego" fijos; solo la lista se desplaza */
+/* ---------- Selector: título y "Juegos" fijos; solo la lista se desplaza ---------- */
 #hub.is-on{display:flex;flex-direction:column;height:calc(100dvh - var(--safe-top) - var(--safe-bottom))}
 #hub .hero{flex:none}
 #hub > .wrap{width:100%;flex:none}   /* en columna flex, el margen automático la encogería */
-#hub .menu__label{margin:34px 0 10px}
-.hub-list{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;margin-bottom:var(--gutter);padding-bottom:12px}   /* abajo, el mismo margen que a los lados */
+#hub .menu__label{margin:28px 0 6px 4px}
+.hub-list{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-bottom:max(16px, var(--safe-bottom))}
 .hub-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
-/* Progreso: con borde de botón, para que se vea que se puede tocar */
+/* Modo noche y Progreso: botones redondos de cristal */
 .hub-tools{display:flex;gap:10px;flex:none}
-.hub-progress[aria-pressed="true"]{border-color:var(--accent)}
+.hub-progress{flex:none;width:48px;height:48px;border-radius:50%}
+.hub-progress svg{width:24px;height:24px}
 .hub-progress[aria-pressed="true"] svg{stroke:var(--accent);fill:var(--accent)}
-.hub-progress{flex:none;width:52px;height:52px;border:2px solid var(--outline);border-radius:var(--radius)}
-.hub-progress svg{width:28px;height:28px}
-.hub-progress:active{background:var(--surface-press)}
-/* Continuar: la última partida a medias, arriba del selector */
+
+/* ---------- Continuar (selector y menú de niveles) ---------- */
 #resumeLast{flex:none}
-#resumeLast:empty{display:none}
-.hub-resume{display:flex;align-items:center;gap:14px;width:100%;margin-top:4px;padding:12px 12px 12px 14px;border-radius:var(--radius);background:var(--seg);text-align:left}
-.hub-resume:active{background:var(--surface-press)}
-.hub-resume__icon{flex:none;width:48px;height:48px;border-radius:10px;background:var(--cell);display:grid;place-items:center}
-.hub-resume__icon svg{width:30px;height:30px;stroke:var(--ink);fill:none;stroke-width:1.5;stroke-linejoin:round}
-.hub-resume__text{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
-.hub-resume__kicker{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
-.hub-resume__name{font-family:var(--font-display);font-size:19px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hub-resume__detail{font-size:14px;color:var(--ink-soft);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hub-resume__play{flex:none;width:46px;height:46px;border-radius:50%;background:var(--ink);display:grid;place-items:center}
-.hub-resume__play svg{width:20px;height:20px;fill:var(--bg);stroke:none}
-.rule{height:3px;background:var(--rule);margin:26px 0 0;border:0}
+#resumeLast:empty,#resume:empty{display:none}
+#resume{margin-bottom:26px}
+.resume-card{display:flex;align-items:center;gap:14px;width:100%;margin-top:4px;padding:12px 12px 12px 14px;border-radius:22px;text-align:left}
+.resume-card:active{background:var(--surface-press)}
+.resume-card__icon{flex:none;width:48px;height:48px;border-radius:14px;background:var(--glass-hover);display:grid;place-items:center}
+.resume-card__icon svg{width:28px;height:28px;stroke:var(--accent);fill:none;stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
+.resume-card__text{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.resume-card__kicker{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.resume-card__name{font-size:17px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.resume-card__detail{font-size:14px;color:var(--ink-soft);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.resume-card__play{flex:none;width:44px;height:44px;border-radius:50%;background:var(--ink);display:grid;place-items:center}
+.resume-card__play svg{width:18px;height:18px;fill:var(--bg);stroke:none}
 
-.resume{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;padding:14px 16px;margin:4px 0 22px;background:var(--ink);color:var(--bg);text-align:left;border-radius:var(--radius)}
-.resume b{font-size:20px;flex-shrink:0}
-/* en una línea: si no cabe, la app reduce la letra (ui/fit-text.js) */
-.resume span{font-size:15px;font-weight:600;white-space:nowrap}
+/* ---------- Lista de juegos ---------- */
+.game-row{display:flex;align-items:center;gap:14px;width:100%;padding:9px 4px;border-radius:16px;text-align:left}
+.game-row:active{background:var(--glass-hover)}
+.game-row__icon{flex:none;width:44px;height:44px;border-radius:13px;background:var(--seg);display:grid;place-items:center}
+.game-row__icon svg{width:25px;height:25px;stroke:var(--ink);fill:none;stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
+.game-row__text{flex:1;min-width:0;display:flex;flex-direction:column}
+.game-row__name{font-size:17px;font-weight:600;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.game-row__info{font-size:13.5px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.game-row__chev{flex:none;width:16px;height:16px;stroke:var(--dim);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
+.game-row.is-open .game-row__chev{transform:rotate(90deg)}
+/* Grupo de juegos (p. ej. Smart Games): al desplegarse, sus juegos van debajo, un poco hacia dentro */
+.game-group__items{padding-left:18px}
 
-.level{display:flex;align-items:center;justify-content:space-between;width:100%;padding:8px 0;text-align:left;gap:16px}
-.level__text{min-width:0}
-.level__name{font-size:var(--name-size,clamp(36px,11.2vw,62px));line-height:1.02;display:block;white-space:nowrap}
-.level__meta{display:block;font-size:14px;color:var(--dim);margin-top:2px;font-weight:500}
-.level__meta:empty{display:none}
-.level:active .level__name{opacity:.7}
+/* ---------- Niveles de un juego ---------- */
+.levels{display:flex;flex-direction:column;gap:12px}
+.level-card{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:16px 18px;border-radius:22px;text-align:left}
+.level-card:active{background:var(--surface-press)}
+.level-card__name{display:block;font-size:22px;line-height:1.1;white-space:nowrap}
+/* rayas de dificultad: tantas encendidas como el puesto del nivel */
+.level-card__bars{display:flex;gap:3px;margin-top:7px}
+.level-card__bars i{width:16px;height:4px;border-radius:2px;background:var(--rule)}
+.level-card__bars i.is-on{background:var(--accent)}
+.level-card__meta{font-size:14px;color:var(--ink-soft);font-variant-numeric:tabular-nums;text-align:right}
 
 .boot-error{padding:14px 16px;border:2px solid var(--x);border-radius:var(--radius);font-size:14px;line-height:1.5}
 .boot-error b{display:block;margin-bottom:6px;color:var(--x)}
