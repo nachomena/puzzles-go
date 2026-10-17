@@ -35,16 +35,14 @@ export class CircuitBoardView {
     const sol = p.solution.map(footprint);
     let svg = '';
     if (p.show.regions){
-      // silueta de cada pieza: bordes entre casillas de piezas distintas
+      // silueta de cada pieza: bordes entre casillas de piezas distintas (el de fuera ya es el marco)
       const owner = new Array(CELLS);
       sol.forEach((f, k) => f.cells.forEach(c => owner[c] = k));
       let d = '';
       for (let i = 0; i < CELLS; i++){
         const x = i % W, y = (i / W) | 0;
-        if (x === W - 1 || owner[i + 1] !== owner[i]) d += `M${x + 1} ${y}V${y + 1}`;
-        if (y === H - 1 || owner[i + W] !== owner[i]) d += `M${x} ${y + 1}H${x + 1}`;
-        if (x === 0) d += `M0 ${y}V${y + 1}`;
-        if (y === 0) d += `M${x} 0H${x + 1}`;
+        if (x < W - 1 && owner[i + 1] !== owner[i]) d += `M${x + 1} ${y}V${y + 1}`;
+        if (y < H - 1 && owner[i + W] !== owner[i]) d += `M${x} ${y + 1}H${x + 1}`;
       }
       svg += `<path class="sc-clue-outline" d="${d}"/>`;
     }

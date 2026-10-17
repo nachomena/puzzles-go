@@ -1,11 +1,10 @@
-/* Star Battle: estrellas, estrellas de prueba y X. */
+/* Star Battle: estrellas, estrellas de prueba (con borde dorado) y X. */
 .cell svg{width:58%;height:58%}
 .cell--star svg{fill:var(--star)}
 .cell--x svg{width:38%;height:38%;stroke:var(--x);stroke-width:3.2;fill:none;stroke-linecap:round}
 .cell.is-bad.cell--star svg{fill:var(--bad)}
-.cell--try{box-shadow:inset 0 0 0 200px var(--cell-paint)}
-/* la herramienta de prueba: la estrella sobre el mismo fondo amarillo */
-.segmented [data-tool="try"] svg{background:var(--cell-paint);border-radius:7px;padding:3px;width:32px;height:32px}
+/* estrella de prueba: solo el borde, en dorado (como el icono de Continuar); también en su herramienta */
+.cell--try svg,.segmented [data-tool="try"] svg,.inline-icon--try{fill:none;stroke:var(--accent);stroke-width:1.8;stroke-linejoin:round}
+.cell.is-bad.cell--try svg{fill:none;stroke:var(--bad)}
 .cell.is-new svg{animation:pop .3s ease-out}
 .board.is-won .cell--star svg{animation:win 1s ease-in-out both;animation-delay:var(--wave-delay)}
-.inline-icon--try{background:var(--cell-paint);border-radius:4px;padding:1px}

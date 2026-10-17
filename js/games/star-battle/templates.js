@@ -20,7 +20,7 @@ export const help = () => `
   <ul>
     <li>Toca una casilla para pasar de vacía a X, de X a estrella y de estrella a vacía.</li>
     <li>Arrastra el dedo para marcar varias X seguidas.</li>
-    <li>Con la herramienta de prueba ${svgIcon('star').replace('<svg', '<svg class="inline-icon inline-icon--try"')} pones <b>estrellas de prueba</b> (con fondo amarillo) para probar una suposición. Cuentan como estrellas: ponen sus X y se ponen rojas si rompen una regla. Tócala otra vez para quitarla, o tócala con la herramienta normal para dejarla como estrella.</li>
+    <li>Con la herramienta de prueba ${svgIcon('star').replace('<svg', '<svg class="inline-icon inline-icon--try"')} pones <b>estrellas de prueba</b> (con borde dorado) para probar una suposición. Cuentan como estrellas: ponen sus X y se ponen rojas si rompen una regla. Tócala otra vez para quitarla, o tócala con la herramienta normal para dejarla como estrella.</li>
   </ul>
   <h3>Truco de inicio</h3>
   <p>Empieza por las regiones pequeñas: si una región cabe en una sola fila o columna, las estrellas de esa fila o columna ya están decididas.</p>`;

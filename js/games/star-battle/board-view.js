@@ -1,4 +1,4 @@
-/* Tablero de Star Battle: estrellas, estrellas de prueba (con fondo amarillo), X y X automáticas. */
+/* Tablero de Star Battle: estrellas, estrellas de prueba (con borde dorado), X y X automáticas. */
 import { GridBoard } from '../../ui/grid-board.js';
 import { svgIcon as icon } from '../../ui/templates.js';
 import { MARK } from './config.js';

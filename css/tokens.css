@@ -18,7 +18,6 @@
   --glass-on:rgba(255,255,255,.13);     /* opción elegida dentro del cristal */
   --cell:#39383d;
   --cell-flash:#6c6a77;
-  --cell-paint:#5f5933;
 
   /* Texto */
   /* sin blanco puro: cansa menos la vista sobre el fondo oscuro */
@@ -86,7 +85,6 @@
   --backdrop:rgba(14,10,8,.76);
   --cell:#30261e;
   --cell-flash:#5a4636;
-  --cell-paint:#5a4422;
   --ink:#d6b78d;
   --ink-soft:#c6a780;
   --ink-label:#b89a74;
