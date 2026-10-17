@@ -34,6 +34,24 @@ test('Star Battle: deshacer la estrella vuelve a la X', async ({ page }) => {
   await expect(cell).toHaveClass(/cell--x/);
 });
 
+test('Star Battle: estrella de prueba con sus X; la herramienta normal la deja como estrella', async ({ page }) => {
+  await openApp(page);
+  const play = await startGame(page, 'star-battle');
+  const cells = play.locator('.cell');
+  await play.locator('[data-tool="try"]').click();
+  await cells.nth(0).click();
+  await expect(cells.nth(0)).toHaveClass(/cell--try/);
+  await expect(cells.nth(1)).toHaveClass(/cell--auto/);   // pone sus X automáticas
+  await cells.nth(0).click();
+  await expect(cells.nth(0)).not.toHaveClass(/cell--star/);
+  await expect(cells.nth(1)).not.toHaveClass(/cell--auto/);
+  await cells.nth(0).click();
+  await play.locator('[data-tool="star"]').click();
+  await cells.nth(0).click();
+  await expect(cells.nth(0)).toHaveClass(/cell--star/);
+  await expect(cells.nth(0)).not.toHaveClass(/cell--try/);
+});
+
 test('Binario: deshacer el azul vuelve al rojo', async ({ page }) => {
   await openApp(page);
   const play = await startGame(page, 'binario');

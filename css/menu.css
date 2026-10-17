@@ -25,6 +25,9 @@
 .hub-list{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;margin-bottom:var(--gutter);padding-bottom:12px}   /* abajo, el mismo margen que a los lados */
 .hub-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
 /* Progreso: con borde de botón, para que se vea que se puede tocar */
+.hub-tools{display:flex;gap:10px;flex:none}
+.hub-progress[aria-pressed="true"]{border-color:var(--accent)}
+.hub-progress[aria-pressed="true"] svg{stroke:var(--accent);fill:var(--accent)}
 .hub-progress{flex:none;width:52px;height:52px;border:2px solid var(--outline);border-radius:var(--radius)}
 .hub-progress svg{width:28px;height:28px}
 .hub-progress:active{background:var(--surface-press)}

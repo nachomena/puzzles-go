@@ -25,10 +25,8 @@ export const help = () => `
   <p>Cada tablero tiene una única solución.</p>
   <h3>Niveles</h3>
   <ul>
-    <li><b>Principiante:</b> 4 × 4, solo sumas y restas.</li>
-    <li><b>Fácil:</b> 5 × 5, también multiplicaciones.</li>
-    <li><b>Medio:</b> 6 × 6, con las cuatro operaciones.</li>
-    <li><b>Difícil:</b> 6 × 6, sin jaulas de una casilla.</li>
+    <li><b>Fácil:</b> 5 × 5, con sumas, restas y multiplicaciones.</li>
+    <li><b>Difícil:</b> 6 × 6, con las cuatro operaciones y sin jaulas de una casilla.</li>
     <li><b>Experto:</b> 7 × 7, sin jaulas de una casilla.</li>
   </ul>
   <h3>Controles</h3>

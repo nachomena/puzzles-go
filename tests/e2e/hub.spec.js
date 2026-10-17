@@ -16,13 +16,13 @@ test('el título queda fijo y solo se desplaza la lista', async ({ page }) => {
 test('los iconos de los juegos se alinean con el botón de Progreso', async ({ page }) => {
   await openApp(page);
   const centre = async loc => { const b = await loc.boundingBox(); return Math.round(b.x + b.width / 2); };
-  const progress = await centre(page.locator('.hub-progress svg'));
+  const progress = await centre(page.locator('.hub-progress[data-action="open-progress"] svg'));
   for (const icon of await page.locator('.game-card__icon svg').all()) expect(await centre(icon)).toBe(progress);
 });
 
 test('Progreso se abre desde el selector y vuelve con su botón', async ({ page }) => {
   const errors = await openApp(page);
-  await page.locator('.hub-progress').click();
+  await page.locator('.hub-progress[data-action="open-progress"]').click();
   await expect(page.locator('#progress')).toHaveClass(/is-on/);
   await page.locator('#progress [data-action="back"]').click();
   await expect(page.locator('#hub')).toHaveClass(/is-on/);
@@ -45,4 +45,16 @@ test('la tarjeta Continuar lleva a la última partida a medias', async ({ page }
   await page.locator('.hub-resume').click();
   await expect(page.locator('#play-akari')).toHaveClass(/is-on/);
   expect(errors).toEqual([]);
+});
+
+test('el modo noche se enciende desde el selector y se queda al volver a abrir', async ({ page }) => {
+  await openApp(page);
+  await page.locator('[data-action="night"]').click();
+  await expect(page.locator('html')).toHaveClass(/is-night/);
+  await expect(page.locator('[data-action="night"]')).toHaveAttribute('aria-pressed', 'true');
+  await page.reload();
+  await expect(page.locator('html')).toHaveClass(/is-night/);
+  await expect(page.locator('[data-night-toggle]')).toBeChecked();
+  await page.locator('[data-action="night"]').click();
+  await expect(page.locator('html')).not.toHaveClass(/is-night/);
 });

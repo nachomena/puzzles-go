@@ -1,25 +1,26 @@
 # Puzzles Go
 
-Juegos de lógica como web app instalable que funciona sin conexión:
+Juegos de lógica como web app instalable que funciona sin conexión. Todos los que tienen dificultades usan las
+mismas tres: Fácil, Difícil y Experto.
 
-- **Star Battle** 10×10, 2 estrellas (Fácil, Difícil, Experto).
-- **Sudoku** 9×9 (Fácil, Medio, Difícil). El Difícil siempre exige X-Wing o Swordfish.
-- **Kakuro** de 6×6 a 12×12: sumas en casillas negras y tramos sin números repetidos (Fácil, Medio, Difícil, Experto).
-- **Slitherlink** de 5×5 a 10×10: un único lazo entre los puntos según los números de las casillas (Fácil, Medio, Difícil, Experto).
-- **Engranajes** (invento propio) de 5×5 a 8×8: engranajes en un panel hexagonal que llevan el giro de la manivela al cerrojo, en una sola cadena sin círculos, con números que cuentan los engranajes de alrededor (Fácil, Medio, Difícil, Experto).
-- **Killer Sudoku** 9×9 con jaulas de suma y casi sin números puestos (Fácil, Medio, Difícil, Experto). El Difícil siempre exige la regla del 45; el Experto, aplicarla a varias filas, columnas o cajas a la vez.
-- **Smart Dices**: 12 piezas que forman 4 caras de dado con sumas por fila y columna (5 niveles).
-- **Smart Circuit**: 10 piezas de doble cara que unen los puntos con caminos en un tablero de 8×4 (5 niveles).
-- **Smart Circle**: 10 piezas de bolas de doble cara que llenan un tablero redondo de 3 anillos sin cruzar sus nervios (5 niveles; en los dos últimos también hay que encontrar dónde van los nervios).
-- **Smart Hexagon**: 12 piezas de doble cara en forma de trazo que llenan los huecos entre las clavijas de un tablero hexagonal (5 niveles).
-- **Puzzler Pro** (2D): 12 piezas de bolas que llenan un tablero de 11×5; de 9 a 3 piezas puestas al empezar (5 niveles).
+- **Star Battle** 10×10, 2 estrellas.
+- **Sudoku** 9×9. El Experto siempre exige X-Wing o Swordfish.
+- **Kakuro** de 6×6 a 12×12: sumas en casillas negras y tramos sin números repetidos.
+- **Slitherlink** de 5×5 a 10×10: un único lazo entre los puntos según los números de las casillas.
+- **Engranajes** (invento propio) de 5×5 a 8×8: engranajes en un panel hexagonal que llevan el giro de la manivela al cerrojo, en una sola cadena sin círculos, con números que cuentan los engranajes de alrededor.
+- **Killer Sudoku** 9×9 con jaulas de suma y casi sin números puestos. El Difícil siempre exige la regla del 45; el Experto, aplicarla a varias filas, columnas o cajas a la vez.
+- **Smart Dices**: 12 piezas que forman 4 caras de dado con sumas por fila y columna.
+- **Smart Circuit**: 10 piezas de doble cara que unen los puntos con caminos en un tablero de 8×4.
+- **Smart Circle**: 10 piezas de bolas de doble cara que llenan un tablero redondo de 3 anillos sin cruzar sus nervios (en Difícil y Experto también hay que encontrar dónde van los nervios).
+- **Smart Hexagon**: 12 piezas de doble cara en forma de trazo que llenan los huecos entre las clavijas de un tablero hexagonal.
+- **Puzzler Pro** (2D): 12 piezas de bolas que llenan un tablero de 11×5; de 8 a 3 piezas puestas al empezar.
 - **Katamino**: llenar un tablero de 5 columnas con pentominós; cada PENTA suma una pieza y una fila. 512 retos en 5 desafíos (del Pequeño Slam al Desafío) que se eligen en una tabla; los resueltos quedan marcados.
-- **Rush Hour**: deslizar coches y camiones en un 6×6 hasta sacar el rojo; niveles por movimientos mínimos (de 4 a más de 30).
-- **Zip**: un camino que pasa por todas las casillas tocando los números en orden (de 5×5 a 7×7).
-- **Hashi**: unir islas con puentes de 1 o 2 que no se cruzan (de 6×6 a 10×10).
-- **KenKen**: del 1 al N sin repetir por fila y columna, con jaulas de sumas, restas, productos y divisiones (de 4×4 a 7×7).
+- **Rush Hour**: deslizar coches y camiones en un 6×6 hasta sacar el rojo; niveles por movimientos mínimos (de 8 a más de 30).
+- **Zip**: un camino que pasa por todas las casillas tocando los números en orden (de 6×6 a 7×7).
+- **Hashi**: unir islas con puentes de 1 o 2 que no se cruzan (de 7×7 a 10×10).
+- **KenKen**: del 1 al N sin repetir por fila y columna, con jaulas de sumas, restas, productos y divisiones (de 5×5 a 7×7).
 - **Akari**: bombillas que iluminan todo el tablero sin verse entre ellas (de 7×7 a 10×10).
-- **Binario** (las reglas de 0h h1): rojo y azul, sin tres iguales seguidos, mitad y mitad en cada línea y sin dos filas o columnas iguales (de 6×6 a 12×12).
+- **Binario** (las reglas de 0h h1): rojo y azul, sin tres iguales seguidos, mitad y mitad en cada línea y sin dos filas o columnas iguales (de 8×8 a 12×12).
 - **Solitario**: el clásico de saltar bolas hasta dejar una, en tablero inglés (33) o europeo (37) a elegir en Ajustes.
 
 Todos los tableros se generan en el dispositivo, tienen solución única y su nivel lo garantiza un

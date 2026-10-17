@@ -8,6 +8,7 @@ import { HubView } from '../ui/hub-view.js';
 import { LevelMenu } from '../ui/level-menu.js';
 import { Overlays } from '../ui/overlays.js';
 import { SettingsPanel } from '../ui/settings-panel.js';
+import { NightMode } from '../ui/night-mode.js';
 import { ConfirmDialog } from '../ui/confirm-dialog.js';
 import { formatTime } from '../lib/format.js';
 import { Toast } from '../ui/toast.js';
@@ -41,6 +42,8 @@ export class App {
     this.hub = new HubView(byId('games'), byId('resumeLast'));
     this.levelMenu = new LevelMenu({ title: byId('gameTitle'), label: byId('levelsLabel'), levels: byId('levelList'), resume: byId('resume') });
     this.settings = new SettingsPanel(byId('settingsList'));
+    this.night = new NightMode(storage);
+    document.querySelector('[data-night-toggle]')?.addEventListener('change', e => this.night.set(e.target.checked));
     this.confirm = new ConfirmDialog(byId('confirm'), this.overlays);
     this.fitHubTitle = keepFitted(byId('title'));
     this.fitGameTitle = keepFitted(byId('gameTitle'));
@@ -350,6 +353,7 @@ export class App {
       'open-game':    el => this.openGame(el.dataset.game),
       'resume-last':  el => this.resumeGame(el.dataset.game),
       'open-progress':  () => this.openProgress(),
+      'night':          () => this.night.toggle(),
       'progress-game':  el => { this.progress.game = el.dataset.pgGame; this.#renderProgress(); },
       'progress-level': el => { this.progress.key = el.dataset.key; this.showScreen('progress-level'); },
       'progress-range': el => { this.progress.range = el.dataset.range; this.#renderProgressLevel(); },

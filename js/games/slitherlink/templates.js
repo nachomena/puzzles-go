@@ -33,8 +33,7 @@ export const help = () => `
   <h3>Niveles</h3>
   <ul>
     <li><b>Fácil:</b> 5 × 5. Basta con los números y con que de cada punto salgan 0 o 2 líneas.</li>
-    <li><b>Medio:</b> 7 × 7. Hacen falta las esquinas y no cerrar un lazo pequeño antes de tiempo.</li>
-    <li><b>Difícil:</b> 8 × 8. Hay que pensar qué casillas quedan dentro y cuáles fuera.</li>
+    <li><b>Difícil:</b> 8 × 8. Además de las esquinas y de no cerrar un lazo pequeño antes de tiempo, hay que pensar qué casillas quedan dentro y cuáles fuera.</li>
     <li><b>Experto:</b> 10 × 10, con lo mismo que el Difícil.</li>
   </ul>
   <h3>Controles</h3>

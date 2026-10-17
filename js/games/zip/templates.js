@@ -23,7 +23,7 @@ export const help = () => `
     <li>Cada reto tiene una sola solución.</li>
   </ul>
   <h3>Niveles</h3>
-  <p>Del <b>Principiante</b> (5 × 5) al <b>Experto</b> (7 × 7) el tablero crece y hay menos números que te guíen.</p>
+  <p>Del <b>Fácil</b> (6 × 6) al <b>Experto</b> (7 × 7) el tablero crece y hay menos números que te guíen.</p>
   <h3>Controles</h3>
   <ul>
     <li>Arrastra desde el 1 para dibujar; puedes soltar y seguir desde el final.</li>

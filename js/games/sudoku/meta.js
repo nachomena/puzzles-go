@@ -1,14 +1,14 @@
 /* Datos mínimos del Sudoku para el selector y el menú de niveles: se cargan sin el motor ni la interfaz del juego. */
+import { difficulty, LEVEL_ORDER, OLD_LEVELS } from '../../core/levels.js';
+
 export default Object.freeze({
   id: 'sudoku',
   name: 'Sudoku',
   icon: 'grid',
   storageKey: 'puzzlesgo.sudoku.v1',
   /** `target` es el nivel del solucionador lógico que exige el tablero. */
-  levels: Object.freeze({
-    easy:   Object.freeze({ name: 'Fácil',   target: 1 }),
-    medium: Object.freeze({ name: 'Medio',   target: 2 }),
-    hard:   Object.freeze({ name: 'Difícil', target: 3 })
-  }),
-  levelOrder: Object.freeze(['easy', 'medium', 'hard'])
+  levels: difficulty({ easy: 1, hard: 2, expert: 3 }),
+  levelOrder: LEVEL_ORDER,
+  /** Niveles de antes, para pasar récords y partidas (core/level-migration.js). */
+  oldLevels: OLD_LEVELS.three
 });

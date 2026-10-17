@@ -28,7 +28,7 @@ export const help = () => `
     <li>Debajo del tablero ves tus movimientos y el mínimo con el que se puede resolver.</li>
   </ul>
   <h3>Niveles</h3>
-  <p>Cuantos más movimientos hacen falta, más difícil: de 4 a 7 en Principiante y 30 o más en Experto.</p>
+  <p>Cuantos más movimientos hacen falta, más difícil: de 8 a 13 en Fácil, de 21 a 29 en Difícil y 30 o más en Experto.</p>
   <h3>Controles</h3>
   <ul>
     <li>Deshacer, rehacer y volver a empezar están bajo el tablero.</li>

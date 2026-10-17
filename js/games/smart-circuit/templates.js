@@ -21,9 +21,7 @@ export const help = () => `
   </ul>
   <h3>Niveles</h3>
   <ul>
-    <li><b>Principiante:</b> ves la forma de los caminos y algunas piezas colocadas.</li>
     <li><b>Fácil:</b> ves la silueta de todas las piezas, pero no los caminos.</li>
-    <li><b>Medio:</b> ves la forma de los caminos.</li>
     <li><b>Difícil:</b> algunas piezas con punto ya están colocadas.</li>
     <li><b>Experto:</b> solo ves los puntos.</li>
   </ul>

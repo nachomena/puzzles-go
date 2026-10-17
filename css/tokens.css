@@ -15,22 +15,23 @@
   --cell-paint:#5f5933;
 
   /* Texto */
-  --ink:#dcdbe4;
-  --ink-soft:#c9c8d2;
-  --ink-label:#b9b8c3;
+  /* sin blanco puro: cansa menos la vista sobre el fondo oscuro */
+  --ink:#d3d1da;
+  --ink-soft:#c0bec9;
+  --ink-label:#b0afba;
   --dim:#8f8e9a;
 
   /* Líneas */
   --grid:#4c4b53;
-  --wall:#e3e2e9;
+  --wall:#cfcdd6;
   --divider:#3a3940;
   --rule:#4a4950;
   --outline:#55545d;
 
   /* Estado */
   --x:#de6a5e;
-  --bad:#ff5b4f;
-  --star:#fff;
+  --bad:#f0665a;
+  --star:#ecebe6;
   --accent:#e2bf5a;           /* lo destacado de un gráfico (la partida de hoy) */
   --good:#7fc79a;             /* más rápido */
   --slow:#e3907f;             /* más lento */
@@ -40,7 +41,7 @@
   --seg-on:#66656f;
   --switch-off:#4a4951;
   --switch-on:#8b89a0;
-  --knob:#fff;
+  --knob:#e6e5ea;
 
   /* Tipografía */
   --font-body:"Archivo",-apple-system,BlinkMacSystemFont,"Helvetica Neue",system-ui,sans-serif;
@@ -59,8 +60,47 @@
 
 /* Sudoku */
 :root{
-  --entry:#9db8ff;            /* número escrito por el jugador */
+  --entry:#93aade;            /* número escrito por el jugador */
   --cell-peer:#45444c;        /* fila, columna y caja de la casilla elegida */
   --cell-same:#58566e;        /* casillas con el mismo número */
   --cell-selected:#66656f;
 }
+
+/* Modo noche (ajuste de toda la app, ui/night-mode.js): colores cálidos, sin azules ni blancos, para jugar
+   antes de dormir. Mismos tokens; lo que cada juego pinta con sus propios colores se templa con un filtro. */
+:root.is-night{
+  --bg:#1c1612;
+  --surface:#261e18;
+  --surface-press:#2c231c;
+  --backdrop:rgba(14,10,8,.76);
+  --cell:#30261e;
+  --cell-flash:#5a4636;
+  --cell-paint:#5a4422;
+  --ink:#d6b78d;
+  --ink-soft:#c6a780;
+  --ink-label:#b89a74;
+  --dim:#97806a;
+  --grid:#433529;
+  --wall:#d2ad7b;
+  --divider:#352a21;
+  --rule:#43352a;
+  --outline:#4f3f31;
+  --x:#d9694a;
+  --bad:#e8603f;
+  --star:#efc37d;
+  --accent:#e8b45a;
+  --good:#b5b56a;
+  --slow:#d98a62;
+  --seg:#2a211a;
+  --seg-on:#4d3c2e;
+  --switch-off:#463729;
+  --switch-on:#a07c52;
+  --knob:#d6b78d;
+  --entry:#e3a35a;
+  --cell-peer:#3a2e24;
+  --cell-same:#54402c;
+  --cell-selected:#5f4a35;
+}
+/* los colores propios de cada juego (piezas, caminos, dados): un filtro cálido en la raíz, que no cambia cómo
+   se colocan las barras fijas */
+:root.is-night{filter:sepia(.45) saturate(.85)}

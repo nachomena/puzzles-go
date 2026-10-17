@@ -11,6 +11,9 @@ const resumable = cur => !!cur && !cur.done && ((cur.time || 0) >= MIN_RESUME_SE
 import { recordWin } from './stats.js';
 import { logWin, isEntry, LOG_CAP } from './progress.js';
 
+/** Versión de los niveles de lo guardado (ver core/level-migration.js). */
+export const LEVELS_VERSION = 2;
+
 export class Store {
   /**
    * @param {Storage|null} storage  cualquier objeto con getItem/setItem
@@ -25,7 +28,8 @@ export class Store {
       log: [],          // partidas resueltas, para el progreso (core/progress.js)
       buffers: Object.fromEntries(game.levelOrder.map(L => [L, []])),
       cur: null,
-      tool: game.tools[0]
+      tool: game.tools[0],
+      levels: LEVELS_VERSION
     };
   }
 

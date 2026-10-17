@@ -6,16 +6,19 @@ import { pick } from '../../lib/random.js';
 /** Una X automática cuenta como X a efectos del jugador. */
 export const effectiveMark = v => v === MARK.AUTO_X ? MARK.X : v;
 
-/** Ciclo al tocar: vacía → X → estrella → vacía. */
-const CYCLE = { [MARK.EMPTY]: MARK.X, [MARK.X]: MARK.STAR, [MARK.STAR]: MARK.EMPTY };
+/** Estrella o estrella de prueba: las dos cuentan igual para las reglas. */
+export const isStar = v => v === MARK.STAR || v === MARK.TRY;
+
+/** Ciclo al tocar: vacía → X → estrella → vacía. Una estrella de prueba pasa a estrella. */
+const CYCLE = { [MARK.EMPTY]: MARK.X, [MARK.X]: MARK.STAR, [MARK.STAR]: MARK.EMPTY, [MARK.TRY]: MARK.STAR };
 export const nextMark = v => CYCLE[effectiveMark(v)];
 
-/** Recalcula las X automáticas alrededor de cada estrella (muta `marks`). */
+/** Recalcula las X automáticas alrededor de cada estrella, también las de prueba (muta `marks`). */
 export function applyAutoX(marks, N, enabled){
   for (let i = 0; i < marks.length; i++) if (marks[i] === MARK.AUTO_X) marks[i] = MARK.EMPTY;
   if (!enabled) return;
   const { n8 } = adjacency(N);
-  for (let i = 0; i < marks.length; i++) if (marks[i] === MARK.STAR){
+  for (let i = 0; i < marks.length; i++) if (isStar(marks[i])){
     for (const j of n8[i]) if (marks[j] === MARK.EMPTY) marks[j] = MARK.AUTO_X;
   }
 }
@@ -29,26 +32,25 @@ export function analyze(marks, { N, K, regions }){
   const rowCount = new Array(N).fill(0), colCount = new Array(N).fill(0), regCount = new Array(N).fill(0);
   const { n8 } = adjacency(N);
   let total = 0;
-  for (let i = 0; i < marks.length; i++) if (marks[i] === MARK.STAR){
+  for (let i = 0; i < marks.length; i++) if (isStar(marks[i])){
     total++; rowCount[rowOf(N, i)]++; colCount[colOf(N, i)]++; regCount[regions[i]]++;
   }
-  for (let i = 0; i < marks.length; i++) if (marks[i] === MARK.STAR){
+  for (let i = 0; i < marks.length; i++) if (isStar(marks[i])){
     const overflow = rowCount[rowOf(N, i)] > K || colCount[colOf(N, i)] > K || regCount[regions[i]] > K;
-    if (overflow || n8[i].some(j => marks[j] === MARK.STAR)) bad[i] = 1;
+    if (overflow || n8[i].some(j => isStar(marks[j]))) bad[i] = 1;
   }
   const anyBad = bad.some(Boolean);
   return { bad, anyBad, solved: total === N * K && !anyBad };
 }
 
-/** ¿Tiene el tablero algo que el jugador haya puesto (X, estrella o pintura)? */
-export const hasPlayerInput = (marks, paint) =>
-  marks.some(v => v === MARK.X || v === MARK.STAR) || paint.some(Boolean);
+/** ¿Tiene el tablero algo que el jugador haya puesto (X o estrella)? */
+export const hasPlayerInput = marks => marks.some(v => v === MARK.X || isStar(v));
 
 /** Pista: primero corrige errores, si no hay coloca una estrella que falte. */
 /** Primer error: una estrella donde no va, o una X donde sí va una estrella. */
 export function findMistake(marks, solution){
   const sol = new Set(solution);
-  const wrongStar = marks.findIndex((v, i) => v === MARK.STAR && !sol.has(i));
+  const wrongStar = marks.findIndex((v, i) => isStar(v) && !sol.has(i));
   if (wrongStar >= 0) return { type: 'wrong-star', cell: wrongStar };
   const wrongX = marks.findIndex((v, i) => v === MARK.X && sol.has(i));
   if (wrongX >= 0) return { type: 'missing-star', cell: wrongX };

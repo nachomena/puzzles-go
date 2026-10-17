@@ -28,9 +28,7 @@ export const help = () => `
   </ul>
   <h3>Niveles</h3>
   <ul>
-    <li><b>Principiante:</b> varias piezas ya colocadas.</li>
     <li><b>Fácil:</b> algunas piezas colocadas.</li>
-    <li><b>Medio:</b> solo dos piezas colocadas.</li>
     <li><b>Difícil:</b> una o dos piezas, y no sabes cómo está girado el tablero: solo ves las marcas de algunos nervios en el borde. Gira los nervios con el botón <b>Nervios</b> hasta su sitio.</li>
     <li><b>Experto:</b> dos piezas y ninguna marca: también hay que encontrar dónde van los nervios.</li>
   </ul>

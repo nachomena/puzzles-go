@@ -33,7 +33,6 @@ export const help = () => `
   <h3>Niveles</h3>
   <ul>
     <li><b>Fácil:</b> 6 × 6. Basta con las combinaciones de cada tramo.</li>
-    <li><b>Medio:</b> 8 × 8, tramos más largos.</li>
     <li><b>Difícil:</b> 10 × 10. Hay que cruzar lo que admite cada casilla con las combinaciones del tramo entero.</li>
     <li><b>Experto:</b> 12 × 12, con tramos de hasta 9 casillas.</li>
   </ul>

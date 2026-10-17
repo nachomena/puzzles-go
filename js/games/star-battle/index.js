@@ -17,7 +17,7 @@ export default defineGame({
   isValidPuzzle: (p, L) => p.N === BOARD.size && p.K === BOARD.stars && p.level === LEVELS[L].target,
   restoreSession: s => {
     if (!Array.isArray(s.marks)) return null;
-    if (!Array.isArray(s.hl)) s.hl = s.marks.map(() => 0);
+    delete s.hl;   // la pintura del pincel de antes
     return s;
   },
   sizeLabel: () => '',   // siempre es 10×10 con 2★: no aporta nada en la cabecera

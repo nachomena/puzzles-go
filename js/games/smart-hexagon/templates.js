@@ -22,7 +22,7 @@ export const help = () => `
     <li>Cada reto tiene una sola solución.</li>
   </ul>
   <h3>Niveles</h3>
-  <p>Del <b>Principiante</b> al <b>Experto</b> cada vez hay menos piezas colocadas al empezar: de 8 a 10 en Principiante, y solo 2 a 4 en Experto.</p>
+  <p>Del <b>Fácil</b> al <b>Experto</b> cada vez hay menos piezas colocadas al empezar.</p>
   <h3>Controles</h3>
   ${gestureStrip([{ icon: 'drag', piece: 'hexagon', text: 'Arrastra al tablero' }, { icon: 'turn', text: 'Toca dos veces: gira 60°' }, { icon: 'flip', text: 'Voltear' }])}
   <ul>

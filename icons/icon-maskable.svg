@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Como icon.svg, reducido para que quepa en el círculo seguro de Android (80 %). -->
+  <rect width="512" height="512" fill="#212026"/>
+  <g transform="translate(256 256) scale(.78) translate(-256 -256)">
+  <g transform="translate(86 86)">
+    <!-- Cuatro casillas, cuatro juegos: Star Battle, Sudoku, Engranajes y Akari -->
+    <rect width="160" height="160" rx="30" fill="#39383d"/>
+    <rect x="180" width="160" height="160" rx="30" fill="#39383d"/>
+    <rect y="180" width="160" height="160" rx="30" fill="#39383d"/>
+    <rect x="180" y="180" width="160" height="160" rx="30" fill="#39383d"/>
+    <path transform="translate(80 82) scale(4.7) translate(-12 -12)" fill="#ecebe6" d="M12 2.8l2.75 5.9 6.45.75-4.78 4.4 1.28 6.37L12 17.05 6.3 20.22l1.28-6.37L2.8 9.45l6.45-.75z"/>
+    <text x="260" y="80" dy=".36em" text-anchor="middle" font-family="Archivo Black, Archivo, sans-serif" font-size="104" fill="#93a9dc">9</text>
+    <path fill="#d2a64b" stroke="#212026" stroke-width="3" stroke-linejoin="round" d="M80.0 206.0L96.7 208.6L93.3 219.1L105.3 225.2L111.7 216.3L123.7 228.3L114.8 234.7L120.9 246.7L131.4 243.3L134.0 260.0L123.0 260.0L120.9 273.3L131.4 276.7L123.7 291.7L114.8 285.3L105.3 294.8L111.7 303.7L96.7 311.4L93.3 300.9L80.0 303.0L80.0 314.0L63.3 311.4L66.7 300.9L54.7 294.8L48.3 303.7L36.3 291.7L45.2 285.3L39.1 273.3L28.6 276.7L26.0 260.0L37.0 260.0L39.1 246.7L28.6 243.3L36.3 228.3L45.2 234.7L54.7 225.2L48.3 216.3L63.3 208.6L66.7 219.1L80.0 217.0Z"/>
+    <circle cx="80" cy="260" r="13" fill="#39383d"/>
+    <circle cx="260" cy="260" r="56" fill="none" stroke="#e2c45a" stroke-opacity=".28" stroke-width="12"/>
+    <circle cx="260" cy="260" r="38" fill="#e2c45a"/>
+  </g>
+  </g>
+</svg>

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { MARK } from '../js/games/star-battle/config.js';
 import { analyze, applyAutoX, nextMark, findHint, hasPlayerInput } from '../js/games/star-battle/rules.js';
 
-const { EMPTY: E, X, STAR: S, AUTO_X: A } = MARK;
+const { EMPTY: E, X, STAR: S, AUTO_X: A, TRY: T } = MARK;
 
 test('nextMark: vacía → X → estrella → vacía (la X automática cuenta como X)', () => {
   assert.equal(nextMark(E), X);
@@ -37,7 +37,20 @@ test('findHint prioriza corregir errores', () => {
 });
 
 test('hasPlayerInput ignora las X automáticas', () => {
-  assert.equal(hasPlayerInput([A, E], [0, 0]), false);
-  assert.equal(hasPlayerInput([A, E], [0, 1]), true);
-  assert.equal(hasPlayerInput([X, E], [0, 0]), true);
+  assert.equal(hasPlayerInput([A, E]), false);
+  assert.equal(hasPlayerInput([X, E]), true);
+  assert.equal(hasPlayerInput([T, E]), true);
+});
+
+test('la estrella de prueba cuenta como estrella: X automáticas, errores y victoria', () => {
+  const m = [E, E, E, E, T, E, E, E, X];
+  applyAutoX(m, 3, true);
+  assert.deepEqual(m, [A, A, A, A, T, A, A, A, X]);
+  const p = { N: 2, K: 1, regions: [0, 0, 1, 1] };
+  assert.deepEqual([...analyze([T, E, E, S], p).bad], [1, 0, 0, 1]);
+  assert.equal(analyze([E, T, E, E], { N: 2, K: 1, regions: [0, 1, 0, 1] }).solved, false);
+  // tocarla con la herramienta normal la deja como estrella
+  assert.equal(nextMark(T), S);
+  // la pista la trata como estrella mal puesta si no va
+  assert.deepEqual(findHint([E, T, E, E], [0, 3]), { type: 'wrong-star', cell: 1 });
 });

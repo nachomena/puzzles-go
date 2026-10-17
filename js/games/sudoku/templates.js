@@ -15,6 +15,6 @@ export const help = () => `
   <h3>Niveles</h3>
   <ul>
     <li><b>Fácil:</b> basta con ver en qué casilla cabe cada número.</li>
-    <li><b>Medio:</b> hay que usar pares o tríos de candidatos y candidatos bloqueados en una caja.</li>
-    <li><b>Difícil:</b> siempre necesita un <b>X-Wing</b> o un <b>Swordfish</b>: si un número solo cabe en las mismas 2 (o 3) columnas en 2 (o 3) filas, en esas columnas no puede ir en ninguna otra fila. Y lo mismo cambiando filas por columnas.</li>
+    <li><b>Difícil:</b> hay que usar pares o tríos de candidatos y candidatos bloqueados en una caja.</li>
+    <li><b>Experto:</b> siempre necesita un <b>X-Wing</b> o un <b>Swordfish</b>: si un número solo cabe en las mismas 2 (o 3) columnas en 2 (o 3) filas, en esas columnas no puede ir en ninguna otra fila. Y lo mismo cambiando filas por columnas.</li>
   </ul>`;

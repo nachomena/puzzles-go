@@ -1,4 +1,4 @@
-/* Partida de Star Battle: marcas, pincel, X automáticas y pistas. */
+/* Partida de Star Battle: marcas, estrellas de prueba, X automáticas y pistas. */
 import { GameController } from '../../core/game-controller.js';
 import { bindCellDrag } from '../../ui/cell-drag.js';
 import { StarBattleBoard } from './board-view.js';
@@ -14,7 +14,7 @@ export class StarBattleController extends GameController {
   constructor(deps){
     super(deps);
     this.board = new StarBattleBoard(deps.screen.querySelector('.board'));
-    this.stroke = null;  // trazo en curso: { value, before }
+    this.stroke = null;  // trazo en curso: { value, before } (value null: no se arrastra)
     bindCellDrag(this.board.root, {
       cellAt: (x, y) => this.board.cellAt(x, y),
       cellSize: () => this.board.cellSize(),
@@ -29,25 +29,18 @@ export class StarBattleController extends GameController {
 
   createSession(L, puzzle){
     const cells = puzzle.N * puzzle.N;
-    return { L, p: puzzle, marks: new Array(cells).fill(MARK.EMPTY), hl: new Array(cells).fill(0), time: 0, done: false, hints: 0 };
+    return { L, p: puzzle, marks: new Array(cells).fill(MARK.EMPTY), time: 0, done: false, hints: 0 };
   }
   mountBoard(){ this.board.build(this.session.p, { tint: this.settings.tint }); }
   renderBoard(){
     const s = this.session, { bad } = analyze(s.marks, s.p);
-    this.board.render(s.marks, s.hl, this.settings.errors ? bad : null);
+    this.board.render(s.marks, this.settings.errors ? bad : null);
   }
-  snapshot(){ return { m: this.session.marks.slice(), h: this.session.hl.slice() }; }
-  restore(snap){ this.session.marks = snap.m; this.session.hl = snap.h; }
-  sameAs(snap){
-    const s = this.session;
-    return snap.m.every((v, i) => effectiveMark(v) === effectiveMark(s.marks[i]) && snap.h[i] === s.hl[i]);
-  }
-  hasInput(){ return hasPlayerInput(this.session.marks, this.session.hl); }
-  clearInput(){
-    const s = this.session;
-    s.marks = s.marks.map(() => MARK.EMPTY);
-    s.hl = s.hl.map(() => 0);
-  }
+  snapshot(){ return { m: this.session.marks.slice() }; }
+  restore(snap){ this.session.marks = snap.m.slice(); }
+  sameAs(snap){ return snap.m.every((v, i) => effectiveMark(v) === effectiveMark(this.session.marks[i])); }
+  hasInput(){ return hasPlayerInput(this.session.marks); }
+  clearInput(){ this.session.marks = this.session.marks.map(() => MARK.EMPTY); }
   isSolved(){ return analyze(this.session.marks, this.session.p).solved; }
   normalize(){ applyAutoX(this.session.marks, this.session.p.N, this.settings.autoX); }
   onSetting(key){
@@ -79,27 +72,25 @@ export class StarBattleController extends GameController {
   /** Empieza un trazo en la casilla i: su valor decide qué hace el resto del arrastre. */
   pressCell(i){
     const s = this.session, before = this.snapshot();
-    let value;
-    if (this.tool === TOOL.STAR){
+    let value = null;
+    if (this.tool === TOOL.TRY){
+      // estrella de prueba: se pone o se quita (sobre una estrella, la vuelve de prueba); arrastrar no hace nada
+      s.marks[i] = s.marks[i] === MARK.TRY ? MARK.EMPTY : MARK.TRY;
+    } else {
       const next = nextMark(s.marks[i]);
       s.marks[i] = next;
       value = next === MARK.EMPTY ? 0 : 1;   // arrastrar pone X o las quita
-    } else {
-      value = s.hl[i] ? 0 : 1;
-      s.hl[i] = value;
     }
     this.stroke = { value, before };
     this.commit(false);
   }
 
   dragOver(cells){
-    if (!this.stroke) return;
-    const { marks, hl } = this.session, { value } = this.stroke;
+    if (!this.stroke || this.stroke.value === null) return;
+    const { marks } = this.session, { value } = this.stroke;
     let changed = false;
     for (const i of cells){
-      if (this.tool === TOOL.BRUSH){
-        if (hl[i] !== value){ hl[i] = value; changed = true; }
-      } else if (value === 1 && effectiveMark(marks[i]) === MARK.EMPTY){
+      if (value === 1 && effectiveMark(marks[i]) === MARK.EMPTY){
         marks[i] = MARK.X; changed = true;
       } else if (value === 0 && marks[i] === MARK.X){
         marks[i] = MARK.EMPTY; changed = true;

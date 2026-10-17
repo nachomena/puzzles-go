@@ -7,9 +7,9 @@ export const BOARD = Object.freeze({ size: 10, stars: 2 });
 export const LEVELS = meta.levels;
 export const LEVEL_ORDER = meta.levelOrder;
 
-/** Estado de cada casilla en la partida. */
-export const MARK = Object.freeze({ EMPTY: 0, X: 1, STAR: 2, AUTO_X: 3 });
-export const TOOL = Object.freeze({ STAR: 'star', BRUSH: 'brush' });
+/** Estado de cada casilla en la partida. TRY: estrella de prueba (cuenta como estrella, con otro fondo). */
+export const MARK = Object.freeze({ EMPTY: 0, X: 1, STAR: 2, AUTO_X: 3, TRY: 4 });
+export const TOOL = Object.freeze({ STAR: 'star', TRY: 'try' });
 
 export const DEFAULT_SETTINGS = Object.freeze({ autoX: true, errors: false, timer: true, tint: false });
 

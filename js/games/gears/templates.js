@@ -40,7 +40,6 @@ export const help = () => `
   <h3>Niveles</h3>
   <ul>
     <li><b>Fácil:</b> 5 × 5, con más números y algunos engranajes puestos.</li>
-    <li><b>Medio:</b> 6 × 6.</li>
     <li><b>Difícil:</b> 7 × 7, sin engranajes puestos.</li>
     <li><b>Experto:</b> 8 × 8, con los números justos.</li>
   </ul>

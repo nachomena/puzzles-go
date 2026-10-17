@@ -1,4 +1,6 @@
 /* Datos mínimos de Puzzler Pro para el selector y el menú de niveles: se cargan sin el motor ni la interfaz. */
+import { difficulty, LEVEL_ORDER, OLD_LEVELS } from '../../core/levels.js';
+
 export default Object.freeze({
   id: 'iq-puzzler',
   name: 'Puzzler Pro',
@@ -7,12 +9,8 @@ export default Object.freeze({
   /** Grupo del selector de juegos (ver ui/hub-view.js). */
   group: 'smart',
   /** `target` es el nivel del generador (más alto = menos piezas puestas, como en el cuadernillo). */
-  levels: Object.freeze({
-    starter: Object.freeze({ name: 'Principiante', target: 1 }),
-    junior:  Object.freeze({ name: 'Fácil',        target: 2 }),
-    expert:  Object.freeze({ name: 'Medio',        target: 3 }),
-    master:  Object.freeze({ name: 'Difícil',      target: 4 }),
-    wizard:  Object.freeze({ name: 'Experto',      target: 5 })
-  }),
-  levelOrder: Object.freeze(['starter', 'junior', 'expert', 'master', 'wizard'])
+  levels: difficulty({ easy: 2, hard: 4, expert: 5 }),
+  levelOrder: LEVEL_ORDER,
+  /** Niveles de antes, para pasar récords y partidas (core/level-migration.js). */
+  oldLevels: OLD_LEVELS.five
 });

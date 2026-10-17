@@ -1,6 +1,6 @@
 // Versión y lista de archivos: no se editan a mano, las escribe scripts/build-sw.mjs al hacer commit
 // <generado por scripts/build-sw.mjs>
-const VERSION = 'pzg-fc34d5e493';
+const VERSION = 'pzg-88e836be0c';
 const FILES = [
   './', './index.html', './manifest.webmanifest', './css/base.css', './css/components.css',
   './css/games/akari.css', './css/games/binario.css', './css/games/gears.css', './css/games/hashi.css',
@@ -12,12 +12,13 @@ const FILES = [
   './css/tokens.css', './js/app/app.js', './js/boot-check.js', './js/config.js',
   './js/core/digit-grid-controller.js', './js/core/game-controller.js', './js/core/game-definition.js',
   './js/core/generator-worker.js', './js/core/grid-pieces-controller.js', './js/core/hint-cooldown.js',
-  './js/core/history.js', './js/core/progress.js', './js/core/puzzle-supply.js', './js/core/runners.js',
-  './js/core/stats.js', './js/core/store.js', './js/games/akari/board-view.js', './js/games/akari/config.js',
-  './js/games/akari/controller.js', './js/games/akari/engine/generator.js', './js/games/akari/engine/light.js',
-  './js/games/akari/index.js', './js/games/akari/meta.js', './js/games/akari/rules.js',
-  './js/games/akari/templates.js', './js/games/akari/worker.js', './js/games/binario/board-view.js',
-  './js/games/binario/config.js', './js/games/binario/controller.js', './js/games/binario/engine/generator.js',
+  './js/core/history.js', './js/core/level-migration.js', './js/core/levels.js', './js/core/progress.js',
+  './js/core/puzzle-supply.js', './js/core/runners.js', './js/core/stats.js', './js/core/store.js',
+  './js/games/akari/board-view.js', './js/games/akari/config.js', './js/games/akari/controller.js',
+  './js/games/akari/engine/generator.js', './js/games/akari/engine/light.js', './js/games/akari/index.js',
+  './js/games/akari/meta.js', './js/games/akari/rules.js', './js/games/akari/templates.js',
+  './js/games/akari/worker.js', './js/games/binario/board-view.js', './js/games/binario/config.js',
+  './js/games/binario/controller.js', './js/games/binario/engine/generator.js',
   './js/games/binario/engine/grid.js', './js/games/binario/index.js', './js/games/binario/meta.js',
   './js/games/binario/rules.js', './js/games/binario/templates.js', './js/games/binario/worker.js',
   './js/games/catalog.js', './js/games/gears/art.js', './js/games/gears/board-view.js',
@@ -108,11 +109,11 @@ const FILES = [
   './js/lib/polyomino.js', './js/lib/random.js', './js/main.js', './js/pwa.js', './js/ui/cell-drag.js',
   './js/ui/confirm-dialog.js', './js/ui/cube-svg.js', './js/ui/edge-back.js', './js/ui/fit-play.js',
   './js/ui/fit-spots.js', './js/ui/fit-text.js', './js/ui/game-hud.js', './js/ui/grid-board.js',
-  './js/ui/help-figure.js', './js/ui/hub-view.js', './js/ui/level-menu.js', './js/ui/overlays.js',
-  './js/ui/piece-drag.js', './js/ui/progress-view.js', './js/ui/settings-panel.js', './js/ui/templates.js',
-  './js/ui/toast.js', './js/ui/win-strip.js', './fonts/archivo-black.woff2', './fonts/archivo.woff2',
-  './icons/apple-touch-icon.png', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png',
-  './icons/icon.svg'
+  './js/ui/help-figure.js', './js/ui/hub-view.js', './js/ui/level-menu.js', './js/ui/night-mode.js',
+  './js/ui/overlays.js', './js/ui/piece-drag.js', './js/ui/progress-view.js', './js/ui/settings-panel.js',
+  './js/ui/templates.js', './js/ui/toast.js', './js/ui/win-strip.js', './fonts/archivo-black.woff2',
+  './fonts/archivo.woff2', './icons/apple-touch-icon.png', './icons/icon-192.png', './icons/icon-512.png',
+  './icons/icon-maskable-512.png', './icons/icon-maskable.svg', './icons/icon.svg'
 ];
 // </generado>
 // Cada versión guarda todos sus archivos pedidos al servidor (no a la caché HTTP del navegador,

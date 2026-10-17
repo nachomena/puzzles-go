@@ -32,8 +32,7 @@ export const help = () => `
   <h3>Niveles</h3>
   <ul>
     <li><b>Fácil:</b> jaulas de 2 y 3 casillas; basta con las sumas y ver dónde cabe cada número.</li>
-    <li><b>Medio:</b> jaulas algo más grandes; hacen falta candidatos bloqueados, pares y tríos, y ver dónde puede ir un número que una jaula necesita.</li>
-    <li><b>Difícil:</b> siempre hace falta la regla del 45 en una fila, columna o caja.</li>
+    <li><b>Difícil:</b> jaulas más grandes; hacen falta candidatos bloqueados, pares y tríos, y siempre la regla del 45 en una fila, columna o caja.</li>
     <li><b>Experto:</b> jaulas de hasta 6 casillas y la regla del 45 en varias filas, columnas o cajas a la vez.</li>
   </ul>
   <h3>Controles</h3>
