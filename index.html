@@ -183,8 +183,8 @@
   </div>
 </div>
 
-<!-- GENERATING -->
-<div class="overlay" id="loading" role="dialog" aria-label="Generando" data-i18n-aria="loading.aria">
+<!-- GENERATING. It also covers the screen while the app starts (is-boot: just the logo, see js/app/app.js#start) -->
+<div class="overlay is-on is-boot" id="loading" role="dialog" aria-label="Generando" data-i18n-aria="loading.aria">
   <div class="loader">
     <!-- the app icon: the gold piece slots into its gap again and again -->
     <svg class="loader__logo" viewBox="136 80 264 372" aria-hidden="true"><g class="loader__tiles"><rect x="150" y="94" width="100" height="100" rx="24"/><rect x="262" y="94" width="100" height="100" rx="24"/><rect x="150" y="206" width="100" height="100" rx="24"/><rect x="262" y="206" width="100" height="100" rx="24"/><rect x="150" y="318" width="100" height="100" rx="24"/></g><rect class="loader__piece" x="262" y="318" width="100" height="100" rx="24"/></svg>

@@ -18,6 +18,8 @@
     setTimeout(function(){
       var list = document.getElementById('games');
       if (!list || list.children.length) return;
+      var boot = document.querySelector('.is-boot');   // the startup screen would hide the error
+      if (boot) boot.classList.remove('is-on', 'is-boot');
       var box = document.createElement('div');
       box.className = 'boot-error';
       box.innerHTML = '<b>' + TEXT.fail + '</b><span></span>';

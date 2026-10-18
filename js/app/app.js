@@ -106,7 +106,11 @@ export class App {
     return entry;
   }
 
-  start(){ this.#refreshMenus(); }
+  /** Draws the picker and removes the startup screen (the loading layer, see index.html). */
+  start(){
+    this.#refreshMenus();
+    byId('loading').classList.remove('is-on', 'is-boot');
+  }
 
   /* ---------- New version ---------- */
 
