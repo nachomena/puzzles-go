@@ -69,5 +69,5 @@ test('movimientos de más y desglose de Katamino', async () => {
   assert.equal(movesSummary([{ k: 'a', t: 1, h: 0, at: 1 }]), null);
   const kat = (await import('../js/games/katamino/meta.js')).default;
   const b = kat.progressBreakdown('n7', { 'grand:B:7': { solved: 1, best: 90 }, 'small:A:7': { solved: 2, best: 70 }, 'small:A:6': { solved: 1, best: 50 }, 'challenge:12:7': { solved: 1, best: null } });
-  assert.deepEqual(b.items, [{ name: 'Iniciación A', best: 70 }, { name: 'Medio B', best: 90 }, { name: 'Desafío N° 12', best: null }]);
+  assert.deepEqual(b.items, [{ name: 'Fácil 1A', best: 70 }, { name: 'Difícil 1B', best: 90 }, { name: 'Experto N° 12', best: null }]);
 });

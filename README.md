@@ -14,7 +14,7 @@ que se elija en los ajustes del selector). Todos los que tienen dificultades usa
 - **Círculo**: 10 piezas de bolas de doble cara que llenan un tablero redondo de 3 anillos sin cruzar sus nervios (en Difícil y Experto también hay que encontrar dónde van los nervios).
 - **Hexágono**: 12 piezas de doble cara en forma de trazo que llenan los huecos entre las clavijas de un tablero hexagonal.
 - **Encaje**: 12 piezas de bolas que llenan un tablero de 11×5; de 8 a 3 piezas puestas al empezar.
-- **Pentominós**: llenar un tablero de 5 columnas con pentominós; cada reto suma una pieza y una fila. 512 retos en 5 desafíos (de Iniciación a Desafío) que se eligen en una tabla; los resueltos quedan marcados.
+- **Pentominós**: llenar un tablero de 5 columnas con pentominós; cada reto suma una pieza y una fila. 512 retos en 5 series, repartidas en Fácil, Difícil y Experto, que se eligen en una tabla; los resueltos quedan marcados.
 - **Atasco**: deslizar coches y camiones en un 6×6 hasta sacar el rojo; niveles por movimientos mínimos (de 8 a más de 30).
 - **Trazo**: un camino que pasa por todas las casillas tocando los números en orden (de 6×6 a 7×7).
 - **Puentes**: unir islas con puentes de 1 o 2 que no se cruzan (de 7×7 a 10×10).

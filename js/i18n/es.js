@@ -607,15 +607,14 @@ export default {
     katamino: {
       name: 'Pentominós',
       tagline: 'Llena el tablero sin huecos',
-      levels: { small: 'Iniciación', slam: 'Básico', grand: 'Medio', super: 'Avanzado', challenge: 'Desafío' },
-      menuLabel: 'Desafíos',
+      series: 'Serie {n}',
       solvedOf: '{a} de {n} resueltos',
       row: 'N° {n}',
       pieces: '{n} piezas',
       piecesHead: 'Piezas',
       cellAria: 'Fila {row}, {n} piezas',
       cellSolved: ', resuelto',
-      breakdown: '{n} piezas en cada desafío',
+      breakdown: '{n} piezas en cada nivel',
       stuck: 'Así no se puede completar: quita alguna pieza',
       help: `
   <p>Cada reto consiste en llenar el tablero con las piezas que te da, sin dejar huecos. En el reto de 5 piezas hay que cubrir 5 filas con 5 piezas; en el de 8, 8 filas con 8 piezas.</p>
@@ -623,8 +622,8 @@ export default {
     <li>Todas las piezas son pentominós (de 5 casillas) y se pueden girar y voltear.</li>
     <li>Un reto puede tener varias soluciones: vale cualquiera.</li>
   </ul>
-  <h3>Desafíos</h3>
-  <p>Cada desafío tiene varias filas (A, B, C…). En cada fila empiezas con unas pocas piezas y, al resolver un reto, el siguiente añade una pieza nueva y una fila más de tablero, y empiezas con el tablero vacío. De <b>Iniciación</b> a <b>Desafío</b>, cada vez es más difícil.</p>
+  <h3>Niveles</h3>
+  <p>Cada nivel tiene una o dos series de filas (A, B, C…). En cada fila empiezas con unas pocas piezas y, al resolver un reto, el siguiente añade una pieza nueva y una fila más de tablero, y empiezas con el tablero vacío. Del <b>Fácil</b> al <b>Experto</b>, cada vez es más difícil.</p>
   <p>Puedes jugar cualquier reto desde la tabla. Los que has resuelto quedan marcados y la partida a medias se guarda para continuarla.</p>
   <h3>Controles</h3>
   {gestures}

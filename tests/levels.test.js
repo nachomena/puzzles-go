@@ -7,7 +7,7 @@ import { CATALOG } from '../js/games/catalog.js';
 
 test('todos los juegos con dificultades usan Fácil, Difícil y Experto', () => {
   for (const { meta } of CATALOG){
-    if (['katamino', 'peg-solitaire'].includes(meta.id)) continue;
+    if (meta.id === 'peg-solitaire') continue;   // sin niveles: el tablero se elige en Ajustes
     assert.deepEqual([...meta.levelOrder], [...LEVEL_ORDER], meta.id);
     assert.deepEqual(LEVEL_ORDER.map(L => meta.levels[L].name), ['Fácil', 'Difícil', 'Experto'], meta.id);
     const t = LEVEL_ORDER.map(L => meta.levels[L].target);

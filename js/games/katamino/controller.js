@@ -1,5 +1,5 @@
-/* Partida de Katamino (arrastrar, girar y voltear: core/grid-pieces-controller.js). Al resolver un
-   PENTA, el siguiente de la fila empieza con el tablero vacío, una fila más y una pieza nueva. */
+/* Partida de Pentominós (arrastrar, girar y voltear: core/grid-pieces-controller.js). Al resolver un
+   reto, el siguiente de la fila empieza con el tablero vacío, una fila más y una pieza nueva. */
 import { GridPiecesController } from '../../core/grid-pieces-controller.js';
 import { t } from '../../i18n/index.js';
 import { KataminoBoardView } from './board-view.js';
@@ -26,15 +26,15 @@ export class KataminoController extends GridPiecesController {
   isSolved(){ return isSolved(this.session.place, this.session.p.pieces); }
 
   /**
-   * Siguiente PENTA, con el tablero vacío: el siguiente de la fila o, al acabarla, el primero de la
-   * fila siguiente. false si era el último del desafío.
+   * Siguiente reto, con el tablero vacío: el siguiente de la fila o, al acabarla, el primero de la
+   * fila siguiente. false si era el último de la serie.
    */
   next(){
     const s = this.session;
     if (!s) return false;
-    const puzzle = nextPenta(s.L, s.p.label, s.p.n);
+    const puzzle = nextPenta(s.p.part, s.p.label, s.p.n);
     if (!puzzle) return false;
-    this.begin(s.L, puzzle);
+    this.begin(s.L, { ...puzzle, part: s.p.part });
     return true;
   }
 

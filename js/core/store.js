@@ -44,7 +44,9 @@ export class Store {
       for (const L of g.levelOrder){
         if (Array.isArray(s.buffers?.[L])) st.buffers[L] = s.buffers[L].filter(p => p && g.isValidPuzzle(p, L)).slice(0, BUFFER_CAP);
       }
-      if (s.cur && g.levels[s.cur.L] && s.cur.p) st.cur = g.restoreSession(s.cur);
+      // un juego que haya cambiado sus niveles pasa la partida guardada a los de ahora (p. ej. Pentominós)
+      const cur = s.cur && g.upgradeSession ? g.upgradeSession(s.cur) : s.cur;
+      if (cur && g.levels[cur.L] && cur.p) st.cur = g.restoreSession(cur);
       if (g.tools.includes(s.tool)) st.tool = s.tool;
     } catch (e){ /* datos corruptos: se empieza de cero */ }
   }

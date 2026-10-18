@@ -51,8 +51,9 @@ div.km-piece.is-ghost{position:fixed;z-index:30;pointer-events:none}
 .km-tray{--km-tray-cell:17px;display:flex;flex-wrap:wrap;gap:12px 14px;justify-content:center;align-items:center;padding:10px 0 4px;min-height:60px;touch-action:none}
 .km-piece.is-tray{position:relative;width:calc(var(--w) * var(--km-tray-cell));height:calc(var(--h) * var(--km-tray-cell))}
 
-/* Tabla de PENTAS (pantalla #pick) */
+/* Tabla de retos (pantalla #pick); en Fácil y Difícil, con un título por serie */
 .km-pick__count{font-size:15px;color:var(--dim);font-weight:600;margin:0 0 14px}
+.km-pick__series{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:6px 0 10px}
 /* Columnas con tope de ancho: un bloque de pocas columnas no estira sus casillas */
 .km-pick{display:grid;grid-template-columns:1.6em repeat(var(--base), minmax(0, 28px)) repeat(var(--cols), minmax(0, 46px));
   justify-content:space-between;gap:4px 3px;align-items:center;margin-bottom:22px}

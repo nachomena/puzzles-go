@@ -27,12 +27,14 @@ segundo plano, historial, cronómetro, estadísticas y pantalla de victoria son 
      Las estadísticas van por nivel; para agruparlas de otra forma, declara `statsRows` en `meta.js`
      (`[{ key, name }]`) y `statsKey(session)` en `index.js` (p. ej. el Solitario, por tablero), y si
      hace falta `statsName(session)` para el texto de la victoria.
-     Juegos con retos fijos que se eligen uno a uno (p. ej. Katamino): `picker` en `index.js`
+     Juegos con retos fijos que se eligen uno a uno (p. ej. Pentominós): `picker` en `index.js`
      (`render(L, data)` dibuja la tabla de un nivel con botones `data-action="pick-puzzle"`,
      `puzzle(L, dataset)` da el tablero tocado y `same(session, puzzle)` dice si es la partida abierta),
-     y en `meta.js` `menuLabel`, `levelMeta(L, stats)`, `sessionLabel(session)` y `resumeLabel(session)` para el menú.
+     y en `meta.js` `levelMeta(L, stats)`, `sessionLabel(session)` y `resumeLabel(session)` para el menú (y, si hace
+     falta, `menuLabel` para el título sobre los niveles). Si un juego cambia sus niveles, `upgradeSession(cur)` en
+     `meta.js` pasa la partida guardada a los de ahora antes de cargarla (ver `core/store.js`).
      El controlador puede definir `next()` para el botón "Siguiente tablero" (ver `core/game-controller.js`).
-     Para que un juego vaya dentro de un grupo del selector (p. ej. los SmartGames), `group` y opcionalmente
+     Para que un juego vaya dentro de un grupo del selector (p. ej. los de piezas), `group` y opcionalmente
      `shortName` (su nombre dentro del grupo) en `meta.js`; los grupos están en `ui/hub-view.js#GROUPS`.
 2. Añade `{ meta, load: () => import('./<id>/index.js'), css: 'css/games/<id>.css' }` a `CATALOG` en `js/games/catalog.js`.
 3. Si necesita estilos, crea `css/games/<id>.css` (se carga al abrir el juego, con su código; sin estilos, quita `css`).
@@ -50,8 +52,8 @@ segundo plano, historial, cronómetro, estadísticas y pantalla de victoria son 
   ola de victoria y `cellAt(x, y)`. Star Battle y Sudoku heredan de él.
 - `ui/cell-drag.js` — tocar y arrastrar sobre una rejilla.
 - `ui/piece-drag.js` — arrastrar piezas de una bandeja a un tablero de casillas y tocarlas.
-- `core/grid-pieces-controller.js` — partida de piezas sobre cuadrícula (arrastrar, girar, voltear, piezas fijas): Katamino, Puzzler Pro.
+- `core/grid-pieces-controller.js` — partida de piezas sobre cuadrícula (arrastrar, girar, voltear, piezas fijas): Pentominós, Encaje.
 - `core/digit-grid-controller.js` y `ui/templates.js#digitControls` — números en una cuadrícula con teclado, lápiz y goma: Sudoku, KenKen.
-- `lib/polyomino.js` — orientaciones de poliominós y buscador de soluciones para llenar un tablero (Katamino, Puzzler Pro).
+- `lib/polyomino.js` — orientaciones de poliominós y buscador de soluciones para llenar un tablero (Pentominós, Encaje).
 - `ui/cube-svg.js` — piezas hechas de cubitos con bisel (Smart Circuit).
 - `lib/bits.js` — `popcount`, `bitIndices`, `someCombination`.

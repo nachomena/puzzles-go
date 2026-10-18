@@ -21,10 +21,28 @@
 .card .btn-ghost{display:block;width:100%;margin-top:10px}
 
 .loader{margin:auto;text-align:center;padding:30px}
-.loader__spin{width:64px;height:64px;fill:var(--ink);margin:0 auto 18px;animation:spin 1.4s linear infinite}
+.loader__logo{display:block;width:62px;height:88px;margin:0 auto 20px;overflow:visible}
+/* las casillas de cristal de la P se encienden una tras otra; la pieza dorada cae girada y encaja.
+   La pieza empieza ya cayendo (retraso negativo), para que no parezca que tarda en aparecer. */
+.loader__tiles rect{fill:var(--ink);fill-opacity:.18;stroke:var(--ink);stroke-opacity:.45;stroke-width:4;animation:loader-tile 2.4s ease-in-out infinite}
+.loader__tiles rect:nth-child(2){animation-delay:.1s}
+.loader__tiles rect:nth-child(3){animation-delay:.2s}
+.loader__tiles rect:nth-child(4){animation-delay:.3s}
+.loader__tiles rect:nth-child(5){animation-delay:.4s}
+/* en reposo (y sin animaciones) queda como en el icono: girada, a punto de entrar */
+.loader__piece{fill:var(--accent);transform-box:fill-box;transform-origin:center;transform:translate(16px,14px) rotate(14deg);
+  animation:loader-piece 2.4s cubic-bezier(.3,.7,.4,1) -.5s infinite}
 .loader p{font-size:18px;margin:0 0 6px}
 .loader small{display:block;color:var(--dim);font-size:14px;margin-bottom:22px}
-@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes loader-tile{0%,100%{fill-opacity:.18}25%{fill-opacity:.38}50%{fill-opacity:.18}}
+@keyframes loader-piece{
+  0%{transform:translate(70px,-150px) rotate(70deg);opacity:0}
+  12%{opacity:1}
+  40%{transform:translate(16px,14px) rotate(14deg)}
+  55%{transform:translate(0,0) rotate(0) scale(1.06)}
+  62%,82%{transform:translate(0,0) rotate(0) scale(1);opacity:1}
+  100%{transform:translate(0,0) rotate(0) scale(.9);opacity:0}
+}
 /* Tira de la victoria: dónde queda esta partida entre las últimas (ui/win-strip.js) */
 #winStrip:empty{display:none}
 .win-strip{display:block;width:100%;margin:-8px 0 4px;overflow:visible}

@@ -607,15 +607,14 @@ export default {
     katamino: {
       name: 'Pentominoes',
       tagline: 'Fill the board without gaps',
-      levels: { small: 'Starter', slam: 'Basic', grand: 'Intermediate', super: 'Advanced', challenge: 'Challenge' },
-      menuLabel: 'Challenges',
+      series: 'Set {n}',
       solvedOf: '{a} of {n} solved',
       row: 'No. {n}',
       pieces: '{n} pieces',
       piecesHead: 'Pieces',
       cellAria: 'Row {row}, {n} pieces',
       cellSolved: ', solved',
-      breakdown: '{n} pieces in each challenge',
+      breakdown: '{n} pieces in each level',
       stuck: 'It can’t be completed like this: remove a piece',
       help: `
   <p>Each puzzle is about filling the board with the pieces it gives you, without leaving gaps. In the 5-piece puzzle you cover 5 rows with 5 pieces; in the 8-piece one, 8 rows with 8 pieces.</p>
@@ -623,8 +622,8 @@ export default {
     <li>All the pieces are pentominoes (5 squares each) and can be rotated and flipped.</li>
     <li>A puzzle can have several solutions: any of them counts.</li>
   </ul>
-  <h3>Challenges</h3>
-  <p>Each challenge has several rows (A, B, C…). In each row you start with a few pieces and, when you solve a puzzle, the next one adds a new piece and one more row of board, and you start with an empty board. From <b>Starter</b> to <b>Challenge</b>, it gets harder each time.</p>
+  <h3>Levels</h3>
+  <p>Each level has one or two sets of rows (A, B, C…). In each row you start with a few pieces and, when you solve a puzzle, the next one adds a new piece and one more row of board, and you start with an empty board. From <b>Easy</b> to <b>Expert</b>, it gets harder each time.</p>
   <p>You can play any puzzle from the table. The ones you have solved are marked, and a game in progress is saved so you can continue it.</p>
   <h3>Controls</h3>
   {gestures}

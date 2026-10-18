@@ -4,7 +4,7 @@ import { W, PIECES, ORIENTATIONS, orient, cellsOf } from '../js/games/katamino/e
 import { countSolutions, solve } from '../js/games/katamino/engine/solver.js';
 import { BLOCKS, penta, nextPenta, findRow } from '../js/games/katamino/engine/sets.js';
 import { fits, isSolved, check, hintFrom, occupancy } from '../js/games/katamino/rules.js';
-import meta, { pentaKey, solvedIn, rowName } from '../js/games/katamino/meta.js';
+import meta, { pentaKey, solvedIn, rowName, levelOf } from '../js/games/katamino/meta.js';
 import game from '../js/games/katamino/index.js';
 
 const all = [...PIECES.keys()];
@@ -38,15 +38,15 @@ test('solucionador: respeta las piezas ya puestas', () => {
   assert.ok(grid.every(n => n === 1));
 });
 
-test('desafíos: 512 PENTAS y todos tienen solución', () => {
+test('series: 512 retos y todos tienen solución', () => {
   let total = 0;
   for (const L of meta.levelOrder){
     let n = 0;
-    for (const b of BLOCKS[L]) for (const row of b.rows){
+    for (const b of meta.levels[L].parts.flatMap(part => BLOCKS[part])) for (const row of b.rows){
       assert.equal(row.pieces.length, b.to);
       assert.equal(new Set(row.pieces).size, b.to, `${L} ${row.label} sin piezas repetidas`);
       for (let k = b.from; k <= b.to; k++){
-        assert.ok(solve(row.pieces.slice(0, k)), `${L} ${row.label} PENTA ${k}`);
+        assert.ok(solve(row.pieces.slice(0, k)), `${L} ${row.label} ${k} piezas`);
         n++;
       }
     }
@@ -102,21 +102,37 @@ test('reglas: con una pieza mal puesta, la pista la señala', () => {
   assert.fail('no se encontró ninguna postura sin solución');
 });
 
-test('menú: progreso por desafío, nombres y partida guardada', () => {
-  const stats = { [pentaKey('small', 'A', 3)]: { solved: 1 }, [pentaKey('small', 'B', 4)]: { solved: 2 }, [pentaKey('slam', 'A', 5)]: { solved: 1 } };
-  assert.equal(solvedIn('small', stats), 2);
-  assert.equal(meta.levelMeta('small', stats), '2 de 42 resueltos');
-  assert.equal(rowName('12'), 'N° 12');
-  assert.equal(rowName('B'), 'B');
-  const s = { L: 'grand', p: penta('grand', 'B', 7), place: PIECES.map(() => null), tm: [], tr: [], time: 3, done: false, hints: 0 };
-  assert.equal(game.statsKey(s), 'grand:B:7');
-  assert.equal(meta.sessionLabel(s), 'Medio B · 7 piezas');
-  assert.equal(meta.resumeLabel(s), 'Medio B · 7');
+test('menú: tres niveles con sus series, nombres y partida guardada', () => {
+  assert.deepEqual([...meta.levelOrder], ['easy', 'hard', 'expert']);
+  assert.deepEqual(meta.levelOrder.map(L => [meta.levels[L].name, meta.levels[L].total]), [['Fácil', 160], ['Difícil', 192], ['Experto', 160]]);
+  assert.equal(levelOf('super'), 'hard');
+  const stats = { [pentaKey('small', 'A', 3)]: { solved: 1 }, [pentaKey('slam', 'B', 6)]: { solved: 2 }, [pentaKey('grand', 'A', 5)]: { solved: 1 } };
+  assert.equal(solvedIn('easy', stats), 2);
+  assert.equal(meta.levelMeta('easy', stats), '2 de 160 resueltos');
+  assert.equal(rowName('challenge', '12'), 'N° 12');
+  assert.equal(rowName('grand', 'B'), '1B');
+  assert.equal(rowName('super', 'B'), '2B');
+  const s = { L: 'hard', p: { ...penta('grand', 'B', 7), part: 'grand' }, place: PIECES.map(() => null), tm: [], tr: [], time: 3, done: false, hints: 0 };
+  assert.equal(game.statsKey(s), 'grand:B:7');   // la misma clave que antes: se conserva el progreso
+  assert.equal(meta.sessionLabel(s), 'Difícil 1B · 7 piezas');
+  assert.equal(meta.resumeLabel(s), 'Difícil 1B · 7');
   assert.ok(game.restoreSession(structuredClone(s)));
   const bad = structuredClone(s);
   bad.place[s.p.pieces[0]] = { m: 0, r: 0, x: 4, y: 0 };   // se sale por la derecha
   assert.equal(game.restoreSession(bad), null);
-  assert.equal(game.restoreSession({ ...structuredClone(s), p: { label: 'Z', n: 7 } }), null);
-  assert.deepEqual(game.picker.puzzle('grand', { row: 'B', n: '7' }), s.p);
-  assert.ok(game.picker.same(s, penta('grand', 'B', 7)));
+  assert.equal(game.restoreSession({ ...structuredClone(s), p: { label: 'Z', n: 7, part: 'grand' } }), null);
+  assert.equal(game.restoreSession({ ...structuredClone(s), p: { ...s.p, part: 'small' } }), null);   // serie de otro nivel
+  assert.deepEqual(game.picker.puzzle('hard', { part: 'grand', row: 'B', n: '7' }), s.p);
+  assert.equal(game.picker.puzzle('easy', { part: 'grand', row: 'B', n: '7' }), null);
+  assert.ok(game.picker.same(s, { ...penta('grand', 'B', 7), part: 'grand' }));
+  assert.ok(!game.picker.same(s, { ...penta('super', 'B', 7), part: 'super' }));
+});
+
+test('partida guardada con la serie como nivel (antes de los tres niveles): se pasa a su nivel', () => {
+  const old = { L: 'grand', p: penta('grand', 'B', 7), place: PIECES.map(() => null), tm: [], tr: [], time: 3, done: false, hints: 0 };
+  assert.equal(meta.resumeLabel(old), 'Difícil 1B · 7');   // el selector la lee sin pasarla
+  const s = game.restoreSession(meta.upgradeSession(structuredClone(old)));
+  assert.equal(s.L, 'hard');
+  assert.equal(s.p.part, 'grand');
+  assert.equal(game.statsKey(s), 'grand:B:7');
 });
