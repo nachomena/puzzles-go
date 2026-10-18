@@ -3,6 +3,7 @@
 import { COUNT, DATA } from './arrangements-data.js';
 import { PIECES, CELLS, W } from './pieces.js';
 import { orient } from './solver.js';
+import { decodeBase64 } from '../../../lib/base64.js';
 
 /**
  * Orientation of a piece with a side and a rotation (any of the 4 rotations: the player may leave a
@@ -27,15 +28,6 @@ export function footprint({ piece, face, rot, cell }){
 export function lookKey(p){
   const f = footprint(p);
   return f.cells.map((c, k) => `${c}:${f.masks[k]}${f.dots.includes(c) ? '*' : ''}`).sort().join(',');
-}
-
-function decodeBase64(b64){
-  if (typeof atob === 'function'){
-    const bin = atob(b64), out = new Uint8Array(bin.length);
-    for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
-    return out;
-  }
-  return Uint8Array.from(Buffer.from(b64, 'base64'));
 }
 
 let cache = null;

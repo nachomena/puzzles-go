@@ -1,5 +1,4 @@
 /* Hexagon's own markup: hexagonal board, buttons, piece tray and help. */
-import { iconButton } from '../../ui/templates.js';
 import { t } from '../../i18n/index.js';
 import { SPOTS_HELP } from '../../ui/fit-spots.js';
 import { gestureStrip } from '../../ui/help-figure.js';

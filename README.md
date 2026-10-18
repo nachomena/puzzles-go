@@ -42,12 +42,16 @@ npm install        # Playwright and the pre-commit hook (.githooks)
 npm start          # local server at http://localhost:8000 (modules don't load over file://)
 npm test           # engine, rules and infrastructure tests (node:test)
 npm run test:e2e   # browser tests (Playwright): every game, actions and offline use
-npm run check      # syntax and imports of all the JS, and sw.js up to date
+npm run check      # syntax and imports of all the JS, lint and sw.js up to date
+npm run lint       # ESLint alone
 ```
 
 `sw.js` is not edited by hand: on commit, the pre-commit hook (`scripts/build-sw.mjs`) writes the list of files
 cached for offline play and a `VERSION` that is the fingerprint of their content, so every published change reaches
 the iPhone on its own. `npm run build:sw` does the same by hand.
+
+ESLint (`eslint.config.js`) only looks for errors (unused or undefined names, unreachable code…), not style:
+the code is formatted by hand, with the basics in `.editorconfig` (2 spaces, UTF-8, final newline).
 
 GitHub Actions (`.github/workflows/ci.yml`) runs `check`, `test` and `test:e2e` on every push and pull request.
 

@@ -1,5 +1,5 @@
 /* Gridlock's own markup: car park, move counter, undo and help. */
-import { iconButton, undoRedo } from '../../ui/templates.js';
+import { undoRedo } from '../../ui/templates.js';
 import { t } from '../../i18n/index.js';
 import { helpFigure, hfCell } from '../../ui/help-figure.js';
 

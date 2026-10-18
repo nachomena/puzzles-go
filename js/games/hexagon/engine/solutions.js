@@ -2,15 +2,7 @@
    rotated and flipped versions. */
 import { COUNT, PIECE_COUNT, DATA } from './solutions-data.js';
 import { CELLS, SYMMETRIES, allPlacements } from './pieces.js';
-
-function decodeBase64(b64){
-  if (typeof atob === 'function'){
-    const bin = atob(b64), out = new Uint8Array(bin.length);
-    for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
-    return out;
-  }
-  return Uint8Array.from(Buffer.from(b64, 'base64'));
-}
+import { decodeBase64 } from '../../../lib/base64.js';
 
 /** Key of the cells a piece covers (the same for poses that look the same). */
 export const placeKey = (p, cells) => p + ':' + cells.slice().sort((a, b) => a - b).join();

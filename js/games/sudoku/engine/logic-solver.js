@@ -3,7 +3,7 @@
    Level 2 (Medium): + locked candidates (pointing/claiming), naked and hidden pairs and triples.
    Level 3 (Hard):   + X-Wing and Swordfish.
    A board is rated with the lowest level that solves it. */
-import { CELLS, SIZE, ALL, ROWS, COLS, BOXES, UNITS, PEERS, rowOf, colOf, boxOf, bit, digitOf } from './grid.js';
+import { CELLS, SIZE, ALL, ROWS, COLS, BOXES, UNITS, PEERS, rowOf, colOf, bit, digitOf } from './grid.js';
 import { popcount, lowBit, bitIndices, someCombination } from '../../../lib/bits.js';
 
 export const MAX_LEVEL = 3;

@@ -5,7 +5,6 @@ import { PIECES, RINGS, SECTORS, RIB_PATTERN } from './engine/pieces.js';
 import { RING_R, HOLE_R, xy, pieceParts, looseSvg } from './piece-svg.js';
 import { spotsMarkup } from '../../ui/fit-spots.js';
 
-const SVG_NS = 'http://www.w3.org/2000/svg';
 const DEG = 360 / SECTORS;
 /** Size of the copy that follows the finger, relative to the board. */
 const GHOST_SCALE = .65;

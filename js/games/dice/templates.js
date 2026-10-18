@@ -1,5 +1,5 @@
 /* Dice's own markup: board with arrows, controls, piece tray and help. */
-import { board, iconButton } from '../../ui/templates.js';
+import { board } from '../../ui/templates.js';
 import { t } from '../../i18n/index.js';
 import { gestureStrip } from '../../ui/help-figure.js';
 

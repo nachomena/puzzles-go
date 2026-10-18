@@ -3,7 +3,7 @@
    it says, and doesn't repeat numbers. No DOM. Cell i = row * N + column.
    `white[i]` = 1 if the cell is white. A run is { cells: [i…], sum, dir: 'h'|'v', clue } (clue =
    the black cell with its sum). */
-import { shuffle, randInt } from '../../../lib/random.js';
+import { shuffle } from '../../../lib/random.js';
 
 /** Runs of a board: the across and down ones of two or more white cells. */
 export function runsOf(n, white){

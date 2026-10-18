@@ -15,7 +15,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Syntax and imports; sw.js up to date
+      - name: Syntax, imports and lint; sw.js up to date
         run: npm run check
       - name: Engine and rules tests
         run: npm test

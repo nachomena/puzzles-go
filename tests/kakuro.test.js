@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { pattern, runsOf, fill, withSums } from '../js/games/kakuro/engine/board.js';
+import { pattern, runsOf, fill } from '../js/games/kakuro/engine/board.js';
 import { logic, combos, nextDeduction } from '../js/games/kakuro/engine/logic-solver.js';
 import { generate, decode, encode } from '../js/games/kakuro/engine/generator.js';
 import { LEVEL_RULES } from '../js/games/kakuro/engine/levels.js';

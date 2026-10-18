@@ -1,5 +1,5 @@
 /* Backtracking with masks and "most constrained cell first". */
-import { CELLS, ALL, PEERS, bit, usedAround } from './grid.js';
+import { CELLS, ALL, PEERS, usedAround } from './grid.js';
 import { popcount, bitIndices } from '../../../lib/bits.js';
 import { shuffle } from '../../../lib/random.js';
 

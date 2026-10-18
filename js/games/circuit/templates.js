@@ -1,5 +1,5 @@
 /* Circuit's own markup: board, buttons, piece tray and help. */
-import { board, iconButton } from '../../ui/templates.js';
+import { board } from '../../ui/templates.js';
 import { t } from '../../i18n/index.js';
 import { gestureStrip } from '../../ui/help-figure.js';
 

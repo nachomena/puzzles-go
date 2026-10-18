@@ -1,5 +1,4 @@
 /* Circle's own markup: round board, buttons, piece tray and help. */
-import { iconButton } from '../../ui/templates.js';
 import { t } from '../../i18n/index.js';
 import { gestureStrip } from '../../ui/help-figure.js';
 

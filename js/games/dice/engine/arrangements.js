@@ -4,6 +4,7 @@ import { COUNT, DATA } from './arrangements-data.js';
 import { decodeArrangement, SLOTS } from './codec.js';
 import { PIECE_TYPES, shape, DIE_ROWS, DIE_COLS, SIZE } from './pieces.js';
 import { diceValues } from './solver.js';
+import { decodeBase64 } from '../../../lib/base64.js';
 
 /** "Canonical" rotation of each (type, rotation): the first one giving the same shape and dots. */
 const CANON = PIECE_TYPES.map((_, type) => {
@@ -14,15 +15,6 @@ export const canonicalRot = (type, rot) => CANON[type][rot];
 
 /** Key of a placed piece; two equal pieces in the same place and shape have the same key. */
 export const placementKey = ({ type, rot, r, c }) => `${type}:${canonicalRot(type, rot)}:${r * SIZE + c}`;
-
-function decodeBase64(b64){
-  if (typeof atob === 'function'){
-    const bin = atob(b64), out = new Uint8Array(bin.length);
-    for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
-    return out;
-  }
-  return Uint8Array.from(Buffer.from(b64, 'base64'));
-}
 
 let cache = null;
 
