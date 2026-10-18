@@ -1,4 +1,4 @@
-/* Definición del Kakuro para el registro de juegos (contrato en js/games/README.md). */
+/* Kakuro definition for the game registry (contract in js/games/README.md). */
 import { defineGame } from '../../core/game-definition.js';
 import { generate } from './engine/generator.js';
 import { LEVEL_RULES } from './engine/levels.js';

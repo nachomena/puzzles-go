@@ -1,13 +1,13 @@
-/* Pantallas de progreso: un juego con cada uno de sus niveles y un nivel en detalle. Solo dibujan:
-   los datos salen de core/progress.js. Gráficos en SVG, una escala por eje; la única nota de color
-   (--accent) es la media o la última partida. */
+/* Progress screens: a game with each of its levels and one level in detail. They only draw: the data
+   comes from core/progress.js. SVG charts, one scale per axis; the only touch of colour (--accent) is
+   the average or the latest game. */
 import { formatTime } from '../lib/format.js';
 import { clean, meanTime, trend, inRange, movingAverage, timeStep, histogram, movesSummary, RANGES } from '../core/progress.js';
 import { t } from '../i18n/index.js';
 
 const MONTHS = t('progress.months');
 
-/** "hoy", "ayer", "8 oct" o "8 oct 2025". */
+/** "today", "yesterday", "8 Oct" or "8 Oct 2025". */
 export function dayLabel(at, now = Date.now()){
   const d = new Date(at), n = new Date(now), day = x => Math.floor((x.getTime() - x.getTimezoneOffset() * 6e4) / 864e5);
   const ago = day(n) - day(d);
@@ -19,7 +19,7 @@ export function dayLabel(at, now = Date.now()){
 /** "38 min" / "9 h 40 min". */
 const duration = s => s >= 3600 ? t('progress.hoursMinutes', { h: Math.floor(s / 3600), m: Math.round(s % 3600 / 60) }) : t('progress.minutesOnly', { m: Math.max(1, Math.round(s / 60)) });
 
-/** Etiqueta de la tendencia (con flecha y palabras, no solo color). */
+/** Trend label (with an arrow and words, not just colour). */
 function trendHtml(tr){
   if (tr.kind === 'few') return '';
   if (tr.kind === 'same') return `<span class="pg-pill">${t('progress.trendSame')}</span>`;
@@ -28,7 +28,7 @@ function trendHtml(tr){
     : `<span class="pg-pill pg-pill--slower">${t('progress.trendSlower', { pct: tr.pct })}</span>`;
 }
 
-/** Línea pequeña de los últimos `n` tiempos sin pistas, con el último en --accent ('' si hay menos de 2). */
+/** Small line of the last `n` times without hints, with the last one in --accent ('' if there are fewer than 2). */
 export function sparkSvg(entries, { W = 300, H = 40, n = 20, cls = 'pg-spark' } = {}){
   const c = clean(entries).slice(-n);
   if (c.length < 2) return '';
@@ -40,14 +40,14 @@ export function sparkSvg(entries, { W = 300, H = 40, n = 20, cls = 'pg-spark' } 
     `<circle cx="${x(c.length - 1).toFixed(1)}" cy="${y(ts[ts.length - 1]).toFixed(1)}" r="4"/></svg>`;
 }
 
-/* ---------- Pantalla de un juego ---------- */
+/* ---------- A game's screen ---------- */
 
 /**
  * @param {object} m
- * @param {{ id: string, name: string }[]} m.games   chips (todos los juegos)
- * @param {string} m.game   id del elegido
- * @param {string} m.name   su nombre
- * @param {object} m.stats  sus estadísticas
+ * @param {{ id: string, name: string }[]} m.games   chips (every game)
+ * @param {string} m.game   id of the chosen one
+ * @param {string} m.name   its name
+ * @param {object} m.stats  its statistics
  * @param {{ key, name, entries, best, solved }[]} m.rows  (core/progress.js#progressRows)
  */
 export function gameHtml({ games, game, name, stats, rows, now = Date.now() }){
@@ -76,9 +76,9 @@ export function gameHtml({ games, game, name, stats, rows, now = Date.now() }){
   return chips + kpis + `<div class="pg-rows">${body}</div>`;
 }
 
-/* ---------- Pantalla de un nivel ---------- */
+/* ---------- A level's screen ---------- */
 
-/** Gráfico de cada partida (puntos; huecos con pistas), media de 5 y récord. */
+/** Chart of each game (dots; hollow with hints), average of 5 and record. */
 function chartSvg(list, best){
   const W = 320, H = 180, L = 38, R = 6, T = 10, B = 24;
   const ts = list.map(e => e.t).concat(best ?? []), step = timeStep(Math.min(...ts), Math.max(...ts));
@@ -91,7 +91,7 @@ function chartSvg(list, best){
   for (const [at, a] of ticks) s += `<text class="pg-axis" x="${x(at)}" y="${H - 6}" text-anchor="${a}">${dayLabel(at)}</text>`;
   if (best){
     s += `<line class="pg-best" x1="${L}" x2="${W - R}" y1="${y(best)}" y2="${y(best)}"/>` +
-      // debajo de la raya si cabe; si no (récord en el fondo del eje), encima, para no pisar las fechas
+      // under the line if it fits; otherwise (record at the bottom of the axis) above it, so it doesn't cover the dates
       `<text class="pg-axis pg-axis--best" x="${W - R}" y="${y(best) + 13 <= H - B - 2 ? y(best) + 13 : y(best) - 5}" text-anchor="end">${t('progress.recordLine', { time: formatTime(best) })}</text>`;
   }
   const c = clean(list);
@@ -101,7 +101,7 @@ function chartSvg(list, best){
   return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${t('progress.chartAria')}">${s}</svg>`;
 }
 
-/** Columnas: cuántas partidas sin pistas caen en cada tramo de tiempo; la de la última, en --accent. */
+/** Columns: how many games without hints fall in each time band; the latest one's in --accent. */
 function histogramSvg(c){
   const ts = c.map(e => e.t), step = timeStep(Math.min(...ts), Math.max(...ts)), { start, counts } = histogram(ts, step);
   const W = 320, H = 110, B = 20, T = 16, slot = (W - 8) / counts.length, bw = Math.min(24, slot - 2), max = Math.max(...counts);
@@ -120,7 +120,7 @@ function histogramSvg(c){
   return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${t('progress.histAria', { from: formatTime(start), step: formatTime(step) })}">${s}</svg>`;
 }
 
-/** Rush Hour y otros que cuentan movimientos: cuántos de más en cada partida (sin barra = los justos). */
+/** Gridlock and others that count moves: how many extra in each game (no bar = the minimum). */
 function movesHtml(entries){
   const s = movesSummary(entries);
   if (!s) return '';
@@ -146,7 +146,7 @@ function movesHtml(entries){
     `<p class="pg-note">${t('progress.movesNote')}</p>`;
 }
 
-/** Desglose que da el propio juego (meta.progressBreakdown), p. ej. Katamino: el PENTA en cada desafío. */
+/** Breakdown provided by the game itself (meta.progressBreakdown), e.g. Pentominoes: a puzzle size in each level. */
 function breakdownHtml(meta, stats, row){
   const b = meta?.progressBreakdown?.(row.key, stats);
   if (!b?.items.length) return '';
@@ -158,9 +158,9 @@ function breakdownHtml(meta, stats, row){
 /**
  * @param {object} m
  * @param {{ key, name, entries, best }} m.row
- * @param {string} m.range  clave de RANGES
- * @param {object} [m.meta]   datos del juego (para su desglose propio)
- * @param {object} [m.stats]  sus estadísticas
+ * @param {string} m.range  key of RANGES
+ * @param {object} [m.meta]   the game's data (for its own breakdown)
+ * @param {object} [m.stats]  its statistics
  */
 export function levelHtml({ row, range, meta, stats = {}, now = Date.now() }){
   const list = inRange(row.entries, range, now), c = clean(list), avg = meanTime(c);
@@ -190,7 +190,7 @@ export function levelHtml({ row, range, meta, stats = {}, now = Date.now() }){
     `<hr class="pg-rule"><p class="pg-label">${t('progress.last')}</p><div class="pg-games">${last}</div>`;
 }
 
-/** Al tocar o pasar por el gráfico, la partida más cercana: su tiempo y su fecha. */
+/** On touching or hovering the chart, the nearest game: its time and its date. */
 export function bindChartTips(root){
   const show = e => {
     const chart = e.target.closest?.('[data-pg-chart]');

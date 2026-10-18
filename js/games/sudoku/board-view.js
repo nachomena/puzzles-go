@@ -1,11 +1,11 @@
-/* Tablero de Sudoku: pistas fijas, números del jugador, notas y resaltados. */
+/* Sudoku board: fixed clues, the player's numbers, notes and highlights. */
 import { GridBoard } from '../../ui/grid-board.js';
 import { notesHtml } from '../../ui/templates.js';
 import { SIZE, CELLS, boxOf, rowOf, colOf } from './engine/grid.js';
 
 const REGIONS = Array.from({ length: CELLS }, (_, i) => boxOf(i));
 
-/** ¿Comparten fila, columna o caja? */
+/** Do they share a row, column or box? */
 const sees = (a, b) => rowOf(a) === rowOf(b) || colOf(a) === colOf(b) || boxOf(a) === boxOf(b);
 
 export class SudokuBoard extends GridBoard {
@@ -13,12 +13,12 @@ export class SudokuBoard extends GridBoard {
 
   /**
    * @param {object} v
-   * @param {number[]} v.values   0 = vacía
-   * @param {number[]} v.notes    máscara de notas por casilla
-   * @param {number[]} v.givens   pistas fijas
-   * @param {number} v.sel        casilla seleccionada (-1 = ninguna)
+   * @param {number[]} v.values   0 = empty
+   * @param {number[]} v.notes    notes mask per cell
+   * @param {number[]} v.givens   fixed clues
+   * @param {number} v.sel        selected cell (-1 = none)
    * @param {Uint8Array|null} v.bad
-   * @param {number} v.same       dígito a resaltar (0 = ninguno)
+   * @param {number} v.same       digit to highlight (0 = none)
    */
   render({ values, notes, givens, sel, bad, same }){
     for (let i = 0; i < CELLS; i++){

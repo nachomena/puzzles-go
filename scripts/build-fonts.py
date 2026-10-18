@@ -1,5 +1,5 @@
-# Rehace fonts/*.woff2 a partir de las fuentes originales de Google Fonts (licencia OFL):
-# solo los caracteres que usa la app y, en Archivo, sin el eje de anchura (se queda en 100: el que usa la app).
+# Rebuilds fonts/*.woff2 from the original Google Fonts files (OFL license):
+# only the characters the app uses and, in Archivo, without the width axis (pinned at 100: the one the app uses).
 # Uso: pip install fonttools brotli && python3 scripts/build-fonts.py
 import io, os, urllib.request
 from fontTools.ttLib import TTFont
@@ -8,7 +8,7 @@ from fontTools import subset
 
 ROOT = os.path.join(os.path.dirname(__file__), '..')
 SRC = 'https://raw.githubusercontent.com/google/fonts/main/ofl/'
-# ASCII, español y los signos que se ven en pantalla (× ÷ − de KenKen, flechas de Progreso, °…)
+# ASCII, Spanish and the signs shown on screen (× ÷ − in Calcudoku, Progress arrows, °…)
 TEXT = ''.join(map(chr, range(0x20, 0x7f))) + '¡¿ÁÉÍÑÓÚÜáéíñóúü·×÷−–—‘’“”…°≥↑↓→'
 FEATURES = ['kern', 'liga', 'ccmp', 'locl', 'mark', 'mkmk', 'tnum', 'lnum', 'case']
 

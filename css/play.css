@@ -1,26 +1,26 @@
-/* Pantalla de juego común: cabecera, tablero, barra de herramientas y barra inferior. */
+/* Shared game screen: header, board, toolbar and bottom bar. */
 .wrap--game{padding:0 14px 100px}
-/* Tablero (y lo que lo rodea): se estrecha si la partida no cabe en la pantalla (ui/fit-play.js) */
+/* Board (and what surrounds it): it narrows if the game doesn't fit on the screen (ui/fit-play.js) */
 .play-fit{margin:0 auto}
 
 .hud{display:flex;justify-content:space-between;align-items:baseline;font-size:clamp(19px,5.6vw,24px);font-weight:500;padding:34px 0 8px}
 .hud__time{color:var(--dim);font-variant-numeric:tabular-nums;font-size:.85em}
-/* Juegos sin etiqueta de tamaño: el tiempo pasa a la derecha */
+/* Games without a size label: the time moves to the right */
 .hud [data-hud="size"]:empty{display:none}
 @media (min-height:800px){.hud{padding-top:70px}}
 
-/* Esquinas redondeadas y líneas finas, del mismo grosor en píxeles sea cual sea el tamaño de la casilla.
-   El marco lo pinta ::after, con las mismas esquinas (--frame: grosor; un juego puede sacarlo por fuera). */
+/* Rounded corners and thin lines, the same pixel width whatever the cell size.
+   The frame is drawn by ::after, with the same corners (--frame: width; a game can move it outside). */
 .board{--n:10;--frame:1.5px;position:relative;width:100%;aspect-ratio:1/1;touch-action:none;background:var(--cell);margin:0 auto;border-radius:var(--radius-board)}
 .board::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 var(--frame) var(--wall);pointer-events:none}
 .board__cells{position:absolute;inset:0;display:grid;grid-template-columns:repeat(var(--n),1fr);grid-template-rows:repeat(var(--rows,var(--n)),1fr);border-radius:inherit;overflow:hidden}
-/* recortadas con las esquinas del tablero: las paredes que llegan al borde no asoman por fuera */
+/* clipped to the board's corners: walls that reach the edge don't stick out */
 .board__lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;clip-path:inset(0 round var(--radius-board))}
 .board__grid{stroke:var(--grid);stroke-width:.6px;vector-effect:non-scaling-stroke;fill:none}
 .board__wall{stroke:var(--wall);stroke-width:1.6px;vector-effect:non-scaling-stroke;fill:none;stroke-linecap:square}
 
 .toolbar{display:flex;align-items:center;justify-content:space-between;padding:18px 0 0}
-/* grupo de botones (deshacer, rehacer, goma): una cápsula de cristal con botones redondos */
+/* button group (undo, redo, eraser): a glass capsule with round buttons */
 .toolbar__group{display:flex;gap:2px;padding:3px;border-radius:26px}
 .toolbar__group .icon-btn{width:44px;height:44px;border-radius:50%}
 .toolbar__group .icon-btn svg{width:26px;height:26px}
@@ -30,20 +30,20 @@
 .hint-btn.is-waiting svg{opacity:.35}
 .hint-btn__wait{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);font-size:11px;font-weight:600;color:var(--dim);font-variant-numeric:tabular-nums;white-space:nowrap}
 
-/* "Mostrar dónde cabe": puntos de los sitios donde cabe la pieza elegida (ui/fit-spots.js) */
+/* "Show where it fits": dots on the places where the picked piece fits (ui/fit-spots.js) */
 .fit-spot{pointer-events:auto;fill:var(--fit-spot,#e2bf5a);stroke:#1d1c21;cursor:pointer;animation:fit-spot 1.6s ease-in-out infinite;vector-effect:non-scaling-stroke;stroke-width:1.5px}
 .fit-spot.is-on{stroke:var(--ink);stroke-width:2.5px;animation:none}
 @keyframes fit-spot{50%{opacity:.55}}
 .is-chosen{opacity:.6;pointer-events:none}
 
-/* Bisel de las piezas de cubitos (ui/cube-svg.js) */
+/* Bevel of the cube pieces (ui/cube-svg.js) */
 .cube-bevel--top{fill:rgba(255,255,255,.16)}
 .cube-bevel--left{fill:rgba(255,255,255,.08)}
 .cube-bevel--right{fill:rgba(0,0,0,.2)}
 .cube-bevel--bottom{fill:rgba(0,0,0,.32)}
 .cube-bevel--face{fill:rgba(0,0,0,.1)}
 
-/* Números en una cuadrícula con teclado (Sudoku, KenKen: core/digit-grid-controller.js) */
+/* Numbers on a grid with a keypad (Sudoku, Calcudoku: core/digit-grid-controller.js) */
 .board--digits .cell{position:relative;font-variant-numeric:tabular-nums;cursor:pointer}
 .board--digits .cell.is-peer{background:var(--cell-peer)}
 .board--digits .cell.is-same{background:var(--cell-same)}
@@ -55,9 +55,9 @@
 .board.is-won .sd-digit{animation:win 1s ease-in-out both;animation-delay:var(--wave-delay)}
 .sd-notes{position:absolute;inset:6%;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr)}
 .sd-notes i{font-style:normal;font-size:clamp(8px,2.4vw,11px);line-height:1;color:var(--dim);display:grid;place-items:center;font-weight:600}
-/* nota del número resaltado: como las casillas con ese número */
+/* note of the highlighted number: like the cells with that number */
 .sd-notes i.is-same{color:var(--ink);background:var(--cell-same);border-radius:3px;font-weight:800}
-/* El selector de herramientas va más estrecho para que quepa la goma */
+/* The tool picker is narrower so the eraser fits */
 .board--digits ~ .toolbar .segmented button{width:62px}
 .keypad{display:grid;grid-template-columns:repeat(var(--keys,9),1fr);gap:4px;padding-top:14px}
 .keypad__key{height:52px;border-radius:14px;font-size:24px;font-weight:600;color:var(--entry);font-variant-numeric:tabular-nums}

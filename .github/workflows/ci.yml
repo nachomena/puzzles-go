@@ -15,13 +15,13 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Sintaxis e imports; sw.js al día
+      - name: Syntax and imports; sw.js up to date
         run: npm run check
-      - name: Pruebas de motores y reglas
+      - name: Engine and rules tests
         run: npm test
-      - name: Instalar Chromium
+      - name: Install Chromium
         run: npx playwright install --with-deps chromium
-      - name: Pruebas en el navegador
+      - name: Browser tests
         run: npm run test:e2e
       - uses: actions/upload-artifact@v4
         if: failure()

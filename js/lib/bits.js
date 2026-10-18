@@ -1,11 +1,11 @@
-/* Operaciones genéricas con máscaras de bits. */
+/* Generic bit mask operations. */
 
 export const popcount = x => { let c = 0; while (x){ x &= x - 1; c++; } return c; };
 
-/** Índice (desde 0) del bit más bajo. */
+/** Index (from 0) of the lowest bit. */
 export const lowBit = x => 31 - Math.clz32(x & -x);
 
-/** Índices (desde 0) de los bits encendidos. */
+/** Indices (from 0) of the set bits. */
 export function bitIndices(x){
   const out = [];
   while (x){ out.push(lowBit(x)); x &= x - 1; }
@@ -13,8 +13,8 @@ export function bitIndices(x){
 }
 
 /**
- * Recorre las combinaciones de `k` elementos de `arr` (k pequeño) sin crear arrays nuevos:
- * `fn` recibe siempre el mismo array de trabajo. Si `fn` devuelve true se detiene y devuelve true.
+ * Walks the combinations of `k` elements of `arr` (small k) without creating new arrays:
+ * `fn` always receives the same working array. If `fn` returns true it stops and returns true.
  */
 export function someCombination(arr, k, fn){
   const acc = [];

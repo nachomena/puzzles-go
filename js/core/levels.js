@@ -1,23 +1,23 @@
-/* Los tres niveles de dificultad, iguales en todos los juegos: Fácil, Difícil y Experto. Cada juego solo dice
-   qué nivel de su generador (`target`) usa en cada uno. Katamino y el Solitario tienen los suyos (no son
-   dificultades sino tableros que se eligen). */
+/* The three difficulty levels, the same in every game: Easy, Hard and Expert. Each game only says
+   which level of its generator (`target`) it uses for each one. Peg Solitaire has its own (they aren't
+   difficulties but boards that are chosen). */
 import { t } from '../i18n/index.js';
 
 export const LEVEL_ORDER = Object.freeze(['easy', 'hard', 'expert']);
 
-/** Niveles de un juego a partir del `target` del generador de cada uno: { easy: 2, hard: 4, expert: 5 }. */
+/** A game's levels from the generator `target` of each one: { easy: 2, hard: 4, expert: 5 }. */
 export const difficulty = targets =>
   Object.freeze(Object.fromEntries(LEVEL_ORDER.map(L => [L, Object.freeze({ name: t(`levels.${L}`), target: targets[L] })])));
 
 /**
- * Niveles de antes (id viejo → id nuevo), para pasar las estadísticas, el registro y la partida en curso
- * (ver core/level-migration.js). Al juntar dos niveles en uno se queda lo mejor de los dos.
+ * Old levels (old id → new id), to move statistics, the game log and the game in progress
+ * (see core/level-migration.js). When two levels become one, the best of both is kept.
  */
 export const OLD_LEVELS = Object.freeze({
-  /** Principiante · Fácil · Medio · Difícil · Experto (el id `expert` era el Medio). */
+  /** Beginner · Easy · Medium · Hard · Expert (the `expert` id used to be Medium). */
   five: Object.freeze({ starter: 'easy', junior: 'easy', expert: 'hard', master: 'hard', wizard: 'expert' }),
-  /** Fácil · Medio · Difícil · Experto. */
+  /** Easy · Medium · Hard · Expert. */
   four: Object.freeze({ easy: 'easy', medium: 'hard', hard: 'hard', expert: 'expert' }),
-  /** Sudoku: Fácil · Medio · Difícil (el Difícil de antes es el Experto). */
+  /** Sudoku: Easy · Medium · Hard (the old Hard is now Expert). */
   three: Object.freeze({ easy: 'easy', medium: 'hard', hard: 'expert' })
 });

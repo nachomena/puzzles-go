@@ -1,4 +1,4 @@
-/* Design tokens: única fuente de colores, tipografías y medidas. */
+/* Design tokens: the single source of colours, fonts and sizes. */
 @font-face{font-family:"Archivo Black";src:url(../fonts/archivo-black.woff2) format("woff2");font-weight:400 900;font-display:swap}
 @font-face{font-family:"Archivo";src:url(../fonts/archivo.woff2) format("woff2");font-weight:100 900;font-display:swap}
 
@@ -7,26 +7,26 @@
 
   /* Superficies */
   --bg:#212026;
-  --surface:#2a2930;          /* hojas y tarjetas */
-  --surface-press:#2e2d34;    /* botón pulsado */
+  --surface:#2a2930;          /* sheets and cards */
+  --surface-press:#2e2d34;    /* pressed button */
   --backdrop:rgba(18,17,22,.72);
-  /* Cristal (components.css .glass): fondo oscuro casi opaco, un poco de desenfoque y un canto de 1 px */
+  /* Glass (components.css .glass): an almost opaque dark background, a little blur and a 1 px edge */
   --glass:rgba(38,37,43,.66);
   --glass-rim-top:rgba(255,255,255,.18);
   --glass-rim:rgba(255,255,255,.05);
   --glass-hover:rgba(255,255,255,.06);
-  --glass-on:rgba(255,255,255,.13);     /* opción elegida dentro del cristal */
+  --glass-on:rgba(255,255,255,.13);     /* chosen option inside the glass */
   --cell:#39383d;
   --cell-flash:#6c6a77;
 
   /* Texto */
-  /* sin blanco puro: cansa menos la vista sobre el fondo oscuro */
+  /* no pure white: easier on the eyes on the dark background */
   --ink:#d3d1da;
   --ink-soft:#c0bec9;
   --ink-label:#b0afba;
   --dim:#8f8e9a;
 
-  /* Líneas */
+  /* Lines */
   --grid:#4c4b53;
   --wall:#cfcdd6;
   --divider:#3a3940;
@@ -37,18 +37,18 @@
   --x:#de6a5e;
   --bad:#f0665a;
   --star:#ecebe6;
-  --accent:#e2bf5a;           /* lo destacado de un gráfico (la partida de hoy) */
-  --good:#7fc79a;             /* más rápido */
-  --slow:#e3907f;             /* más lento */
+  --accent:#e2bf5a;           /* the highlight of a chart (today's game) */
+  --good:#7fc79a;             /* faster */
+  --slow:#e3907f;             /* slower */
 
-  /* Controles */
+  /* Controls */
   --seg:#302f36;
   --seg-on:#66656f;
   --switch-off:#4a4951;
   --switch-on:#8b89a0;
   --knob:#e6e5ea;
 
-  /* Tipografía */
+  /* Typography */
   --font-body:"Archivo",-apple-system,BlinkMacSystemFont,"Helvetica Neue",system-ui,sans-serif;
   --font-display:"Archivo Black","Arial Black",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
 
@@ -60,20 +60,20 @@
   --radius-lg:20px;
   --radius-board:clamp(14px,4.6vw,22px);
   --safe-top:env(safe-area-inset-top,0px);
-  /* --viewport-gap (js/pwa.js): franja de abajo que iOS no dibuja en la app instalada; ya hace de margen */
+  /* --viewport-gap (js/pwa.js): bottom strip iOS doesn't draw in the installed app; it already acts as a margin */
   --safe-bottom:max(0px, calc(env(safe-area-inset-bottom,0px) - var(--viewport-gap, 0px)));
 }
 
 /* Sudoku */
 :root{
-  --entry:#93aade;            /* número escrito por el jugador */
-  --cell-peer:#45444c;        /* fila, columna y caja de la casilla elegida */
-  --cell-same:#58566e;        /* casillas con el mismo número */
+  --entry:#93aade;            /* number written by the player */
+  --cell-peer:#45444c;        /* row, column and box of the chosen cell */
+  --cell-same:#58566e;        /* cells with the same number */
   --cell-selected:#66656f;
 }
 
-/* Modo noche (ajuste de toda la app, ui/night-mode.js): colores cálidos, sin azules ni blancos, para jugar
-   antes de dormir. Mismos tokens; lo que cada juego pinta con sus propios colores se templa con un filtro. */
+/* Night mode (an app-wide setting, ui/night-mode.js): warm colours, no blues or whites, for playing
+   before bed. Same tokens; what each game paints with its own colours is toned down with a filter. */
 :root.is-night{
   --bg:#1c1612;
   --surface:#261e18;
@@ -110,6 +110,6 @@
   --cell-same:#54402c;
   --cell-selected:#5f4a35;
 }
-/* los colores propios de cada juego (piezas, caminos, dados): un filtro cálido en la raíz, que no cambia cómo
-   se colocan las barras fijas */
+/* each game's own colours (pieces, paths, dice): a warm filter on the root, which doesn't change how
+   the fixed bars are positioned */
 :root.is-night{filter:sepia(.45) saturate(.85)}

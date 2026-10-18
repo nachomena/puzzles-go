@@ -1,0 +1,72 @@
+/* Pentominoes: a long 5-column board with a slider, coloured wooden pentominoes and the puzzle table
+   of each level. */
+/* Muted tones for dark mode, the same as Hexagon. On :root because the puzzle table, which is outside
+   the game screen, uses them too. */
+:root{
+  --pt-yellow:#d6bf5a; --pt-orange:#d58c45; --pt-red:#c65454; --pt-maroon:#94403a; --pt-pink:#cd77a3; --pt-purple:#9273b0;
+  --pt-navy:#4561a3; --pt-blue:#4e91cc; --pt-aqua:#72b3a9; --pt-gray:#8a8995; --pt-green:#4f9665; --pt-lime:#9db94f;
+}
+.pt-hue-yellow{--pt-c:var(--pt-yellow)} .pt-hue-orange{--pt-c:var(--pt-orange)} .pt-hue-red{--pt-c:var(--pt-red)}
+.pt-hue-maroon{--pt-c:var(--pt-maroon)} .pt-hue-pink{--pt-c:var(--pt-pink)} .pt-hue-purple{--pt-c:var(--pt-purple)}
+.pt-hue-navy{--pt-c:var(--pt-navy)} .pt-hue-blue{--pt-c:var(--pt-blue)} .pt-hue-aqua{--pt-c:var(--pt-aqua)}
+.pt-hue-gray{--pt-c:var(--pt-gray)} .pt-hue-green{--pt-c:var(--pt-green)} .pt-hue-lime{--pt-c:var(--pt-lime)}
+
+[data-game="pentominoes"]{
+  --pt-wood:#a88c5f;
+  /* height available for the board: what the header, the buttons, the tray and the dock leave */
+  --pt-max-h:max(220px, calc(100svh - 430px));
+}
+
+/* Header: the puzzle being played, smaller than the level name */
+[data-game="pentominoes"] .hud [data-hud="size"]{font-size:.72em;color:var(--ink-soft)}
+
+/* The board grows downwards with the puzzle; it narrows to fit in height */
+.board--pentominoes{--n:5;aspect-ratio:5/var(--rows,5);width:min(100%, calc(var(--pt-max-h) * 5 / var(--rows,5)), 340px)}
+/* Slider at the end of the board */
+.pt-slider{width:min(100%, calc(var(--pt-max-h) * 5 / var(--rows,5)), 340px);margin:0 auto;height:9px;border-radius:0 0 4px 4px;
+  background:var(--pt-wood)}
+
+/* Pieces. On the board, <g> groups of one SVG; in the tray and while dragging, a <div> with its SVG */
+.pt-pieces{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.pt-piece{touch-action:none;cursor:grab}
+div.pt-piece{position:absolute}
+.pt-piece__svg{display:block;width:100%;height:100%;overflow:visible}
+.pt-piece__body{fill:var(--pt-c)}
+/* Darker inner groove, like the groove of the Hexagon tubes */
+.pt-piece__groove{fill:none;stroke:color-mix(in srgb, var(--pt-c) 72%, #000);stroke-width:.24;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+/* outline of the picked piece: a stroke under the body, in pixels; only half of it shows (about 2 px) */
+.pt-piece__halo{fill:none;stroke:var(--ink);stroke-width:4px;vector-effect:non-scaling-stroke;stroke-linejoin:round}
+div.pt-piece.is-selected{filter:drop-shadow(0 0 1px var(--ink)) drop-shadow(0 0 1px var(--ink))}
+.pt-piece.is-lifted{opacity:.2}
+div.pt-piece.is-ghost{position:fixed;z-index:30;pointer-events:none}
+.pt-piece.is-flash{animation:pt-flash .5s ease-in-out 3}
+@keyframes pt-flash{50%{opacity:.35}}
+.board.is-won .pt-piece{animation:pt-glow 1.1s ease-in-out both}
+@keyframes pt-glow{40%{filter:brightness(1.35)}}
+
+/* Buttons under the board: restart on the left, flip on the right */
+.pt-actions{display:flex;justify-content:flex-end;align-items:center;padding-top:8px}
+
+/* Tray: pieces smaller than on the board */
+.pt-tray{--pt-tray-cell:17px;display:flex;flex-wrap:wrap;gap:12px 14px;justify-content:center;align-items:center;padding:10px 0 4px;min-height:60px;touch-action:none}
+.pt-piece.is-tray{position:relative;width:calc(var(--w) * var(--pt-tray-cell));height:calc(var(--h) * var(--pt-tray-cell))}
+
+/* Puzzle table (#pick screen); on Easy and Hard, with a title per set */
+.pt-pick__count{font-size:15px;color:var(--dim);font-weight:600;margin:0 0 14px}
+.pt-pick__series{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:6px 0 10px}
+/* Width-capped columns: a block with few columns doesn't stretch its cells */
+.pt-pick{display:grid;grid-template-columns:1.6em repeat(var(--base), minmax(0, 28px)) repeat(var(--cols), minmax(0, 46px));
+  justify-content:space-between;gap:4px 3px;align-items:center;margin-bottom:22px}
+.pt-pick__row{display:contents}
+.pt-pick__head{font-size:12px;font-weight:700;color:var(--dim)}
+.pt-pick__penta{grid-column:span var(--base);text-align:center;letter-spacing:.08em}
+.pt-pick__num{text-align:center;font-variant-numeric:tabular-nums}
+.pt-pick__label{font-family:var(--font-display);font-size:15px;text-align:center}
+.pt-pick__base{display:grid;place-items:center;aspect-ratio:1;opacity:.75}
+.pt-pick__cell{display:grid;place-items:center;aspect-ratio:1;border-radius:7px;background:var(--seg);padding:3px;position:relative}
+.pt-pick__cell:active{background:var(--surface-press)}
+.pt-pick__cell.is-done{background:var(--seg-on)}
+.pt-pick__cell.is-done::after{content:"";position:absolute;right:2px;top:2px;width:7px;height:7px;border-radius:50%;background:var(--wall)}
+.pt-pick__cell.is-current{box-shadow:inset 0 0 0 2px var(--wall)}
+.pt-icon{width:100%;height:100%;display:block}
+.pt-icon path{fill:var(--pt-c)}

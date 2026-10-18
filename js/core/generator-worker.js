@@ -1,8 +1,8 @@
-/* Bucle común de los workers de generación: fabrica tableros hasta conseguir uno del
-   nivel pedido. Los de otros niveles también se envían para aprovecharlos. */
+/* Shared loop of the generation workers: builds boards until it gets one of the requested
+   level. Boards of other levels are sent too, so they aren't wasted. */
 import { runToEnd } from '../lib/iter.js';
 
-/** Convierte `generate(target)` en un worker que responde al protocolo de PuzzleSupply. */
+/** Turns `generate(target)` into a worker that answers PuzzleSupply's protocol. */
 export function serveGenerator(generate){
   self.onmessage = ({ data }) => {
     if (data.ping){ self.postMessage({ pong: 1 }); return; }

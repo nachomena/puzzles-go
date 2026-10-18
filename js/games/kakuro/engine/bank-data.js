@@ -1,4 +1,4 @@
-/* Retos de Kakuro Experto ya calculados (scripts/build-kakuro-bank.mjs): "." negra, dígito = blanca. */
+/* Precomputed Kakuro Expert puzzles (scripts/build-kakuro-bank.mjs): "." black, digit = white. */
 export default [
   '..............12.57.987..123.813765..798..21..83..362..82.91.87.132.19...948.986.854...59.123.98.95.82..927..31..13..689..761892.128..985.41.94.',
   '.............12..589647..319.671983....8739...14.3149.....49.93..39.9287..289175346..2418.89..21.15.....1392.36...3521....723619.213..851947..24',

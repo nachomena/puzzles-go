@@ -1,21 +1,21 @@
-/* Estadísticas de un juego, sin DOM: récord y media. Funciones puras para poder probarlas;
-   Store las usa para guardar, y los menús y la pantalla de victoria para mostrarlas.
+/* A game's statistics, without DOM: record and average. Pure functions so they can be tested;
+   Store uses them to save, and the menus and the win screen to show them.
 
-   stats[key] = { solved, best, sum, timed, bestMoves? }   key = nivel (o lo que diga game.statsKey)
-     solved  partidas resueltas · best  mejor tiempo sin pistas
-     sum / timed  suma de tiempos y cuántas la forman (las victorias de antes de guardar la suma no cuentan)
-     bestMoves  menos movimientos sin pistas (solo los juegos que los cuentan, ver controller.winExtra) */
+   stats[key] = { solved, best, sum, timed, bestMoves? }   key = level (or whatever game.statsKey says)
+     solved  games solved · best  best time without hints
+     sum / timed  sum of times and how many make it up (wins from before the sum was saved don't count)
+     bestMoves  fewest moves without hints (only games that count them, see controller.winExtra) */
 import { formatTime } from '../lib/format.js';
 import { t } from '../i18n/index.js';
 
-/** Filas de estadísticas de un juego: sus niveles, o las que declare meta.statsRows. */
+/** A game's statistics rows: its levels, or the ones declared in meta.statsRows. */
 export const statsRows = meta => meta.statsRows ?? meta.levelOrder.map(L => ({ key: L, name: meta.levels[L].name }));
 
-/** Tiempo medio en segundos (redondeado) o null. */
+/** Average time in seconds (rounded) or null. */
 export const average = st => st?.timed ? Math.round(st.sum / st.timed) : null;
 
 /**
- * Apunta una victoria. Modifica `stats`. `extra.moves`: movimientos de la partida, si el juego los cuenta.
+ * Records a win. Modifies `stats`. `extra.moves`: the game's moves, if the game counts them.
  * @returns {{ record: boolean, best: number|null, prevBest: number|null, prevAvg: number|null }}
  */
 export function recordWin(stats, key, time, hints, extra = {}){
@@ -31,8 +31,8 @@ export function recordWin(stats, key, time, hints, extra = {}){
 }
 
 /**
- * Texto bajo un nivel del menú: el récord; si solo se ha resuelto con pistas (que no dan récord), cuántas
- * veces y el tiempo medio, para que el tiempo no desaparezca.
+ * Text under a level in the menu: the record; if it has only been solved with hints (which give no
+ * record), how many times and the average time, so the time doesn't disappear.
  */
 export function levelSummary(st){
   if (st?.best) return t('common.record', { time: formatTime(st.best) });
@@ -44,7 +44,7 @@ export function levelSummary(st){
 /** "12 s" / "1:05 min". */
 const duration = s => s < 60 ? t('stats.seconds', { n: s }) : t('stats.minutes', { time: formatTime(s) });
 
-/** Frase que compara el tiempo con la media anterior, o '' si aún no hay media. */
+/** Sentence comparing the time with the previous average, or '' if there is no average yet. */
 export function versusAverage(time, prevAvg){
   if (prevAvg == null) return '';
   const diff = prevAvg - time;
@@ -52,7 +52,7 @@ export function versusAverage(time, prevAvg){
   return t(diff > 0 ? 'stats.fasterThanAvg' : 'stats.slowerThanAvg', { d: duration(Math.abs(diff)) });
 }
 
-/** Texto bajo el tiempo en la pantalla de victoria. */
+/** Text under the time on the win screen. */
 export function winDetail({ record, best, prevBest, prevAvg }, { time, hints, name }){
   const vs = versusAverage(time, prevAvg);
   if (record) return t('stats.newRecord', { name }) + (prevBest ? t('stats.before', { time: formatTime(prevBest) }) : '.') + (vs ? ` ${vs}` : '');

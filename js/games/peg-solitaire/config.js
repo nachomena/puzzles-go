@@ -1,10 +1,10 @@
-/* Configuración del Solitario. */
+/* Peg Solitaire configuration. */
 import meta from './meta.js';
 import { t } from '../../i18n/index.js';
 
 export const LEVELS = meta.levels;
 
-/** Sin herramientas: se toca una bola y luego el agujero al que salta (o se arrastra). */
+/** No tools: tap a ball and then the hole it jumps to (or drag it). */
 export const TOOL = Object.freeze({ MOVE: 'move' });
 
 export const DEFAULT_SETTINGS = Object.freeze({ board: 'english', timer: true });

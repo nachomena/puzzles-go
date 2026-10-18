@@ -1,11 +1,11 @@
-/* Partida de Engranajes: tocar un hueco alterna punto → engranaje → vacío; "Girar" mueve la manivela y
-   todo lo que ya está unido a ella. */
+/* Gears game: tapping a slot cycles dot → gear → empty; "Turn" moves the crank and everything already
+   connected to it. */
 import { GameController } from '../../core/game-controller.js';
 import { t } from '../../i18n/index.js';
 import { GearsBoardView } from './board-view.js';
 import { evaluate, isSolved, findMistake, findHint } from './rules.js';
 
-/** Tras cada toque (0 vacío, 1 engranaje, 2 punto): vacío → punto → engranaje → vacío. */
+/** After each tap (0 empty, 1 gear, 2 dot): empty → dot → gear → empty. */
 const NEXT = [2, 0, 1];
 
 export class GearsController extends GameController {
@@ -19,7 +19,7 @@ export class GearsController extends GameController {
     });
   }
 
-  /* ---------- Pasos de la plantilla ---------- */
+  /* ---------- Template steps ---------- */
 
   createSession(L, puzzle){ return { L, p: puzzle, marks: new Array(puzzle.w * puzzle.h).fill(0), time: 0, done: false, hints: 0 }; }
   mountBoard(){ this.view.build(this.session.p); }
@@ -35,7 +35,7 @@ export class GearsController extends GameController {
   celebrate(){ this.view.celebrate(); }
   get actions(){ return { turn: () => this.turn() }; }
 
-  /** ¿Se puede tocar el hueco i? (no los de la manivela, el cerrojo, los fijos ni los números) */
+  /** Can slot i be tapped? (not the crank, the lock, the fixed ones or the numbers) */
   #free(i){ const p = this.session.p; return i !== p.crank && i !== p.lock && !p.fixed.includes(i) && p.clues[i] === undefined; }
 
   toggle(i){
@@ -47,7 +47,7 @@ export class GearsController extends GameController {
     this.commit(true);
   }
 
-  /** Gira la manivela y dice qué falta para abrir el cerrojo. */
+  /** Turns the crank and says what is missing to open the lock. */
   turn(){
     if (!this.active) return;
     const { p, marks } = this.session, a = evaluate(p, marks);

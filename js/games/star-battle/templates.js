@@ -1,4 +1,4 @@
-/* Marcado propio de Star Battle: controles de la partida y texto de ayuda. */
+/* Star Battle's own markup: game controls and help text. */
 import { toolPicker, undoRedo, svgIcon, inlineIcon } from '../../ui/templates.js';
 import { t } from '../../i18n/index.js';
 

@@ -1,11 +1,11 @@
-/* Configuración del Kakuro. */
+/* Kakuro configuration. */
 import meta from './meta.js';
 import { t } from '../../i18n/index.js';
 import { PEN, PENCIL } from '../../core/digit-grid-controller.js';
 
 export const LEVELS = meta.levels;
 
-/** Herramientas: escribir el número o anotarlo como candidato. */
+/** Tools: write the number or note it down as a candidate. */
 export const TOOL = Object.freeze({ PEN, PENCIL });
 
 export const DEFAULT_SETTINGS = Object.freeze({ errors: false, autoNotes: true, sameDigit: true, timer: true });

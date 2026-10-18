@@ -1,5 +1,5 @@
-// Revisa la sintaxis de todo el JavaScript (node --check) y que cada import relativo apunte a un
-// archivo que existe: sin paso de compilación, un error así solo se vería al abrir el juego.
+// Checks the syntax of all the JavaScript (node --check) and that every relative import points to a
+// file that exists: with no build step, such an error would only show up when opening the game.
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join, dirname, relative, resolve } from 'node:path';
 import { execFile } from 'node:child_process';
@@ -29,7 +29,7 @@ const SPEC = /(?:\bfrom\s*|\bimport\s*\(\s*|\bimport\s+|new URL\(\s*)(['"])(\.{1
 for (const f of files){
   const code = readFileSync(f, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
   for (const [, , spec] of code.matchAll(SPEC)){
-    if (!existsSync(resolve(dirname(f), spec))) errors.push(`${relative(root, f)}: no existe '${spec}'`);
+    if (!existsSync(resolve(dirname(f), spec))) errors.push(`${relative(root, f)}: '${spec}' does not exist`);
   }
 }
 
@@ -37,4 +37,4 @@ if (errors.length){
   console.error(errors.join('\n\n'));
   process.exit(1);
 }
-console.log(`JavaScript correcto en ${files.length} archivos.`);
+console.log(`JavaScript OK in ${files.length} files.`);

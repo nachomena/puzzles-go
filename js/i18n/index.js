@@ -1,14 +1,14 @@
-/* Idiomas de la app. Los textos están en un fichero por idioma (es.js, en.js) con las mismas claves; se carga
-   solo el del idioma en uso. El idioma es el del móvil salvo que se elija otro en los ajustes del selector;
-   al cambiarlo se recarga la app. Fuera del navegador (las pruebas en Node) va en español. */
+/* App languages. The texts are in one file per language (es.js, en.js) with the same keys; only the one in
+   use is loaded. The language is the phone's unless another one is chosen in the picker settings; changing
+   it reloads the app. Outside the browser (the Node tests) it is Spanish. */
 const KEY = 'puzzlesgo.lang';
 
-/** Idiomas disponibles, cada uno con su nombre en su propio idioma. */
+/** Available languages, each with its name in its own language. */
 export const LANGUAGES = Object.freeze({ es: 'Español', en: 'English' });
 
 const storage = (() => { try { return globalThis.localStorage ?? null; } catch (e){ return null; } })();
 
-/** Idioma del móvil, si es uno de los de la app; si no, inglés. */
+/** The phone's language, if it is one of the app's; otherwise English. */
 export function deviceLanguage(){
   if (typeof document === 'undefined') return 'es';
   const tags = globalThis.navigator?.languages?.length ? navigator.languages : [navigator.language || ''];
@@ -19,20 +19,20 @@ export function deviceLanguage(){
   return 'en';
 }
 
-/** Lo elegido en los ajustes: 'es', 'en' o 'auto' (el del móvil). */
+/** What was chosen in the settings: 'es', 'en' or 'auto' (the phone's). */
 export function languageChoice(){
   let v = null;
   try { v = storage?.getItem(KEY); } catch (e){}
   return v in LANGUAGES ? v : 'auto';
 }
 
-/** Idioma en uso. */
+/** Language in use. */
 export const lang = languageChoice() === 'auto' ? deviceLanguage() : languageChoice();
 
 const dict = (await import(`./${lang}.js`)).default;
 if (typeof document !== 'undefined') document.documentElement.lang = lang;
 
-/** Guarda el idioma elegido ('auto' vuelve al del móvil) y recarga la app para aplicarlo. */
+/** Saves the chosen language ('auto' goes back to the phone's) and reloads the app to apply it. */
 export function setLanguage(choice){
   try { choice === 'auto' ? storage?.removeItem(KEY) : storage?.setItem(KEY, choice); } catch (e){}
   location.reload();
@@ -41,17 +41,17 @@ export function setLanguage(choice){
 const lookup = (d, key) => key.split('.').reduce((o, k) => o?.[k], d);
 
 /**
- * Texto de `key` ("hub.choose", "games.sudoku.name"…). Los textos llevan huecos {nombre} que se rellenan con
- * `vars`; los que dependen de un número (plurales) son funciones que reciben `vars`.
+ * Text for `key` ("hub.choose", "games.sudoku.name"…). Texts have {name} slots that are filled from
+ * `vars`; the ones that depend on a number (plurals) are functions that receive `vars`.
  */
 export function t(key, vars = {}){
   const s = lookup(dict, key);
   if (typeof s === 'function') return s(vars);
-  if (typeof s !== 'string'){ console.warn('i18n: falta', key); return key; }
+  if (typeof s !== 'string'){ console.warn('i18n: missing', key); return key; }
   return s.replace(/\{(\w+)\}/g, (m, k) => k in vars ? vars[k] : m);
 }
 
-/** Traduce el marcado fijo: data-i18n (texto) y data-i18n-aria (aria-label). */
+/** Translates the fixed markup: data-i18n (text) and data-i18n-aria (aria-label). */
 export function translateDom(root = document){
   root.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
   root.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });

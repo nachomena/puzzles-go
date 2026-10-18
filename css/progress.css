@@ -1,4 +1,4 @@
-/* Pantallas de progreso (ui/progress-view.js): un juego con sus niveles y un nivel en detalle. */
+/* Progress screens (ui/progress-view.js): a game with its levels and one level in detail. */
 .pg-over{margin:0 0 8px;font-size:15px;font-weight:600;color:var(--dim)}
 
 .pg-chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -2px 22px;padding:2px}
@@ -21,7 +21,7 @@
 .pg-pill--slower{color:var(--slow);background:color-mix(in srgb,var(--slow) 14%,transparent)}
 .pg-pill--best{color:var(--bg);background:var(--accent)}
 
-/* Filas de niveles */
+/* Level rows */
 .pg-rows{display:flex;flex-direction:column}
 .pg-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;width:100%;padding:14px 0;text-align:left;border-top:1px solid var(--divider)}
 .pg-row:first-child{border-top:0;padding-top:0}
@@ -36,7 +36,7 @@
 .pg-spark path{fill:none;stroke:var(--dim);stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
 .pg-spark circle{fill:var(--accent);stroke:var(--bg);stroke-width:2}
 
-/* Gráficos del nivel */
+/* Level charts */
 .pg-chart{position:relative}
 .pg-chart svg{display:block;width:100%;overflow:visible}
 .pg-axis{font-family:var(--font-body);font-size:10.5px;fill:var(--dim);font-variant-numeric:tabular-nums}
@@ -62,7 +62,7 @@
 .pg-rule{height:3px;background:var(--rule);border:0;margin:24px 0 16px}
 .pg-label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-weight:700;margin:0 0 12px}
 
-/* Últimas partidas */
+/* Latest games */
 .pg-games{display:flex;flex-direction:column}
 .pg-game{display:grid;grid-template-columns:62px 1fr auto;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--divider);font-size:14px;font-variant-numeric:tabular-nums}
 .pg-game:first-child{border-top:0;padding-top:0}
@@ -76,13 +76,13 @@
 .pg-game--wide{grid-template-columns:1fr auto auto}
 .pg-game__name{color:var(--ink-soft);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
-/* Volver junto al título (estas pantallas no tienen barra de abajo) */
-/* rejilla: la flecha en su columna, y el título y el nombre del juego encima alineados en la otra */
+/* Back next to the title (these screens have no bottom bar) */
+/* grid: the arrow in its column, and the title and the game name above it aligned in the other */
 .pg-head{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:2px}
 .pg-over{grid-column:2}
-/* la flecha (no la caja del botón) empieza en el margen, como el resto de la pantalla; el toque sigue siendo amplio */
+/* the arrow (not the button's box) starts at the margin, like the rest of the screen; the tap area stays large */
 .pg-back{position:relative;width:32px;margin-left:-8px}
 .pg-back::after{content:"";position:absolute;inset:0 -10px}
 .pg-head .hero__title{min-width:0}
-/* sin barra de abajo ni etiqueta de sección, el contenido va más cerca del título */
+/* without a bottom bar or a section label, the content sits closer to the title */
 .menu.menu--bare{padding-top:6px;padding-bottom:calc(32px + var(--safe-bottom))}

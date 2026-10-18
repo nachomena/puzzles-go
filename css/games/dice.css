@@ -1,0 +1,81 @@
+/* Dice: transparent pieces with dots, sum arrows and a tray. */
+:root{
+  --dc-piece:rgba(220,219,228,.10);
+  --dc-piece-line:rgba(220,219,228,.55);
+  --dc-placed:rgba(220,219,228,.24);
+  --dc-dot:#fff;
+  --dc-tray-cell:30px;
+}
+
+/* Board with arrows: rows on the right, columns underneath */
+/* Sizes shared by the board, the arrows and the header */
+[data-game="dice"]{--arrow-long:54px;--arrow-short:40px;--dc-gap:14px}
+.dc-area{display:grid;grid-template-columns:1fr var(--arrow-long);
+  grid-template-rows:auto var(--arrow-long);gap:var(--dc-gap)}
+/* Narrow phones: slightly more compact arrows to leave more room for the board */
+@media (max-width:400px){[data-game="dice"]{--arrow-long:46px;--arrow-short:36px;--dc-gap:10px}}
+/* No row arrows: no such column and the board (same size) centred */
+.dc-area.is-no-rows{grid-template-columns:1fr;padding:0 calc((var(--arrow-long) + var(--dc-gap)) / 2)}
+/* Header (level and time) always aligned with the board's edges */
+[data-game="dice"] .hud{padding-left:0;padding-right:calc(var(--arrow-long) + var(--dc-gap))}
+[data-game="dice"].dc-no-rows .hud{padding-left:calc((var(--arrow-long) + var(--dc-gap)) / 2);padding-right:calc((var(--arrow-long) + var(--dc-gap)) / 2)}
+.dc-area.is-no-rows .dc-arrows--rows{display:none}
+/* Restart: bottom left, level with the column arrows */
+.dc-area .board{grid-area:1/1}
+.board--dice{--n:6;margin:0 auto}
+/* Thin gaps between dice and the frame outside: so the 36 cells look the same */
+.board--dice .board__wall{stroke-width:1px;stroke-linecap:butt}
+.board--dice::after{inset:-2px;border-radius:calc(var(--radius-board) + 2px);--frame:2px}
+.dc-arrows{display:flex}
+.dc-arrows--rows{grid-area:1/2;flex-direction:column}
+.dc-arrows--cols{grid-area:2/1}
+.dc-arrow-slot{flex:1;display:grid;place-items:center}
+/* Arrow: SVG shape with the big number inside */
+.dc-arrow{position:relative;display:grid;place-items:center;font-variant-numeric:tabular-nums}
+.dc-arrows--rows .dc-arrow{width:var(--arrow-long);height:var(--arrow-short)}
+.dc-arrows--cols .dc-arrow{width:var(--arrow-short);height:var(--arrow-long)}
+.dc-arrow__shape{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.dc-arrow__shape path{fill:var(--surface);stroke:var(--ink-soft);stroke-width:2.5;stroke-linejoin:round}
+.dc-arrow__num{position:relative;font-family:var(--font-display);font-weight:900;font-size:18px;line-height:1;color:var(--ink)}
+.dc-arrows--rows .dc-arrow__num{margin-left:12px}
+.dc-arrows--cols .dc-arrow__num{margin-top:12px}
+.dc-arrow.is-empty{visibility:hidden}
+.dc-arrow.is-ok .dc-arrow__shape path{stroke:var(--wall);fill:var(--seg-on)}
+.dc-arrow.is-bad .dc-arrow__shape path{stroke:var(--bad)}
+.dc-arrow.is-bad .dc-arrow__num{color:var(--bad)}
+
+/* Dice: highlight of an invalid face */
+.dc-dice{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;pointer-events:none}
+.dc-dice i.is-bad{box-shadow:inset 0 0 0 4px var(--bad)}
+
+/* Pieces: transparent plastic. The border is an inset shadow (it takes no room), with an inner rim as
+   on the real pieces, light on top, shadow below and a light drop shadow underneath. */
+.dc-pieces{position:absolute;inset:0}
+.dc-piece{--gap:0px;position:absolute;box-sizing:border-box;border-radius:10px;background:var(--dc-piece);
+  box-shadow:inset 0 0 0 2px var(--dc-piece-line),inset 0 3px 4px rgba(255,255,255,.16),inset 0 -5px 9px rgba(0,0,0,.38);
+  touch-action:none;cursor:grab;transition:opacity .15s}
+.dc-piece::before{content:"";position:absolute;inset:5px;border-radius:6px;border:1px solid rgba(255,255,255,.2);pointer-events:none}
+/* Placed by the player: highlighted (light border and more fill) */
+.dc-pieces .dc-piece{--gap:clamp(5px, 1.8vw, 8px);background:var(--dc-placed);
+  box-shadow:inset 0 0 0 2px var(--wall),inset 0 3px 4px rgba(255,255,255,.2),inset 0 -5px 9px rgba(0,0,0,.35),0 3px 6px rgba(0,0,0,.4)}
+/* Dot: 50 % of the visible part of a cell (cell minus margin), so it never touches the border */
+.dc-piece i{position:absolute;width:calc(((100% + 2 * var(--gap)) / var(--w) - 2 * var(--gap)) * .5);aspect-ratio:1;border-radius:50%;background:var(--dc-dot);translate:-50% -50%;
+  box-shadow:inset 0 -2px 3px rgba(0,0,0,.25),0 1px 2px rgba(0,0,0,.35)}
+/* The ones the puzzle brings: discreet grey, they don't move */
+.dc-pieces .dc-piece.is-fixed{background:var(--dc-piece);cursor:default;
+  box-shadow:inset 0 0 0 2px var(--dc-piece-line),inset 0 3px 4px rgba(255,255,255,.16),inset 0 -5px 9px rgba(0,0,0,.38),0 3px 6px rgba(0,0,0,.4)}
+.dc-piece.is-lifted{opacity:.2}
+.dc-piece.is-ghost{position:fixed;z-index:30;pointer-events:none;background:rgba(220,219,228,.22);
+  box-shadow:inset 0 0 0 2px var(--ink),inset 0 3px 4px rgba(255,255,255,.18),inset 0 -5px 9px rgba(0,0,0,.35),0 10px 24px rgba(0,0,0,.45)}
+.dc-piece.is-flash{animation:flash .5s ease-in-out 3}
+.board.is-won .dc-piece i{animation:win 1s ease-in-out both}
+
+/* Tray and short help underneath */
+.dc-tray{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center;padding:10px 0 4px;min-height:60px;touch-action:none}
+.dc-piece.is-tray{position:relative;width:calc(var(--w) * var(--dc-tray-cell));height:calc(var(--h) * var(--dc-tray-cell));border-radius:8px}
+
+/* Help: valid faces */
+.dc-faces{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 4px}
+.dc-face{width:38px;height:38px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:4px;background:var(--cell);border-radius:6px}
+.dc-face i{border-radius:50%;margin:2px;background:transparent}
+.dc-face i.on{background:var(--dc-dot)}

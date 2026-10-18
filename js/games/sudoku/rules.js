@@ -1,9 +1,9 @@
-/* Reglas del Sudoku sobre lo que escribe el jugador. Funciones puras, sin DOM. */
+/* Sudoku rules on what the player writes. Pure functions, no DOM. */
 import { CELLS, UNITS, PEERS, bit } from './engine/grid.js';
 import { nextSingle } from './engine/logic-solver.js';
 import { pick } from '../../lib/random.js';
 
-/** Casillas cuyo número se repite en alguna de sus unidades. */
+/** Cells whose number repeats in one of their units. */
 export function conflicts(values){
   const bad = new Uint8Array(CELLS);
   for (const unit of UNITS){
@@ -19,23 +19,23 @@ export function conflicts(values){
 
 export const isSolved = (values, solution) => values.every((v, i) => v === solution[i]);
 
-/** Cuántas veces aparece cada dígito (índice 1..9). */
+/** How many times each digit appears (index 1..9). */
 export function digitCounts(values){
   const counts = new Array(10).fill(0);
   for (const v of values) if (v) counts[v]++;
   return counts;
 }
 
-/** Quita la nota `d` de las casillas que ven a i (muta `notes`). */
+/** Removes note `d` from the cells that see i (mutates `notes`). */
 export function clearNoteAround(notes, i, d){
   for (const p of PEERS[i]) notes[p] &= ~bit(d);
 }
 
 /**
- * Pista: primero señala un número equivocado; si no hay, la siguiente casilla que se
- * deduce con singles; si no, una casilla vacía cualquiera.
+ * Hint: first point out a wrong number; if there is none, the next cell deduced with singles;
+ * otherwise, any empty cell.
  */
-/** Primer número escrito que no coincide con la solución. */
+/** First written number that doesn't match the solution. */
 export function findMistake(values, solution){
   const wrong = values.findIndex((v, i) => v && v !== solution[i]);
   return wrong >= 0 ? { type: 'wrong', cell: wrong } : null;

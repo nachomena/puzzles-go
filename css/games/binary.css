@@ -1,0 +1,21 @@
+/* Binary: red and blue tiles on dark cells; the given ones carry a dot. */
+[data-game="binary"]{--bn-1:#c8604e;--bn-2:#4b82c3}
+/* the frame goes outside the cells (it doesn't cover them): so the edge tiles have the same gap as the rest */
+.board--binary{width:calc(100% - 4px)}
+.board--binary::after{inset:-2px;border-radius:calc(var(--radius-board) + 2px);--frame:2px}
+.board--binary .cell{cursor:pointer;position:relative}
+.board--binary .cell.is-given{cursor:default}
+.bn-tile{position:absolute;inset:7%;border-radius:14%;animation:pop .16s ease-out}
+/* in the board's corners, the outer corner follows its rounding (a little less, because of the gap) */
+[data-corner="tl"] .bn-tile{border-top-left-radius:calc(var(--radius-board) - 4px)}
+[data-corner="tr"] .bn-tile{border-top-right-radius:calc(var(--radius-board) - 4px)}
+[data-corner="bl"] .bn-tile{border-bottom-left-radius:calc(var(--radius-board) - 4px)}
+[data-corner="br"] .bn-tile{border-bottom-right-radius:calc(var(--radius-board) - 4px)}
+
+.bn-1{background:var(--bn-1)}
+.bn-2{background:var(--bn-2)}
+.bn-tile.is-given{animation:none}
+.bn-tile.is-given::after{content:"";position:absolute;left:50%;top:50%;width:14%;aspect-ratio:1;border-radius:50%;background:rgba(0,0,0,.32);transform:translate(-50%,-50%)}
+/* mistake: dark stripes, visible on both colours */
+.cell.is-bad .bn-tile{background-image:repeating-linear-gradient(45deg,rgba(0,0,0,.38) 0 4px,transparent 4px 9px)}
+.board.is-won .bn-tile{animation:win 1s ease-in-out both;animation-delay:var(--wave-delay)}

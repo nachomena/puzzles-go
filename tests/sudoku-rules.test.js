@@ -5,12 +5,12 @@ import { PEERS, bit } from '../js/games/sudoku/engine/grid.js';
 
 const empty = () => new Array(81).fill(0);
 
-test('conflicts marca los repetidos en fila, columna y caja', () => {
+test('conflicts marks the repeats in row, column and box', () => {
   const v = empty();
-  v[0] = 5; v[8] = 5;      // misma fila
-  v[40] = 3; v[76] = 3;    // misma columna (4)
-  v[60] = 7; v[80] = 7;    // misma caja
-  v[30] = 5;               // sin conflicto
+  v[0] = 5; v[8] = 5;      // same row
+  v[40] = 3; v[76] = 3;    // same column (4)
+  v[60] = 7; v[80] = 7;    // same box
+  v[30] = 5;               // no conflict
   const bad = conflicts(v);
   assert.deepEqual([...bad.keys()].filter(i => bad[i]), [0, 8, 40, 60, 76, 80]);
 });
@@ -23,14 +23,14 @@ test('digitCounts e isSolved', () => {
   assert.ok(!isSolved([1, 0], [1, 2]));
 });
 
-test('clearNoteAround quita la nota solo en las casillas que se ven', () => {
+test('clearNoteAround removes the note only in the cells that see it', () => {
   const notes = new Array(81).fill(bit(4) | bit(7));
   clearNoteAround(notes, 40, 4);
   for (const p of PEERS[40]) assert.equal(notes[p], bit(7));
-  assert.equal(notes[0], bit(4) | bit(7), 'una casilla que no ve a 40 no cambia');
+  assert.equal(notes[0], bit(4) | bit(7), "a cell that doesn't see 40 doesn't change");
 });
 
-test('findHint señala primero el número equivocado', () => {
+test('findHint flags the wrong number first', () => {
   const solution = [...Array(81)].map((_, i) => (i % 9) + 1);
   const values = empty(); values[3] = 9;
   assert.deepEqual(findHint(values, solution), { type: 'wrong', cell: 3 });
@@ -42,7 +42,7 @@ test('findHint señala primero el número equivocado', () => {
 });
 
 import { findMistake } from '../js/games/sudoku/rules.js';
-test('findMistake de Sudoku: el primer número equivocado', () => {
+test('Sudoku findMistake: the first wrong number', () => {
   const solution = [...Array(81)].map((_, i) => (i % 9) + 1);
   const values = new Array(81).fill(0); values[5] = solution[5]; values[7] = 1;
   assert.deepEqual(findMistake(values, solution), { type: 'wrong', cell: 7 });

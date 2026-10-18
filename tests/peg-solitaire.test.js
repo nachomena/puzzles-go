@@ -4,29 +4,29 @@ import { BOARDS, CENTER, holes, startBalls, movesFrom, jumpOver, anyMove, countB
 import { generate } from '../js/games/peg-solitaire/engine/generator.js';
 import { runToEnd } from '../js/lib/iter.js';
 
-test('tableros: inglés 33 agujeros y europeo 37, con un hueco al empezar', () => {
+test('boards: English with 33 holes and European with 37, with one gap at the start', () => {
   assert.equal(holes('english').length, 33);
   assert.equal(holes('european').length, 37);
   assert.equal(countBalls(startBalls('english')), 32);
   assert.equal(countBalls(startBalls('european')), 36);
   assert.equal(startBalls('english')[CENTER], -1);
   assert.equal(startBalls('european')[BOARDS.european.start], -1);
-  // el europeo tiene además las esquinas interiores
+  // the European one also has the inner corners
   for (const i of [8, 12, 36, 40]) assert.ok(holes('european').includes(i) && !holes('english').includes(i));
 });
 
-test('saltos: solo sobre una bola vecina hasta un agujero vacío', () => {
+test('jumps: only over a neighbouring ball into an empty hole', () => {
   const balls = startBalls('english');
   const all = balls.flatMap((b, i) => b >= 0 ? movesFrom('english', balls, i).map(m => [i, m.to]) : []);
   assert.deepEqual(all.sort((a, b) => a[0] - b[0]), [[10, 24], [22, 24], [26, 24], [38, 24]]);
   assert.deepEqual(jumpOver('english', balls, 10, 24), { over: 17, to: 24 });
-  assert.equal(jumpOver('english', balls, 9, 24), null);       // no está en línea
+  assert.equal(jumpOver('english', balls, 9, 24), null);       // not in line
   assert.equal(jumpOver('english', balls, 3, 17), null);       // destino ocupado
-  assert.equal(movesFrom('english', balls, CENTER).length, 0); // agujero vacío
+  assert.equal(movesFrom('english', balls, CENTER).length, 0); // empty hole
 });
 
-test('el inglés con el centro vacío se puede terminar con una bola', () => {
-  // búsqueda en profundidad con memoria de posiciones sin salida (rápida para el inglés)
+test('the English board with an empty centre can end with one ball', () => {
+  // depth-first search remembering dead-end positions (fast for the English board)
   const dead = new Set();
   const rec = balls => {
     if (countBalls(balls) === 1) return true;
@@ -44,6 +44,6 @@ test('el inglés con el centro vacío se puede terminar con una bola', () => {
   assert.ok(anyMove('european', startBalls('european')));
 });
 
-test('generador: un tablero por nivel', () => {
+test('generator: one board per level', () => {
   assert.deepEqual(runToEnd(generate(1)), { level: 1 });
 });

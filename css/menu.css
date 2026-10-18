@@ -1,27 +1,27 @@
-/* Pantallas de menú: el selector de juegos, el menú de niveles de un juego y la tabla de retos (Katamino). */
+/* Menu screens: the game picker, a game's level menu and the puzzle table (Pentominoes). */
 
-/* ---------- Cabecera ---------- */
+/* ---------- Header ---------- */
 .hero{padding:40px 0 30px}
 .hero__title{margin:0;display:flex;align-items:center;gap:.28em;white-space:nowrap;font-size:clamp(22px,7.4vw,48px);line-height:1;color:var(--ink)}
 .hero__title svg{width:1em;height:1em;fill:var(--ink);flex-shrink:0}
 
-.menu{padding-top:6px;padding-bottom:100px}   /* abajo, sitio para la barra flotante (.dock) */
+.menu{padding-top:6px;padding-bottom:100px}   /* at the bottom, room for the floating bar (.dock) */
 .menu__label{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:0 0 8px 4px}
 
-/* ---------- Selector: título y "Juegos" fijos; solo la lista se desplaza ---------- */
+/* ---------- Picker: title and "Games" fixed; only the list scrolls ---------- */
 #hub.is-on{display:flex;flex-direction:column;height:calc(100dvh - var(--safe-top) - var(--safe-bottom))}
 #hub .hero{flex:none}
-#hub > .wrap{width:100%;flex:none}   /* en columna flex, el margen automático la encogería */
+#hub > .wrap{width:100%;flex:none}   /* in a flex column, the automatic margin would shrink it */
 #hub .menu__label{margin:28px 0 6px 4px}
 .hub-list{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-bottom:max(16px, var(--safe-bottom))}
 .hub-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
-/* Modo noche y Progreso: botones redondos de cristal */
+/* Settings and Progress: round glass buttons */
 .hub-tools{display:flex;gap:10px;flex:none}
 .hub-progress{flex:none;width:48px;height:48px;border-radius:50%}
 .hub-progress svg{width:24px;height:24px}
 .hub-progress[aria-pressed="true"] svg{stroke:var(--accent);fill:var(--accent)}
 
-/* ---------- Continuar (selector y menú de niveles) ---------- */
+/* ---------- Continue (picker and level menu) ---------- */
 #resumeLast{flex:none}
 #resumeLast:empty,#resume:empty{display:none}
 #resume{margin-bottom:26px}
@@ -36,7 +36,7 @@
 .resume-card__play{flex:none;width:44px;height:44px;border-radius:50%;background:var(--ink);display:grid;place-items:center}
 .resume-card__play svg{width:18px;height:18px;fill:var(--bg);stroke:none}
 
-/* ---------- Lista de juegos ---------- */
+/* ---------- Game list ---------- */
 .game-row{display:flex;align-items:center;gap:14px;width:100%;padding:9px 4px;border-radius:16px;text-align:left}
 .game-row:active{background:var(--glass-hover)}
 .game-row__icon{flex:none;width:44px;height:44px;border-radius:13px;background:var(--seg);display:grid;place-items:center}
@@ -46,15 +46,15 @@
 .game-row__info{font-size:13.5px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .game-row__chev{flex:none;width:16px;height:16px;stroke:var(--dim);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
 .game-row.is-open .game-row__chev{transform:rotate(90deg)}
-/* Grupo de juegos (p. ej. Smart Games): al desplegarse, sus juegos van debajo, un poco hacia dentro */
+/* Game group (e.g. Pieces): when expanded, its games go underneath, slightly indented */
 .game-group__items{padding-left:18px}
 
-/* ---------- Niveles de un juego ---------- */
+/* ---------- A game's levels ---------- */
 .levels{display:flex;flex-direction:column;gap:12px}
 .level-card{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:16px 18px;border-radius:22px;text-align:left}
 .level-card:active{background:var(--surface-press)}
 .level-card__name{display:block;font-size:22px;line-height:1.1;white-space:nowrap}
-/* rayas de dificultad: tantas encendidas como el puesto del nivel */
+/* difficulty bars: as many lit as the level's position */
 .level-card__bars{display:flex;gap:3px;margin-top:7px}
 .level-card__bars i{width:16px;height:4px;border-radius:2px;background:var(--rule)}
 .level-card__bars i.is-on{background:var(--accent)}

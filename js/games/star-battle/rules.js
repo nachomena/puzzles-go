@@ -1,19 +1,19 @@
-/* Reglas del juego sobre las marcas del jugador. Funciones puras, sin DOM. */
+/* Game rules on the player's marks. Pure functions, no DOM. */
 import { MARK } from './config.js';
 import { adjacency, rowOf, colOf } from '../../lib/grid.js';
 import { pick } from '../../lib/random.js';
 
-/** Una X automática cuenta como X a efectos del jugador. */
+/** An automatic X counts as an X for the player. */
 export const effectiveMark = v => v === MARK.AUTO_X ? MARK.X : v;
 
-/** Estrella o estrella de prueba: las dos cuentan igual para las reglas. */
+/** Star or trial star: both count the same for the rules. */
 export const isStar = v => v === MARK.STAR || v === MARK.TRY;
 
-/** Ciclo al tocar: vacía → X → estrella → vacía. Una estrella de prueba pasa a estrella. */
+/** Tap cycle: empty → X → star → empty. A trial star becomes a star. */
 const CYCLE = { [MARK.EMPTY]: MARK.X, [MARK.X]: MARK.STAR, [MARK.STAR]: MARK.EMPTY, [MARK.TRY]: MARK.STAR };
 export const nextMark = v => CYCLE[effectiveMark(v)];
 
-/** Recalcula las X automáticas alrededor de cada estrella, también las de prueba (muta `marks`). */
+/** Recomputes the automatic X marks around every star, trial ones too (mutates `marks`). */
 export function applyAutoX(marks, N, enabled){
   for (let i = 0; i < marks.length; i++) if (marks[i] === MARK.AUTO_X) marks[i] = MARK.EMPTY;
   if (!enabled) return;
@@ -24,8 +24,8 @@ export function applyAutoX(marks, N, enabled){
 }
 
 /**
- * Busca estrellas que rompen alguna regla.
- * Devuelve { bad: Uint8Array, anyBad, solved }.
+ * Looks for stars that break some rule.
+ * Returns { bad: Uint8Array, anyBad, solved }.
  */
 export function analyze(marks, { N, K, regions }){
   const bad = new Uint8Array(N * N);
@@ -43,11 +43,11 @@ export function analyze(marks, { N, K, regions }){
   return { bad, anyBad, solved: total === N * K && !anyBad };
 }
 
-/** ¿Tiene el tablero algo que el jugador haya puesto (X o estrella)? */
+/** Does the board have anything the player placed (X or star)? */
 export const hasPlayerInput = marks => marks.some(v => v === MARK.X || isStar(v));
 
-/** Pista: primero corrige errores, si no hay coloca una estrella que falte. */
-/** Primer error: una estrella donde no va, o una X donde sí va una estrella. */
+/** Hint: first fix mistakes; if there are none, place a missing star. */
+/** First mistake: a star where it doesn't go, or an X where a star does go. */
 export function findMistake(marks, solution){
   const sol = new Set(solution);
   const wrongStar = marks.findIndex((v, i) => isStar(v) && !sol.has(i));

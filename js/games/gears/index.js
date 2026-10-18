@@ -1,4 +1,4 @@
-/* Definición de Engranajes para el registro de juegos (contrato en js/games/README.md). */
+/* Gears definition for the game registry (contract in js/games/README.md). */
 import { defineGame } from '../../core/game-definition.js';
 import { generate, LEVEL_RULES } from './engine/generator.js';
 import { GearsController } from './controller.js';

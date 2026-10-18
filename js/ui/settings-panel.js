@@ -1,6 +1,6 @@
-/* Hoja de ajustes: pinta los ajustes que declara el juego actual y los enlaza con su store.
-   Un ajuste es un interruptor ({ key, title, desc }) o un desplegable si trae `options`
-   ([{ value, label }]); el desplegable guarda el `value` elegido. */
+/* Settings sheet: draws the settings declared by the current game and links them to its store.
+   A setting is a switch ({ key, title, desc }) or a select if it has `options`
+   ([{ value, label }]); the select saves the chosen `value`. */
 export class SettingsPanel {
   constructor(listEl){
     this.listEl = listEl;
@@ -15,7 +15,7 @@ export class SettingsPanel {
     });
   }
 
-  /** Muestra los ajustes `defs` con los valores de `store`. */
+  /** Shows the settings `defs` with the values in `store`. */
   show(defs, store, onChange){
     this.store = store;
     this.onChange = onChange;

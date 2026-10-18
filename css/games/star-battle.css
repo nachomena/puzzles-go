@@ -1,9 +1,9 @@
-/* Star Battle: estrellas, estrellas de prueba (con borde dorado) y X. */
+/* Star Battle: stars, trial stars (with a gold outline) and X marks. */
 .cell svg{width:58%;height:58%}
 .cell--star svg{fill:var(--star)}
 .cell--x svg{width:38%;height:38%;stroke:var(--x);stroke-width:3.2;fill:none;stroke-linecap:round}
 .cell.is-bad.cell--star svg{fill:var(--bad)}
-/* estrella de prueba: solo el borde, en dorado (como el icono de Continuar); también en su herramienta */
+/* trial star: just the outline, in gold (like the Continue icon); also on its tool */
 .cell--try svg,.segmented [data-tool="try"] svg,.inline-icon--try{fill:none;stroke:var(--accent);stroke-width:1.8;stroke-linejoin:round}
 .cell.is-bad.cell--try svg{fill:none;stroke:var(--bad)}
 .cell.is-new svg{animation:pop .3s ease-out}

@@ -1,59 +1,61 @@
-# Añadir un juego
+# Adding a game
 
-Cada juego vive en su carpeta y se enchufa a la app con una definición. La carcasa (`js/app/app.js`)
-no sabe nada de ningún juego concreto: selector, menú de niveles, ajustes, ayuda, generación en
-segundo plano, historial, cronómetro, estadísticas y pantalla de victoria son comunes.
+Each game lives in its own folder and plugs into the app with a definition. The shell (`js/app/app.js`) knows
+nothing about any particular game: picker, level menu, settings, help, background generation, history, timer,
+statistics and win screen are shared.
 
-## Pasos
+## Steps
 
-1. Crea `js/games/<id>/` con, como mínimo:
-   - `meta.js` — datos ligeros: `id`, `name`, `icon`, `storageKey`, `levels` y `levelOrder`.
-     El selector y el menú de niveles se pintan solo con esto; el resto del juego se importa al
-     abrirlo, en segundo plano, y empieza a generar tableros.
-   - `engine/` — motor puro (sin DOM) con `generate(target)`: una **función generadora** que cede
-     (`yield`) a menudo y devuelve `{ level, ...tablero }` o `null`. `level` es el nivel real del tablero.
-   - `worker.js` — dos líneas: `serveGenerator(generate)` (ver `core/generator-worker.js`).
-   - `controller.js` — clase que **extiende `GameController`** (`core/game-controller.js`) e implementa
-     sus pasos: `createSession`, `mountBoard`, `renderBoard`, `snapshot`, `restore`, `hasInput`,
-     `clearInput`, `isSolved`, `hint` y, si hace falta, `normalize`, `onSetting`, `celebrate`,
-     `actions` y `onKey`. Deshacer, reiniciar, cronómetro y victoria ya los hereda.
-   - `templates.js` — marcado de los controles bajo el tablero y de la ayuda. Usa las piezas de
-     `ui/templates.js` (`iconButton`, `toolPicker`, `undoRedo`…). Los botones declaran lo que hacen con
-     `data-action="…"`: las acciones comunes las resuelve la carcasa y las propias van en `actions`.
-   - `index.js` — `export default defineGame({ ...meta, ... })` con todos los campos del contrato
-     (`core/game-definition.js`). `defineGame` falla al arrancar si falta alguno.
-     Opcional: `hint: false` quita el botón de pista. En `settings`, un ajuste con `options`
-     (`[{ value, label }]`) se muestra como desplegable en vez de interruptor.
-     Las estadísticas van por nivel; para agruparlas de otra forma, declara `statsRows` en `meta.js`
-     (`[{ key, name }]`) y `statsKey(session)` en `index.js` (p. ej. el Solitario, por tablero), y si
-     hace falta `statsName(session)` para el texto de la victoria.
-     Juegos con retos fijos que se eligen uno a uno (p. ej. Pentominós): `picker` en `index.js`
-     (`render(L, data)` dibuja la tabla de un nivel con botones `data-action="pick-puzzle"`,
-     `puzzle(L, dataset)` da el tablero tocado y `same(session, puzzle)` dice si es la partida abierta),
-     y en `meta.js` `levelMeta(L, stats)`, `sessionLabel(session)` y `resumeLabel(session)` para el menú (y, si hace
-     falta, `menuLabel` para el título sobre los niveles). Si un juego cambia sus niveles, `upgradeSession(cur)` en
-     `meta.js` pasa la partida guardada a los de ahora antes de cargarla (ver `core/store.js`).
-     El controlador puede definir `next()` para el botón "Siguiente tablero" (ver `core/game-controller.js`).
-     Para que un juego vaya dentro de un grupo del selector (p. ej. los de piezas), `group` y opcionalmente
-     `shortName` (su nombre dentro del grupo) en `meta.js`; los grupos están en `ui/hub-view.js#GROUPS`.
-2. Añade `{ meta, load: () => import('./<id>/index.js'), css: 'css/games/<id>.css' }` a `CATALOG` en `js/games/catalog.js`.
-3. Si necesita estilos, crea `css/games/<id>.css` (se carga al abrir el juego, con su código; sin estilos, quita `css`).
-   Lo que use más de un juego va en `css/components.css`: la hoja de un juego puede no estar cargada.
-4. Iconos nuevos: añade un `<symbol id="i-…">` al sprite de `index.html`.
-5. Textos: todo lo que se ve (nombre, frase del selector, ajustes, ayuda, avisos) va en `js/i18n/es.js` y
-   `js/i18n/en.js`, en `games.<id>`, y se usa con `t('games.<id>.…')` (`js/i18n/index.js`). Los dos ficheros
-   tienen que tener las mismas claves (`tests/i18n.test.js`).
-6. `sw.js` se pone al día solo al hacer commit (lista de archivos y versión, ver `scripts/build-sw.mjs`).
-7. Pruebas en `tests/<id>-*.test.js`.
+1. Create `js/games/<id>/` with, at least:
+   - `meta.js` — light data: `id`, `name`, `icon`, `storageKey`, `levels` and `levelOrder`.
+     The picker and the level menu are drawn from this alone; the rest of the game is imported when it opens,
+     in the background, and starts generating boards.
+   - `engine/` — pure engine (no DOM) with `generate(target)`: a **generator function** that yields often and
+     returns `{ level, ...board }` or `null`. `level` is the board's real level.
+   - `worker.js` — two lines: `serveGenerator(generate)` (see `core/generator-worker.js`).
+   - `controller.js` — a class that **extends `GameController`** (`core/game-controller.js`) and implements its
+     steps: `createSession`, `mountBoard`, `renderBoard`, `snapshot`, `restore`, `hasInput`, `clearInput`,
+     `isSolved`, `hint` and, if needed, `normalize`, `onSetting`, `celebrate`, `actions` and `onKey`. Undo,
+     restart, timer and win are inherited.
+   - `templates.js` — markup for the controls under the board and for the help. It uses the pieces in
+     `ui/templates.js` (`iconButton`, `toolPicker`, `undoRedo`…). Buttons declare what they do with
+     `data-action="…"`: the shell handles the shared actions and the game's own go in `actions`.
+   - `index.js` — `export default defineGame({ ...meta, ... })` with every field of the contract
+     (`core/game-definition.js`). `defineGame` fails at startup if any is missing.
+     Optional: `hint: false` removes the hint button. In `settings`, a setting with `options`
+     (`[{ value, label }]`) is shown as a drop-down instead of a switch.
+     Statistics go per level; to group them another way, declare `statsRows` in `meta.js` (`[{ key, name }]`) and
+     `statsKey(session)` in `index.js` (e.g. Peg Solitaire, per board), and if needed `statsName(session)` for the
+     win text.
+     Games with fixed puzzles picked one by one (e.g. Pentominoes): `picker` in `index.js` (`render(L, data)` draws
+     a level's table with `data-action="pick-puzzle"` buttons, `puzzle(L, dataset)` gives the tapped board and
+     `same(session, puzzle)` says whether it is the open game), and in `meta.js` `levelMeta(L, stats)`,
+     `sessionLabel(session)` and `resumeLabel(session)` for the menu (and, if needed, `menuLabel` for the title above
+     the levels). If a game changes its levels, `upgradeSession(cur)` in `meta.js` converts the saved game to the
+     current ones before loading it (see `core/store.js`).
+     The controller can define `next()` for the "Next board" button (see `core/game-controller.js`).
+     To put a game inside a picker group (e.g. the piece games), set `group` and optionally `shortName` (its name
+     inside the group) in `meta.js`; the groups are in `ui/hub-view.js#GROUPS`.
+2. Add `{ meta, load: () => import('./<id>/index.js'), css: 'css/games/<id>.css' }` to `CATALOG` in
+   `js/games/catalog.js`.
+3. If it needs styles, create `css/games/<id>.css` (loaded when the game opens, with its code; without styles, drop
+   `css`). Anything used by more than one game goes in `css/components.css`: a game's sheet may not be loaded.
+4. New icons: add a `<symbol id="i-…">` to the sprite in `index.html`.
+5. Texts: everything visible (name, picker tagline, settings, help, notices) goes in `js/i18n/es.js` and
+   `js/i18n/en.js`, under `games.<id>`, and is used with `t('games.<id>.…')` (`js/i18n/index.js`). Both files must
+   have the same keys (`tests/i18n.test.js`).
+6. `sw.js` updates itself on commit (file list and version, see `scripts/build-sw.mjs`).
+7. Tests in `tests/<id>.test.js`.
 
-## Reutilizable
+## Reusable
 
-- `ui/grid-board.js` — tablero N×N con paredes entre regiones, repintado incremental, destello,
-  ola de victoria y `cellAt(x, y)`. Star Battle y Sudoku heredan de él.
-- `ui/cell-drag.js` — tocar y arrastrar sobre una rejilla.
-- `ui/piece-drag.js` — arrastrar piezas de una bandeja a un tablero de casillas y tocarlas.
-- `core/grid-pieces-controller.js` — partida de piezas sobre cuadrícula (arrastrar, girar, voltear, piezas fijas): Pentominós, Encaje.
-- `core/digit-grid-controller.js` y `ui/templates.js#digitControls` — números en una cuadrícula con teclado, lápiz y goma: Sudoku, KenKen.
-- `lib/polyomino.js` — orientaciones de poliominós y buscador de soluciones para llenar un tablero (Pentominós, Encaje).
-- `ui/cube-svg.js` — piezas hechas de cubitos con bisel (Smart Circuit).
+- `ui/grid-board.js` — N×N board with walls between regions, incremental repaint, flash, win wave and
+  `cellAt(x, y)`. Star Battle and Sudoku extend it.
+- `ui/cell-drag.js` — tap and drag over a grid.
+- `ui/piece-drag.js` — drag pieces from a tray to a board of cells, and tap them.
+- `core/grid-pieces-controller.js` — a game of pieces on a grid (drag, rotate, flip, fixed pieces): Pentominoes, Fit.
+- `core/digit-grid-controller.js` and `ui/templates.js#digitControls` — numbers on a grid with keypad, pencil and
+  eraser: Sudoku, Calcudoku.
+- `lib/polyomino.js` — polyomino orientations and a solution search to fill a board (Pentominoes, Fit).
+- `ui/cube-svg.js` — pieces made of bevelled little cubes (Circuit).
 - `lib/bits.js` — `popcount`, `bitIndices`, `someCombination`.

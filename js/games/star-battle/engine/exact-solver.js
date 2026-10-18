@@ -1,11 +1,11 @@
-/* Búsqueda exhaustiva fila a fila con poda. */
+/* Exhaustive row-by-row search with pruning. */
 import { rowMasks, spread, fullColumns, columnsCanFinish } from './bits.js';
 import { popcount } from '../../../lib/bits.js';
 import { shuffle } from '../../../lib/random.js';
 
 const RANDOM_SOLUTION_BUDGET = 20000;
 
-/** Coloca estrellas al azar cumpliendo filas, columnas y no-contacto (sin regiones). */
+/** Places random stars meeting rows, columns and no-touching (without regions). */
 export function randomSolution(N, K){
   const masks = rowMasks(N, K), col = new Int8Array(N), rows = [];
   let nodes = 0;
@@ -28,13 +28,13 @@ export function randomSolution(N, K){
 }
 
 /**
- * Cuenta soluciones hasta `limit`.
- * `block` (opcional): máscaras por fila de casillas que se sabe que están vacías.
- * Devuelve { count, sols } o null si se agota el presupuesto de nodos.
+ * Counts solutions up to `limit`.
+ * `block` (optional): per-row masks of cells known to be empty.
+ * Returns { count, sols } or null if the node budget runs out.
  */
 export function solve(N, K, reg, limit, budget, block){
   const masks = rowMasks(N, K);
-  // rr[g * N + r]: máscara de las casillas de la región g en la fila r
+  // rr[g * N + r]: mask of the cells of region g in row r
   const rr = new Int32Array(N * N);
   for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) rr[reg[r * N + c] * N + r] |= 1 << c;
   const col = new Int8Array(N), rc = new Int8Array(N), byLast = new Int16Array(N), cur = [], sols = [];
@@ -44,8 +44,8 @@ export function solve(N, K, reg, limit, budget, block){
     const R = N - 1 - r;
     const full = fullColumns(col, N, K), blk = spread(m);
     if (!columnsCanFinish(col, N, K, R, blk)) return false;
-    // Cada región debe caber en las filas que le quedan, y las que terminan
-    // en la misma fila no pueden pedir más estrellas de las que caben.
+    // Each region must fit in the rows it has left, and the ones that end
+    // in the same row can't ask for more stars than fit.
     byLast.fill(0);
     for (let g = 0; g < N; g++){
       const need = K - rc[g]; if (need <= 0) continue;

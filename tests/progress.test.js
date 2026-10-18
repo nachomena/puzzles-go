@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { logWin, winStrip, isEntry, LOG_CAP } from '../js/core/progress.js';
 import { winStripSvg } from '../js/ui/win-strip.js';
 
-test('registro: apunta cada partida y descarta las más antiguas al pasar del tope', () => {
+test('log: records every game and drops the oldest past the cap', () => {
   const log = [];
   logWin(log, { key: 'easy', time: 90, hints: 0, at: 1 });
   logWin(log, { key: 'easy', time: 80, hints: 1, moves: 12, at: 2 });
@@ -14,13 +14,13 @@ test('registro: apunta cada partida y descarta las más antiguas al pasar del to
   assert.equal(log[0].t, 5);
 });
 
-test('tira de la victoria: la última entre las anteriores del mismo nivel y sin pistas', () => {
+test('win strip: the latest among the previous ones of the same level and without hints', () => {
   const log = [];
   assert.equal(winStrip(log), null);
   logWin(log, { key: 'easy', time: 100, hints: 0, at: 1 });
-  assert.equal(winStrip(log), null, 'la primera partida no tiene con qué compararse');
-  logWin(log, { key: 'hard', time: 500, hints: 0, at: 2 });   // otro nivel: no cuenta
-  logWin(log, { key: 'easy', time: 60, hints: 2, at: 3 });    // con pistas: no cuenta
+  assert.equal(winStrip(log), null, 'the first game has nothing to compare with');
+  logWin(log, { key: 'hard', time: 500, hints: 0, at: 2 });   // another level: it doesn't count
+  logWin(log, { key: 'easy', time: 60, hints: 2, at: 3 });    // with hints: it doesn't count
   logWin(log, { key: 'easy', time: 80, hints: 0, at: 4 });
   logWin(log, { key: 'easy', time: 70, hints: 1, at: 5 });
   assert.deepEqual(winStrip(log), { times: [100, 80], today: 70, hints: 1, avg: 90 });
@@ -31,43 +31,43 @@ test('tira de la victoria: la última entre las anteriores del mismo nivel y sin
   assert.equal(winStripSvg(null), '');
 });
 
-test('progreso: periodos, tendencia, media móvil y reparto', async () => {
+test('progress: periods, trend, moving average and distribution', async () => {
   const { inRange, trend, movingAverage, timeStep, histogram, bestTime, meanTime } = await import('../js/core/progress.js');
   const D = 864e5, now = 100 * D;
-  // antes: 3 partidas de ~100 s hace 40 días; ahora: 3 de ~80 s
+  // before: 3 games of ~100 s 40 days ago; now: 3 of ~80 s
   const e = [[45, 100], [42, 104], [38, 96], [20, 82], [10, 78], [2, 80]].map(([ago, t]) => ({ k: 'a', t, h: 0, at: now - ago * D }));
   assert.deepEqual(trend(e, now), { kind: 'faster', pct: 20 });
   assert.deepEqual(trend(e.slice(0, 4), now), { kind: 'few', pct: 0 });
   assert.equal(inRange(e, 'months3', now).length, 6);
   assert.equal(inRange([...Array(30)].map((_, i) => ({ t: i, at: i })), 'last20').length, 20);
   assert.deepEqual(movingAverage(e.slice(0, 3), 2).map(p => p.t), [100, 102, 100]);
-  assert.equal(bestTime([...e, { k: 'a', t: 10, h: 1, at: now }]), 78, 'con pistas no cuenta');
+  assert.equal(bestTime([...e, { k: 'a', t: 10, h: 1, at: now }]), 78, "with hints it doesn't count");
   assert.equal(meanTime([]), null);
   assert.equal(timeStep(70, 110), 10);
   assert.equal(timeStep(100, 1000), 300);
   assert.deepEqual(histogram([61, 65, 130, 70], 60), { start: 60, step: 60, counts: [3, 1] });
 });
 
-test('filas del progreso: por nivel, o agrupadas como diga el juego', async () => {
+test('progress rows: per level, or grouped as the game says', async () => {
   const { progressRows } = await import('../js/core/progress.js');
   const meta = { levels: { easy: { name: 'Fácil' }, hard: { name: 'Difícil' } }, levelOrder: ['easy', 'hard'] };
   const log = [{ k: 'easy', t: 50, h: 0, at: 1 }, { k: 'easy', t: 40, h: 1, at: 2 }];
   const rows = progressRows(meta, { easy: { solved: 5, best: 45 } }, log);
   assert.deepEqual(rows.map(r => [r.key, r.name, r.entries.length, r.best, r.solved]), [['easy', 'Fácil', 2, 45, 5], ['hard', 'Difícil', 0, null, 0]]);
-  const kat = (await import('../js/games/katamino/meta.js')).default;
+  const kat = (await import('../js/games/pentominoes/meta.js')).default;
   const k = progressRows(kat, {}, [{ k: 'grand:B:7', t: 90, h: 0, at: 1 }, { k: 'small:A:5', t: 30, h: 0, at: 2 }, { k: 'slam:C:7', t: 70, h: 0, at: 3 }]);
   assert.deepEqual(k.map(r => [r.name, r.entries.length, r.best]), [['5 piezas', 1, 30], ['7 piezas', 2, 70]]);
 });
 
-test('movimientos de más y desglose de Katamino', async () => {
+test('extra moves and the Pentominoes breakdown', async () => {
   const { logWin, movesSummary } = await import('../js/core/progress.js');
   const log = [];
   logWin(log, { key: 'a', time: 30, hints: 0, moves: 12, min: 10, at: 1 });
   logWin(log, { key: 'a', time: 25, hints: 0, moves: 10, min: 10, at: 2 });
-  logWin(log, { key: 'a', time: 20, hints: 0, moves: 9, at: 3 });   // sin mínimo apuntado: no cuenta
+  logWin(log, { key: 'a', time: 20, hints: 0, moves: 9, at: 3 });   // no minimum recorded: it doesn't count
   assert.deepEqual(movesSummary(log), { games: [{ at: 1, extra: 2 }, { at: 2, extra: 0 }], perfect: 1, avgExtra: 1, avgMoves: 11 });
   assert.equal(movesSummary([{ k: 'a', t: 1, h: 0, at: 1 }]), null);
-  const kat = (await import('../js/games/katamino/meta.js')).default;
+  const kat = (await import('../js/games/pentominoes/meta.js')).default;
   const b = kat.progressBreakdown('n7', { 'grand:B:7': { solved: 1, best: 90 }, 'small:A:7': { solved: 2, best: 70 }, 'small:A:6': { solved: 1, best: 50 }, 'challenge:12:7': { solved: 1, best: null } });
   assert.deepEqual(b.items, [{ name: 'Fácil 1A', best: 70 }, { name: 'Difícil 1B', best: 90 }, { name: 'Experto N° 12', best: null }]);
 });

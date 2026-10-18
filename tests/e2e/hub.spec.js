@@ -1,10 +1,10 @@
-// Selector de juegos y pantallas de Progreso.
+// Game picker and Progress screens.
 import { test, expect } from '@playwright/test';
 import { openApp, startGame } from './helpers.js';
 
-test('el título queda fijo y solo se desplaza la lista', async ({ page }) => {
+test('the title stays fixed and only the list scrolls', async ({ page }) => {
   const errors = await openApp(page);
-  await page.locator('#games [data-action="toggle-group"]').first().click();   // más juegos que pantalla
+  await page.locator('#games [data-action="toggle-group"]').first().click();   // more games than screen
   const top = async () => (await page.locator('#title').boundingBox()).y;
   const before = await top();
   await page.locator('.hub-list').evaluate(el => { el.scrollTop = 400; });
@@ -13,14 +13,14 @@ test('el título queda fijo y solo se desplaza la lista', async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
-test('cada juego del selector lleva su frase', async ({ page }) => {
+test('every game in the picker has its tagline', async ({ page }) => {
   await openApp(page);
   const first = page.locator('#games .game-row').first();
   await expect(first.locator('.game-row__name')).toHaveText('Star Battle');
   await expect(first.locator('.game-row__info')).not.toBeEmpty();
 });
 
-test('Progreso se abre desde el selector y vuelve con su botón', async ({ page }) => {
+test('Progress opens from the picker and goes back with its button', async ({ page }) => {
   const errors = await openApp(page);
   await page.locator('.hub-progress[data-action="open-progress"]').click();
   await expect(page.locator('#progress')).toHaveClass(/is-on/);
@@ -29,25 +29,25 @@ test('Progreso se abre desde el selector y vuelve con su botón', async ({ page 
   expect(errors).toEqual([]);
 });
 
-test('al abrir la app no se carga el CSS de ningún juego', async ({ page }) => {
+test("opening the app loads no game's CSS", async ({ page }) => {
   await openApp(page);
   await expect(page.locator('link[href^="css/games/"]')).toHaveCount(0);
 });
 
-test('la tarjeta Continuar lleva a la última partida a medias', async ({ page }) => {
+test('the Continue card leads to the last unfinished game', async ({ page }) => {
   const errors = await openApp(page);
   await expect(page.locator('#hub .resume-card')).toHaveCount(0);
-  const play = await startGame(page, 'akari');
-  await play.locator('.cell:not(.ak-black)').first().click();
+  const play = await startGame(page, 'light-up');
+  await play.locator('.cell:not(.lu-black)').first().click();
   await play.locator('.back-pill').click();
   await page.locator('#levels .back-pill').click();
   await expect(page.locator('#hub .resume-card')).toContainText('Luces');
   await page.locator('#hub .resume-card').click();
-  await expect(page.locator('#play-akari')).toHaveClass(/is-on/);
+  await expect(page.locator('#play-light-up')).toHaveClass(/is-on/);
   expect(errors).toEqual([]);
 });
 
-test('el modo noche se enciende desde los ajustes del selector y se queda al volver a abrir', async ({ page }) => {
+test('night mode turns on from the picker settings and stays on after reopening', async ({ page }) => {
   await openApp(page);
   await page.locator('[data-action="open-app-settings"]').click();
   const toggle = page.locator('#app-settings [data-night-toggle]');
@@ -61,7 +61,7 @@ test('el modo noche se enciende desde los ajustes del selector y se queda al vol
   await expect(page.locator('html')).not.toHaveClass(/is-night/);
 });
 
-test('el idioma sigue al del móvil y se puede cambiar en los ajustes', async ({ page }) => {
+test("the language follows the phone's and can be changed in settings", async ({ page }) => {
   await openApp(page);
   await expect(page.locator('#hub .menu__label')).toHaveText('Elige un juego');
   await page.locator('[data-action="open-app-settings"]').click();

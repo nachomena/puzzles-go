@@ -1,4 +1,4 @@
-/* Definición del Solitario para el registro de juegos (contrato en js/games/README.md). */
+/* Peg Solitaire definition for the game registry (contract in js/games/README.md). */
 import { defineGame } from '../../core/game-definition.js';
 import { generate } from './engine/generator.js';
 import { N, isBoard } from './engine/rules.js';
@@ -12,8 +12,8 @@ export default defineGame({
   tools: Object.values(TOOL),
   defaultSettings: DEFAULT_SETTINGS,
   settings: SETTINGS,
-  hint: false,   // sin pistas: no se busca la solución
-  statsKey: s => s.board,   // estadísticas por tablero (meta.statsRows)
+  hint: false,   // no hints: the solution isn't searched for
+  statsKey: s => s.board,   // statistics per board (meta.statsRows)
 
   workerUrl: new URL('./worker.js', import.meta.url),
   generate,

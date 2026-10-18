@@ -1,11 +1,11 @@
-/* Tablero genérico de N columnas × R filas (cuadrado por defecto): casillas en una rejilla CSS y,
-   encima, un SVG con la rejilla fina y las paredes gruesas entre regiones (regiones de Star Battle,
-   cajas de Sudoku...). Casilla i = fila * N + columna. */
+/* Generic board of N columns × R rows (square by default): cells in a CSS grid and, on top, an SVG
+   with the thin grid and the thick walls between regions (Star Battle regions, Sudoku boxes...).
+   Cell i = row * N + column. */
 import { TIMING } from '../config.js';
 import { rowOf, colOf } from '../lib/grid.js';
 import { restartAnimation } from '../lib/dom.js';
 
-/** Trazos de la rejilla: finos dentro de una región, gruesos entre regiones. */
+/** Grid strokes: thin inside a region, thick between regions. */
 export function wallPaths(N, regions, R = N){
   let thin = '', thick = '';
   const add = (sameRegion, seg) => { if (sameRegion) thin += seg; else thick += seg; };
@@ -18,7 +18,7 @@ export function wallPaths(N, regions, R = N){
 }
 
 export class GridBoard {
-  /** @param {HTMLElement} root  elemento .board con [data-board-cells] y [data-board-lines] */
+  /** @param {HTMLElement} root  .board element with [data-board-cells] and [data-board-lines] */
   constructor(root){
     this.root = root;
     this.cellsEl = root.querySelector('[data-board-cells]');
@@ -26,12 +26,12 @@ export class GridBoard {
     this.N = 0;
     this.R = 0;
     this.cells = [];
-    this.cache = [];  // última clave pintada por casilla, para no tocar el DOM sin necesidad
+    this.cache = [];  // last key drawn per cell, so the DOM isn't touched needlessly
   }
 
   /**
-   * Crea N×R casillas (R = N por defecto) y dibuja las paredes según `regions`.
-   * @param {(el:HTMLElement, i:number) => void} [decorate]  personaliza cada casilla
+   * Creates N×R cells (R = N by default) and draws the walls according to `regions`.
+   * @param {(el:HTMLElement, i:number) => void} [decorate]  customises each cell
    */
   build(N, regions, decorate, R = N){
     this.N = N;
@@ -39,14 +39,14 @@ export class GridBoard {
     this.cellsEl.style.setProperty('--n', N);
     this.cellsEl.style.setProperty('--rows', R);
     const frag = document.createDocumentFragment();
-    // las cuatro esquinas (redondeadas): cada juego ajusta lo que pinta en ellas (etiquetas, fichas)
+    // the four (rounded) corners: each game adjusts what it draws in them (labels, tiles)
     const corners = { 0: 'tl', [N - 1]: 'tr', [(R - 1) * N]: 'bl', [N * R - 1]: 'br' };
     this.cells = [];
     for (let i = 0; i < N * R; i++){
       const d = document.createElement('div');
       d.className = 'cell';
       if (corners[i]) d.dataset.corner = corners[i];
-      // retardo de la ola de victoria, en diagonal
+      // delay of the win wave, diagonally
       d.style.setProperty('--wave-delay', (colOf(N, i) + rowOf(N, i)) * TIMING.winWaveStepMs + 'ms');
       decorate?.(d, i);
       frag.appendChild(d);
@@ -59,14 +59,14 @@ export class GridBoard {
     this.linesEl.setAttribute('viewBox', `0 0 ${N} ${R}`);
     this.linesEl.innerHTML =
       `<path class="board__grid" d="${thin}"/>` +
-      `<path class="board__wall" d="${thick}"/>`;   // el marco lo pinta el CSS (.board::after), con las esquinas redondeadas
+      `<path class="board__wall" d="${thick}"/>`;   // the frame is drawn by the CSS (.board::after), with rounded corners
     this.root.classList.remove('is-won');
   }
 
-  /** Fuerza a repintar todas las casillas en el próximo render. */
+  /** Forces all cells to be redrawn on the next render. */
   invalidate(){ this.cache = this.cells.map(() => ''); }
 
-  /** Pinta la casilla i solo si su clave de estado cambió. */
+  /** Draws cell i only if its state key changed. */
   paint(i, key, className, html){
     if (this.cache[i] === key) return false;
     const prev = this.cache[i];
@@ -79,12 +79,12 @@ export class GridBoard {
   flash(i){ restartAnimation(this.cells[i], 'is-flash'); }
   celebrate(){ this.root.classList.add('is-won'); }
 
-  /** Índice de la casilla bajo unas coordenadas de pantalla, o -1. */
+  /** Index of the cell under some screen coordinates, or -1. */
   cellAt(x, y){
     const r = this.root.getBoundingClientRect(), N = this.N, R = this.R;
     const c = Math.floor((x - r.left) / r.width * N), q = Math.floor((y - r.top) / r.height * R);
     return (c < 0 || q < 0 || c >= N || q >= R) ? -1 : q * N + c;
   }
-  /** Tamaño de una casilla en píxeles. */
+  /** Size of a cell in pixels. */
   cellSize(){ return this.root.getBoundingClientRect().width / this.N; }
 }

@@ -1,14 +1,14 @@
-/* Partida de números en una cuadrícula de N × N (Sudoku, KenKen): elegir casilla y luego número, con
-   lápiz para notas, goma, teclado físico y deshacer.
+/* A game of numbers on an N × N grid (Sudoku, Calcudoku): pick a cell and then a number, with a
+   pencil for notes, an eraser, physical keyboard and undo.
 
-   La subclase da el tablero (`board`, con build/render/flash/celebrate/cellAt/cellSize/invalidate) y:
-     n                         lado (y, si no se dice otra cosa, dígitos del 1 al n)
-     digits                    (opcional) números del teclado, del 1 a digits; por defecto n
-     digitCap                  (opcional) veces que va cada número en el tablero, para apagar su tecla
-     givensOf(puzzle)          números fijos del reto (0 = casilla libre)
-     conflicts(values)         Uint8Array con 1 en las casillas repetidas
-     peersOf(i)                casillas que ven a i (para limpiar notas)
-     hintFor(values, solution) → { cell, digit } o null */
+   The subclass provides the board (`board`, with build/render/flash/celebrate/cellAt/cellSize/invalidate) and:
+     n                         side (and, unless told otherwise, digits from 1 to n)
+     digits                    (optional) keypad numbers, from 1 to digits; n by default
+     digitCap                  (optional) times each number appears on the board, to dim its key
+     givensOf(puzzle)          the puzzle's fixed numbers (0 = free cell)
+     conflicts(values)         Uint8Array with 1 in repeated cells
+     peersOf(i)                cells that see i (to clear notes)
+     hintFor(values, solution) → { cell, digit } or null */
 import { GameController } from './game-controller.js';
 import { t } from '../i18n/index.js';
 import { bindCellDrag } from '../ui/cell-drag.js';
@@ -35,13 +35,13 @@ export class DigitGridController extends GameController {
   get digits(){ return this.n; }
   get digitCap(){ return this.n; }
 
-  /* ---------- Pasos de la plantilla ---------- */
+  /* ---------- Template steps ---------- */
 
   createSession(L, puzzle){
     const givens = this.givensOf(puzzle);
     return { L, p: puzzle, values: givens.slice(), notes: new Array(givens.length).fill(0), sel: -1, time: 0, done: false, hints: 0 };
   }
-  /** Lo que la subclase pase de más al tablero (p. ej. las jaulas del KenKen). */
+  /** Whatever extra the subclass passes to the board (e.g. Calcudoku cages). */
   boardExtras(){ return {}; }
   renderBoard(){
     const s = this.session, { values, notes, sel } = s;
@@ -54,7 +54,7 @@ export class DigitGridController extends GameController {
     });
     const digits = this.digits, counts = new Array(digits + 1).fill(0);
     for (const v of values) if (v > 0) counts[v]++;
-    // el teclado puede traer más números que el tablero (KenKen de distintos tamaños)
+    // the keypad may have more numbers than the board (Calcudoku of different sizes)
     this.keypad.style.setProperty('--keys', digits);
     this.#keys.forEach(k => { k.hidden = Number(k.dataset.digit) > digits; k.classList.toggle('is-done', counts[k.dataset.digit] >= this.digitCap); });
     this.keypad.classList.toggle('is-pencil', this.tool === PENCIL);
@@ -97,7 +97,7 @@ export class DigitGridController extends GameController {
     return false;
   }
 
-  /* ---------- Entrada ---------- */
+  /* ---------- Input ---------- */
 
   #editable(i){ return i >= 0 && !this.givensOf(this.session.p)[i]; }
 
@@ -112,7 +112,7 @@ export class DigitGridController extends GameController {
     this.select(((r + dy + n) % n) * n + (c + dx + n) % n);
   }
 
-  /** Coloca el dígito d en la casilla i (limpiando notas si procede). */
+  /** Places digit d in cell i (clearing notes if needed). */
   #place(i, d){
     const s = this.session;
     s.values[i] = d;

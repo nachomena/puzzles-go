@@ -1,18 +1,18 @@
-/* Pantalla inicial: lista de juegos disponibles, cada uno con su icono y una frase corta (meta.tagline).
-   Los juegos sin menú de niveles (p. ej. el Solitario) muestran su récord en lugar de la frase, porque no
-   tienen otro sitio donde verlo. Los juegos de un mismo grupo (meta.group, p. ej. los SmartGames) van en
-   una fila que se despliega. */
+/* Home screen: list of available games, each with its icon and a short line (meta.tagline).
+   Games without a level menu (e.g. Peg Solitaire) show their record instead of the line, because they
+   have nowhere else to show it. Games in the same group (meta.group, e.g. the piece games) go in a row
+   that expands. */
 import { svgIcon } from './templates.js';
 import { formatTime } from '../lib/format.js';
 import { statsRows } from '../core/stats.js';
 import { t } from '../i18n/index.js';
 
-/** Grupos del selector: nombre e icono de su fila. */
+/** Picker groups: name and icon of their row. */
 export const GROUPS = Object.freeze({
-  smart: Object.freeze({ name: t('hub.groups.smart'), icon: 'smart' })
+  pieces: Object.freeze({ name: t('hub.groups.pieces'), icon: 'pieces' })
 });
 
-/** "Récord 1:20" o "Récord · Inglés 0:42 · Europeo 3:10" (solo las filas con récord), o ''. */
+/** "Best 1:20" or "Best · English 0:42 · European 3:10" (only the rows with a record), or ''. */
 export function bestLine(meta, stats = {}){
   const rows = statsRows(meta), withBest = rows.filter(r => stats[r.key]?.best);
   if (!withBest.length) return '';
@@ -20,7 +20,7 @@ export function bestLine(meta, stats = {}){
   return t('common.recordWord') + ' · ' + withBest.map(r => `${r.name} ${formatTime(stats[r.key].best)}`).join(' · ');
 }
 
-/** "ahora", "hace 5 min", "hace 2 h", "ayer", "hace 3 días". */
+/** "just now", "5 min ago", "2 h ago", "yesterday", "3 days ago". */
 export function ago(at, now = Date.now()){
   const min = Math.floor((now - at) / 60000);
   if (min < 1) return t('hub.now');
@@ -31,7 +31,7 @@ export function ago(at, now = Date.now()){
   return d === 1 ? t('hub.yesterday') : t('hub.daysAgo', { n: d });
 }
 
-/** La partida a medias jugada más recientemente, o null. */
+/** The most recently played unfinished game, or null. */
 export function lastSession(items){
   let best = null;
   for (const item of items){
@@ -42,7 +42,7 @@ export function lastSession(items){
 }
 
 /**
- * Tarjeta de cristal "Continuar" (selector y menú de niveles). `attrs`: la acción del botón.
+ * Glass "Continue" card (picker and level menu). `attrs`: the button's action.
  * @param {{ icon: string, name: string, detail: string, attrs: string }} c
  */
 export const resumeCardHtml = ({ icon, name, detail, attrs }) =>
@@ -52,7 +52,7 @@ export const resumeCardHtml = ({ icon, name, detail, attrs }) =>
   `<span class="resume-card__name">${name}</span><span class="resume-card__detail">${detail}</span></span>` +
   `<span class="resume-card__play" aria-hidden="true">${svgIcon('play')}</span></button>`;
 
-/** Tarjeta "Continuar" de la última partida a medias, o '' si no hay. */
+/** "Continue" card for the last unfinished game, or '' if there is none. */
 export function resumeCard(item){
   if (!item) return '';
   const { meta, data: { cur } } = item;
@@ -63,7 +63,7 @@ export function resumeCard(item){
 
 const CHEVRON = '<svg class="game-row__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>';
 
-/** Fila de un juego (o de un grupo): icono, nombre, una línea de información y la flecha. */
+/** Row for a game (or a group): icon, name, a line of information and the arrow. */
 const row = ({ icon, name, info, attrs, cls = '' }) =>
   `<button class="game-row${cls}" ${attrs}>` +
   `<span class="game-row__icon">${svgIcon(icon)}</span>` +
@@ -84,10 +84,10 @@ export class HubView {
     this.open = new Set();   // grupos desplegados
   }
 
-  /** Abre o cierra un grupo. */
+  /** Expands or collapses a group. */
   toggle(group){ if (!this.open.delete(group)) this.open.add(group); }
 
-  /** @param {{ meta: object, data: { stats: object } }[]} items  en el orden del catálogo */
+  /** @param {{ meta: object, data: { stats: object } }[]} items  in catalogue order */
   render(items){
     this.resumeEl.innerHTML = resumeCard(lastSession(items));
     const done = new Set();

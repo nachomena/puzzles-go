@@ -1,32 +1,32 @@
-/* "Mostrar dónde cabe" (juegos de piezas): con una pieza elegida se marca con un punto cada sitio
-   del tablero donde cabe tal como está girada y volteada. Tocar un punto la muestra ahí (vista
-   previa) y tocarlo otra vez la coloca. Cada juego calcula sus sitios; aquí va lo común. */
+/* "Show where it fits" (piece games): with a piece picked, every place on the board where it fits as
+   it is rotated and flipped is marked with a dot. Tapping a dot shows it there (preview) and tapping it
+   again places it. Each game works out its places; the shared part is here. */
 import { t } from '../i18n/index.js';
 
-/** Ajuste de la hoja de Ajustes (encendido por defecto en los juegos que lo usan). */
+/** The Settings sheet option (on by default in the games that use it). */
 export const SPOTS_SETTING = Object.freeze({
   key: 'spots', title: t('settings.spots'), desc: t('settings.spotsDesc')
 });
 
-/** Texto para la ayuda de cada juego. */
+/** Text for each game's help. */
 export const SPOTS_HELP = t('settings.spotsHelp');
 
 /**
- * Marcado SVG de los puntos (en las unidades del tablero de cada juego).
- * @param {{x:number,y:number}[]} points  centro de cada sitio
- * @param {number} chosen  índice del sitio que se está mirando (-1 = ninguno)
- * @param {number} r  radio del punto
+ * SVG markup of the dots (in each game's board units).
+ * @param {{x:number,y:number}[]} points  centre of each place
+ * @param {number} chosen  index of the place being looked at (-1 = none)
+ * @param {number} r  dot radius
  */
 export const spotsMarkup = (points, chosen, r) => points.map(({ x, y }, i) =>
   `<circle class="fit-spot${i === chosen ? ' is-on' : ''}" data-spot="${i}" cx="${x.toFixed(4)}" cy="${y.toFixed(4)}" r="${(i === chosen ? r * 1.5 : r).toFixed(4)}"/>`).join('');
 
 /**
- * Lo que recuerda cada partida: los sitios del momento y el que se está mirando.
- * `samePose(a, b)` compara dos posturas del juego.
+ * What each game remembers: the current places and the one being looked at.
+ * `samePose(a, b)` compares two of the game's poses.
  */
 export class FitSpots {
   constructor(samePose){ this.samePose = samePose; this.list = []; this.chosen = null; }
-  /** Guarda los sitios calculados; si el que se miraba ya no está, se olvida. */
+  /** Saves the computed places; if the one being looked at is gone, it is forgotten. */
   update(list){
     this.list = list;
     if (this.chosen && !list.some(p => this.samePose(p, this.chosen))) this.chosen = null;
@@ -34,7 +34,7 @@ export class FitSpots {
   }
   get chosenIndex(){ return this.chosen ? this.list.findIndex(p => this.samePose(p, this.chosen)) : -1; }
   clear(){ this.chosen = null; }
-  /** Toque en el punto i: devuelve la postura a colocar (segundo toque) o null (primer toque). */
+  /** Tap on dot i: returns the pose to place (second tap) or null (first tap). */
   tap(i){
     const pose = this.list[i];
     if (!pose) return null;

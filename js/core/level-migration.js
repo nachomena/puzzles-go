@@ -1,9 +1,9 @@
-/* Pasa lo guardado de un juego de sus niveles de antes a los de ahora (core/levels.js): estadísticas,
-   registro de partidas y partida en curso. Se hace una vez, al arrancar, antes de leer nada; Store guarda
-   la versión (`levels`) para no repetirlo. Los tableros en reserva se tiran: se generan otros. */
+/* Moves a game's saved data from its old levels to the current ones (core/levels.js): statistics,
+   game log and the game in progress. It runs once, at startup, before anything is read; Store saves
+   the version (`levels`) so it isn't repeated. Reserve boards are dropped: others get generated. */
 import { LEVELS_VERSION } from './store.js';
 
-/** Junta las estadísticas de dos niveles que pasan a ser uno: se suman las partidas y queda el mejor récord. */
+/** Merges the statistics of two levels that become one: games are added up and the best record is kept. */
 export function mergeStats(a, b){
   const min = (x, y) => x == null ? y ?? null : y == null ? x : Math.min(x, y);
   const out = { solved: (a.solved || 0) + (b.solved || 0), best: min(a.best, b.best),
@@ -13,7 +13,7 @@ export function mergeStats(a, b){
   return out;
 }
 
-/** Datos guardados de un juego (ya leídos) con los niveles de ahora. `map`: id viejo → id nuevo. */
+/** A game's saved data (already parsed) with the current levels. `map`: old id → new id. */
 export function migrateData(s, map){
   const to = k => map[k] ?? k;
   if (s.stats && typeof s.stats === 'object'){
@@ -28,7 +28,7 @@ export function migrateData(s, map){
   return s;
 }
 
-/** Migra, si hace falta, lo guardado de cada juego que haya cambiado de niveles. */
+/** Migrates, if needed, the saved data of every game whose levels changed. */
 export function migrateLevels(storage, metas){
   for (const meta of metas){
     if (!meta.oldLevels) continue;
@@ -38,6 +38,6 @@ export function migrateLevels(storage, metas){
       const s = JSON.parse(raw);
       if (!s || typeof s !== 'object' || s.levels >= LEVELS_VERSION) continue;
       storage.setItem(meta.storageKey, JSON.stringify(migrateData(s, meta.oldLevels)));
-    } catch (e){ /* datos corruptos: Store empezará de cero */ }
+    } catch (e){ /* corrupt data: Store will start from scratch */ }
   }
 }

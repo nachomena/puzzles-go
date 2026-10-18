@@ -1,6 +1,6 @@
 export const byId = id => document.getElementById(id);
 
-/** Añade una hoja de estilos y espera a que cargue; si falla sigue igual (mejor sin estilos que sin juego). */
+/** Adds a stylesheet and waits for it to load; if it fails it carries on (better no styles than no game). */
 export function loadStylesheet(href){
   const link = Object.assign(document.createElement('link'), { rel: 'stylesheet', href });
   return new Promise(resolve => {
@@ -9,14 +9,14 @@ export function loadStylesheet(href){
   });
 }
 
-/** Reinicia una animación CSS aunque la clase ya estuviera puesta. */
+/** Restarts a CSS animation even if the class was already set. */
 export function restartAnimation(el, className){
   el.classList.remove(className);
   void el.offsetWidth;
   el.classList.add(className);
 }
 
-/** Acceso a localStorage que nunca lanza (modo privado, cookies bloqueadas…). */
+/** Access to localStorage that never throws (private mode, blocked cookies…). */
 export function safeStorage(){
   try { return window.localStorage; } catch (e){ return null; }
 }

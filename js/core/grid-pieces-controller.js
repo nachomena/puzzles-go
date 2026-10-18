@@ -1,10 +1,10 @@
-/* Partida de piezas sobre una cuadrícula (Katamino, Puzzler Pro): arrastrar de la bandeja al
-   tablero, tocar para elegir y otra vez para girar 90°, y voltear la elegida con un botón.
-   La pieza colocada es { m, r, x, y } (lib/polyomino.js); en la bandeja se guarda su cara y giro.
+/* A game of pieces on a grid (Pentominoes, Fit): drag from the tray to the board, tap to pick
+   and again to rotate 90°, and flip the picked one with a button.
+   A placed piece is { m, r, x, y } (lib/polyomino.js); in the tray its side and rotation are kept.
 
-   La subclase da la vista (render, cellFor, cellSize, ghostFor, flash, celebrate) y:
+   The subclass provides the view (render, cellFor, cellSize, ghostFor, flash, celebrate) and:
      boardSize() → { W, H }   orient(piece, m, r) → { w, h }   fits(place, piece, pose)
-     isFixed(piece)           (por defecto ninguna) */
+     isFixed(piece)           (none by default) */
 import { GameController } from './game-controller.js';
 import { t } from '../i18n/index.js';
 import { bindPieceDrag } from '../ui/piece-drag.js';
@@ -29,12 +29,12 @@ export class GridPiecesController extends GameController {
 
   isFixed(piece){ return false; }
 
-  /** Partida con `count` piezas, todas en la bandeja; `place` permite empezar con algunas puestas. */
+  /** Game with `count` pieces, all in the tray; `place` lets it start with some already placed. */
   baseSession(L, puzzle, count, place = new Array(count).fill(null)){
     return { L, p: puzzle, place, tm: new Array(count).fill(0), tr: new Array(count).fill(0), sel: -1, time: 0, done: false, hints: 0 };
   }
 
-  /* ---------- Pasos de la plantilla ---------- */
+  /* ---------- Template steps ---------- */
 
   snapshot(){ return { place: this.session.place.map(p => p && { ...p }) }; }
   restore(snap){ this.session.place = snap.place; }
@@ -48,14 +48,14 @@ export class GridPiecesController extends GameController {
   celebrate(){ this.session.sel = -1; this.renderBoard(); this.view.celebrate(); }
   get actions(){ return { flip: () => this.flip() }; }
 
-  /* ---------- Acciones de piezas ---------- */
+  /* ---------- Piece actions ---------- */
 
   toTray(piece){
     const s = this.session, pose = s.place[piece];
     s.tm[piece] = pose.m; s.tr[piece] = pose.r; s.place[piece] = null;
   }
 
-  /** Coloca una pieza (p. ej. una pista): lo que ocupe su sitio vuelve a la bandeja. */
+  /** Places a piece (e.g. a hint): whatever is in its spot goes back to the tray. */
   placeAt(piece, pose, cellsOf){
     const s = this.session, target = new Set(cellsOf(piece, pose));
     s.place.forEach((other, p) => {
@@ -65,8 +65,8 @@ export class GridPiecesController extends GameController {
   }
 
   /**
-   * Nueva cara o giro: en la bandeja, sin más; en el tablero, alrededor del mismo centro y, si no
-   * cabe ahí, en el hueco más cercano.
+   * New side or rotation: in the tray, nothing else; on the board, around the same centre and, if it
+   * doesn't fit there, in the nearest free spot.
    */
   #reorient(piece, m, r, failMsg){
     const s = this.session, pose = s.place[piece];
@@ -82,7 +82,7 @@ export class GridPiecesController extends GameController {
     this.commit(true);
   }
 
-  /** Primer toque: elegir la pieza; si ya estaba elegida, girarla 90°. */
+  /** First tap: pick the piece; if it was already picked, rotate it 90°. */
   tap(piece){
     const s = this.session;
     if (!this.active || this.isFixed(piece)) return;
@@ -92,7 +92,7 @@ export class GridPiecesController extends GameController {
     this.#reorient(piece, m, r, t('play.noRotate'));
   }
 
-  /** Da la vuelta (en espejo, sin cambiar el giro aparente) a la pieza elegida. */
+  /** Flips (mirrors, without changing the apparent rotation) the picked piece. */
   flip(){
     const s = this.session, piece = s.sel;
     if (!this.active || piece < 0 || this.isFixed(piece)) return;
@@ -101,7 +101,7 @@ export class GridPiecesController extends GameController {
     this.#reorient(piece, m, (4 - r) % 4, t('play.noFlip'));
   }
 
-  /** Suelta una pieza: en el tablero (si cabe; pegada al borde si asoma un poco) o fuera, a la bandeja. */
+  /** Drops a piece: on the board (if it fits; snapped to the edge if it sticks out a little) or off it, to the tray. */
   drop(piece, cell){
     const s = this.session, { W, H } = this.boardSize();
     if (!this.active || this.isFixed(piece)) return;

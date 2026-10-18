@@ -8,14 +8,14 @@ import BANK from '../js/games/kakuro/engine/bank-data.js';
 import { conflicts, findHint, peersOf } from '../js/games/kakuro/rules.js';
 import { runToEnd } from '../js/lib/iter.js';
 
-test('combinaciones: 3 en dos es 1 + 2; 24 en tres es 7 + 8 + 9; 20 en dos no existe', () => {
+test("combinations: 3 in two is 1 + 2; 24 in three is 7 + 8 + 9; 20 in two doesn't exist", () => {
   assert.deepEqual(combos(2, 3), [(1 << 1) | (1 << 2)]);
   assert.deepEqual(combos(3, 24), [(1 << 7) | (1 << 8) | (1 << 9)]);
   assert.deepEqual(combos(2, 20), []);
   assert.equal(combos(2, 10).length, 4);
 });
 
-test('forma y relleno: tramos de 2 o más, cada blanca en dos tramos y sin repetir número', () => {
+test('shape and fill: runs of 2 or more, every white cell in two runs and no repeated number', () => {
   let ok = 0;
   for (let k = 0; k < 40 && ok < 10; k++){
     const white = pattern(10, .28, 8);
@@ -36,7 +36,7 @@ test('forma y relleno: tramos de 2 o más, cada blanca en dos tramos y sin repet
 });
 
 for (const L of [1, 2, 3, 4]){
-  test(`generador: nivel ${L} con solución única y del nivel exacto`, () => {
+  test(`generator: level ${L} with a single solution and of the exact level`, () => {
     const p = runToEnd(generate(L)), { n, logic: level } = LEVEL_RULES[L];
     assert.ok(p && p.level === L && p.n === n);
     const r = logic(n, p.white, p.runs, level);
@@ -46,7 +46,7 @@ for (const L of [1, 2, 3, 4]){
   });
 }
 
-test('banco del Experto: las 4 versiones de cada reto siguen teniendo solución única', () => {
+test('Expert bank: the 4 versions of every puzzle still have a single solution', () => {
   assert.ok(BANK.length >= 100);
   for (const text of BANK.slice(0, 12)){
     for (const transpose of [false, true]) for (const complement of [false, true]){
@@ -58,7 +58,7 @@ test('banco del Experto: las 4 versiones de cada reto siguen teniendo solución 
   }
 });
 
-test('reglas: repetidos en un tramo, sumas que no cuadran y pista', () => {
+test("rules: repeats in a run, sums that don't add up, and hint", () => {
   const p = runToEnd(generate(1)), values = p.white.map(w => w ? 0 : -1);
   const run = p.runs[0], [a, b] = run.cells;
   values[a] = values[b] = 1;

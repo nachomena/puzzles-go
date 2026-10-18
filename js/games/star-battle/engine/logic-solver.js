@@ -1,17 +1,17 @@
-/* ---------- Solucionador lógico (técnicas humanas) ----------
-   Nivel 1: reglas básicas, casilla obligada en una unidad y
-            "esta estrella dejaría sin sitio a otra unidad".
-   Nivel 2: + confinamiento (n regiones metidas en n filas/columnas y al revés).
-   Nivel 3: + hipótesis: suponer estrella y llegar a contradicción.
+/* ---------- Logic solver (human techniques) ----------
+   Level 1: basic rules, a forced cell in a unit and
+            "this star would leave another unit without room".
+   Level 2: + confinement (n regions inside n rows/columns and the other way round).
+   Level 3: + hypothesis: assume a star and reach a contradiction.
 
-   Estado de cada casilla (`st`): UNKNOWN, STAR o EMPTY. */
+   State of each cell (`st`): UNKNOWN, STAR or EMPTY. */
 import { adjacency, touches, rowOf, colOf } from '../../../lib/grid.js';
 
 export const MAX_LEVEL = 3;
 const UNKNOWN = 0, STAR = 1, EMPTY = 2;
 const CONTRA = { contra: true };
 
-/** Unidades: N filas, N columnas y N regiones, en ese orden. */
+/** Units: N rows, N columns and N regions, in that order. */
 function makeCtx(N, K, reg){
   const units = [];
   for (let r = 0; r < N; r++){ const u = []; for (let c = 0; c < N; c++) u.push(r * N + c); units.push(u); }
@@ -25,14 +25,14 @@ function makeCtx(N, K, reg){
 
 const countStars = (unit, st) => { let s = 0; for (const i of unit) if (st[i] === STAR) s++; return s; };
 
-/** Estrellas y casillas libres de una unidad. */
+/** Stars and free cells of a unit. */
 function unitStatus(unit, st){
   let stars = 0; const unknown = [];
   for (const i of unit){ if (st[i] === STAR) stars++; else if (st[i] === UNKNOWN) unknown.push(i); }
   return { stars, unknown };
 }
 
-/** ¿Caben `need` estrellas que no se toquen en estas casillas? (need ≤ 2) */
+/** Do `need` non-touching stars fit in these cells? (need ≤ 2) */
 function canHost(N, cells, need){
   if (need <= 0) return true;
   if (cells.length < need) return false;
@@ -73,7 +73,7 @@ function basic(ctx, st){
 
 function level1(ctx, st){
   const { N, K, units, nb, cu, mark, umark } = ctx;
-  // casilla obligada: sin ella la unidad no puede colocar sus estrellas
+  // forced cell: without it the unit can't place its stars
   for (const u of units){
     const { stars, unknown } = unitStatus(u, st);
     const need = K - stars; if (need <= 0) continue;
@@ -81,7 +81,7 @@ function level1(ctx, st){
       if (!canHost(N, unknown.filter(x => x !== c), need)){ setStar(ctx, st, c); return true; }
     }
   }
-  // una estrella aquí dejaría sin sitio a alguna unidad
+  // a star here would leave some unit without room
   for (let c = 0; c < N * N; c++){
     if (st[c] !== UNKNOWN) continue;
     const t = ++ctx.tick;
@@ -103,7 +103,7 @@ function level1(ctx, st){
   return false;
 }
 
-/** Confinamiento: compara las estrellas que piden un bloque de líneas y las regiones que lo tocan. */
+/** Confinement: compares the stars a block of lines asks for and the regions that touch it. */
 function confine(ctx, st){
   const { N, K, units, reg } = ctx;
   const needReg = new Int8Array(N);
@@ -119,7 +119,7 @@ function confine(ctx, st){
       if (l < mn[g]) mn[g] = l;
       if (l > mx[g]) mx[g] = l;
     }
-    // Vacía las casillas libres que cumplen `test`; true si cambió algo.
+    // Empties the free cells that pass `test`; true if anything changed.
     const clear = test => {
       let ch = false;
       for (let i = 0; i < N * N; i++) if (st[i] === UNKNOWN && test(line(i), reg[i])){ st[i] = EMPTY; ch = true; }
@@ -135,9 +135,9 @@ function confine(ctx, st){
           if ((touch >> g) & 1) sumT += needReg[g];
         }
         if (sumIn > needL || sumT < needL) throw CONTRA;
-        // Las regiones encerradas llenan el bloque: el resto del bloque queda vacío
+        // The enclosed regions fill the block: the rest of the block stays empty
         if (sumIn === needL && inMask && clear((l, g) => l >= a && l <= b && !((inMask >> g) & 1))) return true;
-        // Las regiones que tocan el bloque gastan ahí todas sus estrellas
+        // The regions touching the block spend all their stars there
         if (sumT === needL && clear((l, g) => (l < a || l > b) && ((touch >> g) & 1))) return true;
       }
     }
@@ -145,7 +145,7 @@ function confine(ctx, st){
   return false;
 }
 
-/** Hipótesis: si suponer una estrella lleva a contradicción, la casilla está vacía. */
+/** Hypothesis: if assuming a star leads to a contradiction, the cell is empty. */
 function hypo(ctx, st){
   for (let c = 0; c < st.length; c++){
     if (st[c] !== UNKNOWN) continue;
@@ -156,7 +156,7 @@ function hypo(ctx, st){
   return false;
 }
 
-/** Técnicas por orden de coste; `minLevel` indica desde qué nivel se permite cada una. */
+/** Techniques by cost; `minLevel` says from which level each one is allowed. */
 const TECHNIQUES = [
   { minLevel: 0, apply: basic },
   { minLevel: 1, apply: level1 },
@@ -165,11 +165,11 @@ const TECHNIQUES = [
 ];
 
 function propagate(ctx, st, level){
-  // Tras cada avance se vuelve a empezar por la técnica más barata
+  // After each step forward, start again with the cheapest technique
   while (TECHNIQUES.some(t => level >= t.minLevel && t.apply(ctx, st)));
 }
 
-/** Aplica técnicas hasta `level`. Devuelve { solved, contra?, st }. */
+/** Applies techniques up to `level`. Returns { solved, contra?, st }. */
 export function logic(N, K, reg, level){
   const ctx = makeCtx(N, K, reg), st = new Int8Array(N * N);
   try { propagate(ctx, st, level); }
@@ -182,7 +182,7 @@ export function logic(N, K, reg, level){
 export const isEmptyState = v => v === EMPTY;
 export const isUnknownState = v => v === UNKNOWN;
 
-/** Nivel mínimo con el que se resuelve (MAX_LEVEL + 1 si ninguno basta). */
+/** Lowest level that solves it (MAX_LEVEL + 1 if none is enough). */
 export function grade(N, K, reg){
   for (let l = 1; l <= MAX_LEVEL; l++) if (logic(N, K, reg, l).solved) return l;
   return MAX_LEVEL + 1;

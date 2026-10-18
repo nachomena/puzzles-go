@@ -1,12 +1,12 @@
-/* Backtracking con máscaras y "casilla más restringida primero". */
+/* Backtracking with masks and "most constrained cell first". */
 import { CELLS, ALL, PEERS, bit, usedAround } from './grid.js';
 import { popcount, bitIndices } from '../../../lib/bits.js';
 import { shuffle } from '../../../lib/random.js';
 
 /**
- * Cuenta soluciones de `grid` (0 = vacía) hasta `limit`.
- * Con `random` prueba los dígitos en orden aleatorio (para rellenar tableros).
- * Devuelve { count, first } con la primera solución encontrada.
+ * Counts solutions of `grid` (0 = empty) up to `limit`.
+ * With `random` it tries the digits in random order (to fill boards).
+ * Returns { count, first } with the first solution found.
  */
 export function search(grid, { limit = 2, random = false } = {}){
   const g = Array.from(grid);
@@ -38,10 +38,10 @@ export function search(grid, { limit = 2, random = false } = {}){
 
 export const countSolutions = (grid, limit = 2) => search(grid, { limit }).count;
 
-/** Un tablero completo y válido al azar. */
+/** A random full and valid board. */
 export const randomSolution = () => search(new Array(CELLS).fill(0), { limit: 1, random: true }).first;
 
-/** ¿Es `grid` una solución completa y correcta? */
+/** Is `grid` a complete and correct solution? */
 export function isComplete(grid){
   for (let i = 0; i < CELLS; i++){
     if (!grid[i]) return false;

@@ -1,4 +1,4 @@
-/* Cabecera y barra de herramientas de una pantalla de juego. Solo presentación. */
+/* Header and toolbar of a game screen. Presentation only. */
 import { formatTime } from '../lib/format.js';
 import { t } from '../i18n/index.js';
 
@@ -19,14 +19,14 @@ export class GameHud {
     this.size.textContent = sizeText;
   }
   setTime(text){ this.time.textContent = text; }
-  /** Los juegos sin botones de deshacer/rehacer simplemente no los tienen. */
+  /** Games without undo/redo buttons simply don't have them. */
   setHistory(canUndo, canRedo){
     if (this.undo) this.undo.disabled = !canUndo;
     if (this.redo) this.redo.disabled = !canRedo;
   }
-  /** Cuenta atrás de la próxima pista (0 = disponible). */
+  /** Countdown to the next hint (0 = available). */
   setHintWait(sec){
-    if (!this.hint) return;   // juego sin pistas
+    if (!this.hint) return;   // game without hints
     const text = sec > 0 ? formatTime(sec) : '';
     if (this.hintWait.textContent === text) return;
     this.hintWait.textContent = text;

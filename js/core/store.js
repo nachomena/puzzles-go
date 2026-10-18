@@ -1,22 +1,22 @@
-/* Estado persistente de un juego (ajustes, estadísticas, tableros en reserva y partida en curso).
-   Es genérico: lo que cambia entre juegos se inyecta con la definición del juego.
-   El almacenamiento también se inyecta para poder probarlo o cambiarlo sin tocar el resto. */
+/* Persistent state of a game (settings, statistics, reserve boards and game in progress).
+   It is generic: what changes between games is injected with the game definition.
+   Storage is injected too, so it can be tested or swapped without touching the rest. */
 import { BUFFER_CAP, MIN_RESUME_SEC } from '../config.js';
 
 /**
- * ¿Se ofrece seguir esta partida? Sin terminar y, o jugada al menos MIN_RESUME_SEC, o con algo puesto
- * (`input`, lo apunta GameController#commit).
+ * Is this game offered to continue? Unfinished and either played for at least MIN_RESUME_SEC or with
+ * something placed (`input`, set by GameController#commit).
  */
 const resumable = cur => !!cur && !cur.done && ((cur.time || 0) >= MIN_RESUME_SEC || !!cur.input);
 import { recordWin } from './stats.js';
 import { logWin, isEntry, LOG_CAP } from './progress.js';
 
-/** Versión de los niveles de lo guardado (ver core/level-migration.js). */
+/** Version of the saved levels (see core/level-migration.js). */
 export const LEVELS_VERSION = 2;
 
 export class Store {
   /**
-   * @param {Storage|null} storage  cualquier objeto con getItem/setItem
+   * @param {Storage|null} storage  any object with getItem/setItem
    * @param {object} game  { storageKey, levels, levelOrder, defaultSettings, tools, isValidPuzzle(p, L), restoreSession(s) }
    */
   constructor(storage, game){
@@ -25,7 +25,7 @@ export class Store {
     this.state = {
       settings: { ...game.defaultSettings },
       stats: {},
-      log: [],          // partidas resueltas, para el progreso (core/progress.js)
+      log: [],          // solved games, for progress (core/progress.js)
       buffers: Object.fromEntries(game.levelOrder.map(L => [L, []])),
       cur: null,
       tool: game.tools[0],
@@ -44,19 +44,19 @@ export class Store {
       for (const L of g.levelOrder){
         if (Array.isArray(s.buffers?.[L])) st.buffers[L] = s.buffers[L].filter(p => p && g.isValidPuzzle(p, L)).slice(0, BUFFER_CAP);
       }
-      // un juego que haya cambiado sus niveles pasa la partida guardada a los de ahora (p. ej. Pentominós)
+      // a game that changed its levels moves the saved game to the current ones (e.g. Pentominoes)
       const cur = s.cur && g.upgradeSession ? g.upgradeSession(s.cur) : s.cur;
       if (cur && g.levels[cur.L] && cur.p) st.cur = g.restoreSession(cur);
       if (g.tools.includes(s.tool)) st.tool = s.tool;
-    } catch (e){ /* datos corruptos: se empieza de cero */ }
+    } catch (e){ /* corrupt data: start from scratch */ }
   }
   save(){
     const cur = this.state.cur;
-    if (cur && !cur.done) cur.at = Date.now();   // para "Continuar" en el selector: la última partida jugada
-    try { this.storage?.setItem(this.game.storageKey, JSON.stringify(this.state)); } catch (e){ /* sin espacio o bloqueado */ }
+    if (cur && !cur.done) cur.at = Date.now();   // for "Continue" on the picker: the last game played
+    try { this.storage?.setItem(this.game.storageKey, JSON.stringify(this.state)); } catch (e){ /* no space or blocked */ }
   }
 
-  /* ---- Reserva de tableros ---- */
+  /* ---- Board reserve ---- */
   bufferSize(L){ return this.state.buffers[L].length; }
   hasRoom(L){ return this.bufferSize(L) < BUFFER_CAP; }
   takePuzzle(L){ return this.state.buffers[L].shift() || null; }
@@ -65,12 +65,12 @@ export class Store {
     else this.state.buffers[L].push(p);
   }
 
-  /* ---- Partida en curso ---- */
+  /* ---- Game in progress ---- */
   get hasOpenSession(){ return resumable(this.state.cur); }
 
   /**
-   * Al salir de una partida recién empezada (ver MIN_RESUME_SEC): se descarta y, si `keepPuzzle`, su
-   * tablero vuelve a la reserva para la próxima vez.
+   * On leaving a game that had just started (see MIN_RESUME_SEC): it is dropped and, if `keepPuzzle`,
+   * its board goes back to the reserve for next time.
    */
   dropFreshSession({ keepPuzzle }){
     const cur = this.state.cur;
@@ -83,12 +83,12 @@ export class Store {
     this.save();
   }
 
-  /* ---- Datos para el selector y el menú de niveles ---- */
+  /* ---- Data for the picker and the level menu ---- */
 
-  /** { stats, cur, log } con cur = partida abierta o null y log = partidas resueltas (core/progress.js). */
+  /** { stats, cur, log } with cur = open game or null and log = solved games (core/progress.js). */
   menuData(){ return { stats: this.state.stats, cur: this.hasOpenSession ? this.state.cur : null, log: this.state.log }; }
 
-  /** Lo mismo leído directamente del almacenamiento, sin cargar el juego. */
+  /** The same, read straight from storage without loading the game. */
   static peek(storage, key){
     try {
       const s = JSON.parse(storage?.getItem(key) || 'null') || {};
@@ -96,13 +96,13 @@ export class Store {
     } catch (e){ return { stats: {}, cur: null, log: [] }; }
   }
 
-  /* ---- Estadísticas ---- */
+  /* ---- Statistics ---- */
   statsFor(L){ return this.state.stats[L] || {}; }
   totalSolved(){ return Object.values(this.state.stats).reduce((n, s) => n + (s.solved || 0), 0); }
   clearStats(){ this.state.stats = {}; this.state.log = []; this.save(); }
   /**
-   * Registra una victoria en `key` (el nivel, o el grupo que diga el juego). Solo es récord sin pistas.
-   * Devuelve { record, best, prevBest, prevAvg } (ver core/stats.js).
+   * Records a win in `key` (the level, or the group the game says). It's only a record without hints.
+   * Returns { record, best, prevBest, prevAvg } (see core/stats.js).
    */
   recordWin(key, time, hints, extra){
     const r = recordWin(this.state.stats, key, time, hints, extra);

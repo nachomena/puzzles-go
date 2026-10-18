@@ -1,5 +1,5 @@
-/* Vista de Engranajes: un SVG con los huecos hexagonales, los números, los puntos y los engranajes. Lo
-   unido a la manivela va en latón (o en rojo si se atasca); lo suelto, en gris. */
+/* Gears view: an SVG with the hexagonal slots, the numbers, the dots and the gears. What is connected to
+   the crank is brass (or red if it jams); loose ones, grey. */
 import { center, viewBox, hexPath, gear, clueText } from './art.js';
 
 const TURN_MS = 2400;
@@ -47,11 +47,11 @@ export class GearsBoardView {
     this.jam = jam;
   }
 
-  /** Gira la manivela: se mueve lo que está unido a ella (o tiembla, si se atasca). */
+  /** Turns the crank: whatever is connected to it moves (or shakes, if it jams). */
   turn(){
     const cls = this.jam ? 'is-stuck' : 'is-turning';
     this.root.classList.remove('is-turning', 'is-stuck');
-    void this.root.getBoundingClientRect();   // para que la animación vuelva a empezar
+    void this.root.getBoundingClientRect();   // so the animation starts again
     this.root.classList.add(cls);
     clearTimeout(this.turnTimer);
     this.turnTimer = setTimeout(() => this.root.classList.remove(cls), TURN_MS);
@@ -66,6 +66,6 @@ export class GearsBoardView {
 
   celebrate(){ clearTimeout(this.turnTimer); this.root.classList.remove('is-turning', 'is-stuck'); this.root.classList.add('is-won'); }
 
-  /** Hueco bajo un evento de puntero, o −1. */
+  /** Slot under a pointer event, or −1. */
   socketAt(e){ const el = e.target.closest?.('[data-i]'); return el ? Number(el.dataset.i) : -1; }
 }

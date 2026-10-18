@@ -1,4 +1,4 @@
-/* Retos de Engranajes ya calculados por nivel (scripts/build-gears-bank.mjs); formato en generator.js#encode. */
+/* Precomputed Gears puzzles per level (scripts/build-gears-bank.mjs); format in generator.js#encode. */
 export default {
   1: [
     'g3.1.Cgg10g....g4FgL.Fg..',

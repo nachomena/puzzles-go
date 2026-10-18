@@ -1,7 +1,7 @@
-/* Diagnóstico de arranque (script clásico, se carga antes que los módulos).
-   Si la app no consigue pintar el selector de juegos, muestra el error en pantalla:
-   en el móvil no hay consola a mano para verlo. Va antes que los textos de js/i18n, así que lleva
-   los suyos en los dos idiomas. */
+/* Startup diagnostics (classic script, loaded before the modules).
+   If the app fails to draw the game picker, it shows the error on screen: on a phone there is no
+   console at hand to see it. It runs before the js/i18n texts, so it carries its own in both
+   languages. */
 (function(){
   var errors = [], lang = '';
   try { lang = localStorage.getItem('puzzlesgo.lang') || ''; } catch (e){}

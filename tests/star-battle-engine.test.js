@@ -8,7 +8,7 @@ import { BOARD } from '../js/games/star-battle/config.js';
 
 const { size: N, stars: K } = BOARD;
 
-test('rowMasks: K estrellas por fila y nunca contiguas', () => {
+test('rowMasks: K stars per row and never adjacent', () => {
   const masks = rowMasks(N, K);
   assert.ok(masks.length > 0);
   for (const m of masks){
@@ -17,23 +17,23 @@ test('rowMasks: K estrellas por fila y nunca contiguas', () => {
   }
 });
 
-test('rowsToCells convierte máscaras en índices', () => {
+test('rowsToCells turns masks into indices', () => {
   assert.deepEqual(rowsToCells(4, [0b0101, 0b1000]), [0, 2, 7]);
 });
 
 for (const target of [1, 2]){
-  test(`generate(${target}) devuelve un tablero válido de solución única`, () => {
+  test(`generate(${target}) returns a valid single-solution board`, () => {
     const p = runToEnd(generate(target));
-    assert.ok(p, 'se genera un tablero');
+    assert.ok(p, 'a board is generated');
     assert.equal(p.N, N); assert.equal(p.K, K);
     assert.equal(p.regions.length, N * N);
     assert.equal(p.solution.length, N * K);
 
     const res = solve(N, K, p.regions, 2, 1e7);
-    assert.equal(res.count, 1, 'solución única');
+    assert.equal(res.count, 1, 'single solution');
     assert.deepEqual(rowsToCells(N, res.sols[0]), [...p.solution].sort((a, b) => a - b));
 
-    assert.equal(grade(N, K, p.regions), p.level, 'el nivel coincide con la calificación');
+    assert.equal(grade(N, K, p.regions), p.level, 'the level matches the grading');
     assert.ok(logic(N, K, p.regions, p.level).solved);
   });
 }

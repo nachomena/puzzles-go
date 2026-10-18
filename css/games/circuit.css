@@ -1,0 +1,49 @@
+/* Circuit: dark plastic pieces with paths in soft yellow. */
+[data-game="circuit"]{
+  --ct-path:#e2bf5a;          /* soft yellow of the paths */
+  --ct-path-dim:rgba(226,191,90,.28);
+  --ct-piece:#4a4952;
+  --ct-piece-fixed:#3f3e46;
+}
+
+.board--circuit{aspect-ratio:2/1;--n:8}
+
+/* The puzzle's clues */
+.ct-clues,.ct-errors{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.ct-errors{z-index:2}
+.ct-clues{clip-path:inset(0 round var(--radius-board))}   /* with the board's rounded corners */
+.ct-clue-dot{fill:none;stroke:var(--ct-path);stroke-width:.07}
+.ct-clue-path{fill:none;stroke:var(--ct-path-dim);stroke-width:.16;stroke-linecap:round;stroke-linejoin:round}
+.ct-clue-outline{fill:none;stroke:var(--ink-soft);stroke-width:.04;stroke-dasharray:.12 .1;stroke-linecap:round}
+.ct-broken{fill:var(--bad)}
+
+/* Pieces. On the board they are <g> groups of one SVG (.ct-pieces); in the tray and while dragging, a
+   <div> with its own SVG. Shadows go on HTML elements: inside an SVG px would be cells, and Safari
+   leaves paint artefacts if the filter is on an <svg> that gets replaced. */
+.ct-pieces{position:absolute;inset:0;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 1.5px 2px rgba(0,0,0,.45))}
+.ct-piece{touch-action:none;cursor:grab}
+div.ct-piece{position:absolute;filter:drop-shadow(0 1.5px 2px rgba(0,0,0,.45))}
+.ct-piece__svg{display:block;width:100%;height:100%;overflow:visible}
+.ct-piece__body{fill:var(--ct-piece)}
+.ct-piece__halo{fill:none;stroke:var(--wall);stroke-width:.1;stroke-linejoin:round}
+.ct-piece__bevel{pointer-events:none}
+.ct-piece__path{fill:none;stroke:var(--ct-path);stroke-width:.2;stroke-linecap:round;stroke-linejoin:round}
+.ct-piece__dots{fill:var(--ct-path)}
+.ct-piece.is-fixed{cursor:default}
+.ct-piece.is-fixed .ct-piece__body{fill:var(--ct-piece-fixed)}
+/* Picked: a lighter body and an outline (in the tray, a halo around the whole piece) */
+.ct-piece.is-selected .ct-piece__body{fill:#5d5c67}
+div.ct-piece.is-selected{filter:drop-shadow(0 0 1px var(--wall)) drop-shadow(0 0 1px var(--wall)) drop-shadow(0 2px 3px rgba(0,0,0,.5))}
+.ct-piece.is-lifted{opacity:.2}
+div.ct-piece.is-ghost{position:fixed;z-index:30;pointer-events:none;filter:drop-shadow(0 10px 18px rgba(0,0,0,.5))}
+.ct-piece.is-flash{animation:ct-flash .5s ease-in-out 3}
+@keyframes ct-flash{50%{opacity:.35}}
+.board.is-won .ct-piece__path{animation:ct-glow 1.2s ease-in-out both}
+@keyframes ct-glow{40%{stroke:#ffe9a0;stroke-width:.28}}
+
+/* Flip, on the right under the board */
+.ct-actions{display:flex;justify-content:flex-end;align-items:center;padding-top:8px}
+
+/* Tray */
+.ct-tray{--ct-tray-cell:26px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center;padding:12px 0 4px;min-height:60px;touch-action:none}
+.ct-piece.is-tray{position:relative;width:calc(var(--w) * var(--ct-tray-cell));height:calc(var(--h) * var(--ct-tray-cell))}

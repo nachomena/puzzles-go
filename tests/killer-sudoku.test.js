@@ -9,7 +9,7 @@ import { runToEnd } from '../js/lib/iter.js';
 
 const total = (cells, grid) => cells.reduce((t, i) => t + grid[i], 0);
 
-test('jaulas: cubren el tablero, sin repetir número dentro y con su suma', () => {
+test('cages: cover the board, no repeated number inside, and with their sum', () => {
   for (let k = 0; k < 20; k++){
     const sol = randomSolution(), cages = partition(sol, [2, 3, 4, 5]);
     if (!cages) continue;
@@ -22,7 +22,7 @@ test('jaulas: cubren el tablero, sin repetir número dentro y con su suma', () =
   }
 });
 
-test('regla del 45: cada grupo suma lo que dice', () => {
+test('rule of 45: every group adds up to what it says', () => {
   for (let k = 0; k < 20; k++){
     const sol = randomSolution(), cages = partition(sol, [2, 3, 4, 5]);
     if (!cages) continue;
@@ -30,7 +30,7 @@ test('regla del 45: cada grupo suma lo que dice', () => {
   }
 });
 
-test('las técnicas nunca contradicen la solución real', () => {
+test('the techniques never contradict the real solution', () => {
   for (let k = 0; k < 20; k++){
     const sol = randomSolution(), cages = partition(sol, [2, 3, 4, 5, 6]);
     if (!cages) continue;
@@ -41,7 +41,7 @@ test('las técnicas nunca contradicen la solución real', () => {
 });
 
 for (const L of [1, 2, 3, 4]){
-  test(`generador: nivel ${L} con solución única, del nivel exacto y casi sin números puestos`, () => {
+  test(`generator: level ${L} with a single solution, of the exact level and almost no given numbers`, () => {
     const p = runToEnd(generate(L)), prepared = prepare(p.cages);
     assert.ok(p && p.level === L);
     assert.ok(coversBoard(p.cages));
@@ -55,10 +55,10 @@ for (const L of [1, 2, 3, 4]){
   });
 }
 
-test('reglas: repetidos en la jaula, sumas pasadas y pista', () => {
+test('rules: repeats in the cage, sums exceeded, and hint', () => {
   const p = runToEnd(generate(1)), cage = p.cages.find(c => c.cells.filter(i => !p.givens[i]).length >= 2);
   const values = p.givens.slice();
-  // dos números iguales dentro de una jaula
+  // two equal numbers inside a cage
   const [a, b] = cage.cells.filter(i => !p.givens[i]);
   if (a !== undefined && b !== undefined){
     values[a] = values[b] = 1;
@@ -66,11 +66,11 @@ test('reglas: repetidos en la jaula, sumas pasadas y pista', () => {
     assert.equal(bad[a] + bad[b], 2);
   }
   assert.equal(conflicts(p.cages, p.solution).some(Boolean), false);
-  // la pista da siempre el número de la solución
+  // the hint always gives the solution's number
   const h = findHint(p.cages, p.level, p.givens, p.solution);
   assert.ok(h && h.digit === p.solution[h.cell] && !p.givens[h.cell]);
   assert.ok(nextDeduction(p.givens, prepare(p.cages), 1));
-  // la jaula cuenta como vecina para limpiar notas
+  // the cage counts as a neighbour when clearing notes
   const peers = peersOf(p.cages);
   assert.ok(peers[cage.cells[0]].includes(cage.cells[1]));
 });

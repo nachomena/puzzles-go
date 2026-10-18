@@ -1,4 +1,4 @@
-/* Definición del Sudoku para el registro de juegos (contrato en js/games/README.md). */
+/* Sudoku definition for the game registry (contract in js/games/README.md). */
 import { defineGame } from '../../core/game-definition.js';
 import { generate } from './engine/generator.js';
 import { CELLS } from './engine/grid.js';
@@ -24,7 +24,7 @@ export default defineGame({
     if (typeof s.sel !== 'number') s.sel = -1;
     return s;
   },
-  sizeLabel: () => '',   // siempre es 9×9: no aporta nada en la cabecera
+  sizeLabel: () => '',   // it is always 9×9: it adds nothing to the header
   boardClass: 'board--digits board--sudoku',
 
   controls: controls(),

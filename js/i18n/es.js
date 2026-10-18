@@ -1,5 +1,5 @@
-/* Textos en español. Las mismas claves que en en.js (tests/i18n.test.js lo comprueba). Los huecos {nombre}
-   se rellenan al usarlos; los textos que cambian con un número son funciones. */
+/* Spanish texts. Same keys as en.js (tests/i18n.test.js checks it). {name} slots are filled in when the text
+   is used; texts that change with a number are functions. */
 const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
 
 export default {
@@ -47,7 +47,7 @@ export default {
     hoursAgo: 'hace {n} h',
     yesterday: 'ayer',
     daysAgo: 'hace {n} días',
-    groups: { smart: 'Piezas' }
+    groups: { pieces: 'Piezas' }
   },
 
   appSettings: {
@@ -273,7 +273,7 @@ export default {
   </ul>`
     },
 
-    kenken: {
+    calcudoku: {
       name: 'Calcudoku',
       tagline: 'Operaciones en jaulas',
       errorsDesc: 'Los números repetidos en una fila o columna se ponen rojos.',
@@ -323,7 +323,7 @@ export default {
   <p>Empieza por las regiones pequeñas: si una región cabe en una sola fila o columna, las estrellas de esa fila o columna ya están decididas.</p>`
     },
 
-    slitherlink: {
+    loop: {
       name: 'Bucle',
       tagline: 'Un solo lazo entre los puntos',
       errorsDesc: 'En rojo los números con más líneas de las que dicen y los puntos con más de dos líneas.',
@@ -352,7 +352,7 @@ export default {
   </ul>`
     },
 
-    akari: {
+    'light-up': {
       name: 'Luces',
       tagline: 'Ilumina todo el tablero',
       errorsDesc: 'En rojo las bombillas que se ven entre sí y los números que ya no pueden cumplirse: con bombillas de más, o sin sitio para las que faltan.',
@@ -374,7 +374,7 @@ export default {
   </ul>`
     },
 
-    binario: {
+    binary: {
       name: 'Binario',
       tagline: 'Rojo y azul, mitad y mitad',
       errorsDesc: 'Raya las casillas que rompen una regla: tres iguales seguidos, más de la mitad de un color en una línea o dos líneas iguales.',
@@ -402,7 +402,7 @@ export default {
   </ul>`
     },
 
-    hashi: {
+    bridges: {
       name: 'Puentes',
       tagline: 'Puentes entre islas',
       errors: 'Marcar islas con puentes de más',
@@ -428,7 +428,7 @@ export default {
   </ul>`
     },
 
-    zip: {
+    trail: {
       name: 'Trazo',
       tagline: 'Un camino por todas las casillas',
       detour: 'El camino se desvía aquí',
@@ -486,7 +486,7 @@ export default {
   </ul>`
     },
 
-    'smart-dices': {
+    dice: {
       name: 'Dados',
       tagline: 'Cuatro caras de dado',
       errorsDesc: 'Marca en rojo los dados que no forman una cara válida y las sumas que no cuadran.',
@@ -506,7 +506,7 @@ export default {
   <p>Los puntos suman siempre 12 entre los 4 dados. Si una fila suma 9, la otra suma 3.</p>`
     },
 
-    'smart-circuit': {
+    circuit: {
       name: 'Circuito',
       tagline: 'Caminos entre los puntos',
       errorsDesc: 'Marca en rojo los caminos que se cortan contra otra pieza o contra el borde.',
@@ -531,7 +531,7 @@ export default {
   </ul>`
     },
 
-    'smart-circle': {
+    circle: {
       name: 'Círculo',
       tagline: 'Anillos sin cruzar nervios',
       ribs: 'Nervios',
@@ -562,7 +562,7 @@ export default {
   </ul>`
     },
 
-    'smart-hexagon': {
+    hexagon: {
       name: 'Hexágono',
       tagline: 'Trazos entre las clavijas',
       tapTwiceRotate: 'Toca dos veces: gira 60°',
@@ -584,7 +584,7 @@ export default {
   </ul>`
     },
 
-    'iq-puzzler': {
+    fit: {
       name: 'Encaje',
       tagline: 'Piezas de bolas en un 11 × 5',
       help: `
@@ -604,7 +604,7 @@ export default {
   </ul>`
     },
 
-    katamino: {
+    pentominoes: {
       name: 'Pentominós',
       tagline: 'Llena el tablero sin huecos',
       series: 'Serie {n}',
@@ -633,7 +633,7 @@ export default {
   </ul>`
     },
 
-    'rush-hour': {
+    gridlock: {
       name: 'Atasco',
       tagline: 'Saca el coche rojo',
       boardAria: 'Aparcamiento',

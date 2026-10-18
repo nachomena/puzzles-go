@@ -1,15 +1,15 @@
-/* Configuración común de la aplicación. Lo propio de cada juego vive en js/games/<juego>/config.js. */
+/* Shared app configuration. Each game's own settings live in js/games/<game>/config.js. */
 
 export const APP_NAME = 'Puzzles Go';
 
-/** Tableros pre-generados que se guardan por nivel: uno listo; al usarlo se prepara el siguiente. */
+/** Pre-generated boards kept per level: one ready; using it prepares the next. */
 export const BUFFER_CAP = 1;
 export const HISTORY_LIMIT = 400;
 
-/** Segundos de juego por debajo de los cuales una partida no se ofrece para continuar (apenas empezó). */
+/** Seconds of play below which a game isn't offered to continue (it had barely started). */
 export const MIN_RESUME_SEC = 5;
 
-/** Segundos de juego entre una pista y la siguiente. */
+/** Seconds of play between one hint and the next. */
 export const HINT_COOLDOWN_SEC = 3 * 60;
 
 export const TIMING = Object.freeze({

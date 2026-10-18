@@ -1,5 +1,5 @@
-/* Mantiene llena la reserva de tableros de cada nivel generando en segundo plano,
-   y atiende con prioridad al nivel que el jugador está esperando. */
+/* Keeps each level's board reserve full by generating in the background, and serves the level
+   the player is waiting for first. */
 import { WorkerRunner, MainThreadRunner } from './runners.js';
 
 export class PuzzleSupply {
@@ -7,15 +7,15 @@ export class PuzzleSupply {
    * @param {object} deps
    * @param {import('./store.js').Store} deps.store
    * @param {{ levels: object, levelOrder: string[], workerUrl: URL|string, generate: Function }} deps.game
-   * @param {() => boolean} deps.isBusy   true mientras se juega (el hilo principal no debe generar)
-   * @param {() => void} deps.onChange    la reserva o el trabajo en curso han cambiado
-   * @param {(L: string) => void} deps.onReady  ya hay tablero para el nivel solicitado
+   * @param {() => boolean} deps.isBusy   true while playing (the main thread must not generate)
+   * @param {() => void} deps.onChange    the reserve or the work in progress changed
+   * @param {(L: string) => void} deps.onReady  there is now a board for the requested level
    */
   constructor({ store, game, isBusy, onChange, onReady }){
     Object.assign(this, { store, game, isBusy, onChange, onReady });
-    this.runner = null;   // null mientras se comprueba si hay worker
-    this.job = null;      // nivel que se está generando
-    this.waiting = null;  // nivel que el jugador espera
+    this.runner = null;   // null while checking whether there is a worker
+    this.job = null;      // level being generated
+    this.waiting = null;  // level the player is waiting for
   }
 
   init(){
@@ -23,11 +23,11 @@ export class PuzzleSupply {
       .then(r => this.#use(r), () => this.#fallBack());
   }
 
-  /** El jugador quiere un tablero de L y no hay: se prioriza. */
+  /** The player wants a board of L and there is none: give it priority. */
   request(L){ this.waiting = L; this.pump(); }
   cancelRequest(){ this.waiting = null; this.onChange(); }
 
-  /** Decide qué generar ahora. Se llama tras cualquier cambio relevante. */
+  /** Decides what to generate now. Called after any relevant change. */
   pump(){
     if (!this.runner) return;
     if (this.job){
@@ -42,7 +42,7 @@ export class PuzzleSupply {
     this.onChange();
   }
 
-  /** ¿Debe el hilo principal ceder el paso al juego? */
+  /** Should the main thread give way to the game? */
   shouldYield(){ return !this.waiting && this.isBusy(); }
 
   #use(runner){
@@ -68,7 +68,7 @@ export class PuzzleSupply {
     if (job && this.game.levels[job].target === p.level){ this.job = null; this.pump(); }
   }
 
-  /** Cualquier tablero generado se guarda en el nivel que le corresponde. */
+  /** Every generated board is stored in the level it belongs to. */
   #file(p){
     const L = this.game.levelOrder.find(k => this.game.levels[k].target === p.level);
     if (!L) return;

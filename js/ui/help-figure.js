@@ -1,19 +1,36 @@
-/* Figura pequeña para la ayuda de un juego: un ejemplo dibujado (SVG) con una línea que lo explica.
-   Los colores salen de las clases .hf-* (css/overlays.css), los mismos del juego. */
+/* Small figure for a game's help: a drawn example (SVG) with a line explaining it.
+   The colours come from the .hf-* classes (css/overlays.css), the same as the game's. */
 
-/** Marcado de la figura: `svg` es el dibujo y `caption` lo que se ve en él. */
+/** Figure markup: `svg` is the drawing and `caption` what it shows. */
 export const helpFigure = (svg, caption) =>
   `<figure class="help-fig">${svg}<figcaption>${caption}</figcaption></figure>`;
 
-/** Una casilla cuadrada de lado 1 en (x, y), con un poco de hueco: para cuadrículas de ejemplo. */
+/** A square cell of side 1 at (x, y), with a small gap: for example grids. */
 export const hfCell = (x, y, cls) => `<rect class="${cls}" x="${x + .04}" y="${y + .04}" width=".92" height=".92" rx=".1"/>`;
 
-/** Texto centrado en la casilla (x, y). */
+/**
+ * A board like the games' (.board): cell background, rounded corners and a thin frame, with `inner` (grid,
+ * walls, numbers…) clipped to it. `id` names its clip path (one per figure).
+ */
+export const hfBoard = (id, w, h, inner, r = .34) =>
+  `<clipPath id="${id}"><rect width="${w}" height="${h}" rx="${r}"/></clipPath>` +
+  `<g clip-path="url(#${id})"><rect class="hf-cellbg" width="${w}" height="${h}"/>${inner}</g>` +
+  `<rect class="hf-frame" width="${w}" height="${h}" rx="${r}"/>`;
+
+/** The thin grid of a w × h board. */
+export const hfGrid = (w, h) => {
+  let s = '';
+  for (let x = 1; x < w; x++) s += `<line class="hf-grid" x1="${x}" y1="0" x2="${x}" y2="${h}"/>`;
+  for (let y = 1; y < h; y++) s += `<line class="hf-grid" x1="0" y1="${y}" x2="${w}" y2="${y}"/>`;
+  return s;
+};
+
+/** Text centred in cell (x, y). */
 export const hfText = (x, y, text, cls = 'hf-num') => `<text class="${cls}" x="${x + .5}" y="${y + .5}" dy=".35em" text-anchor="middle">${text}</text>`;
 
-/* Dibujos de los gestos de los juegos de piezas (en unidades de 24, como los iconos). */
+/* Drawings of the piece games' gestures (in units of 24, like the icons). */
 
-/** La pieza de cada juego, en la mitad izquierda del dibujo de arrastrar. */
+/** Each game's piece, in the left half of the drag drawing. */
 const PIECES = {
   squares: '<path d="M3 4h4.5v10h5v4.5H3z"/><path d="M3 9h4.5M3 14h4.5M7.5 14v4.5"/>',
   balls: '<circle cx="5.5" cy="6" r="2.3"/><circle cx="5.5" cy="11" r="2.3"/><circle cx="5.5" cy="16" r="2.3"/><circle cx="10.5" cy="16" r="2.3"/>',
@@ -25,14 +42,14 @@ const PIECES = {
 const ARROW = '<path d="M15.5 11.5h6M19 9l2.5 2.5L19 14"/>';
 
 const GESTURE_ART = {
-  // girar: una pieza cuadrada con una flecha de un cuarto de vuelta sobre su esquina
+  // rotate: a square piece with a quarter-turn arrow over its corner
   turn: '<rect x="3.5" y="9" width="10.5" height="10.5" rx="1.5"/><path d="M12.5 4.5a7.5 7.5 0 0 1 7 7"/><path d="M17.3 9.8l2.2 1.9 1.9-2.2"/>',
   flip: '<path d="M12 3v18M8.5 7.5L4 12l4.5 4.5zM15.5 7.5L20 12l-4.5 4.5z"/>'
 };
 
 /**
- * Tira de gestos para los juegos de piezas: un dibujo y una palabra por gesto. El de arrastrar
- * ('drag') dibuja la pieza del juego: `piece` es una clave de PIECES.
+ * Gesture strip for the piece games: a drawing and a word per gesture. The drag one ('drag') draws
+ * the game's piece: `piece` is a key of PIECES.
  * @param {{ icon: 'drag'|'turn'|'flip', text: string, piece?: string }[]} items
  */
 export const gestureStrip = items =>

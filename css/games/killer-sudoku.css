@@ -1,10 +1,12 @@
-/* Killer Sudoku: jaulas con borde punteado metido en las casillas y la suma pequeña en su esquina. */
+/* Killer Sudoku: cages with a dotted border set inside the cells and the small sum in its corner. */
 .ks-cage{fill:none;stroke:var(--ink-soft);stroke-width:.035;stroke-dasharray:.1 .07;stroke-linecap:butt}
-/* la suma va sobre la esquina del punteado: por encima de las líneas (z-index) y con el fondo de su
-   casilla, así corta el punteado justo donde está y deja sitio al número y a las notas. Empieza un poco
-   hacia dentro para no tapar la rejilla ni el borde grueso de las cajas, que llegan hasta ~4 % */
+/* the sum sits on the dotted line's corner: above the lines (z-index) and with its cell's background,
+   so it cuts the dotted line exactly where it is and leaves room for the number and the notes. It starts
+   a little inwards so it doesn't cover the grid or the boxes' thick border, which reach ~4 % */
 .ks-sum{position:absolute;z-index:1;left:5%;top:5%;padding:0 .2em 0 .15em;background:inherit;font-size:clamp(8px,2.3vw,11px);font-weight:500;color:var(--ink-soft);line-height:1.15;pointer-events:none}
 .board--killer .sd-digit{margin-top:6%}
 .board--killer .ks-notes{inset:27% 10% 6% 10%}
-/* la casilla de la esquina redondeada del tablero: la suma, algo más hacia dentro para que no se corte */
+/* the cell in the board's rounded corner: the sum, a little further in so it isn't clipped */
 .cell[data-corner="tl"] .ks-sum{left:calc(var(--radius-board) * .45);top:calc(var(--radius-board) * .4)}
+/* Help figure (templates.js): the sum like .ks-sum */
+.ks-hf-sum{font-family:var(--font-body);font-weight:500;font-size:.2px;fill:var(--ink-soft)}

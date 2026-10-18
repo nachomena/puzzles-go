@@ -1,4 +1,4 @@
-/* Partida de Sudoku: seleccionar casilla y luego número, con modo lápiz para notas
+/* Sudoku game: select a cell and then a number, with a pencil mode for notes
    (core/digit-grid-controller.js). */
 import { DigitGridController } from '../../core/digit-grid-controller.js';
 import { SudokuBoard } from './board-view.js';
@@ -12,7 +12,7 @@ export class SudokuController extends DigitGridController {
   givensOf(p){ return p.givens; }
   conflicts(values){ return conflicts(values); }
   peersOf(i){ return PEERS[i]; }
-  /** La siguiente casilla que se deduce con singles (o una vacía cualquiera). */
+  /** The next cell deduced with singles (or any empty one). */
   hintFor(values, solution){
     const h = findHint(values, solution);
     return h && h.type === 'place' ? { cell: h.cell, digit: h.digit } : null;

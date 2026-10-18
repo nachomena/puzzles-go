@@ -1,7 +1,7 @@
-/* Volver deslizando desde el borde izquierdo, como en la navegación del móvil: el dedo arrastra una
-   flecha y, si se suelta pasada la mitad del recorrido, se vuelve atrás. */
-const EDGE = 20;          // px desde el borde donde empieza el gesto
-const TRIGGER = .3;       // fracción del ancho que hay que recorrer
+/* Swipe back from the left edge, as in the phone's navigation: the finger drags an arrow and, if it
+   is released past half the way, it goes back. */
+const EDGE = 20;          // px from the edge where the gesture starts
+const TRIGGER = .3;       // fraction of the width that has to be covered
 
 /**
  * @param {{ enabled: () => boolean, onBack: () => void }} o
@@ -14,7 +14,7 @@ export function bindEdgeBack({ enabled, onBack }){
   document.body.appendChild(tip);
   let g = null;
 
-  // la flecha se para en el mismo borde que el botón de volver de las barras de abajo (.back-pill)
+  // the arrow stops at the same edge as the back button of the bottom bars (.back-pill)
   const stopAt = () => {
     const max = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--content-max')) || 560;
     return Math.max(14, window.innerWidth / 2 - max / 2 + 14);
@@ -32,7 +32,7 @@ export function bindEdgeBack({ enabled, onBack }){
     if (fire && armed) onBack();
   };
 
-  // El toque en el borde es del gesto: no llega a los tableros (no empieza a arrastrar una pieza)
+  // A touch on the edge belongs to the gesture: it doesn't reach the boards (it doesn't start dragging a piece)
   document.addEventListener('pointerdown', e => {
     if (e.pointerType === 'touch' && e.clientX <= EDGE && enabled()) e.stopPropagation();
   }, true);
@@ -48,7 +48,7 @@ export function bindEdgeBack({ enabled, onBack }){
     if (!g) return;
     const t = e.touches[0], dx = t.clientX - g.x, dy = t.clientY - g.y;
     if (!g.started){
-      if (Math.abs(dy) > 12 && Math.abs(dy) > dx){ end(false); return; }   // es un desplazamiento vertical
+      if (Math.abs(dy) > 12 && Math.abs(dy) > dx){ end(false); return; }   // it is a vertical scroll
       if (dx < 10) return;
       g.started = true;
       tip.classList.add('is-on');

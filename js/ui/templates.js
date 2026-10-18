@@ -1,16 +1,16 @@
-/* Piezas de marcado comunes a las pantallas de juego. Cada juego compone la suya con ellas. */
+/* Markup pieces shared by the game screens. Each game builds its own with them. */
 import { t } from '../i18n/index.js';
 
 export const svgIcon = name => `<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-${name}"/></svg>`;
 
-/** Icono dentro de una línea de texto (la ayuda). */
+/** Icon inside a line of text (the help). */
 export const inlineIcon = (name, cls = '') => svgIcon(name).replace('<svg', `<svg class="inline-icon${cls ? ' ' + cls : ''}"`);
 
-/** Botón de icono con acción. `attrs` añade atributos extra (p. ej. data-tool). */
+/** Icon button with an action. `attrs` adds extra attributes (e.g. data-tool). */
 export const iconButton = (action, iconName, label, { cls = 'icon-btn', attrs = '' } = {}) =>
   `<button class="${cls}" data-action="${action}" ${attrs} aria-label="${label}">${svgIcon(iconName)}</button>`;
 
-/** Selector segmentado de herramientas: [{ tool, icon, label }]. */
+/** Segmented tool picker: [{ tool, icon, label }]. */
 export const toolPicker = (tools, label = t('common.tool')) =>
   `<div class="segmented" role="radiogroup" aria-label="${label}">` +
   tools.map(t => `<button data-action="tool" data-tool="${t.tool}" role="radio" aria-label="${t.label}">${svgIcon(t.icon)}</button>`).join('') +
@@ -27,11 +27,11 @@ export const board = (extraClass = '') =>
 export const undoRedo = () =>
   `<div class="toolbar__group">${iconButton('undo', 'undo', t('common.undo'))}${iconButton('redo', 'redo', t('common.redo'))}</div>`;
 
-/** Botón de volver con texto (a dónde se vuelve), a la izquierda de las barras de abajo. */
+/** Back button with text (where it goes back to), on the left of the bottom bars. */
 export const backPill = (label, attrs = '') =>
   `<button class="back-pill" data-action="back"${attrs ? ' ' + attrs : ''}>${svgIcon('back')}<span>${label}</span></button>`;
 
-/** Barra inferior fija: a la izquierda, volver; a la derecha, pista (si el juego la tiene), ajustes, ayuda y reiniciar. */
+/** Fixed bottom bar: back on the left; on the right, hint (if the game has it), settings, help and restart. */
 export const dock = ({ hint = true, back = t('common.menu') } = {}) =>
   `<nav class="dock glass">` + backPill(back) +
   `<div class="dock__actions">` +
@@ -42,20 +42,20 @@ export const dock = ({ hint = true, back = t('common.menu') } = {}) =>
   `</div></nav>`;
 
 /**
- * Pantalla de juego completa: cabecera, tablero, lo propio del juego y barra inferior.
- * `boardHtml` sustituye al tablero estándar si el juego necesita otro marco (p. ej. flechas alrededor).
+ * Full game screen: header, board, the game's own controls and bottom bar.
+ * `boardHtml` replaces the standard board if the game needs another frame (e.g. arrows around it).
  */
 export const playScreen = ({ id, name, boardClass = '', boardHtml = null, controls, hint = true, back = t('common.menu') }) =>
   `<section id="play-${id}" class="screen" data-game="${id}" aria-label="${name}">` +
   `<div class="wrap wrap--game">${hud()}<div class="play-fit">${boardHtml ?? board(boardClass)}</div>${controls}${dock({ hint, back })}</div></section>`;
 
 /**
- * Barra de herramientas y teclado de números del 1 al n (Sudoku, KenKen): reiniciar, número o lápiz,
- * goma, deshacer y rehacer.
+ * Toolbar and number keypad from 1 to n (Sudoku, Calcudoku): restart, number or pencil, eraser,
+ * undo and redo.
  */
 /**
- * Notas de lápiz de una casilla (Sudoku, KenKen): la cifra k en su hueco si está en `mask`. La del
- * número resaltado (`same`) va destacada, como las casillas con ese número.
+ * Pencil notes of a cell (Sudoku, Calcudoku): digit k in its slot if it is in `mask`. The one of the
+ * highlighted number (`same`) stands out, like the cells with that number.
  */
 export const notesHtml = (mask, n, same = 0, cls = '') =>
   `<span class="sd-notes${cls ? ' ' + cls : ''}">` +

@@ -1,18 +1,18 @@
-/* ---------- Solucionador lógico de Kakuro (técnicas humanas) ----------
-   Nivel 1: cada casilla solo admite los números que salen en alguna combinación de cada uno de sus
-            dos tramos (sin mirar el resto de casillas), un número que ya está en el tramo no se repite,
-            y un número que el tramo necesita y que solo cabe en una casilla va ahí.
-   Nivel 2: + combinaciones de cada tramo teniendo en cuenta lo que admite cada una de sus casillas
-            (p. ej. si una casilla de un 16 en dos solo puede ser 7 o 9, la otra es 9 o 7).
-   Resolver por lógica ya implica que la solución es única. */
+/* ---------- Kakuro logic solver (human techniques) ----------
+   Level 1: each cell only allows the numbers that appear in some combination of each of its two runs
+            (without looking at the other cells), a number already in the run isn't repeated, and a
+            number the run needs that only fits in one cell goes there.
+   Level 2: + combinations of each run taking into account what each of its cells allows
+            (e.g. if one cell of a 16 in two can only be 7 or 9, the other is 9 or 7).
+   Solving by logic already implies the solution is unique. */
 import { analyse } from '../../killer-sudoku/engine/logic-solver.js';
 import { popcount, lowBit } from '../../../lib/bits.js';
 
 export const MAX_LEVEL = 2;
-const ALL = 0x3fe;   // dígitos 1..9 como bits 1..9
+const ALL = 0x3fe;   // digits 1..9 as bits 1..9
 const CONTRA = { contra: true };
 
-/** Combinaciones (máscaras) de `k` dígitos distintos que suman `sum`. */
+/** Combinations (masks) of `k` distinct digits that add up to `sum`. */
 const COMBOS = new Map();
 export function combos(k, sum){
   const key = k * 100 + sum;
@@ -52,14 +52,14 @@ function restrict(s, i, mask){
   return true;
 }
 
-/** Singles: una casilla con un solo número posible. */
+/** Singles: a cell with a single possible number. */
 function single(s){
   let any = false;
   for (let i = 0; i < s.cand.length; i++) if (s.white[i] && !s.val[i] && popcount(s.cand[i]) === 1){ place(s, i, lowBit(s.cand[i])); any = true; }
   return any;
 }
 
-/** Nivel 1: combinaciones del tramo que incluyen lo ya puesto, sin cruzar con el resto de casillas. */
+/** Level 1: combinations of the run that include what is already placed, without crossing with the other cells. */
 function basic(s){
   let any = false;
   for (const run of s.runs){
@@ -69,7 +69,7 @@ function basic(s){
     const union = ok.reduce((m, c) => m | c, 0) & ~placed, need = ok.reduce((m, c) => m & c, ALL) & ~placed;
     const open = run.cells.filter(i => !s.val[i]);
     for (const i of open) if (restrict(s, i, union)) any = true;
-    // un número que el tramo necesita y que solo cabe en una de sus casillas
+    // a number the run needs that only fits in one of its cells
     for (let m = need; m; m &= m - 1){
       const b = m & -m, where = open.filter(i => s.cand[i] & b);
       if (!where.length) throw CONTRA;
@@ -79,22 +79,22 @@ function basic(s){
   return any;
 }
 
-/* Mismos candidatos y suma → mismo resultado: se guarda entre llamadas (el generador resuelve muchas
-   veces tableros casi iguales). */
+/* Same candidates and sum → same result: it is kept between calls (the generator solves nearly
+   identical boards many times). */
 const memo = new Map();
 function runOptions(sum, masks){
   const key = sum + ':' + masks.join(',');
   let r = memo.get(key);
   if (r === undefined){
     if (memo.size > 200000) memo.clear();
-    // analyse() trabaja con los dígitos como bits 0..8
+    // analyse() works with the digits as bits 0..8
     r = analyse(masks.map(m => m >> 1), sum, null, true);
     memo.set(key, r);
   }
   return r;
 }
 
-/** Nivel 2: lo que admite cada casilla según las formas de rellenar el tramo entero. */
+/** Level 2: what each cell allows according to the ways of filling the whole run. */
 function full(s){
   let any = false;
   for (const run of s.runs){
@@ -112,7 +112,7 @@ export const TECHNIQUES = [
 ];
 
 /**
- * Resuelve desde `values` (0 = vacía) con técnicas hasta `level`. Devuelve { solved, contra?, grid }.
+ * Solves from `values` (0 = empty) with techniques up to `level`. Returns { solved, contra?, grid }.
  */
 export function logic(n, white, runs, level, values = null){
   let s;
@@ -128,7 +128,7 @@ export function logic(n, white, runs, level, values = null){
   return { solved, grid: Array.from(s.val) };
 }
 
-/** Siguiente casilla vacía que se deduce con las técnicas hasta `level`, o null (para las pistas). */
+/** Next empty cell deduced with the techniques up to `level`, or null (for the hints). */
 export function nextDeduction(n, white, runs, level, values){
   let s;
   try {

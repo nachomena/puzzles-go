@@ -2,8 +2,8 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { recordWin, average, versusAverage, winDetail, statsRows, levelSummary } from '../js/core/stats.js';
 
-test('estadísticas: récord sin pistas, media y partidas antiguas sin suma', () => {
-  const stats = { easy: { solved: 3, best: 100 } };   // datos de antes: sin suma
+test('stats: record without hints, average and old games without a sum', () => {
+  const stats = { easy: { solved: 3, best: 100 } };   // old data: no sum
   assert.equal(average(stats.easy), null);
   let r = recordWin(stats, 'easy', 80, 0);
   assert.deepEqual(r, { record: true, best: 80, prevBest: 100, prevAvg: null });
@@ -12,10 +12,10 @@ test('estadísticas: récord sin pistas, media y partidas antiguas sin suma', ()
   assert.equal(stats.easy.solved, 5);
   assert.equal(average(stats.easy), 100);
   r = recordWin(stats, 'easy', 50, 1);
-  assert.equal(r.record, false, 'con pistas no hay récord');
+  assert.equal(r.record, false, 'with hints there is no record');
 });
 
-test('estadísticas: textos de la victoria', () => {
+test('stats: win texts', () => {
   assert.equal(versusAverage(100, null), '');
   assert.equal(versusAverage(88, 100), '12 s más rápido que tu media.');
   assert.equal(versusAverage(165, 100), '1:05 min más lento que tu media.');
@@ -27,13 +27,13 @@ test('estadísticas: textos de la victoria', () => {
     'Con 2 pistas. Récord: 1:20. 5 s más lento que tu media.');
 });
 
-test('estadísticas: filas por nivel o las que declare el juego', () => {
+test('stats: rows per level or the ones the game declares', () => {
   const meta = { levelOrder: ['e', 'h'], levels: { e: { name: 'Fácil' }, h: { name: 'Difícil' } } };
   assert.deepEqual(statsRows(meta), [{ key: 'e', name: 'Fácil' }, { key: 'h', name: 'Difícil' }]);
   assert.deepEqual(statsRows({ ...meta, statsRows: [{ key: 'x', name: 'X' }] }), [{ key: 'x', name: 'X' }]);
 });
 
-test('lista de juegos: récord de los juegos sin menú de niveles', async () => {
+test('game list: record of the games without a level menu', async () => {
   const { bestLine } = await import('../js/ui/hub-view.js');
   const one = { levelOrder: ['x'], levels: { x: { name: 'X' } } };
   assert.equal(bestLine(one, {}), '');
@@ -43,7 +43,7 @@ test('lista de juegos: récord de los juegos sin menú de niveles', async () => 
   assert.equal(bestLine(boards, { english: { best: 42 }, european: { best: 190 } }), 'Récord · Inglés 0:42 · Europeo 3:10');
 });
 
-test('bajo el nivel: el récord, o si solo hay victorias con pistas, cuántas y su media', () => {
+test('under the level: the record or, if there are only wins with hints, how many and their average', () => {
   const stats = {};
   assert.equal(levelSummary(stats.easy), '');
   recordWin(stats, 'easy', 100, 2);
@@ -52,7 +52,7 @@ test('bajo el nivel: el récord, o si solo hay victorias con pistas, cuántas y 
   assert.equal(levelSummary(stats.easy), 'Récord 1:20');
 });
 
-test('movimientos: se guarda la partida con menos, sin pistas', () => {
+test('moves: the game with the fewest is kept, without hints', () => {
   const stats = {};
   recordWin(stats, 'easy', 60, 0, { moves: 20 });
   recordWin(stats, 'easy', 50, 0, { moves: 25 });

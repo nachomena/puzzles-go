@@ -1,9 +1,9 @@
-/* Reglas del Killer Sudoku sobre lo que escribe el jugador. Funciones puras, sin DOM. */
+/* Killer Sudoku rules on what the player writes. Pure functions, no DOM. */
 import { CELLS, PEERS } from '../sudoku/engine/grid.js';
 import { conflicts as sudokuConflicts } from '../sudoku/rules.js';
 import { prepare, nextDeduction } from './engine/logic-solver.js';
 
-/** Casillas que ven a i: su fila, columna y caja, y además su jaula. */
+/** Cells that see i: its row, column and box, and also its cage. */
 export function peersOf(cages){
   const out = PEERS.map(p => new Set(p));
   for (const { cells } of cages) for (const i of cells) for (const j of cells) if (i !== j) out[i].add(j);
@@ -11,8 +11,8 @@ export function peersOf(cages){
 }
 
 /**
- * Casillas con un número repetido en su fila, columna o caja (como el Sudoku) o en su jaula, y
- * jaulas que ya se pasan de su suma o que, llenas, no la dan.
+ * Cells with a number repeated in their row, column or box (as in Sudoku) or in their cage, and cages
+ * that already go over their sum or, once full, don't give it.
  */
 export function conflicts(cages, values){
   const bad = sudokuConflicts(values);
@@ -31,8 +31,8 @@ export function conflicts(cages, values){
 }
 
 /**
- * Pista: la siguiente casilla que se deduce con las técnicas del nivel; si no hay ninguna, una
- * casilla vacía de la jaula con menos huecos.
+ * Hint: the next cell deduced with the level's techniques; if there is none, an empty cell of the cage
+ * with the fewest gaps.
  */
 export function findHint(cages, level, values, solution, prepared = prepare(cages)){
   const next = nextDeduction(values, prepared, level);

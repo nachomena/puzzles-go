@@ -1,11 +1,11 @@
-/* Menú de un juego: tarjeta de continuar y los niveles, cada uno en una tarjeta de cristal con sus rayas
-   de dificultad y su récord. */
+/* A game's menu: the continue card and the levels, each on a glass card with its difficulty bars and
+   its record. */
 import { formatTime } from '../lib/format.js';
 import { levelSummary } from '../core/stats.js';
 import { resumeCardHtml } from './hub-view.js';
 import { t } from '../i18n/index.js';
 
-/** Bajo cada nivel va el récord (ver levelSummary), salvo que el juego diga otra cosa. */
+/** Under each level goes the record (see levelSummary), unless the game says otherwise. */
 const levelMeta = (meta, L, stats) => meta.levelMeta ? meta.levelMeta(L, stats) : levelSummary(stats[L]);
 
 export class LevelMenu {
@@ -16,8 +16,8 @@ export class LevelMenu {
   /**
    * @param {{ name: string, levels: object, levelOrder: string[], menuLabel?: string, levelMeta?: Function,
    *   sessionLabel?: Function, resumeLabel?: Function }} meta
-   *   datos del juego (meta.js)
-   * @param {{ stats: object, cur: object|null }} data  de Store#menuData o Store.peek
+   *   the game's data (meta.js)
+   * @param {{ stats: object, cur: object|null }} data  from Store#menuData or Store.peek
    */
   render(meta, { stats, cur }){
     this.titleEl.textContent = meta.name.toUpperCase();

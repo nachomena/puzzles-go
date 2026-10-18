@@ -1,9 +1,9 @@
-/* Tablero de Star Battle: estrellas, estrellas de prueba (con borde dorado), X y X automáticas. */
+/* Star Battle board: stars, trial stars (with a gold outline), X marks and automatic X marks. */
 import { GridBoard } from '../../ui/grid-board.js';
 import { svgIcon as icon } from '../../ui/templates.js';
 import { MARK } from './config.js';
 
-/** Clase e icono de cada marca. */
+/** Class and icon of each mark. */
 const MARK_VIEW = {
   [MARK.EMPTY]:  { cls: '',            svg: '' },
   [MARK.X]:      { cls: ' cell--x',    svg: icon('x') },
@@ -12,7 +12,7 @@ const MARK_VIEW = {
   [MARK.TRY]:    { cls: ' cell--star cell--try', svg: icon('star') }
 };
 
-/** Color de una región cuando se activa "Colorear regiones". */
+/** Colour of a region when "Colour regions" is on. */
 const regionColor = (g, N) => `hsl(${(g * 360 / N + 18) % 360} 16% 28%)`;
 
 export class StarBattleBoard extends GridBoard {
@@ -22,13 +22,13 @@ export class StarBattleBoard extends GridBoard {
 
   /**
    * @param {number[]} marks
-   * @param {Uint8Array|null} bad  casillas con error (null = no resaltar)
+   * @param {Uint8Array|null} bad  cells with a mistake (null = don't highlight)
    */
   render(marks, bad){
     for (let i = 0; i < marks.length; i++){
       const v = marks[i], isBad = !!(bad && bad[i]), view = MARK_VIEW[v];
       const isStar = v === MARK.STAR || v === MARK.TRY;
-      // la estrella "salta" al aparecer (no al pasar de prueba a estrella ni al revés)
+      // the star "pops" when it appears (not when going from trial to star or back)
       this.paint(i, v + (isBad ? 'b' : ''),
         prev => 'cell' + view.cls + (isBad ? ' is-bad' : '') + (isStar && prev[0] !== String(MARK.STAR) && prev[0] !== String(MARK.TRY) ? ' is-new' : ''),
         view.svg);

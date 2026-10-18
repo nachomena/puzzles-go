@@ -47,7 +47,7 @@ export default {
     hoursAgo: '{n} h ago',
     yesterday: 'yesterday',
     daysAgo: '{n} days ago',
-    groups: { smart: 'Pieces' }
+    groups: { pieces: 'Pieces' }
   },
 
   appSettings: {
@@ -273,7 +273,7 @@ export default {
   </ul>`
     },
 
-    kenken: {
+    calcudoku: {
       name: 'Calcudoku',
       tagline: 'Arithmetic in cages',
       errorsDesc: 'Numbers repeated in a row or column turn red.',
@@ -323,7 +323,7 @@ export default {
   <p>Start with the small regions: if a region fits in a single row or column, the stars of that row or column are already decided.</p>`
     },
 
-    slitherlink: {
+    loop: {
       name: 'Loop',
       tagline: 'One loop between the dots',
       errorsDesc: 'Numbers with more lines than they say and dots with more than two lines turn red.',
@@ -352,7 +352,7 @@ export default {
   </ul>`
     },
 
-    akari: {
+    'light-up': {
       name: 'Light Up',
       tagline: 'Light up the whole board',
       errorsDesc: 'Bulbs that see each other and numbers that can no longer be met (too many bulbs, or no room for the missing ones) turn red.',
@@ -374,7 +374,7 @@ export default {
   </ul>`
     },
 
-    binario: {
+    binary: {
       name: 'Binary',
       tagline: 'Red and blue, half and half',
       errorsDesc: 'Crosses out cells that break a rule: three in a row, more than half of one colour in a line, or two identical lines.',
@@ -402,7 +402,7 @@ export default {
   </ul>`
     },
 
-    hashi: {
+    bridges: {
       name: 'Bridges',
       tagline: 'Bridges between islands',
       errors: 'Mark islands with too many bridges',
@@ -428,7 +428,7 @@ export default {
   </ul>`
     },
 
-    zip: {
+    trail: {
       name: 'Trail',
       tagline: 'One path through every cell',
       detour: 'The path goes the wrong way here',
@@ -486,7 +486,7 @@ export default {
   </ul>`
     },
 
-    'smart-dices': {
+    dice: {
       name: 'Dice',
       tagline: 'Four dice faces',
       errorsDesc: 'Dice that don’t make a valid face and sums that don’t add up turn red.',
@@ -506,7 +506,7 @@ export default {
   <p>The dots of the 4 dice always add up to 12. If one row adds up to 9, the other adds up to 3.</p>`
     },
 
-    'smart-circuit': {
+    circuit: {
       name: 'Circuit',
       tagline: 'Paths between the dots',
       errorsDesc: 'Paths that run into another piece or the edge turn red.',
@@ -531,7 +531,7 @@ export default {
   </ul>`
     },
 
-    'smart-circle': {
+    circle: {
       name: 'Circle',
       tagline: 'Rings without crossing ribs',
       ribs: 'Ribs',
@@ -562,7 +562,7 @@ export default {
   </ul>`
     },
 
-    'smart-hexagon': {
+    hexagon: {
       name: 'Hexagon',
       tagline: 'Lines between the pegs',
       tapTwiceRotate: 'Tap twice: rotate 60°',
@@ -584,7 +584,7 @@ export default {
   </ul>`
     },
 
-    'iq-puzzler': {
+    fit: {
       name: 'Fit',
       tagline: 'Ball pieces on an 11 × 5 board',
       help: `
@@ -604,7 +604,7 @@ export default {
   </ul>`
     },
 
-    katamino: {
+    pentominoes: {
       name: 'Pentominoes',
       tagline: 'Fill the board without gaps',
       series: 'Set {n}',
@@ -633,7 +633,7 @@ export default {
   </ul>`
     },
 
-    'rush-hour': {
+    gridlock: {
       name: 'Gridlock',
       tagline: 'Get the red car out',
       boardAria: 'Car park',

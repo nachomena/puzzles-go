@@ -1,9 +1,16 @@
-/* Capas modales: hojas inferiores, tarjetas y pantalla de carga. */
-.overlay{position:fixed;inset:0;background:var(--backdrop);display:none;z-index:10;padding-top:var(--safe-top);padding-bottom:var(--safe-bottom)}
+/* Modal layers: bottom sheets, cards and the loading screen. */
+/* An open layer locks the screen behind it: the page doesn't scroll and a drag on the backdrop doesn't move
+   it; only the sheet's body scrolls (and doesn't pass the scroll on when it reaches the end) */
+.overlay{position:fixed;inset:0;background:var(--backdrop);display:none;z-index:10;padding-top:var(--safe-top);padding-bottom:var(--safe-bottom);touch-action:none}
 .overlay.is-on{display:flex}
+html:has(.overlay.is-on){overflow:hidden}
 
-/* hojas y tarjetas son de cristal (.glass): flotan sobre la pantalla, con margen y esquinas redondeadas */
-.sheet{margin:auto auto 8px;width:calc(100% - 16px);max-width:var(--content-max);border-radius:32px;padding:26px var(--gutter) 24px;max-height:86vh;overflow:auto}
+/* sheets and cards are glass (.glass): they float over the screen, with a margin and rounded corners */
+/* the sheet's text scrolls and its button stays at the bottom, always in reach */
+.sheet{margin:auto auto 8px;width:calc(100% - 16px);max-width:var(--content-max);border-radius:32px;max-height:86vh;display:flex;flex-direction:column;overflow:hidden}
+.sheet__body{min-height:0;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;padding:26px var(--gutter) 4px}
+.sheet__foot{flex:none;padding:12px var(--gutter) 24px}
+.sheet__foot .btn-primary{margin-top:0}
 .sheet h2{margin:0 0 16px;font-size:30px}
 .sheet h3{font-size:16px;margin:22px 0 6px;color:var(--ink)}
 .sheet p,.sheet li{font-size:16px;line-height:1.5;color:var(--ink-soft)}
@@ -22,14 +29,14 @@
 
 .loader{margin:auto;text-align:center;padding:30px}
 .loader__logo{display:block;width:62px;height:88px;margin:0 auto 20px;overflow:visible}
-/* las casillas de cristal de la P se encienden una tras otra; la pieza dorada cae girada y encaja.
-   La pieza empieza ya cayendo (retraso negativo), para que no parezca que tarda en aparecer. */
+/* the glass cells of the P light up one after another; the gold piece falls rotated and slots in.
+   The piece starts already falling (negative delay), so it doesn't seem slow to appear. */
 .loader__tiles rect{fill:var(--ink);fill-opacity:.18;stroke:var(--ink);stroke-opacity:.45;stroke-width:4;animation:loader-tile 2.4s ease-in-out infinite}
 .loader__tiles rect:nth-child(2){animation-delay:.1s}
 .loader__tiles rect:nth-child(3){animation-delay:.2s}
 .loader__tiles rect:nth-child(4){animation-delay:.3s}
 .loader__tiles rect:nth-child(5){animation-delay:.4s}
-/* en reposo (y sin animaciones) queda como en el icono: girada, a punto de entrar */
+/* at rest (and without animations) it stays as in the icon: rotated, about to go in */
 .loader__piece{fill:var(--accent);transform-box:fill-box;transform-origin:center;transform:translate(16px,14px) rotate(14deg);
   animation:loader-piece 2.4s cubic-bezier(.3,.7,.4,1) -.5s infinite}
 .loader p{font-size:18px;margin:0 0 6px}
@@ -43,7 +50,7 @@
   62%,82%{transform:translate(0,0) rotate(0) scale(1);opacity:1}
   100%{transform:translate(0,0) rotate(0) scale(.9);opacity:0}
 }
-/* Tira de la victoria: dónde queda esta partida entre las últimas (ui/win-strip.js) */
+/* Win strip: where this game falls among the latest ones (ui/win-strip.js) */
 #winStrip:empty{display:none}
 .win-strip{display:block;width:100%;margin:-8px 0 4px;overflow:visible}
 .win-strip__cap{font-size:12px;color:var(--dim);margin:0 0 22px}
@@ -54,7 +61,7 @@
 .win-strip__today.is-hints{fill:var(--surface);stroke:var(--accent);stroke-width:2.5}
 .win-strip__label{font-family:var(--font-body);font-size:10.5px;fill:var(--dim);font-variant-numeric:tabular-nums}
 .win-strip__label--today{fill:var(--ink);font-weight:700}
-/* Figuras de la ayuda (ui/help-figure.js): un ejemplo pequeño con los colores de cada juego */
+/* Help figures (ui/help-figure.js): a small example with each game's colours */
 .help-fig{margin:14px 0 16px;display:flex;flex-direction:column;align-items:center;gap:10px}
 .help-fig svg{display:block;max-width:100%;height:auto;overflow:visible}
 .help-fig figcaption{font-size:14px;line-height:1.45;color:var(--dim);text-align:center;max-width:34ch}
@@ -72,22 +79,17 @@
 .hf-isle text{font-family:var(--font-display);font-size:.46px;fill:var(--ink)}
 .hf-bridge{stroke:var(--ink-soft);stroke-width:.08}
 .hf-cellbg{fill:var(--cell)}
-.hf-grid{stroke:var(--grid);stroke-width:.03}
-.hf-wall{fill:none;stroke:var(--wall);stroke-width:.08;stroke-linecap:square}
+/* the same lines as the board (.board__grid, .board__wall and its frame) */
+.hf-grid{stroke:var(--grid);stroke-width:.6px;vector-effect:non-scaling-stroke}
+.hf-wall{fill:none;stroke:var(--wall);stroke-width:1.6px;vector-effect:non-scaling-stroke;stroke-linecap:square}
+.hf-frame{fill:none;stroke:var(--wall);stroke-width:1.5px;vector-effect:non-scaling-stroke}
 .hf-digit{font-family:var(--font-display);font-size:.46px;fill:var(--entry)}
-.hf-cage{fill:none;stroke:var(--ink-soft);stroke-width:.035;stroke-dasharray:.1 .07}
 .hf-loop{fill:none;stroke:var(--entry);stroke-width:.1;stroke-linecap:round}
 .hf-label{font-family:var(--font-body);font-weight:700;font-size:.2px;fill:var(--ink-soft)}
 .hf-path{fill:none;stroke:#d58c45;stroke-width:.34;stroke-linecap:round;stroke-linejoin:round}
 .hf-dot{fill:var(--ink)}
 .hf-dotnum{font-family:var(--font-display);font-size:.34px;fill:var(--bg)}
-.hf-car-red{fill:#c8604e}
-.hf-car{fill:#6f8fb0}
-.hf-move,.hf-exit,.hf-arrow{fill:none;stroke:var(--ink-soft);stroke-width:.08;stroke-linecap:round;stroke-linejoin:round}
-.hf-ball{fill:var(--ink-soft)}
-.hf-hole{fill:#141318}
-.hf-jump{fill:none;stroke:var(--accent);stroke-width:.07;stroke-dasharray:.14 .1}
-/* Tira de gestos de los juegos de piezas */
+/* Gesture strip of the piece games */
 .help-gestures{display:flex;justify-content:center;gap:10px;margin:8px 0 14px}
 .help-gestures div{flex:1;max-width:120px;display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 6px;background:var(--seg);border-radius:var(--radius-sm)}
 .help-gestures svg{width:38px;height:38px;fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}

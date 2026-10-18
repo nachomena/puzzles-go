@@ -1,15 +1,15 @@
-/* Entrada táctil genérica sobre una rejilla: tocar y arrastrar.
-   Interpola entre eventos para no saltarse casillas en arrastres rápidos.
-   Salir de la rejilla termina el trazo: al volver a entrar sin soltar no se sigue marcando. */
+/* Generic touch input on a grid: tap and drag.
+   Interpolates between events so fast drags don't skip cells.
+   Leaving the grid ends the stroke: coming back in without lifting doesn't keep marking. */
 
 /**
  * @param {HTMLElement} el
  * @param {object} o
- * @param {(x:number, y:number) => number} o.cellAt  índice de casilla o -1
- * @param {() => number} o.cellSize                 px por casilla
+ * @param {(x:number, y:number) => number} o.cellAt  cell index or -1
+ * @param {() => number} o.cellSize                 px per cell
  * @param {() => boolean} o.enabled
  * @param {(i:number) => void} o.onStart
- * @param {(cells:number[]) => void} o.onEnter      casillas nuevas recorridas
+ * @param {(cells:number[]) => void} o.onEnter      new cells crossed
  * @param {() => void} o.onEnd
  */
 export function bindCellDrag(el, { cellAt, cellSize, enabled, onStart, onEnter, onEnd }){

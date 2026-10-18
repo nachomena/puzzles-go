@@ -1,4 +1,4 @@
-// Pruebas en el navegador (npm run test:e2e). Sirve la carpeta tal cual, como GitHub Pages.
+// Browser tests (npm run test:e2e). Serves the folder as is, like GitHub Pages.
 import { defineConfig, devices } from '@playwright/test';
 
 const PORT = 4173;
@@ -13,13 +13,13 @@ export default defineConfig({
     baseURL: `http://localhost:${PORT}/`,
     ...devices['iPhone 13'],
     defaultBrowserType: 'chromium',
-    locale: 'es-ES',   // la app sigue el idioma del móvil: las pruebas van en español
+    locale: 'es-ES',   // the app follows the phone's language: the tests run in Spanish
     trace: 'retain-on-failure'
   },
   webServer: {
     command: `python3 -m http.server ${PORT} --bind 127.0.0.1`,
     url: `http://localhost:${PORT}/`,
     reuseExistingServer: !process.env.CI,
-    stderr: 'ignore'   // el registro de cada petición del servidor
+    stderr: 'ignore'   // the server's log of every request
   }
 });

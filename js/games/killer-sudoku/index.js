@@ -1,4 +1,4 @@
-/* Definición del Killer Sudoku para el registro de juegos (contrato en js/games/README.md). */
+/* Killer Sudoku definition for the game registry (contract in js/games/README.md). */
 import { defineGame } from '../../core/game-definition.js';
 import { generate } from './engine/generator.js';
 import { coversBoard } from './engine/cages.js';
@@ -29,7 +29,7 @@ export default defineGame({
     if (typeof s.sel !== 'number') s.sel = -1;
     return s;
   },
-  sizeLabel: () => '',   // siempre es 9×9
+  sizeLabel: () => '',   // it is always 9×9
   boardClass: 'board--digits board--sudoku board--killer',
 
   controls: digitControls(9),

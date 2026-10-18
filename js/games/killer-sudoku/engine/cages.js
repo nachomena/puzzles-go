@@ -1,8 +1,8 @@
-/* Killer Sudoku: un Sudoku 9 × 9 dividido en jaulas; los números de cada jaula suman lo que dice y
-   no se repiten dentro de ella. Sin DOM. Casilla i = fila * 9 + columna.
-   Una jaula es { cells: [i…] (ordenadas), sum }.
-   Además de las jaulas, la regla del 45 da "grupos de suma": casillas que, sin ser una jaula, suman
-   algo conocido porque una fila, columna o caja suma siempre 45. */
+/* Killer Sudoku: a 9 × 9 Sudoku split into cages; the numbers of each cage add up to what it says and
+   don't repeat inside it. No DOM. Cell i = row * 9 + column.
+   A cage is { cells: [i…] (sorted), sum }.
+   Besides the cages, the 45 rule gives "sum groups": cells that, without being a cage, add up to
+   something known because a row, column or box always adds up to 45. */
 import { CELLS, SIZE, ROWS, COLS, BOXES, rowOf, colOf, boxOf } from '../../sudoku/engine/grid.js';
 import { shuffle, randInt } from '../../../lib/random.js';
 
@@ -16,9 +16,9 @@ const neighbours = i => {
 };
 
 /**
- * Divide el tablero en jaulas unidas de los tamaños de `sizes` (al azar de la lista) sin repetir
- * número de `solution` dentro de una jaula. Las casillas que se quedan solas se unen a una jaula
- * vecina que no tenga su número; si no se puede, devuelve null.
+ * Splits the board into connected cages of the sizes in `sizes` (random from the list) without repeating
+ * a number of `solution` inside a cage. Cells left alone join a neighbouring cage that doesn't have their
+ * number; if that isn't possible, returns null.
  */
 export function partition(solution, sizes){
   const owner = new Int16Array(CELLS).fill(-1), cages = [];
@@ -35,7 +35,7 @@ export function partition(solution, sizes){
     }
     cages.push(cells);
   }
-  // casillas sueltas: a la jaula vecina más pequeña que admita su número
+  // lone cells: to the smallest neighbouring cage that accepts their number
   for (let k = 0; k < cages.length; k++){
     if (cages[k].length !== 1) continue;
     const i = cages[k][0];
@@ -47,24 +47,24 @@ export function partition(solution, sizes){
   return cages.filter(c => c.length).map(cells => ({ cells: cells.sort((a, b) => a - b), sum: cells.reduce((t, i) => t + solution[i], 0) }));
 }
 
-/** ¿Las jaulas cubren cada casilla una sola vez? */
+/** Do the cages cover each cell exactly once? */
 export function coversBoard(cages){
   const seen = new Uint8Array(CELLS);
   for (const { cells } of cages) for (const i of cells){ if (seen[i]) return false; seen[i] = 1; }
   return seen.every(Boolean);
 }
 
-/** ¿Comparten fila, columna o caja? */
+/** Do they share a row, column or box? */
 export const sees = (a, b) => rowOf(a) === rowOf(b) || colOf(a) === colOf(b) || boxOf(a) === boxOf(b);
 
 /**
- * Grupos de suma de la regla del 45 para las regiones dadas (cada región: casillas de k unidades
- * enteras, que suman 45·k). Para cada región:
- *   - "dentro": las casillas de la región que son de jaulas que se salen de ella suman
- *     45·k − (lo que suman las jaulas que caben enteras);
- *   - "fuera": las casillas de esas mismas jaulas que quedan fuera suman (lo que suman esas jaulas) −
- *     (lo que suman las de dentro).
- * Solo se quedan los grupos de 1 a `maxCells` casillas. `owner[i]` = índice de la jaula de i.
+ * Sum groups of the 45 rule for the given regions (each region: cells of k whole units, which add up
+ * to 45·k). For each region:
+ *   - "inside": the region's cells that belong to cages sticking out of it add up to
+ *     45·k − (the sum of the cages that fit entirely);
+ *   - "outside": the cells of those same cages left outside add up to (the sum of those cages) −
+ *     (the sum of the inside ones).
+ * Only groups of 1 to `maxCells` cells are kept. `owner[i]` = index of i's cage.
  */
 export function sumGroups(cages, regions, maxCells){
   const owner = new Int16Array(CELLS);
@@ -73,7 +73,7 @@ export function sumGroups(cages, regions, maxCells){
   const add = (cells, sum) => {
     if (!cells.length || cells.length > maxCells) return;
     const key = cells.slice().sort((a, b) => a - b).join(',');
-    // un grupo que es justo una jaula no aporta nada
+    // a group that is exactly a cage adds nothing
     if (seen.has(key) || cages.some(c => c.cells.join(',') === key)) return;
     seen.add(key);
     out.push({ cells: key.split(',').map(Number), sum });
@@ -96,10 +96,10 @@ export function sumGroups(cages, regions, maxCells){
   return out;
 }
 
-/** Regiones de una unidad (filas, columnas y cajas). */
+/** Regions of one unit (rows, columns and boxes). */
 export const UNIT_REGIONS = [...ROWS, ...COLS, ...BOXES].map(cells => ({ cells, units: 1 }));
 
-/** Regiones de dos y tres filas o columnas seguidas, y franjas de cajas. */
+/** Regions of two and three consecutive rows or columns, and bands of boxes. */
 export const BAND_REGIONS = (() => {
   const out = [];
   for (const lines of [ROWS, COLS]) for (const span of [2, 3]) for (let a = 0; a + span <= SIZE; a++){

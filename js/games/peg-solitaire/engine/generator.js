@@ -1,5 +1,5 @@
-/* El solitario no genera tableros: la posición inicial depende del tablero elegido en Ajustes.
-   Se mantiene el contrato del resto de juegos (un "tablero" por nivel) para reutilizar la carcasa. */
+/* Peg Solitaire doesn't generate boards: the starting position depends on the board chosen in Settings.
+   It keeps the contract of the other games (one "board" per level) to reuse the shell. */
 export function* generate(target){
   yield 0;
   return { level: target };

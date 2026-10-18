@@ -1,13 +1,13 @@
-/* Engranajes: geometría y reglas del panel. Sin DOM. Panel hexagonal de filas desplazadas (las impares,
-   media casilla a la derecha); casilla i = fila * W + columna.
-   La manivela gira a la derecha (sentido 0); dos engranajes que se tocan giran al revés uno del otro.
-   Una solución: engranajes (1) que forman una sola pieza con la manivela y el cerrojo, sin círculos (cada
-   par que se toca es un contacto), con cada número igual a los engranajes que tocan su hueco y cada fijo
-   (y el cerrojo) girando hacia donde dice su flecha. */
+/* Gears: geometry and rules of the panel. No DOM. A hexagonal panel of offset rows (odd ones half a cell
+   to the right); cell i = row * W + column.
+   The crank turns clockwise (direction 0); two touching gears turn opposite to each other.
+   A solution: gears (1) that form a single piece with the crank and the lock, with no circles (each
+   touching pair is a contact), with each number equal to the gears touching its slot and each fixed one
+   (and the lock) turning the way its arrow says. */
 
 const cache = new Map();
 
-/** Casillas vecinas (hasta 6) de cada casilla de un panel de w × h. */
+/** Neighbouring cells (up to 6) of each cell of a w × h panel. */
 export function neighbours(w, h){
   const key = w * 100 + h;
   if (!cache.has(key)){
@@ -22,8 +22,8 @@ export function neighbours(w, h){
 }
 
 /**
- * Lo que mueve la manivela: { comp (casillas unidas a ella), spin (sentido de cada una, −1 si no gira),
- * jam (si en esa parte hay un círculo) }.
+ * What the crank moves: { comp (cells connected to it), spin (direction of each one, −1 if it doesn't
+ * turn), jam (whether that part has a circle) }.
  */
 export function drive(w, h, gears, crank){
   const nb = neighbours(w, h), spin = new Int8Array(w * h).fill(-1), comp = [crank];
@@ -36,17 +36,17 @@ export function drive(w, h, gears, crank){
       else if (spin[j] === spin[i]) jam = true;
     }
   }
-  // también un círculo de número par de engranajes: contactos de más
+  // also a circle of an even number of gears: extra contacts
   let edges = 0;
   for (const i of comp) for (const j of nb[i]) if (j > i && gears[j]) edges++;
   if (edges !== comp.length - 1) jam = true;
   return { comp, spin, jam };
 }
 
-/** Cuántos engranajes tocan la casilla i. */
+/** How many gears touch cell i. */
 export const touching = (w, h, gears, i) => neighbours(w, h)[i].reduce((t, j) => t + (gears[j] ? 1 : 0), 0);
 
-/** ¿Cumplen estos engranajes todas las reglas del reto? */
+/** Do these gears meet all the puzzle's rules? */
 export function satisfies(p, gears){
   const { w, h, crank, lock } = p, { comp, spin, jam } = drive(w, h, gears, crank);
   if (jam || !comp.includes(lock)) return false;
@@ -56,15 +56,16 @@ export function satisfies(p, gears){
 }
 
 /**
- * Cuenta soluciones (hasta `limit`), casilla a casilla, con los números y la falta de círculos como poda.
- * Si pasa de `budget` pasos se da por "más de una": nunca se toma por única una que no se ha demostrado.
+ * Counts solutions (up to `limit`), cell by cell, pruning with the numbers and the lack of circles.
+ * If it goes over `budget` steps it counts as "more than one": one that hasn't been proven is never
+ * taken as unique.
  */
 export function countSolutions(p, limit = 2, budget = 300000){
   const { w, h, crank, lock, fixed, clues } = p, n = w * h, nb = neighbours(w, h);
-  const state = new Int8Array(n).fill(-1);   // −1 sin decidir, 0 hueco, 1 engranaje
+  const state = new Int8Array(n).fill(-1);   // −1 undecided, 0 empty, 1 gear
   for (const i of [crank, lock, ...fixed]) state[i] = 1;
   for (const k of Object.keys(clues)) state[Number(k)] = 0;
-  // union-find con deshacer, para ver los círculos al poner engranajes
+  // union-find with undo, to spot circles when placing gears
   const parent = Int32Array.from({ length: n }, (_, i) => i), size = new Int32Array(n).fill(1), undo = [];
   const find = x => { while (parent[x] !== x) x = parent[x]; return x; };
   const unite = (a, b) => {

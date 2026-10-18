@@ -1,11 +1,11 @@
-/* Tira de la pantalla de victoria: tus últimas partidas del nivel como puntos sobre una línea, de la
-   más rápida (izquierda) a la más lenta, con la de hoy resaltada y tu media marcada. */
+/* Win screen strip: your latest games of the level as dots on a line, from the fastest (left) to the
+   slowest, with today's highlighted and your average marked. */
 import { formatTime } from '../lib/format.js';
 import { t } from '../i18n/index.js';
 
 const W = 300, H = 60, PAD = 12, Y = 24;
 
-/** Marcado de la tira para `strip` (ver core/progress.js#winStrip), o '' si no hay. */
+/** Strip markup for `strip` (see core/progress.js#winStrip), or '' if there is none. */
 export function winStripSvg(strip){
   if (!strip) return '';
   const { times, today, hints, avg } = strip;

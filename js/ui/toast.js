@@ -1,6 +1,6 @@
 import { TIMING } from '../config.js';
 
-/** Aviso breve en la parte inferior. */
+/** Short notice at the bottom. */
 export class Toast {
   constructor(el, duration = TIMING.toastMs){
     this.el = el;

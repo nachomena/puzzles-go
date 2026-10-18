@@ -1,21 +1,21 @@
-/* Componentes reutilizables en cualquier pantalla. */
+/* Components reusable on any screen. */
 
-/* Cristal: solo en lo que flota (barras, tarjetas, hojas). Fondo casi opaco con un poco de desenfoque y un
-   canto de 1 px algo más claro arriba, como los botones de la pantalla de bloqueo del iPhone. El canto son
-   sombras interiores: no hace falta posicionar el elemento y no se mueve en las hojas que se desplazan.
-   Los controles de las partidas (herramientas, deshacer y rehacer, teclado, botones como Voltear) son del
-   mismo cristal sin tener que marcarlos en cada juego. */
+/* Glass: only on what floats (bars, cards, sheets). An almost opaque background with a little blur and a
+   1 px slightly lighter edge on top, like the iPhone lock screen buttons. The edge is made of inset
+   shadows: the element doesn't need positioning and it doesn't move in sheets that scroll.
+   Game controls (tools, undo and redo, keypad, buttons like Flip) use the same glass without having to
+   mark them in each game. */
 .glass,.segmented,.toolbar__group,.keypad__key,.btn-chip{background:var(--glass);-webkit-backdrop-filter:blur(20px) saturate(140%);backdrop-filter:blur(20px) saturate(140%);
   box-shadow:inset 0 1px 0 var(--glass-rim-top),inset 0 0 0 1px var(--glass-rim),0 6px 18px rgba(0,0,0,.18)}
 @media (prefers-reduced-transparency:reduce){.glass{background:var(--surface);-webkit-backdrop-filter:none;backdrop-filter:none}}
 
-/* Botón de icono */
+/* Icon button */
 .icon-btn{width:48px;height:48px;display:grid;place-items:center;border-radius:var(--radius-sm)}
 .icon-btn svg{width:32px;height:32px}
 .icon-btn:active{background:var(--glass-hover)}
 
-/* Barra flotante de abajo (partidas y menús): una cápsula de cristal con volver a la izquierda y los
-   iconos juntos a la derecha */
+/* Floating bottom bar (games and menus): a glass capsule with back on the left and the icons together
+   on the right */
 .dock{position:fixed;z-index:5;left:max(12px, calc(50% - var(--content-max) / 2 + 12px));right:max(12px, calc(50% - var(--content-max) / 2 + 12px));
   bottom:max(12px, calc(var(--safe-bottom) + 4px));height:62px;border-radius:31px;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:0 8px}
 .dock__actions{display:flex;align-items:center;gap:clamp(0px,1vw,6px)}
@@ -25,15 +25,15 @@
 .back-pill svg{width:24px;height:24px;stroke:var(--ink);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .back-pill:active{background:var(--seg-on)}
 
-/* Iconos de trazo (todos los del sprite menos el logo) */
+/* Stroke icons (every sprite icon except the logo) */
 .icon-btn svg,.segmented svg,.inline-icon{stroke:var(--ink);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 
-/* Botones de texto */
+/* Text buttons */
 .btn-primary{display:block;margin-top:18px;width:100%;height:52px;background:var(--ink);color:var(--bg);font-weight:700;font-size:17px;border-radius:var(--radius)}
 .btn-ghost{padding:12px 22px;border:2px solid var(--outline);border-radius:var(--radius);font-weight:600}
 .btn-danger{margin-top:18px;color:var(--x);font-weight:600;font-size:16px;padding:8px 0}
 
-/* Selector segmentado (de cristal): una cápsula con la opción elegida un poco más clara */
+/* Segmented picker (glass): a capsule with the chosen option slightly lighter */
 .segmented{display:flex;border-radius:26px;padding:4px;gap:2px}
 .segmented button{width:76px;height:44px;border-radius:22px;display:grid;place-items:center}
 .segmented svg{width:28px;height:28px;stroke-width:1.6}
@@ -50,7 +50,7 @@
 .toggle input:checked::after{transform:translateX(20px)}
 .select{appearance:none;-webkit-appearance:none;flex-shrink:0;height:36px;padding:0 34px 0 14px;border:0;border-radius:18px;background:var(--seg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a9a8b3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 10l5 5 5-5'/%3E%3C/svg%3E") no-repeat right 10px center/16px;color:var(--ink);font:inherit;font-size:15px;font-weight:600;cursor:pointer}
 
-/* Casilla base de cualquier tablero (cada juego añade sus modificadores) */
+/* Base cell of any board (each game adds its modifiers) */
 .cell{display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;background:var(--cell)}
 .cell.is-flash{animation:flash .5s ease-in-out 3}
 @keyframes flash{50%{background:var(--cell-flash)}}
@@ -61,22 +61,22 @@
 .toast{position:fixed;left:50%;bottom:calc(96px + var(--safe-bottom));transform:translate(-50%,20px);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:var(--radius);font-weight:600;font-size:15px;opacity:0;pointer-events:none;transition:.25s;z-index:20;white-space:nowrap}
 .toast.is-on{opacity:1;transform:translate(-50%,0)}
 
-/* Aviso de versión nueva (js/pwa.js) */
-/* escondido: por encima de la pantalla, contando la barra de estado del iPhone (--safe-top) */
+/* New version notice (js/pwa.js) */
+/* hidden: above the screen, counting the iPhone status bar (--safe-top) */
 .update-bar{position:fixed;left:50%;top:calc(10px + var(--safe-top));transform:translate(-50%,calc(-100% - 20px - var(--safe-top)));display:flex;align-items:center;gap:14px;
   background:var(--ink);color:var(--bg);padding:8px 8px 8px 16px;border-radius:var(--radius);font-weight:600;font-size:15px;z-index:25;
   white-space:nowrap;transition:transform .3s}
 .update-bar.is-on{transform:translate(-50%,0)}
 .update-bar button{background:var(--bg);color:var(--ink);border-radius:var(--radius-sm);padding:8px 12px;font-weight:700}
 
-/* Volver deslizando desde el borde izquierdo (ui/edge-back.js) */
+/* Swipe back from the left edge (ui/edge-back.js) */
 .edge-back{position:fixed;left:0;top:50%;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--cell);color:var(--ink);
   transform:translate(-56px,-50%);opacity:0;pointer-events:none;z-index:30;transition:opacity .15s,background .15s,color .15s;box-shadow:0 4px 14px rgba(0,0,0,.35)}
 .edge-back svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .edge-back.is-on{opacity:1}
 .edge-back.is-armed{background:var(--ink);color:var(--bg)}
 
-/* Botón pequeño con icono y texto bajo el tablero (girar, voltear) en los juegos de piezas (de cristal) */
+/* Small button with icon and text under the board (rotate, flip) in the piece games (glass) */
 .btn-chip{display:flex;align-items:center;gap:6px;height:40px;padding:0 14px;border-radius:20px;font-weight:600;font-size:15px}
 .btn-chip:active{background:var(--glass-on)}
 .btn-chip svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round}

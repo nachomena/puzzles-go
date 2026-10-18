@@ -1,15 +1,15 @@
-/* Generador de Killer Sudoku con dificultad garantizada por el solucionador lógico.
-   Tablero completo al azar → jaulas al azar (sin repetir número dentro) → se parte de todos los
-   números puestos y se quitan mientras el tablero se siga resolviendo con las técnicas del nivel
-   (resolver por lógica ya implica solución única). Quedan unos pocos números puestos; de varios
-   intentos se queda el que menos tenga y que de verdad necesite las técnicas de su nivel. */
+/* Killer Sudoku generator with difficulty guaranteed by the logic solver.
+   Random full board → random cages (no repeated number inside) → start with every number placed and
+   remove them while the board can still be solved with the level's techniques (solving by logic
+   already implies a unique solution). A few numbers remain placed; out of several attempts it keeps the
+   one with the fewest that really needs its level's techniques. */
 import { CELLS } from '../../sudoku/engine/grid.js';
 import { randomSolution } from '../../sudoku/engine/exact-solver.js';
 import { partition } from './cages.js';
 import { prepare, logic } from './logic-solver.js';
 import { shuffle } from '../../../lib/random.js';
 
-/** Por nivel: tamaños de jaula posibles e intentos (se queda el de menos números puestos). */
+/** Per level: possible cage sizes and attempts (it keeps the one with the fewest numbers placed). */
 export const LEVEL_RULES = Object.freeze({
   1: { sizes: [2, 2, 2, 3, 3, 3], attempts: 4 },
   2: { sizes: [2, 2, 3, 3, 4, 4], attempts: 12 },
@@ -17,7 +17,7 @@ export const LEVEL_RULES = Object.freeze({
   4: { sizes: [3, 3, 4, 4, 5, 5, 6], attempts: 20 }
 });
 
-/** Quita números de `grid` (muta) mientras se resuelva con el nivel `level`. */
+/** Removes numbers from `grid` (mutates) while it is solved with level `level`. */
 function* dig(grid, prepared, level){
   for (const i of shuffle([...Array(CELLS).keys()])){
     const v = grid[i];
@@ -28,8 +28,8 @@ function* dig(grid, prepared, level){
 }
 
 /**
- * Reto del nivel `target` (1 fácil … 4 experto): { level, cages: [{cells, sum}], givens, solution }.
- * Cede a menudo para no bloquear (ver core/generator-worker.js). null si no lo consigue.
+ * Puzzle of level `target` (1 easy … 4 expert): { level, cages: [{cells, sum}], givens, solution }.
+ * Yields often so it doesn't block (see core/generator-worker.js). null if it doesn't manage.
  */
 export function* generate(target){
   const { sizes, attempts } = LEVEL_RULES[target];
@@ -41,7 +41,7 @@ export function* generate(target){
     done++;
     const prepared = prepare(cages), givens = solution.slice();
     yield* dig(givens, prepared, target);
-    // con las técnicas del nivel anterior no tiene que bastar
+    // the previous level's techniques must not be enough
     if (target > 1 && logic(givens, prepared, target - 1).solved) continue;
     const count = givens.filter(Boolean).length;
     if (!best || count < best.count) best = { count, puzzle: { level: target, cages, givens, solution } };

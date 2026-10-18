@@ -1,4 +1,4 @@
-/** Reduce la fuente de `el` para que quepa en una línea junto a sus hermanos dentro del contenedor. */
+/** Shrinks `el`'s font so it fits on one line next to its siblings in the container. */
 export function fitToWidth(el){
   if (!el || !el.offsetParent) return;
   el.style.fontSize = '';
@@ -9,7 +9,7 @@ export function fitToWidth(el){
   if (el.scrollWidth > avail) el.style.fontSize = Math.floor(base * avail / el.scrollWidth) + 'px';
 }
 
-/** Mantiene el ajuste al cambiar el tamaño o al terminar de cargar las fuentes. */
+/** Keeps it fitted when the size changes or when the fonts finish loading. */
 export function keepFitted(el){
   const fit = () => fitToWidth(el);
   window.addEventListener('resize', fit);

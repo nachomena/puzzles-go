@@ -1,18 +1,22 @@
-/** Capas modales (hojas, tarjetas, carga). Se identifican por su id. */
+/** Modal layers (sheets, cards, loading). Identified by their id. */
 export class Overlays {
   constructor(root = document){
     this.root = root;
     this.hooks = new Map();
   }
-  /** Ejecuta `fn` justo antes de abrir la capa `id`. */
+  /** Runs `fn` right before opening layer `id`. */
   beforeOpen(id, fn){ this.hooks.set(id, fn); }
 
+  /** Opens layer `id`, with its sheet scrolled back to the top. */
   open(id){
     this.hooks.get(id)?.();
-    this.#el(id).classList.add('is-on');
+    const el = this.#el(id);
+    el.classList.add('is-on');
+    const body = el.querySelector('.sheet__body');
+    if (body) body.scrollTop = 0;
   }
   close(id){ this.#el(id).classList.remove('is-on'); }
-  /** Cierra todas las capas que se pueden descartar. */
+  /** Closes every layer that can be dismissed. */
   closeDismissable(){
     this.root.querySelectorAll('.overlay[data-dismissable].is-on').forEach(el => el.classList.remove('is-on'));
   }

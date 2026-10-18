@@ -1,12 +1,12 @@
-/* Piezas de casillas (poliominós) y búsqueda de soluciones para llenar un tablero con ellas.
-   Sin DOM. Lo usan Katamino (5 × n) e Puzzler Pro (11 × 5).
+/* Pieces made of cells (polyominoes) and a solution search to fill a board with them.
+   No DOM. Used by Pentominoes (5 × n) and Fit (11 × 5).
 
-   Una pieza colocada es { m, r, x, y }: m = cara (0, 1 = volteada), r = giro de 90° en sentido
-   horario (0..3) y (x, y) la esquina superior izquierda de su caja. */
+   A placed piece is { m, r, x, y }: m = side (0, 1 = flipped), r = clockwise 90° rotation (0..3)
+   and (x, y) the top-left corner of its box. */
 
 /**
- * Casillas [x, y] de una forma con cara `m` y giro `r`, desde la esquina de su caja y en orden de
- * lectura, con su ancho y alto.
+ * Cells [x, y] of a shape with side `m` and rotation `r`, from the corner of its box and in reading
+ * order, with its width and height.
  */
 export function orientCells(cells, m, r){
   let out = cells.map(([x, y]) => [m ? -x : x, y]);
@@ -16,7 +16,7 @@ export function orientCells(cells, m, r){
   return { cells: out, w: Math.max(...out.map(c => c[0])) + 1, h: Math.max(...out.map(c => c[1])) + 1 };
 }
 
-/** Orientaciones distintas de una forma: [{ m, r, cells, w, h }] (las repetidas por simetría se quitan). */
+/** Distinct orientations of a shape: [{ m, r, cells, w, h }] (duplicates by symmetry are removed). */
 export function orientationsOf(cells){
   const seen = new Set(), out = [];
   for (let m = 0; m < 2; m++) for (let r = 0; r < 4; r++){
@@ -27,21 +27,21 @@ export function orientationsOf(cells){
 }
 
 /**
- * Buscador de soluciones para llenar un tablero de W × H (hasta 60 casillas) con piezas.
- * Rellena siempre la primera casilla libre, en orden de lectura (`order: 'rows'`) o por columnas
- * (`'columns'`): conviene recorrer primero el lado corto del tablero. El tablero va en dos enteros de
- * 30 bits.
+ * Solution search to fill a W × H board (up to 60 cells) with pieces.
+ * It always fills the first free cell, in reading order (`order: 'rows'`) or by columns
+ * (`'columns'`): it pays to walk the board's short side first. The board is held in two 30-bit
+ * integers.
  * @param {{ W: number, H: number, shapes: number[][][], order?: 'rows'|'columns' }} o
- *   shapes: casillas [x, y] de cada pieza
+ *   shapes: cells [x, y] of each piece
  */
 export function createPacker({ W, H, shapes, order = 'rows' }){
   const SIZE = W * H, HALF = 30, FULL = (1 << HALF) - 1;
-  if (SIZE > 2 * HALF) throw new Error('Tablero demasiado grande');
+  if (SIZE > 2 * HALF) throw new Error('Board too large');
   const index = order === 'columns' ? (x, y) => x * H + y : (x, y) => y * W + x;
   const bitLo = i => i < HALF ? 1 << i : 0, bitHi = i => i < HALF ? 0 : 1 << (i - HALF);
   const orientations = shapes.map(orientationsOf);
 
-  // Colocaciones que tienen su primera casilla (en el orden de relleno) en i
+  // Placements whose first cell (in fill order) is i
   const AT = Array.from({ length: SIZE }, () => []);
   orientations.forEach((list, piece) => list.forEach(o => {
     for (let y = 0; y + o.h <= H; y++) for (let x = 0; x + o.w <= W; x++){
@@ -52,7 +52,7 @@ export function createPacker({ W, H, shapes, order = 'rows' }){
     }
   }));
 
-  /** Casillas [x, y] de una pieza colocada, o null si se sale del tablero. */
+  /** Cells [x, y] of a placed piece, or null if it goes off the board. */
   const cellsOf = (piece, { m, r, x, y }) => {
     const o = orientCells(shapes[piece], m, r);
     if (x < 0 || y < 0 || x + o.w > W || y + o.h > H) return null;
@@ -60,13 +60,13 @@ export function createPacker({ W, H, shapes, order = 'rows' }){
   };
 
   /**
-   * Cuenta las soluciones (hasta `limit`).
-   * @param {number[]} pieces  piezas que hay que colocar (las fijas incluidas)
+   * Counts the solutions (up to `limit`).
+   * @param {number[]} pieces  pieces to place (fixed ones included)
    * @param {object} [opts]
-   *   fixed: [{ piece, pose }] ya colocadas · limit · onSolution([{ piece, pose }]) → true para parar
-   *   blocked: casillas [x, y] que no hay que llenar (p. ej. las filas que sobran)
-   *   random: () => número en [0, 1) para recorrer las colocaciones en otro orden
-   * @returns {number}  0 también si las fijas se salen o se pisan
+   *   fixed: [{ piece, pose }] already placed · limit · onSolution([{ piece, pose }]) → true to stop
+   *   blocked: cells [x, y] that must not be filled (e.g. the spare rows)
+   *   random: () => number in [0, 1) to walk the placements in another order
+   * @returns {number}  also 0 if the fixed ones go off the board or overlap
    */
   function countSolutions(pieces, { fixed = [], limit = Infinity, onSolution, blocked = [], random } = {}){
     let lo = 0, hi = 0;
@@ -87,7 +87,7 @@ export function createPacker({ W, H, shapes, order = 'rows' }){
     }
     let count = 0, stop = false;
     const search = (lo, hi) => {
-      // primera casilla libre: el bit más bajo a 0
+      // first free cell: the lowest 0 bit
       let i;
       if (lo !== FULL) i = 31 - Math.clz32(~lo & (lo + 1));
       else if (hi !== FULL) i = HALF + 31 - Math.clz32(~hi & (hi + 1));
@@ -108,17 +108,17 @@ export function createPacker({ W, H, shapes, order = 'rows' }){
         if (stop) return;
       }
     };
-    // los bits que no son casillas cuentan como llenos: tablero lleno = las dos mitades a FULL
+    // bits that aren't cells count as full: full board = both halves at FULL
     if (SIZE <= HALF){ lo |= FULL & ~((1 << SIZE) - 1); hi = FULL; }
     else hi |= FULL & ~((1 << (SIZE - HALF)) - 1);
     search(lo, hi);
     return count;
   }
 
-  /** La lista empezando en un punto al azar (para soluciones distintas cada vez). */
+  /** The list starting at a random point (for different solutions each time). */
   const rotated = (list, random) => { const k = (random() * list.length) | 0; return list.slice(k).concat(list.slice(0, k)); };
 
-  /** Primera solución que respeta las piezas `fixed`, o null. */
+  /** First solution that respects the `fixed` pieces, or null. */
   function solve(pieces, opts = {}){
     let found = null;
     countSolutions(pieces, { ...opts, limit: 1, onSolution: sol => { found = sol; return true; } });

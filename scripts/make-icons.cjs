@@ -1,5 +1,5 @@
-// Genera los PNG de icons/ a partir de icons/icon.svg (y el maskable de icons/icon-maskable.svg) con Chromium (Playwright).
-// Uso: node scripts/make-icons.cjs   (necesita playwright instalado globalmente o en el proyecto)
+// Generates the PNGs in icons/ from icons/icon.svg (and the maskable one from icons/icon-maskable.svg) with Chromium (Playwright).
+// Usage: node scripts/make-icons.cjs   (needs playwright installed globally or in the project)
 const path = require('path');
 const fs = require('fs');
 let pw;

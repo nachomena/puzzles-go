@@ -1,12 +1,12 @@
-/* Marcado propio de Engranajes: tablero, botones y ayuda. */
+/* Gears' own markup: board, buttons and help. */
 import { undoRedo, svgIcon } from '../../ui/templates.js';
 import { t } from '../../i18n/index.js';
 import { helpFigure } from '../../ui/help-figure.js';
 import { center, viewBox, hexPath, gear, clueText } from './art.js';
 
 /**
- * Ejemplo resuelto de 3 × 2: manivela (0), dos engranajes (1 y 2) y el cerrojo (5); los huecos 3 y 4
- * tocan 2 y 3 engranajes. Los sentidos se alternan: 0, 1, 0, 1.
+ * Solved 3 × 2 example: crank (0), two gears (1 and 2) and the lock (5); slots 3 and 4 touch 2 and 3
+ * gears. The directions alternate: 0, 1, 0, 1.
  */
 const figure = () => {
   const w = 3, h = 2, kinds = { 0: 'crank', 1: 'player', 2: 'player', 5: 'lock' }, spin = { 0: 0, 1: 1, 2: 0, 5: 1 }, clues = { 3: 2, 4: 3 };

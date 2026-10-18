@@ -1,12 +1,12 @@
-/* Estrategias para ejecutar el generador. Ambas cumplen la misma interfaz:
-     run(target, onPuzzle)  empieza a generar; llama a onPuzzle(p) por cada tablero
-                            y para sola al conseguir uno del nivel `target`.
-     stop()                 descarta el trabajo en curso.
-     resume()               continúa si estaba en pausa.
-     background             true si no bloquea la interfaz. */
+/* Strategies to run the generator. Both share the same interface:
+     run(target, onPuzzle)  starts generating; calls onPuzzle(p) for each board
+                            and stops by itself on getting one of level `target`.
+     stop()                 drops the work in progress.
+     resume()               carries on if it was paused.
+     background             true if it doesn't block the interface. */
 import { TIMING } from '../config.js';
 
-/** Genera en un Web Worker (módulo ES). */
+/** Generates in a Web Worker (ES module). */
 export class WorkerRunner {
   background = true;
 
@@ -18,7 +18,7 @@ export class WorkerRunner {
     this.worker = this.#spawn();
   }
 
-  /** Crea un runner y comprueba que el worker responde. Rechaza si falla o tarda. */
+  /** Creates a runner and checks that the worker answers. Rejects if it fails or takes too long. */
   static probe(url, onFailure, timeoutMs = TIMING.workerProbeMs){
     return new Promise((resolve, reject) => {
       let runner;
@@ -47,7 +47,7 @@ export class WorkerRunner {
     this.worker.postMessage({ target, token: ++this.token });
   }
   stop(){
-    // El worker está ocupado en un bucle síncrono: la única forma de pararlo es reemplazarlo.
+    // The worker is busy in a synchronous loop: the only way to stop it is to replace it.
     this.token++;
     this.onPuzzle = null;
     this.worker.terminate();
@@ -62,8 +62,8 @@ export class WorkerRunner {
 }
 
 /**
- * Genera en el hilo principal en porciones cortas; se pausa cuando `shouldYield()` lo pide.
- * `generate(target)` es la función generadora del juego (la misma que usa su worker).
+ * Generates on the main thread in short slices; pauses when `shouldYield()` asks for it.
+ * `generate(target)` is the game's generator function (the same one its worker uses).
  */
 export class MainThreadRunner {
   background = false;

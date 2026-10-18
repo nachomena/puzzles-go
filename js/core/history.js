@@ -1,4 +1,4 @@
-/** Pila de deshacer/rehacer genérica sobre instantáneas. */
+/** Generic undo/redo stack over snapshots. */
 export class History {
   constructor(limit = Infinity){
     this.limit = limit;
@@ -8,14 +8,14 @@ export class History {
   get canUndo(){ return this.past.length > 0; }
   get canRedo(){ return this.future.length > 0; }
 
-  /** Guarda el estado anterior a un cambio nuevo (invalida el rehacer). */
+  /** Saves the state before a new change (clears redo). */
   record(snapshot){
-    this.stamp++;   // cambia con cada paso (apuntar, deshacer, rehacer): ver GameController#recordTap
+    this.stamp++;   // changes with every step (record, undo, redo): see GameController#recordTap
     this.past.push(snapshot);
     if (this.past.length > this.limit) this.past.shift();
     this.future = [];
   }
-  /** Devuelve el estado al que volver, o null. `current` pasa a la otra pila. */
+  /** Returns the state to go back to, or null. `current` goes to the other stack. */
   undo(current){ return this.#move(this.past, this.future, current); }
   redo(current){ return this.#move(this.future, this.past, current); }
 

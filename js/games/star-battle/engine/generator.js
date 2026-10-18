@@ -1,4 +1,4 @@
-/* Generador de tableros con solución única y dificultad controlada. */
+/* Board generator with a unique solution and controlled difficulty. */
 import { randomSolution, solve } from './exact-solver.js';
 import { logic, grade, isEmptyState, isUnknownState, MAX_LEVEL } from './logic-solver.js';
 import { buildRegions, connectedWithout, neighbourRegions } from './regions.js';
@@ -12,9 +12,9 @@ const EDITS_PER_ATTEMPT = 300;
 const MAX_REJECTS = 4;
 
 /**
- * Genera un tablero N×N con K estrellas para el nivel objetivo (1 fácil, 2 difícil, 3 experto).
- * Es un generador que cede (yield) a menudo para poder repartir el trabajo en el tiempo.
- * Devuelve el tablero con su nivel real (puede salir de otro nivel; se aprovecha igual) o null.
+ * Generates an N×N board with K stars for the target level (1 easy, 2 hard, 3 expert).
+ * It is a generator that yields often so the work can be spread over time.
+ * Returns the board with its real level (it may come out at another level; it is used anyway) or null.
  */
 export function* generate(target, N = 10, K = 2){
   const drive = target <= 2 ? target : 0;
@@ -27,7 +27,7 @@ export function* generate(target, N = 10, K = 2){
     const isStar = new Uint8Array(N * N); stars.forEach(s => isStar[s] = 1);
     const pack = level => ({ N, K, level, regions: Array.from(reg), solution: stars.slice() });
 
-    // Pasa una casilla sin estrella a una región vecina sin romper la conexidad.
+    // Moves a cell without a star to a neighbouring region without breaking connectivity.
     const move = cands => {
       for (const i of shuffle(cands)){
         if (isStar[i]) continue;
@@ -57,13 +57,13 @@ export function* generate(target, N = 10, K = 2){
           if (++rejects >= MAX_REJECTS) return pack(MAX_LEVEL);
           break;
         }
-        // Único pero demasiado difícil: se retoca donde la lógica se atasca
+        // Unique but too hard: tweak where the logic gets stuck
         const unk = [];
         for (let i = 0; i < N * N; i++) if (isUnknownState(lg.st[i])) unk.push(i);
         if (!move(unk) && !move([...Array(N * N).keys()])) break;
         continue;
       }
-      // Varias soluciones: se retoca alrededor de las estrellas de la alternativa
+      // Several solutions: tweak around the stars of the alternative
       const alt = res.sols.find(s => s.some((m, r) => m !== rows[r]));
       if (!move(rowsToCells(N, alt))) break;
     }

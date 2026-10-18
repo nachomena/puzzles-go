@@ -1,4 +1,4 @@
-/* Punto de entrada: arranca la app con los juegos registrados. */
+/* Entry point: starts the app with the registered games. */
 import { App } from './app/app.js';
 import { CATALOG } from './games/catalog.js';
 import { safeStorage } from './lib/dom.js';
@@ -7,7 +7,7 @@ import { fixStandaloneViewport, registerServiceWorker, requestPersistentStorage 
 
 fixStandaloneViewport();
 const storage = safeStorage();
-migrateLevels(storage, CATALOG.map(item => item.meta));   // niveles de antes → Fácil, Difícil, Experto
+migrateLevels(storage, CATALOG.map(item => item.meta));   // old levels → Easy, Hard, Expert
 const app = new App({ catalog: CATALOG, storage });
 app.start();
 registerServiceWorker({ onUpdate: () => app.showUpdate() });

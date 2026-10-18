@@ -1,6 +1,6 @@
-/* Controlador base de una partida (patrón plantilla).
-   Resuelve lo común a todos los juegos: historial, cronómetro, reinicio, victoria,
-   herramientas y cabecera. Cada juego hereda y rellena los pasos marcados como "abstractos". */
+/* Base controller of a game (template method pattern).
+   Handles what all games share: history, timer, restart, win, tools and header. Each game
+   inherits and fills in the steps marked as "abstract". */
 import { HISTORY_LIMIT, HINT_COOLDOWN_SEC, TIMING } from '../config.js';
 import { History } from './history.js';
 import { hintWait } from './hint-cooldown.js';
@@ -12,11 +12,11 @@ import { t } from '../i18n/index.js';
 export class GameController {
   /**
    * @param {object} deps
-   * @param {object} deps.game  definición del juego (ver js/games/README.md)
+   * @param {object} deps.game  game definition (see js/games/README.md)
    * @param {import('./store.js').Store} deps.store
    * @param {import('../ui/game-hud.js').GameHud} deps.hud
    * @param {(msg:string) => void} deps.notify
-   * @param {(result:{time:string, detail:string, strip:object|null}) => void} deps.onWin  strip: ver core/progress.js#winStrip
+   * @param {(result:{time:string, detail:string, strip:object|null}) => void} deps.onWin  strip: see core/progress.js#winStrip
    */
   constructor({ game, store, hud, notify, onWin }){
     Object.assign(this, { game, store, hud, notify, onWin });
@@ -28,55 +28,55 @@ export class GameController {
   get tool(){ return this.store.state.tool; }
   get active(){ return !!this.session && !this.session.done; }
 
-  /* ---------- Pasos abstractos (cada juego los implementa) ---------- */
+  /* ---------- Abstract steps (each game implements them) ---------- */
 
-  /** Partida nueva sobre un tablero. */
-  createSession(L, puzzle){ throw new Error('createSession no implementado'); }
-  /** Monta el tablero en el DOM. */
+  /** New game on a board. */
+  createSession(L, puzzle){ throw new Error('createSession not implemented'); }
+  /** Mounts the board in the DOM. */
   mountBoard(){}
-  /** Pinta el tablero con el estado actual. */
+  /** Draws the board with the current state. */
   renderBoard(){}
-  /** Copia del estado editable (para deshacer). */
-  snapshot(){ throw new Error('snapshot no implementado'); }
-  restore(snap){ throw new Error('restore no implementado'); }
-  /** ¿El estado actual equivale a la instantánea? */
+  /** Copy of the editable state (for undo). */
+  snapshot(){ throw new Error('snapshot not implemented'); }
+  restore(snap){ throw new Error('restore not implemented'); }
+  /** Is the current state equal to the snapshot? */
   sameAs(snap){ return false; }
-  /** ¿Hay algo que el jugador haya puesto? (para reiniciar) */
+  /** Is there anything the player has placed? (for restart) */
   hasInput(){ return false; }
-  /** Vacía lo que puso el jugador. */
+  /** Clears what the player placed. */
   clearInput(){}
-  /** ¿Está resuelto el tablero? */
+  /** Is the board solved? */
   isSolved(){ return false; }
   /**
-   * Primer error del jugador frente a la solución: { message, ... } o null.
-   * La pista lo señala antes de dar ningún paso nuevo (igual en todos los juegos).
+   * The player's first mistake against the solution: { message, ... } or null.
+   * The hint points it out before giving any new step (the same in every game).
    */
   findMistake(){ return null; }
-  /** Señala en el tablero el error que devolvió findMistake (p. ej. un destello). */
+  /** Shows on the board the mistake returned by findMistake (e.g. a flash). */
   showMistake(mistake){}
-  /** Avanza un paso hacia la solución (sin errores en el tablero). Devuelve true si lo dio. */
+  /** Moves one step towards the solution (with no mistakes on the board). Returns true if it did. */
   giveHint(){ return false; }
-  /** Recalcula lo derivado tras un cambio (p. ej. X automáticas). */
+  /** Recomputes derived state after a change (e.g. automatic X marks). */
   normalize(){}
-  /** Aviso al reiniciar (los juegos sin deshacer no deben ofrecerlo). */
+  /** Message on restart (games without undo shouldn't offer it). */
   get resetMessage(){ return t('play.cleared'); }
-  /** Reacciona a un ajuste cambiado. */
+  /** Reacts to a changed setting. */
   onSetting(key){}
-  /** Animación de victoria. */
+  /** Win animation. */
   celebrate(){}
-  /** Datos extra de la victoria para las estadísticas, p. ej. { moves, min } (ver core/stats.js y core/progress.js). */
+  /** Extra win data for the statistics, e.g. { moves, min } (see core/stats.js and core/progress.js). */
   winExtra(){ return undefined; }
-  /** Acciones propias del juego: { nombre: (el) => void }, para los [data-action] de su pantalla. */
+  /** The game's own actions: { name: (el) => void }, for the [data-action] on its screen. */
   get actions(){ return {}; }
-  /** Teclado (opcional). Devuelve true si consumió la tecla. */
+  /** Keyboard (optional). Returns true if it consumed the key. */
   onKey(e){ return false; }
   /**
-   * "Siguiente tablero" propio del juego: true = ya ha empezado otro, false = no hay más (se vuelve
-   * al menú), null = el siguiente tablero generado del mismo nivel (lo normal).
+   * The game's own "Next board": true = another one has already started, false = there are no more
+   * (back to the menu), null = the next generated board of the same level (the usual case).
    */
   next(){ return null; }
 
-  /* ---------- Ciclo de vida ---------- */
+  /* ---------- Life cycle ---------- */
 
   begin(L, puzzle){
     this.store.state.cur = this.createSession(L, puzzle);
@@ -84,7 +84,7 @@ export class GameController {
     this.store.save();
   }
 
-  /** Monta la partida actual. Devuelve false si no hay partida. */
+  /** Mounts the current game. Returns false if there is none. */
   mount(){
     const s = this.session;
     if (!s) return false;
@@ -104,25 +104,25 @@ export class GameController {
     this.hud.setHintWait(this.hintWait);
   }
 
-  /** Aplica las consecuencias de un cambio. `final` = fin de la acción del jugador. */
+  /** Applies the consequences of a change. `final` = end of the player's action. */
   commit(final){
     this.normalize();
     this.render();
     if (final){
-      this.session.input = this.hasInput();   // una partida con algo puesto se ofrece para continuar (Store)
+      this.session.input = this.hasInput();   // a game with something placed is offered to continue (Store)
       this.store.save();
       this.#checkWin();
     }
   }
 
-  /** Guarda el estado actual en el historial antes de modificarlo. */
+  /** Saves the current state in the history before changing it. */
   record(){ this.history.record(this.snapshot()); }
 
   /**
-   * Historial de un toque en una casilla de las que van vacía → marca → pieza (estrella, bombilla).
-   * `before`: instantánea de antes del toque. `step`: 'mark' si puso la marca en una casilla vacía,
-   * 'piece' si cambió esa marca por la pieza, null si otra cosa. Un 'piece' justo después del 'mark'
-   * en la misma casilla no se apunta aparte, así deshacer vacía la casilla en vez de dejar la marca.
+   * History of a tap on a cell that goes empty → mark → piece (star, bulb).
+   * `before`: snapshot from before the tap. `step`: 'mark' if it put the mark on an empty cell,
+   * 'piece' if it swapped that mark for the piece, null otherwise. A 'piece' right after the 'mark'
+   * on the same cell isn't recorded separately, so undo empties the cell instead of leaving the mark.
    */
   recordTap(cell, before, step){
     const t = this.markTap;
@@ -137,7 +137,7 @@ export class GameController {
     this.render();
   }
 
-  /** Un segundo de juego. */
+  /** One second of play. */
   tick(){
     const s = this.session;
     if (!this.active) return;
@@ -147,7 +147,7 @@ export class GameController {
     if (s.time % TIMING.autosaveEverySec === 0) this.store.save();
   }
 
-  /* ---------- Acciones comunes ---------- */
+  /* ---------- Common actions ---------- */
 
   undo(){ this.#travel(cur => this.history.undo(cur)); }
   redo(){ this.#travel(cur => this.history.redo(cur)); }
@@ -174,12 +174,12 @@ export class GameController {
     this.notify(this.resetMessage);
   }
 
-  /** Segundos de juego que faltan para la próxima pista. */
+  /** Seconds of play left until the next hint. */
   get hintWait(){ return this.session ? hintWait(this.session, HINT_COOLDOWN_SEC) : 0; }
 
   /**
-   * Pista con límite: una cada HINT_COOLDOWN_SEC de juego. Anula el récord de la partida.
-   * Si hay algo mal puesto se señala eso; si no, se avanza un paso.
+   * Rate-limited hint: one every HINT_COOLDOWN_SEC of play. It voids the game's record.
+   * If something is wrong it points that out; otherwise it takes one step.
    */
   hint(){
     if (!this.active) return;
@@ -201,7 +201,7 @@ export class GameController {
     const s = this.session;
     if (s.done || !this.isSolved()) return;
     s.done = true;
-    // las estadísticas van por nivel, salvo que el juego las agrupe de otra forma (p. ej. por tablero)
+    // statistics go per level, unless the game groups them differently (e.g. per board)
     const key = this.game.statsKey?.(s) ?? s.L;
     const name = this.game.statsName?.(s) ?? statsRows(this.game).find(r => r.key === key)?.name ?? this.game.levels[s.L].name;
     const result = this.store.recordWin(key, s.time, s.hints, this.winExtra());

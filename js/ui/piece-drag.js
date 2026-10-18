@@ -1,15 +1,15 @@
-/* Arrastrar y tocar piezas. Un toque (sin moverse) gira la pieza; un arrastre la lleva con el
-   dedo a tamaño de tablero y, al soltar, avisa de dónde ha caído. */
+/* Dragging and tapping pieces. A tap (without moving) rotates the piece; a drag carries it with the
+   finger at board size and, on release, reports where it landed. */
 const DRAG_THRESHOLD = 6;
 
 /**
- * @param {HTMLElement} root  contenedor de tablero y bandeja
+ * @param {HTMLElement} root  container of the board and tray
  * @param {object} o
  * @param {(piece:number) => boolean} o.canMove
- * @param {() => number} o.cellSize           px de una casilla del tablero
+ * @param {() => number} o.cellSize           px of a board cell
  * @param {(piece:number) => void} o.onTap
- * @param {(piece:number, rect:DOMRect) => void} o.onDrop   rect = posición final de la pieza
- * @param {(el:Element, piece:number) => HTMLElement} [o.ghost]  copia que sigue al dedo (por defecto, un clon)
+ * @param {(piece:number, rect:DOMRect) => void} o.onDrop   rect = final position of the piece
+ * @param {(el:Element, piece:number) => HTMLElement} [o.ghost]  copy that follows the finger (a clone by default)
  */
 export function bindPieceDrag(root, { canMove, cellSize, onTap, onDrop, ghost = el => el.cloneNode(true) }){
   let drag = null;
@@ -30,13 +30,13 @@ export function bindPieceDrag(root, { canMove, cellSize, onTap, onDrop, ghost = 
     if (!drag || e.pointerId !== drag.id) return;
     if (!drag.ghost){
       if (Math.hypot(e.clientX - drag.x, e.clientY - drag.y) < DRAG_THRESHOLD) return;
-      // Empieza el arrastre: una copia de la pieza a tamaño de tablero sigue al dedo
+      // The drag starts: a copy of the piece at board size follows the finger
       const cell = cellSize(), g = ghost(drag.el, drag.piece);
       const w = Number(getComputedStyle(drag.el).getPropertyValue('--w')), h = Number(getComputedStyle(drag.el).getPropertyValue('--h'));
       g.classList.remove('is-tray');
       g.classList.add('is-ghost');
       Object.assign(g.style, { width: w * cell + 'px', height: h * cell + 'px', left: '0', top: '0' });
-      // dentro de la pantalla del juego, para que herede sus colores (variables CSS)
+      // inside the game screen, so it inherits its colours (CSS variables)
       (root.closest('.screen') || document.body).appendChild(g);
       drag.el.classList.add('is-lifted');
       drag.ghost = g;

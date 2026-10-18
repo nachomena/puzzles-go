@@ -1,24 +1,24 @@
-/* Catálogo de juegos. El selector solo necesita los datos de meta.js; el resto del juego
-   (motor, controlador, plantillas y su hoja de estilos `css`) se carga al abrirlo por primera vez.
-   Para añadir un juego: crea su carpeta (ver README.md) y añade aquí su entrada. */
+/* Game catalogue. The picker only needs the meta.js data; the rest of the game (engine, controller,
+   templates and its `css` stylesheet) loads when it is first opened.
+   To add a game: create its folder (see README.md) and add its entry here. */
 import starBattle from './star-battle/meta.js';
 import sudoku from './sudoku/meta.js';
 import killerSudoku from './killer-sudoku/meta.js';
 import kakuro from './kakuro/meta.js';
-import slitherlink from './slitherlink/meta.js';
+import loop from './loop/meta.js';
 import gears from './gears/meta.js';
-import smartDices from './smart-dices/meta.js';
-import smartCircuit from './smart-circuit/meta.js';
-import smartCircle from './smart-circle/meta.js';
-import smartHexagon from './smart-hexagon/meta.js';
-import iqPuzzler from './iq-puzzler/meta.js';
-import katamino from './katamino/meta.js';
-import rushHour from './rush-hour/meta.js';
-import zip from './zip/meta.js';
-import hashi from './hashi/meta.js';
-import kenken from './kenken/meta.js';
-import akari from './akari/meta.js';
-import binario from './binario/meta.js';
+import dice from './dice/meta.js';
+import circuit from './circuit/meta.js';
+import circle from './circle/meta.js';
+import hexagon from './hexagon/meta.js';
+import fit from './fit/meta.js';
+import pentominoes from './pentominoes/meta.js';
+import gridlock from './gridlock/meta.js';
+import trail from './trail/meta.js';
+import bridges from './bridges/meta.js';
+import calcudoku from './calcudoku/meta.js';
+import lightUp from './light-up/meta.js';
+import binary from './binary/meta.js';
 import pegSolitaire from './peg-solitaire/meta.js';
 
 export const CATALOG = [
@@ -26,19 +26,19 @@ export const CATALOG = [
   { meta: sudoku,     load: () => import('./sudoku/index.js') },
   { meta: killerSudoku, load: () => import('./killer-sudoku/index.js'), css: 'css/games/killer-sudoku.css' },
   { meta: kakuro,       load: () => import('./kakuro/index.js'), css: 'css/games/kakuro.css' },
-  { meta: slitherlink,  load: () => import('./slitherlink/index.js'), css: 'css/games/slitherlink.css' },
+  { meta: loop,  load: () => import('./loop/index.js'), css: 'css/games/loop.css' },
   { meta: gears,        load: () => import('./gears/index.js'), css: 'css/games/gears.css' },
-  { meta: smartDices,   load: () => import('./smart-dices/index.js'), css: 'css/games/smart-dices.css' },
-  { meta: smartCircuit, load: () => import('./smart-circuit/index.js'), css: 'css/games/smart-circuit.css' },
-  { meta: smartCircle,  load: () => import('./smart-circle/index.js'), css: 'css/games/smart-circle.css' },
-  { meta: smartHexagon, load: () => import('./smart-hexagon/index.js'), css: 'css/games/smart-hexagon.css' },
-  { meta: iqPuzzler,    load: () => import('./iq-puzzler/index.js'), css: 'css/games/iq-puzzler.css' },
-  { meta: katamino,     load: () => import('./katamino/index.js'), css: 'css/games/katamino.css' },
-  { meta: rushHour,     load: () => import('./rush-hour/index.js'), css: 'css/games/rush-hour.css' },
-  { meta: zip,          load: () => import('./zip/index.js'), css: 'css/games/zip.css' },
-  { meta: hashi,        load: () => import('./hashi/index.js'), css: 'css/games/hashi.css' },
-  { meta: kenken,       load: () => import('./kenken/index.js'), css: 'css/games/kenken.css' },
-  { meta: akari,        load: () => import('./akari/index.js'), css: 'css/games/akari.css' },
-  { meta: binario,      load: () => import('./binario/index.js'), css: 'css/games/binario.css' },
+  { meta: dice,   load: () => import('./dice/index.js'), css: 'css/games/dice.css' },
+  { meta: circuit, load: () => import('./circuit/index.js'), css: 'css/games/circuit.css' },
+  { meta: circle,  load: () => import('./circle/index.js'), css: 'css/games/circle.css' },
+  { meta: hexagon, load: () => import('./hexagon/index.js'), css: 'css/games/hexagon.css' },
+  { meta: fit,    load: () => import('./fit/index.js'), css: 'css/games/fit.css' },
+  { meta: pentominoes,     load: () => import('./pentominoes/index.js'), css: 'css/games/pentominoes.css' },
+  { meta: gridlock,     load: () => import('./gridlock/index.js'), css: 'css/games/gridlock.css' },
+  { meta: trail,          load: () => import('./trail/index.js'), css: 'css/games/trail.css' },
+  { meta: bridges,        load: () => import('./bridges/index.js'), css: 'css/games/bridges.css' },
+  { meta: calcudoku,       load: () => import('./calcudoku/index.js'), css: 'css/games/calcudoku.css' },
+  { meta: lightUp,        load: () => import('./light-up/index.js'), css: 'css/games/light-up.css' },
+  { meta: binary,      load: () => import('./binary/index.js'), css: 'css/games/binary.css' },
   { meta: pegSolitaire, load: () => import('./peg-solitaire/index.js'), css: 'css/games/peg-solitaire.css' }
 ];

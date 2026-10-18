@@ -1,17 +1,17 @@
-/* ---------- Solucionador lógico de Sudoku (técnicas humanas) ----------
-   Nivel 1 (Fácil):   singles desnudos y ocultos.
-   Nivel 2 (Medio):   + candidatos bloqueados (pointing/claiming), pares y tríos desnudos y ocultos.
-   Nivel 3 (Difícil): + X-Wing y Swordfish.
-   Un tablero se califica con el nivel mínimo que lo resuelve. */
+/* ---------- Sudoku logic solver (human techniques) ----------
+   Level 1 (Easy):   naked and hidden singles.
+   Level 2 (Medium): + locked candidates (pointing/claiming), naked and hidden pairs and triples.
+   Level 3 (Hard):   + X-Wing and Swordfish.
+   A board is rated with the lowest level that solves it. */
 import { CELLS, SIZE, ALL, ROWS, COLS, BOXES, UNITS, PEERS, rowOf, colOf, boxOf, bit, digitOf } from './grid.js';
 import { popcount, lowBit, bitIndices, someCombination } from '../../../lib/bits.js';
 
 export const MAX_LEVEL = 3;
-/** Se lanza al llegar a una contradicción (el Killer Sudoku reutiliza el estado y las técnicas). */
+/** Thrown on reaching a contradiction (Killer Sudoku reuses the state and the techniques). */
 export const CONTRA = { contra: true };
 const DIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-/* ---------- Estado: valores + candidatos ---------- */
+/* ---------- State: values + candidates ---------- */
 
 export function createState(grid){
   const s = { val: new Int8Array(CELLS), cand: new Uint16Array(CELLS).fill(ALL) };
@@ -28,7 +28,7 @@ export function place(s, i, d){
     if (s.cand[p] & b){ s.cand[p] &= ~b; if (!s.val[p] && !s.cand[p]) throw CONTRA; }
   }
 }
-/** Quita los dígitos `mask` de la casilla i. true si cambió algo. */
+/** Removes digits `mask` from cell i. true if anything changed. */
 export function eliminate(s, i, mask){
   if (!(s.cand[i] & mask)) return false;
   s.cand[i] &= ~mask;
@@ -36,8 +36,8 @@ export function eliminate(s, i, mask){
   return true;
 }
 /**
- * Máscara de posiciones (índice dentro de la unidad) donde cabe cada dígito, y
- * máscara de dígitos ya colocados en la unidad.
+ * Mask of positions (index within the unit) where each digit fits, and
+ * mask of the digits already placed in the unit.
  */
 function unitMap(s, unit){
   const pos = new Uint16Array(SIZE + 1);
@@ -50,7 +50,7 @@ function unitMap(s, unit){
   return { pos, placed };
 }
 
-/* ---------- Técnicas: cada una devuelve true si avanzó ---------- */
+/* ---------- Techniques: each returns true if it made progress ---------- */
 
 function nakedSingle(s){
   let any = false;
@@ -65,7 +65,7 @@ function hiddenSingle(s){
     for (const d of DIGITS){
       if (placed & bit(d)) continue;
       if (!pos[d]) throw CONTRA;
-      // tras colocar, el mapa de esta unidad ya no vale: se pasa a la siguiente
+      // after placing, this unit's map is no longer valid: move on to the next
       if (popcount(pos[d]) === 1){ place(s, unit[lowBit(pos[d])], d); any = true; break; }
     }
   }
@@ -73,8 +73,8 @@ function hiddenSingle(s){
 }
 
 /**
- * Intersecciones caja/línea: si en la unidad `base` un dígito solo cabe en el segmento
- * `seg` (máscara local), se elimina de las casillas `others` de la otra unidad.
+ * Box/line intersections: if in unit `base` a digit only fits in segment `seg` (local mask), it is
+ * removed from the cells `others` of the other unit.
  */
 const INTERSECTIONS = [];
 for (const box of BOXES) for (const [lines, lineOf] of [[ROWS, rowOf], [COLS, colOf]]){
@@ -90,7 +90,7 @@ function lockedCandidates(s){
   let any = false;
   const maps = new Map();
   for (const { base, seg, others } of INTERSECTIONS){
-    // un mapa algo desfasado solo tiene candidatos de más: si aun así cabe en el segmento, la deducción vale
+    // a slightly stale map only has extra candidates: if it still fits in the segment, the deduction holds
     let pos = maps.get(base);
     if (!pos) maps.set(base, pos = unitMap(s, base).pos);
     for (const d of DIGITS){
@@ -102,7 +102,7 @@ function lockedCandidates(s){
   return any;
 }
 
-/** n casillas de una unidad con solo n candidatos entre todas: esos dígitos salen del resto. */
+/** n cells of a unit with only n candidates between them: those digits leave the rest. */
 const nakedSubset = n => function(s){
   for (const unit of UNITS){
     const open = [];
@@ -121,7 +121,7 @@ const nakedSubset = n => function(s){
   return false;
 };
 
-/** n dígitos que en una unidad solo caben en las mismas n casillas: esas casillas no admiten otros. */
+/** n digits that in a unit only fit in the same n cells: those cells allow no others. */
 const hiddenSubset = n => function(s){
   for (const unit of UNITS){
     const { pos, placed } = unitMap(s, unit);
@@ -141,14 +141,14 @@ const hiddenSubset = n => function(s){
 };
 
 /**
- * Pez de tamaño n (2 = X-Wing, 3 = Swordfish): si en n filas un dígito solo cabe en las
- * mismas n columnas, se elimina de esas columnas en las demás filas (y al revés).
+ * Fish of size n (2 = X-Wing, 3 = Swordfish): if in n rows a digit only fits in the same n columns,
+ * it is removed from those columns in the other rows (and the other way round).
  */
 const fish = n => function(s){
   for (const [bases, covers] of [[ROWS, COLS], [COLS, ROWS]]){
     const maps = bases.map(unit => unitMap(s, unit).pos);
     for (const d of DIGITS){
-      // líneas base donde el dígito cabe en 2..n posiciones (posición = índice de la línea que cubre)
+      // base lines where the digit fits in 2..n positions (position = index of the line it covers)
       const lines = [];
       for (let b = 0; b < SIZE; b++){ const c = popcount(maps[b][d]); if (c >= 2 && c <= n) lines.push(b); }
       if (lines.length < n) continue;
@@ -168,7 +168,7 @@ const fish = n => function(s){
   return false;
 };
 
-/** Técnicas por orden de coste; `level` = nivel mínimo en que se permiten. */
+/** Techniques by cost; `level` = the lowest level at which they are allowed. */
 export const TECHNIQUES = [
   { id: 'naked-single',  level: 1, apply: nakedSingle },
   { id: 'hidden-single', level: 1, apply: hiddenSingle },
@@ -182,8 +182,8 @@ export const TECHNIQUES = [
 ];
 
 /**
- * Resuelve con técnicas hasta `level`.
- * Devuelve { solved, contra?, grid, used } — `used` es el conjunto de técnicas que avanzaron.
+ * Solves with techniques up to `level`.
+ * Returns { solved, contra?, grid, used } — `used` is the set of techniques that made progress.
  */
 export function logic(grid, level){
   const used = new Set();
@@ -202,13 +202,13 @@ export function logic(grid, level){
   return { solved: s.val.every(Boolean), grid: Array.from(s.val), used };
 }
 
-/** Nivel mínimo con el que se resuelve (MAX_LEVEL + 1 si ninguno basta). */
+/** Lowest level that solves it (MAX_LEVEL + 1 if none is enough). */
 export function grade(grid){
   for (let l = 1; l <= MAX_LEVEL; l++) if (logic(grid, l).solved) return l;
   return MAX_LEVEL + 1;
 }
 
-/** Siguiente casilla deducible solo con singles a partir de `grid`, o null. */
+/** Next cell deducible with singles alone from `grid`, or null. */
 export function nextSingle(grid){
   let s;
   try { s = createState(grid); } catch (e){ if (e !== CONTRA) throw e; return null; }

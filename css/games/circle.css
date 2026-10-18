@@ -1,0 +1,48 @@
+/* Circle: a dark round board, softly coloured shiny balls and light ribs. */
+[data-game="circle"]{
+  --ci-yellow:#d6bf5a; --ci-orange:#d38b48; --ci-red:#c65858; --ci-pink:#cd7ea7; --ci-purple:#9b83bb;
+  --ci-blue:#5576bb; --ci-sky:#5fb0d5; --ci-teal:#42a39c; --ci-green:#4f9965; --ci-lime:#9dba52;
+  --ci-unit:78px;   /* pixels per board radius in the tray */
+}
+
+.ci-area{width:100%}
+.ci-board{position:relative;width:100%;max-width:440px;margin:0 auto;aspect-ratio:1;touch-action:none;user-select:none;-webkit-user-select:none}
+.ci-board svg{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 10px 22px rgba(0,0,0,.5))}
+.ci-disc{fill:#26252b;stroke:#3a3941;stroke-width:.012}
+.ci-holes circle{fill:#141318;stroke:rgba(255,255,255,.06);stroke-width:.006}
+.ci-ribs{transition:transform .35s ease}
+.ci-ribs line{stroke:var(--ink-soft);stroke-width:.026;stroke-linecap:round}
+.ci-marks line{stroke:#e2bf5a;stroke-width:.03;stroke-linecap:round}
+
+/* Pieces (on the board, in the tray and while dragging) */
+.ci-piece{cursor:grab}
+.ci-piece .ci-links line{stroke:var(--ci-c);stroke-linecap:round}
+.ci-piece .ci-balls circle{fill:var(--ci-c)}
+.ci-piece .ci-shine circle{fill:url(#ci-shine-g);pointer-events:none}
+.ci-piece .ci-halo line{stroke:var(--ink);stroke-linecap:round}
+.ci-piece .ci-halo circle{fill:var(--ink)}
+.ci-piece.is-fixed{cursor:default;filter:saturate(.75) brightness(.85)}
+.ci-piece.is-lifted,.ci-tray-piece.is-lifted{opacity:.25}
+.ci-piece.is-preview{opacity:.75;pointer-events:none}
+.ci-piece.is-preview.is-bad{opacity:.45;filter:grayscale(1)}
+.ci-piece.is-flash,.ci-tray-piece.is-flash{animation:ci-flash .5s ease-in-out 3}
+@keyframes ci-flash{50%{opacity:.35}}
+.ci-board.is-won .ci-pieces .ci-balls circle{animation:ci-glow 1.4s ease-in-out 2}
+@keyframes ci-glow{50%{filter:brightness(1.35)}}
+.ci-hue-yellow{--ci-c:var(--ci-yellow)} .ci-hue-orange{--ci-c:var(--ci-orange)} .ci-hue-red{--ci-c:var(--ci-red)}
+.ci-hue-pink{--ci-c:var(--ci-pink)} .ci-hue-purple{--ci-c:var(--ci-purple)} .ci-hue-blue{--ci-c:var(--ci-blue)}
+.ci-hue-sky{--ci-c:var(--ci-sky)} .ci-hue-teal{--ci-c:var(--ci-teal)} .ci-hue-green{--ci-c:var(--ci-green)}
+.ci-hue-lime{--ci-c:var(--ci-lime)}
+
+/* Buttons under the board: restart on the left; ribs and flip on the right */
+.ci-actions{display:flex;justify-content:flex-end;align-items:center;padding-top:8px}
+.ci-actions__right{display:flex;gap:8px}
+.ci-actions [hidden]{display:none}
+
+/* Tray and the copy that follows the finger */
+.ci-tray{display:flex;flex-wrap:wrap;gap:10px 14px;justify-content:center;align-items:center;padding:12px 0 4px;min-height:60px;touch-action:none}
+.ci-tray-piece{width:calc(var(--w) * var(--ci-unit));height:calc(var(--h) * var(--ci-unit));touch-action:none;cursor:grab;filter:drop-shadow(0 2px 3px rgba(0,0,0,.45))}
+.ci-tray-piece.is-selected{filter:drop-shadow(0 0 1px var(--ink)) drop-shadow(0 0 1px var(--ink)) drop-shadow(0 2px 3px rgba(0,0,0,.5))}
+.ci-loose{display:block;width:100%;height:100%;overflow:visible}
+.ci-ghost{position:fixed;left:0;top:0;z-index:30;pointer-events:none;filter:drop-shadow(0 10px 16px rgba(0,0,0,.5))}
+.ci-ghost .ci-loose{width:100%;height:100%}

@@ -1,5 +1,5 @@
-/* Diálogo de confirmación con el estilo de la app (en vez de window.confirm).
-   ask() devuelve una promesa con la opción elegida: 'accept', 'alternate' o 'cancel'. */
+/* Confirmation dialog in the app's style (instead of window.confirm).
+   ask() returns a promise with the chosen option: 'accept', 'alternate' or 'cancel'. */
 import { t } from '../i18n/index.js';
 
 export class ConfirmDialog {
@@ -11,7 +11,7 @@ export class ConfirmDialog {
     this.text = el.querySelector('[data-confirm="text"]');
     this.accept = el.querySelector('[data-confirm="accept"]');
     this.alternate = el.querySelector('[data-confirm="alternate"]');
-    // Tocar el fondo equivale a cancelar
+    // Tapping the backdrop counts as cancel
     el.addEventListener('click', e => { if (e.target === el) this.answer('cancel'); });
   }
 
@@ -19,7 +19,7 @@ export class ConfirmDialog {
 
   /** @param {{ title: string, text: string, accept: string, alternate?: string }} o */
   ask({ title, text, accept, alternate }){
-    this.answer('cancel');   // una pregunta anterior sin responder se da por cancelada
+    this.answer('cancel');   // an earlier unanswered question counts as cancelled
     this.title.textContent = title;
     this.text.textContent = text;
     this.accept.textContent = accept;

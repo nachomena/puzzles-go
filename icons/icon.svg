@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <!-- Fondo a sangre: iOS y Android aplican su propia máscara.
-       La P de Puzzles con casillas de cristal y la pieza que falta, dorada, a punto de encajar. -->
+       The P of Puzzles with glass tiles and the missing piece, in gold, about to snap in. -->
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2c2b32"/><stop offset="1" stop-color="#1b1a1f"/></linearGradient>
     <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset="1" stop-color="#fff" stop-opacity=".12"/></linearGradient>
@@ -13,6 +13,6 @@
   <rect x="150" y="206" width="100" height="100" rx="24" fill="url(#glass)" stroke="url(#rim)" stroke-width="3"/>
   <rect x="262" y="206" width="100" height="100" rx="24" fill="url(#glass)" stroke="url(#rim)" stroke-width="3"/>
   <rect x="150" y="318" width="100" height="100" rx="24" fill="url(#glass)" stroke="url(#rim)" stroke-width="3"/>
-  <!-- la pieza que falta, dorada, entrando girada en su hueco (centro del hueco: 312, 368) -->
+  <!-- the missing piece, in gold, turning into its gap (centre of the gap: 312, 368) -->
   <rect x="262" y="318" width="100" height="100" rx="24" fill="url(#gold)" transform="translate(16 14) rotate(14 312 368)"/>
 </svg>

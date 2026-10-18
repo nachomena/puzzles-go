@@ -1,7 +1,7 @@
-/* Modo noche: colores cálidos en toda la app (css/tokens.css, :root.is-night). Es un ajuste de la app, no de
-   un juego: se guarda aparte y lo cambia su fila en los ajustes de la app (selector) y en los de cada juego. */
+/* Night mode: warm colours across the app (css/tokens.css, :root.is-night). It is an app setting, not a
+   game's: it is saved separately and changed from its row in the app settings (picker) and in each game's. */
 const KEY = 'puzzlesgo.night';
-const THEME = { day: '#232228', night: '#1c1612' };   // color de la barra de estado
+const THEME = { day: '#232228', night: '#1c1612' };   // status bar colour
 
 export class NightMode {
   /** @param {Storage|null} storage */
@@ -19,7 +19,7 @@ export class NightMode {
     try { this.storage?.setItem(KEY, on ? '1' : '0'); } catch (e){}
   }
 
-  /** Pinta el estado: clase en la raíz, color de la barra de estado y los interruptores que lo muestran. */
+  /** Draws the state: class on the root, status bar colour and the switches that show it. */
   apply(on){
     document.documentElement.classList.toggle('is-night', on);
     document.querySelector('meta[name="theme-color"]')?.setAttribute('content', on ? THEME.night : THEME.day);

@@ -1,0 +1,40 @@
+/* Fit: a dark board of holes and softly coloured shiny ball pieces. */
+[data-game="fit"]{
+  --ft-yellow:#d6bf5a; --ft-orange:#d58c45; --ft-red:#c65454; --ft-maroon:#94403a; --ft-pink:#cd77a3; --ft-purple:#9273b0;
+  --ft-navy:#4561a3; --ft-blue:#4e91cc; --ft-sky:#7dbbd8; --ft-aqua:#72b3a9; --ft-green:#4f9665; --ft-lime:#9db94f;
+}
+.ft-hue-yellow{--ft-c:var(--ft-yellow)} .ft-hue-orange{--ft-c:var(--ft-orange)} .ft-hue-red{--ft-c:var(--ft-red)}
+.ft-hue-maroon{--ft-c:var(--ft-maroon)} .ft-hue-pink{--ft-c:var(--ft-pink)} .ft-hue-purple{--ft-c:var(--ft-purple)}
+.ft-hue-navy{--ft-c:var(--ft-navy)} .ft-hue-blue{--ft-c:var(--ft-blue)} .ft-hue-sky{--ft-c:var(--ft-sky)}
+.ft-hue-aqua{--ft-c:var(--ft-aqua)} .ft-hue-green{--ft-c:var(--ft-green)} .ft-hue-lime{--ft-c:var(--ft-lime)}
+
+.ft-area{width:100%}
+.ft-board{position:relative;width:100%;max-width:520px;margin:0 auto;touch-action:none;user-select:none;-webkit-user-select:none}
+.ft-board svg{display:block;width:100%;height:auto;overflow:visible}
+.ft-frame{fill:#26252b;stroke:#3a3941;stroke-width:.03}
+.ft-holes circle{fill:#141318;stroke:rgba(255,255,255,.06);stroke-width:.02}
+
+/* Pieces (on the board, in the tray and while dragging) */
+.ft-piece{touch-action:none;cursor:grab}
+div.ft-piece{position:absolute}
+.ft-piece__svg{display:block;width:100%;height:100%;overflow:visible}
+.ft-links line{stroke:var(--ft-c);stroke-linecap:round}
+.ft-balls circle{fill:var(--ft-c)}
+.ft-shine circle{fill:url(#ft-shine-g);pointer-events:none}
+.ft-halo line{stroke:var(--ink);stroke-linecap:round}
+.ft-halo circle{fill:var(--ink)}
+.ft-piece.is-fixed{cursor:default;filter:saturate(.75) brightness(.85)}
+div.ft-piece.is-selected{filter:drop-shadow(0 0 1px var(--ink)) drop-shadow(0 0 1px var(--ink))}
+.ft-piece.is-lifted{opacity:.2}
+div.ft-piece.is-ghost{position:fixed;z-index:30;pointer-events:none}
+.ft-piece.is-flash{animation:ft-flash .5s ease-in-out 3}
+@keyframes ft-flash{50%{opacity:.35}}
+.ft-board.is-won .ft-balls circle{animation:ft-glow 1.4s ease-in-out 2}
+@keyframes ft-glow{50%{filter:brightness(1.35)}}
+
+/* Buttons under the board: restart on the left, flip on the right */
+.ft-actions{display:flex;justify-content:flex-end;align-items:center;padding-top:8px}
+
+/* Tray */
+.ft-tray{--ft-tray-cell:21px;display:flex;flex-wrap:wrap;gap:12px 14px;justify-content:center;align-items:center;padding:10px 0 4px;min-height:60px;touch-action:none}
+.ft-piece.is-tray{position:relative;width:calc(var(--w) * var(--ft-tray-cell));height:calc(var(--h) * var(--ft-tray-cell))}

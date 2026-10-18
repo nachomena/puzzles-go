@@ -1,5 +1,5 @@
-/* Carcasa de la app: selector de juegos, menú de niveles, pantallas de juego y capas comunes.
-   No sabe nada de ningún juego en concreto: todo lo recibe de sus definiciones. */
+/* App shell: game picker, level menu, game screens and shared overlays.
+   It knows nothing about any particular game: everything comes from their definitions. */
 import { byId, loadStylesheet } from '../lib/dom.js';
 import { Store } from '../core/store.js';
 import { PuzzleSupply } from '../core/puzzle-supply.js';
@@ -51,22 +51,22 @@ export class App {
     this.fitHubTitle = keepFitted(byId('title'));
     this.fitGameTitle = keepFitted(byId('gameTitle'));
     this.fitPickTitle = keepFitted(byId('pickTitle'));
-    this.pickLevel = null;      // nivel cuya tabla de tableros está abierta (juegos con picker)
-    // pantallas de progreso: juego y fila elegidos, periodo, y a qué pantalla se vuelve
+    this.pickLevel = null;      // level whose board table is open (games with a picker)
+    // progress screens: chosen game and row, period, and which screen to go back to
     this.progress = { game: null, key: null, range: 'last20', from: 'hub' };
 
-    this.entries = new Map();   // juegos ya abiertos: id → entrada
-    this.loading = new Map();   // importaciones en curso: id → promesa
+    this.entries = new Map();   // games already opened: id → entry
+    this.loading = new Map();   // imports in progress: id → promise
     this.#bindEvents();
   }
 
-  /** Carga un juego la primera vez que se abre y arranca su generación de tableros. */
+  /** Loads a game the first time it is opened and starts generating its boards. */
   #entryFor(id){
     if (this.entries.has(id)) return Promise.resolve(this.entries.get(id));
     if (!this.loading.has(id)){
       const item = this.catalog.find(c => c.meta.id === id);
       if (!item) return Promise.resolve(null);
-      // su hoja de estilos se pide a la vez que el código: la partida no se pinta sin ella
+      // its stylesheet is requested together with the code: the game isn't drawn without it
       this.loading.set(id, Promise.all([item.load(), item.css && loadStylesheet(item.css)]).then(([{ default: game }]) => {
         const entry = this.#createEntry(game, this.storage);
         this.entries.set(id, entry);
@@ -78,10 +78,10 @@ export class App {
     return this.loading.get(id);
   }
 
-  /** Todo lo que vive por juego: estado, generación, pantalla y controlador. */
+  /** Everything that lives per game: state, generation, screen and controller. */
   #createEntry(game, storage){
     const screen = htmlToElement(playScreen({ id: game.id, name: game.name, boardClass: game.boardClass || '', boardHtml: game.boardHtml, controls: game.controls, hint: game.hint !== false,
-      back: t(game.levelOrder.length === 1 ? 'common.games' : 'common.menu') }));   // sin menú de niveles, se vuelve al selector
+      back: t(game.levelOrder.length === 1 ? 'common.games' : 'common.menu') }));   // without a level menu, back goes to the picker
     byId('app').appendChild(screen);
     const store = new Store(storage, game);
     store.load();
@@ -108,12 +108,12 @@ export class App {
 
   start(){ this.#refreshMenus(); }
 
-  /* ---------- Versión nueva ---------- */
+  /* ---------- New version ---------- */
 
   /**
-   * Hay una versión nueva lista: se avisa y se aplica al recargar (el progreso se conserva).
-   * El aviso se crea aquí y no en el HTML, para que nunca aparezca con los estilos o el código
-   * de otra versión.
+   * A new version is ready: tell the player and apply it on reload (progress is kept).
+   * The notice is created here and not in the HTML, so it never shows up with another version's
+   * styles or code.
    */
   showUpdate(){
     if (byId('updateBar')) return;
@@ -128,7 +128,7 @@ export class App {
 
   #saveAll(){ for (const e of this.entries.values()) e.store.save(); }
 
-  /* ---------- Navegación ---------- */
+  /* ---------- Navigation ---------- */
 
   showScreen(name){
     this.screen = name;
@@ -142,16 +142,16 @@ export class App {
     for (const e of this.entries.values()) e.supply.pump();
   }
 
-  /** Un juego con un solo nivel no tiene menú: se entra directo a la partida. */
+  /** A game with a single level has no menu: it goes straight into the game. */
   #isDirect(meta = this.currentMeta){ return meta?.levelOrder.length === 1; }
 
-  /** Abre el menú del juego al instante; su código se carga y genera tableros en segundo plano. */
+  /** Opens the game menu at once; its code loads and generates boards in the background. */
   openGame(id){
     const item = this.catalog.find(c => c.meta.id === id);
     if (!item) return;
     this.currentMeta = item.meta;
     if (this.#isDirect()){
-      // sin menú: sigue la partida abierta o empieza una
+      // no menu: continue the open game or start one
       this.#entryFor(id).then(entry => {
         if (this.currentMeta?.id !== id || this.screen !== 'hub') return;
         this.current = entry;
@@ -163,13 +163,13 @@ export class App {
     this.current = this.entries.get(id) || null;
     this.showScreen('levels');
     this.#entryFor(id).then(entry => {
-      if (this.currentMeta?.id !== id) return;   // se cambió de juego mientras cargaba
+      if (this.currentMeta?.id !== id) return;   // the game changed while loading
       this.current = entry;
       this.#refreshMenus();
     });
   }
 
-  /** "Continuar" del selector: directo a la partida a medias del juego (o a su menú si ya no la hay). */
+  /** "Continue" on the picker: straight into the game's unfinished session (or its menu if there is none). */
   resumeGame(id){
     const item = this.catalog.find(c => c.meta.id === id);
     if (!item) return;
@@ -182,7 +182,7 @@ export class App {
     });
   }
 
-  /** Ejecuta `fn` con el juego abierto, esperando a que termine de cargar si hace falta. */
+  /** Runs `fn` with the open game, waiting for it to finish loading if needed. */
   async #withGame(fn){
     const id = this.currentMeta?.id;
     if (!id) return;
@@ -193,12 +193,12 @@ export class App {
   continueGame(){
     const { controller, game } = this.current;
     if (!controller.mount()) return;
-    if (game.picker) this.pickLevel = controller.session.L;   // al volver, a la tabla de su nivel
+    if (game.picker) this.pickLevel = controller.session.L;   // when going back, to its level's table
     this.showScreen('play');
     fitPlay(this.current.screen);
   }
 
-  /** Tabla de tableros de un nivel (juegos con picker, p. ej. Katamino). */
+  /** Table of boards of a level (games with a picker, e.g. Pentominoes). */
   openPicker(L, entry){
     this.current = entry;
     this.pickLevel = L;
@@ -206,8 +206,8 @@ export class App {
   }
 
   /**
-   * Nueva partida desde el menú (o un tablero concreto de la tabla, `puzzle`). Si hay una partida a
-   * medias, pregunta antes para no perderla: se puede empezar la nueva o seguir con la actual.
+   * New game from the menu (or a specific board from the table, `puzzle`). If there is an unfinished
+   * game, ask first so it isn't lost: the player can start the new one or keep the current one.
    */
   async requestLevel(L, entry, puzzle = null){
     const cur = entry.store.hasOpenSession ? entry.store.state.cur : null;
@@ -247,7 +247,7 @@ export class App {
     if (this.screen === 'play'){
       const { store, game } = this.current;
       store.save();
-      // apenas empezada: no queda para continuar (el tablero de la tabla de un picker no va a la reserva)
+      // barely started: not kept to continue (a picker table board doesn't go back to the reserve)
       store.dropFreshSession({ keepPuzzle: !game.picker });
       this.#toMenu();
     }
@@ -257,7 +257,7 @@ export class App {
     else { this.currentMeta = null; this.showScreen('hub'); }
   }
 
-  /** Reiniciar la partida (botón de la barra de abajo), pidiendo confirmación. */
+  /** Restart the game (bottom bar button), asking for confirmation. */
   async #confirmReset(){
     const c = this.current?.controller;
     if (this.screen !== 'play' || !c?.active) return;
@@ -270,14 +270,14 @@ export class App {
     if (choice === 'accept' && this.current?.controller === c) c.reset();
   }
 
-  /* ---------- Progreso ---------- */
+  /* ---------- Progress ---------- */
 
-  /** Abre el progreso: del juego del menú abierto, o del último jugado si se viene del selector. */
+  /** Opens progress: for the game of the open menu, or the last one played when coming from the picker. */
   openProgress(){
     const from = this.screen === 'levels' ? 'levels' : 'hub';
     let game = from === 'levels' ? this.currentMeta?.id : this.progress.game;
     if (!game){
-      // el juego con la partida más reciente
+      // the game with the most recent session
       let latest = -1;
       for (const { meta } of this.catalog){
         const at = this.#menuData(meta).log?.at(-1)?.at ?? -1;
@@ -307,18 +307,18 @@ export class App {
     if (!row) return;
     byId('progressGame').textContent = meta.name;
     byId('progressLevelTitle').textContent = row.name.toUpperCase();
-    fitToWidth(byId('progressLevelTitle'));   // junto al botón de volver: que quepa en una línea
+    fitToWidth(byId('progressLevelTitle'));   // next to the back button: make it fit on one line
     byId('progressLevelBody').innerHTML = levelHtml({ row, range: this.progress.range, meta, stats: data.stats });
   }
 
-  /** Menú del juego actual: su tabla de tableros, sus niveles o el selector si no tiene menú. */
+  /** Current game's menu: its board table, its levels or the picker if it has no menu. */
   #toMenu(){
     if (this.#isDirect()){ this.currentMeta = null; this.showScreen('hub'); }
     else if (this.current?.game.picker && this.pickLevel) this.showScreen('pick');
     else this.showScreen('levels');
   }
 
-  /** "Siguiente tablero" tras ganar: el que diga el juego o uno nuevo del mismo nivel. */
+  /** "Next board" after winning: whatever the game says, or a new one of the same level. */
   #next(){
     const { controller, store } = this.current, r = controller.next();
     if (r === null) this.startLevel(store.state.cur.L);
@@ -339,12 +339,12 @@ export class App {
     if (this.screen === 'progress-level') this.#renderProgressLevel();
   }
 
-  /** Estadísticas y partida abierta: del store si el juego ya está cargado, si no del almacenamiento. */
+  /** Statistics and open session: from the store if the game is loaded, otherwise from storage. */
   #menuData(meta){
     return this.entries.get(meta.id)?.store.menuData() ?? Store.peek(this.storage, meta.storageKey);
   }
 
-  /* ---------- Acciones: cada [data-action] del HTML se resuelve aquí o en el juego actual ---------- */
+  /* ---------- Actions: each [data-action] in the HTML is handled here or by the current game ---------- */
 
   get #actions(){
     const cur = this.current;
@@ -394,7 +394,7 @@ export class App {
     this.overlays.open(id);
   }
 
-  /** Desplegable de idioma de los ajustes de la app: el del móvil o uno fijo; al cambiarlo se recarga. */
+  /** Language select in the app settings: the phone's or a fixed one; changing it reloads the app. */
   #bindLanguage(select){
     if (!select) return;
     const options = { auto: t('appSettings.languageAuto', { name: LANGUAGES[deviceLanguage()] }), ...LANGUAGES };
@@ -407,7 +407,7 @@ export class App {
     document.addEventListener('click', e => {
       const el = e.target.closest('[data-action]');
       if (el){ this.#actions[el.dataset.action]?.(el, e); return; }
-      // Tocar fuera de una hoja la cierra
+      // Tapping outside a sheet closes it
       if (e.target.matches('.overlay[data-dismissable]')) this.overlays.closeDismissable();
     });
 
@@ -419,7 +419,7 @@ export class App {
 
     bindChartTips(byId('progressLevelBody'));
 
-    // Volver deslizando desde el borde izquierdo (no con una hoja abierta)
+    // Swipe from the left edge to go back (not while a sheet is open)
     bindEdgeBack({ enabled: () => this.screen !== 'hub' && !this.overlays.anyOpen(), onBack: () => this.back() });
     let resizeTimer = 0;
     window.addEventListener('resize', () => {
@@ -427,7 +427,7 @@ export class App {
       resizeTimer = setTimeout(() => { if (this.screen === 'play') fitPlay(this.current.screen); }, 150);
     });
 
-    // Cronómetro: solo corre con la partida a la vista
+    // Timer: only runs while the game is on screen
     setInterval(() => {
       if (this.screen === 'play' && !document.hidden && !this.overlays.anyOpen()) this.current.controller.tick();
     }, 1000);

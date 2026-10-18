@@ -1,15 +1,15 @@
-/* Reglas del Kakuro sobre lo que escribe el jugador. Funciones puras, sin DOM. */
+/* Kakuro rules on what the player writes. Pure functions, no DOM. */
 import { nextDeduction } from './engine/logic-solver.js';
 import { LEVEL_RULES } from './engine/levels.js';
 
-/** Casillas que comparten tramo con cada casilla (para limpiar notas y resaltar). */
+/** Cells that share a run with each cell (to clear notes and highlight). */
 export function peersOf(n, runs){
   const out = Array.from({ length: n * n }, () => new Set());
   for (const { cells } of runs) for (const i of cells) for (const j of cells) if (i !== j) out[i].add(j);
   return out.map(s => [...s]);
 }
 
-/** Casillas con un número repetido en su tramo, y tramos que se pasan de su suma o que, llenos, no la dan. */
+/** Cells with a number repeated in their run, and runs that go over their sum or, once full, don't give it. */
 export function conflicts(n, runs, values){
   const bad = new Uint8Array(n * n);
   for (const { cells, sum } of runs){
@@ -26,7 +26,7 @@ export function conflicts(n, runs, values){
   return bad;
 }
 
-/** Pista: la siguiente casilla que se deduce con las técnicas del nivel; si no, una vacía del tramo más corto. */
+/** Hint: the next cell deduced with the level's techniques; otherwise, an empty one in the shortest run. */
 export function findHint(p, values){
   const next = nextDeduction(p.n, p.white, p.runs, LEVEL_RULES[p.level].logic, values);
   if (next && next.digit === p.solution[next.cell]) return next;

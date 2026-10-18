@@ -2,7 +2,7 @@
   "name": "puzzles-go",
   "private": true,
   "type": "module",
-  "description": "Juegos de lógica como web app instalable. Sin paso de compilación: ES modules nativos.",
+  "description": "Logic puzzles as an installable web app. No build step: native ES modules.",
   "scripts": {
     "start": "python3 -m http.server 8000",
     "prepare": "git config core.hooksPath .githooks || true",

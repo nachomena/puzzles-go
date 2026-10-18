@@ -1,14 +1,14 @@
-/* Configuración de Star Battle. */
+/* Star Battle configuration. */
 import meta from './meta.js';
 import { t } from '../../i18n/index.js';
 
 export const BOARD = Object.freeze({ size: 10, stars: 2 });
 
-/** Niveles: viven en meta.js para que el menú se pinte sin cargar el juego. */
+/** Levels: they live in meta.js so the menu is drawn without loading the game. */
 export const LEVELS = meta.levels;
 export const LEVEL_ORDER = meta.levelOrder;
 
-/** Estado de cada casilla en la partida. TRY: estrella de prueba (cuenta como estrella, con otro fondo). */
+/** State of each cell during the game. TRY: trial star (counts as a star, with another look). */
 export const MARK = Object.freeze({ EMPTY: 0, X: 1, STAR: 2, AUTO_X: 3, TRY: 4 });
 export const TOOL = Object.freeze({ STAR: 'star', TRY: 'try' });
 

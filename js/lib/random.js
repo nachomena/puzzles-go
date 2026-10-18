@@ -1,10 +1,10 @@
-/** Entero aleatorio en [0, n). */
+/** Random integer in [0, n). */
 export const randInt = n => (Math.random() * n) | 0;
 
-/** Elemento aleatorio de un array no vacío. */
+/** Random element of a non-empty array. */
 export const pick = arr => arr[randInt(arr.length)];
 
-/** Fisher–Yates in situ. Devuelve el mismo array. */
+/** In-place Fisher–Yates. Returns the same array. */
 export function shuffle(a){
   for (let i = a.length - 1; i > 0; i--){
     const j = randInt(i + 1), t = a[i];

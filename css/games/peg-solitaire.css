@@ -1,4 +1,4 @@
-/* Solitario: tablero redondo oscuro y mate, bolas brillantes (reflejo y sombra) y ranura para las retiradas. */
+/* Peg Solitaire: a dark matte round board, shiny balls (highlight and shadow) and a groove for the removed ones. */
 .ps-area{width:100%}
 .ps-board{position:relative;width:100%;max-width:440px;aspect-ratio:1;margin:0 auto;touch-action:none;user-select:none;-webkit-user-select:none;
   border-radius:50%;box-shadow:0 10px 26px rgba(0,0,0,.55),0 2px 4px rgba(0,0,0,.45)}
@@ -26,6 +26,13 @@
 @keyframes ps-glow{50%{box-shadow:0 0 0 3px #e2bf5a,0 0 22px 6px rgba(226,191,90,.6)}}
 
 .ps-actions{display:flex;justify-content:flex-end;align-items:center;gap:8px;padding-top:12px}
-/* Cabecera: tablero, bolas que quedan y cronómetro, en ese orden */
+/* Header: board, balls left and timer, in that order */
 [data-game="peg-solitaire"] .hud [data-hud="size"]{order:1;font-size:.85em;color:var(--ink-soft);font-variant-numeric:tabular-nums}
 [data-game="peg-solitaire"] .hud__time{order:2}
+
+/* Help figure (templates.js): the board's holes and balls, and the jump as an arrow */
+.ps-hf-wood{fill:#28272e;stroke:#3c3b44;stroke-width:.04}
+.ps-hf-hole{fill:url(#ps-hf-hole);stroke:rgba(255,255,255,.07);stroke-width:.03}
+.ps-hf-ball{fill:url(#ps-hf-ball);stroke:rgba(0,0,0,.35);stroke-width:.03;filter:drop-shadow(0 .06px .05px rgba(0,0,0,.6))}
+.ps-hf-jump{fill:none;stroke:var(--accent);stroke-width:.07;stroke-linecap:round;stroke-linejoin:round}
+.ps-hf-arrow{fill:none;stroke:var(--ink-soft);stroke-width:.08;stroke-linecap:round;stroke-linejoin:round}

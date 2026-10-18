@@ -1,4 +1,4 @@
-/* Partida de Star Battle: marcas, estrellas de prueba, X automáticas y pistas. */
+/* Star Battle game: marks, trial stars, automatic X marks and hints. */
 import { GameController } from '../../core/game-controller.js';
 import { t } from '../../i18n/index.js';
 import { bindCellDrag } from '../../ui/cell-drag.js';
@@ -15,7 +15,7 @@ export class StarBattleController extends GameController {
   constructor(deps){
     super(deps);
     this.board = new StarBattleBoard(deps.screen.querySelector('.board'));
-    this.stroke = null;  // trazo en curso: { value, before } (value null: no se arrastra)
+    this.stroke = null;  // stroke in progress: { value, before } (value null: not dragging)
     bindCellDrag(this.board.root, {
       cellAt: (x, y) => this.board.cellAt(x, y),
       cellSize: () => this.board.cellSize(),
@@ -26,7 +26,7 @@ export class StarBattleController extends GameController {
     });
   }
 
-  /* ---------- Pasos de la plantilla ---------- */
+  /* ---------- Template steps ---------- */
 
   createSession(L, puzzle){
     const cells = puzzle.N * puzzle.N;
@@ -68,19 +68,19 @@ export class StarBattleController extends GameController {
     return true;
   }
 
-  /* ---------- Trazos (tocar y arrastrar) ---------- */
+  /* ---------- Strokes (tap and drag) ---------- */
 
-  /** Empieza un trazo en la casilla i: su valor decide qué hace el resto del arrastre. */
+  /** Starts a stroke on cell i: its value decides what the rest of the drag does. */
   pressCell(i){
     const s = this.session, before = this.snapshot();
     let value = null;
     if (this.tool === TOOL.TRY){
-      // estrella de prueba: se pone o se quita (sobre una estrella, la vuelve de prueba); arrastrar no hace nada
+      // trial star: it is placed or removed (on a star, it turns it into a trial one); dragging does nothing
       s.marks[i] = s.marks[i] === MARK.TRY ? MARK.EMPTY : MARK.TRY;
     } else {
       const next = nextMark(s.marks[i]);
       s.marks[i] = next;
-      value = next === MARK.EMPTY ? 0 : 1;   // arrastrar pone X o las quita
+      value = next === MARK.EMPTY ? 0 : 1;   // dragging places X marks or removes them
     }
     this.stroke = { value, before };
     this.commit(false);
@@ -104,7 +104,7 @@ export class StarBattleController extends GameController {
     if (!this.stroke) return;
     const { before } = this.stroke;
     this.stroke = null;
-    // cada toque es un paso: deshacer una estrella vuelve a la X
+    // every tap is a step: undoing a star goes back to the X
     if (!this.sameAs(before)) this.history.record(before);
     this.commit(true);
   }

@@ -1,7 +1,7 @@
-/* Piezas hechas de cubitos, en SVG con unidades de casilla (Smart Circuit).
-   `cells` son las casillas [x, y] de la pieza. */
+/* Pieces made of little cubes, in SVG with cell units (Circuit).
+   `cells` are the piece's cells [x, y]. */
 
-/** Cuerpo de la pieza: una casilla redondeada por celda y puentes entre celdas vecinas. */
+/** Body of the piece: one rounded square per cell and bridges between neighbouring cells. */
 export function cubeBody(cells, { gap, radius }){
   const set = new Set(cells.map(([x, y]) => `${x},${y}`));
   let out = '';
@@ -9,17 +9,17 @@ export function cubeBody(cells, { gap, radius }){
     out += `<rect x="${x + gap}" y="${y + gap}" width="${1 - 2 * gap}" height="${1 - 2 * gap}" rx="${radius}"/>`;
     if (set.has(`${x + 1},${y}`)) out += `<rect x="${x + .5}" y="${y + gap}" width="1" height="${1 - 2 * gap}"/>`;
     if (set.has(`${x},${y + 1}`)) out += `<rect x="${x + gap}" y="${y + .5}" width="${1 - 2 * gap}" height="1"/>`;
-    // donde se juntan cuatro casillas de la misma pieza (bloque 2×2) se rellena el centro
+    // where four cells of the same piece meet (a 2×2 block) the centre is filled
     if (set.has(`${x + 1},${y}`) && set.has(`${x},${y + 1}`) && set.has(`${x + 1},${y + 1}`)) out += `<rect x="${x + .5}" y="${y + .5}" width="1" height="1"/>`;
   }
   return out;
 }
 
 /**
- * Bisel de cada cubito: cuatro trapecios entre el borde del cubito y su cara (claros arriba y a la
- * izquierda, oscuros abajo y a la derecha) y la cara un poco hundida. Hacia una casilla vecina de la
- * misma pieza el cubito llega hasta el borde, así la unión se ve como una junta entre dos cubos.
- * Los colores van en el CSS (.cube-bevel--top, --left, --bottom, --right, --face).
+ * Bevel of each little cube: four trapezoids between the cube's edge and its face (light on top and
+ * left, dark on the bottom and right) and the face slightly sunk. Towards a neighbouring cell of the
+ * same piece the cube reaches the edge, so the join looks like a seam between two cubes.
+ * The colours are in the CSS (.cube-bevel--top, --left, --bottom, --right, --face).
  */
 export function cubeBevels(cells, { gap, bevel }){
   const set = new Set(cells.map(([x, y]) => `${x},${y}`));

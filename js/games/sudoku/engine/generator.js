@@ -1,13 +1,13 @@
-/* Generador de Sudokus con dificultad garantizada por el solucionador lógico.
-   Se parte de un tablero completo al azar y se "excava": se quitan pistas mientras el
-   tablero siga resolviéndose con las técnicas permitidas (resolver por lógica ya implica
-   solución única). La lógica es monótona: quitar pistas nunca lo hace más fácil. */
+/* Sudoku generator with difficulty guaranteed by the logic solver.
+   It starts from a random full board and "digs": clues are removed while the board can still be
+   solved with the allowed techniques (solving by logic already implies a unique solution). The logic
+   is monotonic: removing clues never makes it easier. */
 import { CELLS } from './grid.js';
 import { randomSolution } from './exact-solver.js';
 import { logic } from './logic-solver.js';
 import { shuffle } from '../../../lib/random.js';
 
-/** Parejas de casillas simétricas respecto al centro (giro de 180°) y casillas sueltas. */
+/** Pairs of cells symmetric about the centre (180° rotation) and single cells. */
 const PAIRS = [], SINGLES = [];
 for (let i = 0; i < CELLS; i++){
   SINGLES.push([i]);
@@ -15,8 +15,8 @@ for (let i = 0; i < CELLS; i++){
 }
 
 /**
- * Quita grupos de pistas mientras el tablero se resuelva con técnicas de `level`
- * sin bajar de `minClues`. Muta `puzzle`; devuelve cuántos grupos quitó.
+ * Removes groups of clues while the board is solved with techniques of `level` without going below
+ * `minClues`. Mutates `puzzle`; returns how many groups it removed.
  */
 function* dig(puzzle, solution, groups, level, minClues = 0){
   let clues = puzzle.filter(Boolean).length, removed = 0;
@@ -31,23 +31,23 @@ function* dig(puzzle, solution, groups, level, minClues = 0){
 }
 
 /**
- * Estrategia de cada nivel: recibe un tablero completo, lo excava y devuelve true si el
- * resultado es del nivel pedido.
+ * Strategy of each level: it receives a full board, digs it and returns true if the result is of the
+ * requested level.
  */
 const STRATEGIES = {
-  // Fácil: solo singles y bastantes pistas.
+  // Easy: singles only and plenty of clues.
   1: function* (p, sol){
     yield* dig(p, sol, PAIRS, 1, 34);
     return true;
   },
-  // Medio: primero mínimo para singles (casilla a casilla); toda pista que se quite después
-  // exige técnicas de nivel 2.
+  // Medium: first the minimum for singles (cell by cell); every clue removed afterwards
+  // requires level 2 techniques.
   2: function* (p, sol){
     yield* dig(p, sol, PAIRS, 1);
     yield* dig(p, sol, SINGLES, 1);
     return (yield* dig(p, sol, SINGLES, 2)) > 0;
   },
-  // Difícil: se excava permitiendo X-Wing y Swordfish; vale si las técnicas de nivel 2 no bastan.
+  // Hard: dig allowing X-Wing and Swordfish; it counts if level 2 techniques aren't enough.
   3: function* (p, sol){
     yield* dig(p, sol, PAIRS, 3);
     return !logic(p, 2).solved;
@@ -56,16 +56,16 @@ const STRATEGIES = {
 const ATTEMPTS = { 1: 5, 2: 100, 3: 2000 };
 
 /**
- * Genera un Sudoku del nivel objetivo (1 fácil, 2 medio, 3 difícil).
- * Cede (yield) a menudo para poder repartir el trabajo. Devuelve
- * { level, givens, solution } o null si no lo consigue.
+ * Generates a Sudoku of the target level (1 easy, 2 medium, 3 hard).
+ * Yields often so the work can be spread. Returns
+ * { level, givens, solution } or null if it doesn't manage.
  */
 export function* generate(target){
   const strategy = STRATEGIES[target];
   for (let attempt = 0; attempt < ATTEMPTS[target]; attempt++){
     const solution = randomSolution(); yield 0;
     const givens = solution.slice();
-    // La estrategia propone; el calificador confirma que el nivel inferior no basta.
+    // The strategy proposes; the rater confirms the lower level isn't enough.
     if ((yield* strategy(givens, solution)) && (target === 1 || !logic(givens, target - 1).solved)){
       return { level: target, givens, solution };
     }

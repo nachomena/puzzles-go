@@ -1,13 +1,13 @@
-/* Generador de Engranajes: un árbol de engranajes al azar desde la manivela (a la izquierda) hasta el
-   cerrojo (a la derecha); se ponen todas las pistas (todos los engranajes fijos y todos los números) y se
-   quitan, primero engranajes y luego números, mientras siga habiendo una sola solución.
-   Los retos salen de un banco ya calculado (bank-data.js, scripts/build-gears-bank.mjs): así empiezan al
-   momento y su solución única está demostrada sin límite de pasos. Cada uno sale en 2 versiones. */
+/* Gears generator: a random tree of gears from the crank (on the left) to the lock (on the right);
+   every clue is placed (all the fixed gears and all the numbers) and they are removed, gears first and
+   then numbers, while there is still a single solution.
+   Puzzles come from a precomputed bank (bank-data.js, scripts/build-gears-bank.mjs): so they start at
+   once and their unique solution is proven with no step limit. Each one comes in 2 versions. */
 import { neighbours, drive, countSolutions } from './board.js';
 import { shuffle, randInt } from '../../../lib/random.js';
 import BANK from './bank-data.js';
 
-/** Por nivel: lado, engranajes fijos (con flecha) que se dejan y parte de los huecos con número que se deja. */
+/** Per level: side, fixed gears (with an arrow) left and share of the slots with a number left. */
 export const LEVEL_RULES = Object.freeze({
   1: { w: 5, h: 5, keepFixed: 2, keepClues: .35 },
   2: { w: 6, h: 6, keepFixed: 1, keepClues: .2 },
@@ -15,7 +15,7 @@ export const LEVEL_RULES = Object.freeze({
   4: { w: 8, h: 8, keepFixed: 0, keepClues: 0 }
 });
 
-/** Árbol al azar desde la manivela: cada engranaje nuevo toca exactamente a uno de los que ya hay. */
+/** Random tree from the crank: each new gear touches exactly one of the existing ones. */
 function randomTree(w, h, crank, lock, target){
   const nb = neighbours(w, h), gears = new Uint8Array(w * h);
   gears[crank] = 1;
@@ -25,7 +25,7 @@ function randomTree(w, h, crank, lock, target){
     const front = [];
     for (let i = 0; i < w * h; i++) if (!gears[i] && touching(i) === 1) front.push(i);
     if (!front.length) return null;
-    // cuando ya hay la mitad, si se puede llegar al cerrojo, se llega
+    // once half are there, if the lock can be reached, it is
     const i = front.includes(lock) && count >= target / 2 ? lock : front[randInt(front.length)];
     gears[i] = 1; count++;
     if (count > target * 1.6) return null;
@@ -33,12 +33,12 @@ function randomTree(w, h, crank, lock, target){
   return gears[lock] ? gears : null;
 }
 
-/** Pasos del solucionador en el teléfono (si no se generan en el banco); el script usa muchos más. */
+/** Solver steps on the phone (if not generated in the bank); the script uses many more. */
 const PHONE_BUDGET = 300000;
 
 /**
- * Reto en texto, fila a fila: "C" manivela, "L" cerrojo, "F" engranaje fijo, "g" engranaje que pone el
- * jugador, "." hueco vacío y una cifra para un hueco con número.
+ * Puzzle as text, row by row: "C" crank, "L" lock, "F" fixed gear, "g" gear the player places,
+ * "." empty slot and a digit for a slot with a number.
  */
 export function encode(p){
   let s = '';
@@ -49,9 +49,9 @@ export function encode(p){
 }
 
 /**
- * Reto a partir de su texto. `turn` da la otra versión: con un número impar de filas, el panel al revés de
- * arriba abajo; con un número par, girado media vuelta y con la manivela y el cerrojo cambiados (la cadena
- * es la misma, así que la solución sigue siendo única).
+ * Puzzle from its text. `turn` gives the other version: with an odd number of rows, the panel upside
+ * down; with an even number, turned half a turn with the crank and the lock swapped (the chain is the
+ * same, so the solution stays unique).
  */
 export function decode(text, level, { turn = false } = {}){
   const { w, h } = LEVEL_RULES[level], n = w * h, odd = h & 1;
@@ -74,8 +74,8 @@ export function decode(text, level, { turn = false } = {}){
 }
 
 /**
- * Reto del nivel `target`: { level, w, h, crank, lock, fixed: [i…], clues: { i: n }, spin: [sentido de cada
- * casilla en la solución], solution: [1 = engranaje] }. Cede a menudo (ver core/generator-worker.js).
+ * Puzzle of level `target`: { level, w, h, crank, lock, fixed: [i…], clues: { i: n }, spin: [direction
+ * of each cell in the solution], solution: [1 = gear] }. Yields often (see core/generator-worker.js).
  */
 export function* generate(target){
   const bank = BANK[target];
@@ -86,7 +86,7 @@ export function* generate(target){
   return yield* build(target);
 }
 
-/** Genera de verdad (el script del banco lo usa con `budget` alto). */
+/** Really generates (the bank script uses it with a high `budget`). */
 export function* build(target, budget = PHONE_BUDGET){
   const { w, h, keepFixed, keepClues } = LEVEL_RULES[target], n = w * h;
   for (let attempt = 0; attempt < 200; attempt++){

@@ -1,21 +1,21 @@
-/* Utilidades para tableros cuadrados N×N indexados como i = fila * N + columna. */
+/* Helpers for square N×N boards indexed as i = row * N + column. */
 
-/** Vecinos ortogonales, en este orden fijo (el generador depende de él). */
+/** Orthogonal neighbours, in this fixed order (the generator depends on it). */
 export const DIRS4 = Object.freeze([[1, 0], [-1, 0], [0, 1], [0, -1]]);
 
 export const rowOf = (N, i) => (i / N) | 0;
 export const colOf = (N, i) => i % N;
 export const inBounds = (N, r, c) => r >= 0 && c >= 0 && r < N && c < N;
 
-/** ¿Se tocan a y b (incluida la diagonal)? */
+/** Do a and b touch (diagonals included)? */
 export const touches = (N, a, b) =>
   Math.abs(rowOf(N, a) - rowOf(N, b)) <= 1 && Math.abs(colOf(N, a) - colOf(N, b)) <= 1;
 
 const adjacencyCache = new Map();
 
 /**
- * Listas de vecinos precalculadas para un tamaño N.
- * n4: ortogonales (orden DIRS4); n8: los 8 alrededor (recorrido fila a fila).
+ * Precomputed neighbour lists for a size N.
+ * n4: orthogonal (DIRS4 order); n8: the 8 around (row by row).
  */
 export function adjacency(N){
   let adj = adjacencyCache.get(N);

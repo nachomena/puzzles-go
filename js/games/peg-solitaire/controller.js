@@ -1,4 +1,4 @@
-/* Partida del Solitario: elegir una bola y saltar (tocando el destino o arrastrando). */
+/* Peg Solitaire game: pick a ball and jump (tapping the target or dragging). */
 import { GameController } from '../../core/game-controller.js';
 import { t } from '../../i18n/index.js';
 import { PegBoardView } from './board-view.js';
@@ -15,7 +15,7 @@ export class PegSolitaireController extends GameController {
 
   #boardFromSettings(){ return isBoard(this.settings.board) ? this.settings.board : 'english'; }
 
-  /* ---------- Pasos de la plantilla ---------- */
+  /* ---------- Template steps ---------- */
 
   createSession(L, puzzle){
     const board = this.#boardFromSettings();
@@ -23,7 +23,7 @@ export class PegSolitaireController extends GameController {
   }
   mount(){
     if (!super.mount()) return false;
-    this.hud.size.setAttribute('aria-live', 'polite');   // bolas que quedan
+    this.hud.size.setAttribute('aria-live', 'polite');   // balls left
     return true;
   }
   mountBoard(){ this.view.build(this.session.board); }
@@ -34,11 +34,11 @@ export class PegSolitaireController extends GameController {
     if (n === 1) status = t(s.balls[CENTER] >= 0 ? 'games.peg-solitaire.centerWin' : 'games.peg-solitaire.oneBall');
     else if (!anyMove(s.board, s.balls)) status = t('games.peg-solitaire.noMoves', { status });
     this.view.render({ balls: s.balls, out: s.out, sel: s.sel, targets });
-    this.hud.setHeader(t(`games.peg-solitaire.${s.board}`), status);   // cabecera: tablero · bolas · tiempo
+    this.hud.setHeader(t(`games.peg-solitaire.${s.board}`), status);   // header: board · balls · time
   }
   /**
-   * Reiniciar pone el cronómetro a 0. Las instantáneas llevan el tiempo y cuántos reinicios
-   * llevamos: deshacer un salto no toca el tiempo, pero deshacer (o rehacer) un reinicio sí lo recupera.
+   * Restart sets the timer to 0. Snapshots carry the time and how many restarts there have been:
+   * undoing a jump doesn't touch the time, but undoing (or redoing) a restart does bring it back.
    */
   snapshot(){ const s = this.session; return { balls: s.balls.slice(), out: s.out.slice(), time: s.time, resets: s.resets }; }
   restore(snap){
@@ -55,7 +55,7 @@ export class PegSolitaireController extends GameController {
   get resetMessage(){ return t('games.peg-solitaire.restarted'); }
   celebrate(){ this.session.sel = -1; this.renderBoard(); this.view.celebrate(); }
 
-  /** Cambiar de tablero: al momento si aún no se ha jugado; si no, en la próxima partida. */
+  /** Change board: at once if it hasn't been played yet; otherwise, in the next game. */
   onSetting(key){
     const s = this.session;
     if (key !== 'board' || !s || s.board === this.#boardFromSettings()) return;
@@ -66,7 +66,7 @@ export class PegSolitaireController extends GameController {
     this.mount();
   }
 
-  /* ---------- Jugadas ---------- */
+  /* ---------- Moves ---------- */
 
   select(i){
     const s = this.session;
@@ -76,7 +76,7 @@ export class PegSolitaireController extends GameController {
     this.render();
   }
 
-  /** Salta de `from` a `to` si es válido. Devuelve si se movió. */
+  /** Jumps from `from` to `to` if it is valid. Returns whether it moved. */
   jump(from, to){
     const s = this.session;
     if (!this.active) return false;
@@ -86,17 +86,17 @@ export class PegSolitaireController extends GameController {
     s.out.push(s.balls[m.over]);
     s.balls[to] = s.balls[from];
     s.balls[from] = s.balls[m.over] = -1;
-    // la bola sigue elegida si puede seguir saltando (saltos encadenados)
+    // the ball stays picked if it can keep jumping (chained jumps)
     s.sel = movesFrom(s.board, s.balls, to).length ? to : -1;
-    this.autoSel = s.sel >= 0;   // elegida por el juego: tocarla no la suelta, sigue saltando
+    this.autoSel = s.sel >= 0;   // picked by the game: tapping it doesn't drop it, it keeps jumping
     this.commit(true);
     if (!s.done && !anyMove(s.board, s.balls)) this.notify(t('games.peg-solitaire.stuck', { balls: t('games.peg-solitaire.balls', { n: countBalls(s.balls) }) }));
     return true;
   }
 
   /**
-   * Tocar una bola la elige (otra vez, la suelta); tocar un destino salta. Arrastrar una bola
-   * la lleva con el dedo y, al soltarla sobre un destino, salta.
+   * Tapping a ball picks it (again, drops it); tapping a target jumps. Dragging a ball carries it with
+   * the finger and, when it is released on a target, it jumps.
    */
   #bindPointer(el){
     let drag = null;
@@ -129,14 +129,14 @@ export class PegSolitaireController extends GameController {
       if (!cancelled && d.moved){
         const to = this.view.holeAt(e.clientX, e.clientY);
         if (to >= 0 && this.jump(d.from, to)){
-          // la bola ya está donde se soltó: se coloca en su agujero sin animar desde el origen
+          // the ball is already where it was dropped: it is put in its hole without animating from the start
           d.ball.style.translate = '';
           d.ball.getBoundingClientRect();
           d.ball.classList.remove('is-dragging');
           return;
         }
       }
-      // sin salto: vuelve a su agujero con una transición corta
+      // no jump: it goes back to its hole with a short transition
       d.ball.classList.remove('is-dragging');
       d.ball.style.translate = '';
       if (cancelled || d.moved){ this.render(); return; }

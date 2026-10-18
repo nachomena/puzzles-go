@@ -1,11 +1,11 @@
-/* Kakuro: tablero de N × N con casillas negras (algunas con sumas) y blancas, que se rellenan del 1
-   al 9. Cada tramo de blancas seguidas (en horizontal o en vertical) suma lo que dice la casilla negra
-   que tiene a su izquierda o encima, y no repite números. Sin DOM. Casilla i = fila * N + columna.
-   `white[i]` = 1 si la casilla es blanca. Un tramo es { cells: [i…], sum, dir: 'h'|'v', clue } (clue =
-   la casilla negra de su suma). */
+/* Kakuro: an N × N board with black cells (some with sums) and white ones, filled with 1 to 9. Each
+   run of consecutive white cells (across or down) adds up to what the black cell to its left or above
+   it says, and doesn't repeat numbers. No DOM. Cell i = row * N + column.
+   `white[i]` = 1 if the cell is white. A run is { cells: [i…], sum, dir: 'h'|'v', clue } (clue =
+   the black cell with its sum). */
 import { shuffle, randInt } from '../../../lib/random.js';
 
-/** Tramos de un tablero: los horizontales y los verticales de dos o más blancas. */
+/** Runs of a board: the across and down ones of two or more white cells. */
 export function runsOf(n, white){
   const runs = [];
   for (const dir of ['h', 'v']){
@@ -23,7 +23,7 @@ export function runsOf(n, white){
   return runs;
 }
 
-/** ¿Las blancas forman una sola pieza? */
+/** Do the white cells form a single piece? */
 function connected(n, white){
   const cells = [...white.keys()].filter(i => white[i]);
   if (!cells.length) return false;
@@ -39,15 +39,15 @@ function connected(n, white){
 }
 
 /**
- * Forma al azar: la primera fila y la primera columna negras, el resto con casillas negras simétricas
- * (giro de 180°) hasta `black` del área. Una negra solo se pone si no deja ninguna blanca suelta en un
- * tramo de una casilla; luego se cortan los tramos de más de `maxRun`. Las blancas, en una sola pieza.
- * null si no sale.
+ * Random shape: the first row and the first column black, the rest with symmetric black cells
+ * (180° rotation) up to `black` of the area. A black cell is only placed if it leaves no white cell
+ * alone in a one-cell run; then runs longer than `maxRun` are cut. The white cells, in a single piece.
+ * null if it doesn't work out.
  */
 export function pattern(n, black, maxRun = 9){
   const white = new Uint8Array(n * n);
   for (let r = 1; r < n; r++) for (let c = 1; c < n; c++) white[r * n + c] = 1;
-  const mirror = i => { const r = (i / n) | 0, c = i % n; return (n - r) * n + (n - c); };   // dentro de 1..n-1
+  const mirror = i => { const r = (i / n) | 0, c = i % n; return (n - r) * n + (n - c); };   // within 1..n-1
   const lenAt = (i, dir) => {
     const r = (i / n) | 0, c = i % n, at = k => dir === 'h' ? white[r * n + k] : white[k * n + c];
     const pos = dir === 'h' ? c : r;
@@ -57,7 +57,7 @@ export function pattern(n, black, maxRun = 9){
     return k;
   };
   const near = i => { const r = (i / n) | 0, c = i % n; return [[r - 1, c], [r + 1, c], [r, c - 1], [r, c + 1]].filter(([a, b]) => a >= 0 && b >= 0 && a < n && b < n).map(([a, b]) => a * n + b); };
-  // pone negras en i y en su simétrica si no dejan blancas sueltas; si no, lo deshace
+  // puts black cells at i and its mirror if they leave no lone white cells; otherwise undoes it
   const tryBlack = i => {
     const both = [...new Set([i, mirror(i)])];
     if (both.some(j => !white[j])) return false;
@@ -72,7 +72,7 @@ export function pattern(n, black, maxRun = 9){
     if (blacks >= area * black) break;
     if (tryBlack(i)) blacks += i === mirror(i) ? 1 : 2;
   }
-  // tramos demasiado largos: una negra dentro, donde no deje sueltas
+  // runs that are too long: a black cell inside, where it leaves no lone ones
   for (let pass = 0; pass < 20; pass++){
     const long = runsOf(n, white).filter(r => r.cells.length > maxRun);
     if (!long.length) break;
@@ -80,7 +80,7 @@ export function pattern(n, black, maxRun = 9){
   }
   const runs = runsOf(n, white);
   if (runs.some(r => r.cells.length < 2 || r.cells.length > maxRun) || !connected(n, white)) return null;
-  // toda blanca en un tramo horizontal y en uno vertical
+  // every white cell in an across run and a down run
   const inH = new Uint8Array(n * n), inV = new Uint8Array(n * n);
   for (const r of runs) for (const i of r.cells) (r.dir === 'h' ? inH : inV)[i] = 1;
   for (let i = 0; i < n * n; i++) if (white[i] && !(inH[i] && inV[i])) return null;
@@ -88,9 +88,9 @@ export function pattern(n, black, maxRun = 9){
 }
 
 /**
- * Rellena las blancas con números del 1 al 9 sin repetir en ningún tramo. null si no puede.
- * Con `bias`, esa parte de los tramos tira a números bajos o a altos: sus sumas salen de pocas
- * combinaciones (16 en dos es 7 + 9) y el tablero tiene más fácil una solución única.
+ * Fills the white cells with numbers 1 to 9 without repeating in any run. null if it can't.
+ * With `bias`, that share of the runs leans towards low or high numbers: their sums come from few
+ * combinations (16 in two is 7 + 9) and the board more easily has a unique solution.
  */
 export function fill(n, white, runs, bias = 0, base = null){
   const lean = runs.map(() => Math.random() < bias ? (Math.random() < .5 ? -1 : 1) : 0);
@@ -98,12 +98,12 @@ export function fill(n, white, runs, bias = 0, base = null){
   runs.forEach((r, k) => r.cells.forEach(i => of[i].push(k)));
   const used = new Int32Array(runs.length), out = new Int8Array(n * n);
   const cells = [...white.keys()].filter(i => white[i]);
-  // `base`: lo que ya está puesto se conserva (0 = por rellenar)
+  // `base`: whatever is already placed is kept (0 = to fill)
   if (base) for (const i of cells) if (base[i] > 0){ out[i] = base[i]; for (const k of of[i]) used[k] |= 1 << base[i]; }
   let steps = 0;
   const go = () => {
     if (++steps > 20000) return false;
-    // la casilla con menos opciones
+    // the cell with the fewest options
     let best = -1, bestMask = 0, bestN = 10;
     for (const i of cells){
       if (out[i]) continue;
@@ -129,5 +129,5 @@ export function fill(n, white, runs, bias = 0, base = null){
   return go() ? Array.from(out) : null;
 }
 
-/** Tramos con la suma de la solución. */
+/** Runs with the solution's sum. */
 export const withSums = (runs, solution) => runs.map(r => ({ ...r, sum: r.cells.reduce((t, i) => t + solution[i], 0) }));

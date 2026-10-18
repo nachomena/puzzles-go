@@ -1,0 +1,44 @@
+/* Gridlock: a dark car park, softly coloured cars and trucks, and the red one to get out. */
+:root{
+  --gl-red:#d0544c; --gl-yellow:#d6bf5a; --gl-blue:#4e91cc; --gl-green:#4f9665; --gl-orange:#d58c45; --gl-purple:#9273b0;
+  --gl-aqua:#72b3a9; --gl-pink:#cd77a3; --gl-lime:#9db94f; --gl-navy:#4561a3; --gl-sky:#7dbbd8;
+  --gl-gray:#8a8995; --gl-sand:#b49a72; --gl-teal:#3f8f8a;
+}
+.gl-hue-red{--gl-c:var(--gl-red)} .gl-hue-yellow{--gl-c:var(--gl-yellow)} .gl-hue-blue{--gl-c:var(--gl-blue)}
+.gl-hue-green{--gl-c:var(--gl-green)} .gl-hue-orange{--gl-c:var(--gl-orange)} .gl-hue-purple{--gl-c:var(--gl-purple)}
+.gl-hue-aqua{--gl-c:var(--gl-aqua)} .gl-hue-pink{--gl-c:var(--gl-pink)} .gl-hue-lime{--gl-c:var(--gl-lime)}
+.gl-hue-navy{--gl-c:var(--gl-navy)} .gl-hue-sky{--gl-c:var(--gl-sky)}
+.gl-hue-gray{--gl-c:var(--gl-gray)} .gl-hue-sand{--gl-c:var(--gl-sand)} .gl-hue-teal{--gl-c:var(--gl-teal)}
+
+.gl-area{width:100%}
+/* the frame leaves room on the right for the exit */
+.gl-board{position:relative;width:100%;max-width:440px;margin:0 auto;padding:10px 18px 10px 10px;background:#26252b;border-radius:16px;
+  box-sizing:border-box;touch-action:none;user-select:none;-webkit-user-select:none}
+.gl-lot{position:relative;width:100%;aspect-ratio:1}
+.gl-cells{position:absolute;inset:0;display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(6,1fr)}
+.gl-cells i{margin:2px;border-radius:6px;background:var(--cell)}
+.gl-exit{position:absolute;right:-14px;width:10px;height:calc(100% / 6);display:flex;align-items:center}
+.gl-exit::before{content:"";width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:10px solid var(--gl-red)}
+
+/* Vehicles: a block of colour with a slightly darker roof */
+.gl-car{position:absolute;padding:4px;box-sizing:border-box;cursor:grab;touch-action:none;transition:left .18s ease,top .18s ease}
+.gl-car span{display:block;width:100%;height:100%;border-radius:10px;background:var(--gl-c);position:relative;container-type:size}
+/* Roof: the same size on all of them (measured on the short side, cqh/cqw) and at the front, at the same
+   distance from the front edge as from the sides */
+.gl-car span::after{content:"";position:absolute;top:22cqh;bottom:22cqh;right:22cqh;width:34cqh;border-radius:5px;background:color-mix(in srgb, var(--gl-c) 70%, #000)}
+.gl-car.is-v span::after{top:auto;left:22cqw;right:22cqw;bottom:22cqw;width:auto;height:34cqw}
+.gl-car.is-dragging{transition:none;z-index:2}
+.gl-car.is-dragging span{box-shadow:0 0 0 2px var(--ink)}
+.gl-car.is-flash span{animation:gl-flash .5s ease-in-out 3}
+@keyframes gl-flash{50%{opacity:.35}}
+/* On winning, the red car drives out to the right */
+.gl-board.is-won .gl-car.is-red{transition:left .6s ease-in,opacity .6s ease-in;left:calc(100% + 10px) !important;opacity:0}
+
+.gl-moves{font-size:15px;color:var(--dim);font-variant-numeric:tabular-nums;text-align:center;flex:1}
+
+/* Help figure (templates.js): the same lot, vehicles and exit */
+.gl-hf-lot{fill:#26252b}
+.gl-hf-car{fill:var(--gl-c)}
+.gl-hf-roof{fill:color-mix(in srgb, var(--gl-c) 70%, #000)}
+.gl-hf-exit{fill:var(--gl-red)}
+.gl-hf-move{fill:none;stroke:var(--ink-soft);stroke-width:.08;stroke-linecap:round;stroke-linejoin:round}

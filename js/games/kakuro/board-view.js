@@ -1,5 +1,5 @@
-/* Tablero de Kakuro: casillas negras con las sumas (la del tramo de la derecha arriba, la del de abajo
-   abajo, separadas por una diagonal) y blancas con los números y notas, como el Sudoku. */
+/* Kakuro board: black cells with the sums (the run on the right at the top, the one below at the
+   bottom, split by a diagonal) and white ones with the numbers and notes, as in Sudoku. */
 import { GridBoard } from '../../ui/grid-board.js';
 import { notesHtml } from '../../ui/templates.js';
 
@@ -9,7 +9,7 @@ export class KakuroBoard extends GridBoard {
     super.build(n, new Array(n * n).fill(0));
     this.n = n;
     this.white = white;
-    // sumas de cada casilla negra: la del tramo que empieza a su derecha y la del que empieza debajo
+    // sums of each black cell: the run that starts to its right and the one that starts below it
     this.clue = Array.from({ length: n * n }, () => ({ a: 0, d: 0 }));
     for (const r of runs) this.clue[r.clue][r.dir === 'h' ? 'a' : 'd'] = r.sum;
     this.runOf = Array.from({ length: n * n }, () => []);
@@ -23,7 +23,7 @@ export class KakuroBoard extends GridBoard {
     }
   }
 
-  /** @param {{ values, notes, sel, bad, same }} v  (como el Sudoku; peers = los dos tramos de la casilla) */
+  /** @param {{ values, notes, sel, bad, same }} v  (as in Sudoku; peers = the cell's two runs) */
   render({ values, notes, sel, bad, same }){
     const peers = sel >= 0 && this.white[sel] ? new Set(this.runOf[sel].flat()) : null;
     for (let i = 0; i < this.n * this.n; i++){

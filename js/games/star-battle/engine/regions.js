@@ -1,18 +1,18 @@
-/* Construcción y edición de regiones a partir de una solución. */
+/* Building and editing regions from a solution. */
 import { DIRS4, adjacency, rowOf, colOf, inBounds } from '../../../lib/grid.js';
 import { shuffle, pick, randInt } from '../../../lib/random.js';
 
 const FILL_GUARD = 200000;
 const PAIRING_JITTER = 1.5;
 
-/** Regiones vecinas de la casilla i distintas de `exclude` (con repetición, en orden DIRS4). */
+/** Neighbouring regions of cell i other than `exclude` (with repeats, in DIRS4 order). */
 export function neighbourRegions(N, reg, i, exclude){
   const out = [];
   for (const j of adjacency(N).n4[i]) if (reg[j] !== exclude) out.push(reg[j]);
   return out;
 }
 
-/** ¿Sigue siendo conexa la región g si se le quita la casilla `skip`? */
+/** Is region g still connected if cell `skip` is taken away? */
 export function connectedWithout(N, reg, g, skip){
   let start = -1, total = 0;
   for (let i = 0; i < N * N; i++) if (reg[i] === g && i !== skip){ total++; if (start < 0) start = i; }
@@ -28,7 +28,7 @@ export function connectedWithout(N, reg, g, skip){
   return n === total;
 }
 
-/** Agrupa las estrellas de K en K (K ≤ 2) emparejando las cercanas. */
+/** Groups the stars K by K (K ≤ 2) pairing the nearby ones. */
 function groupStars(N, K, stars){
   if (K === 1) return stars.map(s => [s]);
   const groups = [], left = shuffle(stars.slice());
@@ -44,7 +44,7 @@ function groupStars(N, K, stars){
   return groups;
 }
 
-/** Une las dos estrellas de la región g con un camino de casillas libres (BFS aleatorio). */
+/** Joins the two stars of region g with a path of free cells (random BFS). */
 function connectPair(N, reg, isStar, g, a, b){
   const prev = new Int32Array(N * N).fill(-2);
   prev[a] = -1;
@@ -67,7 +67,7 @@ function connectPair(N, reg, isStar, g, a, b){
   return true;
 }
 
-/** Reparte las casillas sueltas entre regiones vecinas al azar. */
+/** Hands out the loose cells among random neighbouring regions. */
 function growRegions(N, reg){
   let free = 0;
   for (let i = 0; i < N * N; i++) if (reg[i] < 0) free++;
@@ -81,7 +81,7 @@ function growRegions(N, reg){
   return free === 0;
 }
 
-/** Regiones conexas con exactamente K estrellas cada una, o null si no se logra. */
+/** Connected regions with exactly K stars each, or null if it doesn't work out. */
 export function buildRegions(N, K, stars){
   const reg = new Int8Array(N * N).fill(-1), isStar = new Uint8Array(N * N);
   stars.forEach(s => isStar[s] = 1);

@@ -1,0 +1,9 @@
+/* Calcudoku: cages with a thick border and the small operation at the top left. */
+/* tucked into the corner, just inside the thick border: it takes little room and leaves space for the number and the notes */
+.cc-label{position:absolute;left:7%;top:6%;font-size:clamp(9px,2.6vw,12px);font-weight:500;color:var(--ink-soft);line-height:1.15;pointer-events:none;white-space:nowrap}
+.board--calcudoku .sd-digit{margin-top:8%}
+.board--calcudoku .cc-notes{top:24%}
+/* the cell in the board's rounded corner: the label, a little further in so it isn't clipped */
+.cell[data-corner="tl"] .cc-label{left:calc(var(--radius-board) * .45);top:calc(var(--radius-board) * .4)}
+/* Help figure (templates.js): the operation like .cc-label */
+.cc-hf-label{font-family:var(--font-body);font-weight:500;font-size:.22px;fill:var(--ink-soft)}

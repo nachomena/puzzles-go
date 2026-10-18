@@ -1,4 +1,4 @@
-/* Partida de Killer Sudoku: como el Sudoku (core/digit-grid-controller.js), con jaulas. */
+/* Killer Sudoku game: like Sudoku (core/digit-grid-controller.js), with cages. */
 import { DigitGridController } from '../../core/digit-grid-controller.js';
 import { KillerBoard } from './board-view.js';
 import { SIZE } from '../sudoku/engine/grid.js';
@@ -15,7 +15,7 @@ export class KillerController extends DigitGridController {
   hintFor(values, solution){ const p = this.session.p; return findHint(p.cages, p.level, values, solution, this.prepared); }
   mountBoard(){
     const p = this.session.p;
-    // lo que no cambia en toda la partida: casillas que se ven (con la jaula) y los grupos del solucionador
+    // what doesn't change during the whole game: cells that see each other (with the cage) and the solver's groups
     this.peers = peersOf(p.cages);
     this.prepared = prepare(p.cages);
     this.board.build(p.cages);

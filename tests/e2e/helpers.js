@@ -1,9 +1,9 @@
 import { expect } from '@playwright/test';
 
-export const GAMES = ['star-battle', 'sudoku', 'killer-sudoku', 'kakuro', 'slitherlink', 'gears', 'smart-dices', 'smart-circuit', 'smart-circle', 'smart-hexagon',
-  'iq-puzzler', 'katamino', 'rush-hour', 'zip', 'hashi', 'kenken', 'akari', 'binario', 'peg-solitaire'];
+export const GAMES = ['star-battle', 'sudoku', 'killer-sudoku', 'kakuro', 'loop', 'gears', 'dice', 'circuit', 'circle', 'hexagon',
+  'fit', 'pentominoes', 'gridlock', 'trail', 'bridges', 'calcudoku', 'light-up', 'binary', 'peg-solitaire'];
 
-/** Abre la app y falla la prueba si la página lanza algún error. */
+/** Opens the app and fails the test if the page throws any error. */
 export async function openApp(page, url = './'){
   const errors = [];
   page.on('pageerror', e => errors.push(String(e)));
@@ -13,7 +13,7 @@ export async function openApp(page, url = './'){
   return errors;
 }
 
-/** Desde el selector, entra al juego (desplegando su grupo si hace falta) y empieza su primer nivel. */
+/** From the picker, enters the game (expanding its group if needed) and starts its first level. */
 export async function startGame(page, id){
   const card = page.locator(`#games [data-game="${id}"]`);
   if (!(await card.count())) await page.locator('#games [data-action="toggle-group"]').first().click();

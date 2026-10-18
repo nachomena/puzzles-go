@@ -1,5 +1,5 @@
-/* Kakuro: casillas negras con las sumas separadas por una diagonal; los tamaños siguen al de la casilla
-   (el tablero va de 6 × 6 a 12 × 12). */
+/* Kakuro: black cells with the sums split by a diagonal; sizes follow the cell's (the board goes from
+   6 × 6 to 12 × 12). */
 .board--kakuro{container-type:inline-size}
 .board--kakuro .cell{--cs:calc(100cqw / var(--n))}
 .kr-black{background:color-mix(in srgb,var(--bg) 82%,black);cursor:default}

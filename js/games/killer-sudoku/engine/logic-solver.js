@@ -1,13 +1,13 @@
-/* ---------- Solucionador lógico de Killer Sudoku (técnicas humanas) ----------
-   Las del Sudoku (js/games/sudoku/engine/logic-solver.js) más las de las jaulas:
-   Nivel 1 (Fácil):    singles y combinaciones de cada jaula (qué números caben en cada casilla
-                       según la suma y lo que ya hay).
-   Nivel 2 (Medio):    + candidatos bloqueados, pares y tríos, y números que una jaula necesita y que
-                       solo caben en una fila, columna o caja (salen del resto de esa unidad).
-   Nivel 3 (Difícil):  + regla del 45 en una fila, columna o caja.
-   Nivel 4 (Experto):  + regla del 45 en franjas de dos o tres filas, columnas o cajas, X-Wing y Swordfish.
-   Un tablero se califica con el nivel mínimo que lo resuelve; resolverlo por lógica ya implica
-   que tiene una única solución. */
+/* ---------- Killer Sudoku logic solver (human techniques) ----------
+   Sudoku's (js/games/sudoku/engine/logic-solver.js) plus the cage ones:
+   Level 1 (Easy):     singles and combinations of each cage (which numbers fit in each cell given the
+                       sum and what is already there).
+   Level 2 (Medium):   + locked candidates, pairs and triples, and numbers a cage needs that only fit in
+                       one row, column or box (they come out of the rest of that unit).
+   Level 3 (Hard):     + the 45 rule in a row, column or box.
+   Level 4 (Expert):   + the 45 rule in bands of two or three rows, columns or boxes, X-Wing and Swordfish.
+   A board is rated with the lowest level that solves it; solving it by logic already implies that it
+   has a single solution. */
 import { CELLS, ALL, ROWS, COLS, BOXES, bit, digitOf } from '../../sudoku/engine/grid.js';
 import { CONTRA, createState, eliminate, TECHNIQUES as SUDOKU } from '../../sudoku/engine/logic-solver.js';
 import { popcount } from '../../../lib/bits.js';
@@ -16,7 +16,7 @@ import { sees, sumGroups, UNIT_REGIONS, BAND_REGIONS } from './cages.js';
 export const MAX_LEVEL = 4;
 const sudoku = id => SUDOKU.find(t => t.id === id).apply;
 
-/** Suma de los `k` dígitos más bajos (o más altos) de una máscara. */
+/** Sum of the `k` lowest (or highest) digits of a mask. */
 function extremeSum(mask, k, high){
   let sum = 0;
   for (let d = high ? 9 : 1; k > 0 && d >= 1 && d <= 9; d += high ? -1 : 1) if (mask & bit(d)){ sum += d; k--; }
@@ -24,9 +24,9 @@ function extremeSum(mask, k, high){
 }
 
 /**
- * Qué número puede ir en cada casilla del grupo según su suma: { poss: máscara por casilla,
- * need: números que salen en todas las formas de rellenarlo }. null si no hay ninguna.
- * `clash[a][b]` dice si las casillas a y b del grupo no pueden repetir número.
+ * Which number can go in each cell of the group given its sum: { poss: mask per cell,
+ * need: numbers that appear in every way of filling it }. null if there are none.
+ * `clash[a][b]` says whether cells a and b of the group can't repeat a number.
  */
 export function analyse(masks, sum, clash, allDistinct){
   const k = masks.length, poss = new Uint16Array(k), vals = new Int8Array(k);
@@ -42,8 +42,8 @@ export function analyse(masks, sum, clash, allDistinct){
     const left = k - j - 1;
     for (let m = masks[j]; m; m &= m - 1){
       const d = digitOf(m & -m), next = total + d;
-      if (next > sum) break;   // dígitos en orden creciente
-      // cota: lo que queda tiene que poder completar la suma
+      if (next > sum) break;   // digits in increasing order
+      // bound: what is left must be able to complete the sum
       if (allDistinct){
         const free = ALL & ~used & ~bit(d);
         if (next + extremeSum(free, left, false) > sum || next + extremeSum(free, left, true) < sum) continue;
@@ -62,8 +62,8 @@ export function analyse(masks, sum, clash, allDistinct){
   return found ? { poss, need } : null;
 }
 
-/* Mismas máscaras → mismo resultado: se guarda entre llamadas (el generador resuelve muchas veces
-   tableros casi iguales). */
+/* Same masks → same result: it is kept between calls (the generator solves nearly identical boards
+   many times). */
 const memo = new Map();
 function analyseGroup(s, g){
   const masks = g.cells.map(i => s.val[i] ? bit(s.val[i]) : s.cand[i]);
@@ -78,7 +78,7 @@ function analyseGroup(s, g){
   return r;
 }
 
-/** Recorta los candidatos de las casillas de los grupos `which` según su suma. */
+/** Trims the candidates of the cells of groups `which` according to their sum. */
 const combos = which => function(s){
   let any = false;
   for (const g of s.groups[which]){
@@ -90,8 +90,8 @@ const combos = which => function(s){
 
 const UNIT_LIST = [...ROWS, ...COLS, ...BOXES];
 /**
- * Un número que una jaula necesita (sale en todas sus combinaciones) y que dentro de ella solo cabe
- * en casillas de una misma fila, columna o caja: en el resto de esa unidad no puede ir.
+ * A number a cage needs (it appears in all its combinations) that within it only fits in cells of the
+ * same row, column or box: it can't go in the rest of that unit.
  */
 function cageNeeds(s){
   let any = false;
@@ -109,7 +109,7 @@ function cageNeeds(s){
   return any;
 }
 
-/** Técnicas por orden de coste; `level` = nivel mínimo en que se permiten. */
+/** Techniques by cost; `level` = the lowest level at which they are allowed. */
 export const TECHNIQUES = [
   { id: 'naked-single',  level: 1, apply: sudoku('naked-single') },
   { id: 'hidden-single', level: 1, apply: sudoku('hidden-single') },
@@ -126,7 +126,7 @@ export const TECHNIQUES = [
   { id: 'swordfish',     level: 4, apply: sudoku('swordfish') }
 ];
 
-/** Grupo de suma listo para analizar: qué parejas de casillas no pueden repetir número. */
+/** Sum group ready to analyse: which pairs of cells can't repeat a number. */
 let nextId = 0;
 function group(cells, sum, isCage, cageOf){
   const clash = cells.map(a => cells.map(b => a !== b && (isCage || sees(a, b) || cageOf[a] === cageOf[b])));
@@ -135,8 +135,8 @@ function group(cells, sum, isCage, cageOf){
 }
 
 /**
- * Lo que no cambia de un tablero mientras se resuelve: sus jaulas y los grupos de la regla del 45.
- * Se calcula una vez por reto (el generador lo reutiliza en cada prueba).
+ * What doesn't change on a board while it is solved: its cages and the 45-rule groups.
+ * It is computed once per puzzle (the generator reuses it in every attempt).
  */
 export function prepare(cages){
   const cageOf = new Int16Array(CELLS);
@@ -150,8 +150,8 @@ export function prepare(cages){
 }
 
 /**
- * Resuelve con técnicas hasta `level` a partir de `grid` (0 = vacía).
- * `prepared` = prepare(cages). Devuelve { solved, contra?, grid, used }.
+ * Solves with techniques up to `level` from `grid` (0 = empty).
+ * `prepared` = prepare(cages). Returns { solved, contra?, grid, used }.
  */
 export function logic(grid, prepared, level){
   const used = new Set();
@@ -171,15 +171,15 @@ export function logic(grid, prepared, level){
   return { solved: s.val.every(Boolean), grid: Array.from(s.val), used };
 }
 
-/** Nivel mínimo con el que se resuelve (MAX_LEVEL + 1 si ninguno basta). */
+/** Lowest level that solves it (MAX_LEVEL + 1 if none is enough). */
 export function grade(grid, prepared){
   for (let l = 1; l <= MAX_LEVEL; l++) if (logic(grid, prepared, l).solved) return l;
   return MAX_LEVEL + 1;
 }
 
 /**
- * Siguiente casilla vacía que se deduce desde `grid` con las técnicas hasta `level` (la primera que
- * quede fija), o null. Para las pistas.
+ * Next empty cell deduced from `grid` with the techniques up to `level` (the first one that becomes
+ * fixed), or null. For the hints.
  */
 export function nextDeduction(grid, prepared, level){
   let s;

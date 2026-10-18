@@ -1,4 +1,4 @@
-/** Ejecuta un generador hasta el final y devuelve su resultado. */
+/** Runs a generator to the end and returns its result. */
 export function runToEnd(gen){
   let r;
   do r = gen.next(); while (!r.done);

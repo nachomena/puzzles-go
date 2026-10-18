@@ -1,10 +1,10 @@
-/* Configuración de Engranajes. */
+/* Gears configuration. */
 import meta from './meta.js';
 import { t } from '../../i18n/index.js';
 
 export const LEVELS = meta.levels;
 
-/** Sin herramientas que elegir: tocar alterna punto, engranaje y vacío. */
+/** No tools to choose: tapping cycles dot, gear and empty. */
 export const TOOL = Object.freeze({ TAP: 'tap' });
 
 export const DEFAULT_SETTINGS = Object.freeze({ errors: true, timer: true });

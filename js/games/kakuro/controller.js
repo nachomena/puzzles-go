@@ -1,4 +1,4 @@
-/* Partida de Kakuro: como el Sudoku (core/digit-grid-controller.js), con casillas negras y tramos. */
+/* Kakuro game: like Sudoku (core/digit-grid-controller.js), with black cells and runs. */
 import { DigitGridController } from '../../core/digit-grid-controller.js';
 import { t } from '../../i18n/index.js';
 import { KakuroBoard } from './board-view.js';
@@ -9,9 +9,9 @@ export class KakuroController extends DigitGridController {
 
   get n(){ return this.session.p.n; }
   get digits(){ return 9; }
-  /** Un número puede salir muchas veces: su tecla no se apaga nunca. */
+  /** A number can appear many times: its key never dims. */
   get digitCap(){ return Infinity; }
-  /** Las negras quedan fijas (−1); las blancas, libres. */
+  /** Black cells are fixed (−1); white ones, free. */
   givensOf(p){
     if (this.givensFor !== p){ this.givensFor = p; this.givens = p.white.map(w => w ? 0 : -1); }
     return this.givens;
@@ -24,7 +24,7 @@ export class KakuroController extends DigitGridController {
     const { p, values } = this.session, cell = values.findIndex((v, i) => p.white[i] && v > 0 && v !== p.solution[i]);
     return cell >= 0 ? { cell, message: t('play.wrongNumber') } : null;
   }
-  /** Las negras no se seleccionan. */
+  /** Black cells can't be selected. */
   select(i){ if (i < 0 || this.session.p.white[i]) super.select(i); }
   mountBoard(){
     const p = this.session.p;
