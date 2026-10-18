@@ -1,5 +1,6 @@
 /* Partida de Smart Circuit: arrastrar piezas al tablero, tocar para elegir/girar y voltear. */
 import { GameController } from '../../core/game-controller.js';
+import { t } from '../../i18n/index.js';
 import { bindPieceDrag } from '../../ui/piece-drag.js';
 import { CircuitBoardView } from './board-view.js';
 import { PIECES, W, H } from './engine/pieces.js';
@@ -51,13 +52,13 @@ export class SmartCircuitController extends GameController {
     s.sel = -1;
   }
   isSolved(){ return isSolved(this.session.place, this.session.p.solution); }
-  get resetMessage(){ return 'Tablero vacío.'; }
+  get resetMessage(){ return t('play.clearedShort'); }
   celebrate(){ this.session.sel = -1; this.renderBoard(); this.view.celebrate(); }
   get actions(){ return { flip: () => this.flip() }; }
 
   findMistake(){
     const s = this.session, m = findMistake(s.place, s.p.solution, s.p.fixed);
-    return m && { ...m, message: 'Esta pieza no va aquí' };
+    return m && { ...m, message: t('play.wrongPiece') };
   }
   showMistake({ piece }){ this.session.sel = piece; this.render(); this.view.flash(piece); }
   giveHint(){
@@ -102,7 +103,7 @@ export class SmartCircuitController extends GameController {
     if (s.sel !== piece){ s.sel = piece; this.render(); return; }
     const pos = s.place[piece];
     const face = pos ? pos.face : s.tface[piece], rot = ((pos ? pos.rot : s.trot[piece]) + 1) % 4;
-    this.#reorient(piece, face, rot, 'No cabe girada aquí');
+    this.#reorient(piece, face, rot, t('play.noRotate'));
   }
 
   /** Cambia de cara la pieza elegida (las rectas pasan también por la cara lisa). */
@@ -111,7 +112,7 @@ export class SmartCircuitController extends GameController {
     if (!this.active || piece < 0 || this.#isFixed(piece)) return;
     const pos = s.place[piece];
     const face = ((pos ? pos.face : s.tface[piece]) + 1) % faceCount(piece), rot = pos ? pos.rot : s.trot[piece];
-    this.#reorient(piece, face, rot, 'No cabe volteada aquí');
+    this.#reorient(piece, face, rot, t('play.noFlip'));
   }
 
   /** Suelta una pieza: en una casilla del tablero (si cabe) o fuera (vuelve a la bandeja). */

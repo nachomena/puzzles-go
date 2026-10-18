@@ -19,6 +19,7 @@ import { winStripSvg } from '../ui/win-strip.js';
 import { gameHtml, levelHtml, bindChartTips } from '../ui/progress-view.js';
 import { progressRows } from '../core/progress.js';
 import { bindEdgeBack } from '../ui/edge-back.js';
+import { t, translateDom, LANGUAGES, languageChoice, deviceLanguage, setLanguage } from '../i18n/index.js';
 
 const htmlToElement = html => {
   const t = document.createElement('template');
@@ -42,8 +43,10 @@ export class App {
     this.hub = new HubView(byId('games'), byId('resumeLast'));
     this.levelMenu = new LevelMenu({ title: byId('gameTitle'), label: byId('levelsLabel'), levels: byId('levelList'), resume: byId('resume') });
     this.settings = new SettingsPanel(byId('settingsList'));
+    translateDom();
     this.night = new NightMode(storage);
-    document.querySelector('[data-night-toggle]')?.addEventListener('change', e => this.night.set(e.target.checked));
+    document.querySelectorAll('[data-night-toggle]').forEach(el => el.addEventListener('change', e => this.night.set(e.target.checked)));
+    this.#bindLanguage(document.querySelector('[data-lang-select]'));
     this.confirm = new ConfirmDialog(byId('confirm'), this.overlays);
     this.fitHubTitle = keepFitted(byId('title'));
     this.fitGameTitle = keepFitted(byId('gameTitle'));
@@ -78,7 +81,7 @@ export class App {
   /** Todo lo que vive por juego: estado, generación, pantalla y controlador. */
   #createEntry(game, storage){
     const screen = htmlToElement(playScreen({ id: game.id, name: game.name, boardClass: game.boardClass || '', boardHtml: game.boardHtml, controls: game.controls, hint: game.hint !== false,
-      back: game.levelOrder.length === 1 ? 'Juegos' : 'Menú' }));   // sin menú de niveles, se vuelve al selector
+      back: t(game.levelOrder.length === 1 ? 'common.games' : 'common.menu') }));   // sin menú de niveles, se vuelve al selector
     byId('app').appendChild(screen);
     const store = new Store(storage, game);
     store.load();
@@ -118,7 +121,7 @@ export class App {
     bar.id = 'updateBar';
     bar.className = 'update-bar';
     bar.setAttribute('role', 'status');
-    bar.innerHTML = '<span>Hay una versión nueva</span><button data-action="apply-update">Actualizar</button>';
+    bar.innerHTML = `<span>${t('update.text')}</span><button data-action="apply-update">${t('update.apply')}</button>`;
     document.body.appendChild(bar);
     requestAnimationFrame(() => requestAnimationFrame(() => bar.classList.add('is-on')));
   }
@@ -212,10 +215,10 @@ export class App {
     if (cur && puzzle && cur.L === L && entry.game.picker.same(cur, puzzle)){ this.current = entry; this.continueGame(); return; }
     if (cur){
       const choice = await this.confirm.ask({
-        title: '¿Empezar otra partida?',
-        text: `Tienes una partida de ${entry.game.sessionLabel?.(cur) ?? entry.game.levels[cur.L].name} en curso (${formatTime(cur.time || 0)}). Si empiezas otra, se perderá.`,
-        accept: 'Empezar nueva',
-        alternate: 'Seguir con la actual'
+        title: t('confirm.newTitle'),
+        text: t('confirm.newText', { level: entry.game.sessionLabel?.(cur) ?? entry.game.levels[cur.L].name, time: formatTime(cur.time || 0) }),
+        accept: t('confirm.newAccept'),
+        alternate: t('confirm.newKeep')
       });
       if (this.currentMeta?.id !== entry.game.id || this.screen !== screen) return;
       if (choice === 'alternate'){ this.current = entry; this.continueGame(); return; }
@@ -258,11 +261,11 @@ export class App {
   async #confirmReset(){
     const c = this.current?.controller;
     if (this.screen !== 'play' || !c?.active) return;
-    if (!c.hasInput()){ this.toast.show('El tablero ya está vacío'); return; }
+    if (!c.hasInput()){ this.toast.show(t('play.alreadyEmpty')); return; }
     const choice = await this.confirm.ask({
-      title: '¿Reiniciar la partida?',
-      text: 'Se quita todo lo que has puesto en el tablero. El tiempo sigue contando.',
-      accept: 'Reiniciar'
+      title: t('confirm.resetTitle'),
+      text: t('confirm.resetText'),
+      accept: t('confirm.resetAccept')
     });
     if (choice === 'accept' && this.current?.controller === c) c.reset();
   }
@@ -329,7 +332,7 @@ export class App {
     if (this.screen === 'pick' && this.current){
       const { game, store } = this.current;
       byId('pickTitle').textContent = game.levels[this.pickLevel].name.toUpperCase();
-      byId('pickBack').textContent = game.menuLabel ?? 'Niveles';
+      byId('pickBack').textContent = game.menuLabel ?? t('common.levels');
       byId('pickBody').innerHTML = game.picker.render(this.pickLevel, store.menuData());
     }
     if (this.screen === 'progress') this.#renderProgress();
@@ -349,7 +352,7 @@ export class App {
       'open-game':    el => this.openGame(el.dataset.game),
       'resume-last':  el => this.resumeGame(el.dataset.game),
       'open-progress':  () => this.openProgress(),
-      'night':          () => this.night.toggle(),
+      'open-app-settings': () => this.overlays.open('app-settings'),
       'progress-game':  el => { this.progress.game = el.dataset.pgGame; this.#renderProgress(); },
       'progress-level': el => { this.progress.key = el.dataset.key; this.showScreen('progress-level'); },
       'progress-range': el => { this.progress.range = el.dataset.range; this.#renderProgressLevel(); },
@@ -371,7 +374,7 @@ export class App {
       'cancel-generation': () => { this.overlays.close('loading'); cur.supply.cancelRequest(); },
       'next-puzzle':  () => { this.overlays.close('win'); this.#next(); },
       'to-menu':      () => { this.overlays.close('win'); this.#toMenu(); },
-      'wipe-stats':   () => { cur.store.clearStats(); this.#refreshMenus(); this.toast.show('Estadísticas borradas'); },
+      'wipe-stats':   () => { cur.store.clearStats(); this.#refreshMenus(); this.toast.show(t('settings.wiped')); },
       'undo':         () => cur.controller.undo(),
       'redo':         () => cur.controller.redo(),
       'reset':        () => this.#confirmReset(),
@@ -389,6 +392,15 @@ export class App {
     });
     if (id === 'help') byId('helpBody').innerHTML = game.help;
     this.overlays.open(id);
+  }
+
+  /** Desplegable de idioma de los ajustes de la app: el del móvil o uno fijo; al cambiarlo se recarga. */
+  #bindLanguage(select){
+    if (!select) return;
+    const options = { auto: t('appSettings.languageAuto', { name: LANGUAGES[deviceLanguage()] }), ...LANGUAGES };
+    const choice = languageChoice();
+    select.innerHTML = Object.entries(options).map(([v, label]) => `<option value="${v}"${v === choice ? ' selected' : ''}>${label}</option>`).join('');
+    select.addEventListener('change', () => { this.#saveAll(); setLanguage(select.value); });
   }
 
   #bindEvents(){

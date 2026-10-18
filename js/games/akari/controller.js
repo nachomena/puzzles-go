@@ -1,5 +1,6 @@
 /* Partida de Akari: tocar una casilla blanca alterna marca → bombilla → vacía. */
 import { GameController } from '../../core/game-controller.js';
+import { t } from '../../i18n/index.js';
 import { bindCellDrag } from '../../ui/cell-drag.js';
 import { AkariBoard } from './board-view.js';
 import { isBlack, sights } from './engine/light.js';
@@ -51,7 +52,7 @@ export class AkariController extends GameController {
 
   findMistake(){
     const s = this.session, i = findMistake(s.marks, s.p.solution);
-    return i >= 0 ? { cell: i, message: s.marks[i] === 1 ? 'Aquí no va una bombilla' : 'Aquí sí va una bombilla' } : null;
+    return i >= 0 ? { cell: i, message: t(s.marks[i] === 1 ? 'games.akari.noBulb' : 'games.akari.bulb') } : null;
   }
   showMistake({ cell }){ this.board.flash(cell); }
   giveHint(){

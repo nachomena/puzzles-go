@@ -6,6 +6,7 @@
      sum / timed  suma de tiempos y cuántas la forman (las victorias de antes de guardar la suma no cuentan)
      bestMoves  menos movimientos sin pistas (solo los juegos que los cuentan, ver controller.winExtra) */
 import { formatTime } from '../lib/format.js';
+import { t } from '../i18n/index.js';
 
 /** Filas de estadísticas de un juego: sus niveles, o las que declare meta.statsRows. */
 export const statsRows = meta => meta.statsRows ?? meta.levelOrder.map(L => ({ key: L, name: meta.levels[L].name }));
@@ -34,27 +35,27 @@ export function recordWin(stats, key, time, hints, extra = {}){
  * veces y el tiempo medio, para que el tiempo no desaparezca.
  */
 export function levelSummary(st){
-  if (st?.best) return `Récord ${formatTime(st.best)}`;
+  if (st?.best) return t('common.record', { time: formatTime(st.best) });
   if (!st?.solved) return '';
   const avg = average(st);
-  return `${st.solved} ${st.solved === 1 ? 'resuelto' : 'resueltos'} con pistas` + (avg != null ? ` · ${formatTime(avg)}` : '');
+  return t('stats.solvedWithHints', { n: st.solved }) + (avg != null ? ` · ${formatTime(avg)}` : '');
 }
 
 /** "12 s" / "1:05 min". */
-const duration = s => s < 60 ? `${s} s` : `${formatTime(s)} min`;
+const duration = s => s < 60 ? t('stats.seconds', { n: s }) : t('stats.minutes', { time: formatTime(s) });
 
 /** Frase que compara el tiempo con la media anterior, o '' si aún no hay media. */
 export function versusAverage(time, prevAvg){
   if (prevAvg == null) return '';
   const diff = prevAvg - time;
-  if (Math.abs(diff) < 1) return 'Igual que tu media.';
-  return `${duration(Math.abs(diff))} más ${diff > 0 ? 'rápido' : 'lento'} que tu media.`;
+  if (Math.abs(diff) < 1) return t('stats.sameAsAvg');
+  return t(diff > 0 ? 'stats.fasterThanAvg' : 'stats.slowerThanAvg', { d: duration(Math.abs(diff)) });
 }
 
 /** Texto bajo el tiempo en la pantalla de victoria. */
 export function winDetail({ record, best, prevBest, prevAvg }, { time, hints, name }){
   const vs = versusAverage(time, prevAvg);
-  if (record) return `Nuevo récord en ${name}` + (prevBest ? ` (antes ${formatTime(prevBest)}).` : '.') + (vs ? ` ${vs}` : '');
-  return [hints ? `Con ${hints} ${hints === 1 ? 'pista' : 'pistas'}.` : '', best ? `Récord: ${formatTime(best)}.` : '', vs]
+  if (record) return t('stats.newRecord', { name }) + (prevBest ? t('stats.before', { time: formatTime(prevBest) }) : '.') + (vs ? ` ${vs}` : '');
+  return [hints ? t('stats.withHints', { n: hints }) : '', best ? t('stats.recordWas', { time: formatTime(best) }) : '', vs]
     .filter(Boolean).join(' ');
 }

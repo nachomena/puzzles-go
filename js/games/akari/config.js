@@ -1,5 +1,6 @@
 /* Configuración de Akari. */
 import meta from './meta.js';
+import { t } from '../../i18n/index.js';
 
 export const LEVELS = meta.levels;
 
@@ -9,6 +10,6 @@ export const TOOL = Object.freeze({ TAP: 'tap' });
 export const DEFAULT_SETTINGS = Object.freeze({ errors: true, timer: true });
 
 export const SETTINGS = Object.freeze([
-  { key: 'errors', title: 'Resaltar errores', desc: 'En rojo las bombillas que se ven entre sí y los números que ya no pueden cumplirse: con bombillas de más, o sin sitio para las que faltan.' },
-  { key: 'timer',  title: 'Cronómetro',       desc: 'Muestra el tiempo de la partida.' }
+  { key: 'errors', title: t('settings.errors'), desc: t('games.akari.errorsDesc') },
+  { key: 'timer',  title: t('settings.timer'), desc: t('settings.timerDesc') }
 ]);

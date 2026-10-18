@@ -1,5 +1,6 @@
 /* Partida de Kakuro: como el Sudoku (core/digit-grid-controller.js), con casillas negras y tramos. */
 import { DigitGridController } from '../../core/digit-grid-controller.js';
+import { t } from '../../i18n/index.js';
 import { KakuroBoard } from './board-view.js';
 import { peersOf, conflicts, findHint } from './rules.js';
 
@@ -21,7 +22,7 @@ export class KakuroController extends DigitGridController {
   isSolved(){ const { p, values } = this.session; return p.white.every((w, i) => !w || values[i] === p.solution[i]); }
   findMistake(){
     const { p, values } = this.session, cell = values.findIndex((v, i) => p.white[i] && v > 0 && v !== p.solution[i]);
-    return cell >= 0 ? { cell, message: 'Este número no va aquí' } : null;
+    return cell >= 0 ? { cell, message: t('play.wrongNumber') } : null;
   }
   /** Las negras no se seleccionan. */
   select(i){ if (i < 0 || this.session.p.white[i]) super.select(i); }

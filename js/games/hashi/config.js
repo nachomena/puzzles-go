@@ -1,5 +1,6 @@
 /* Configuración de Hashi. */
 import meta from './meta.js';
+import { t } from '../../i18n/index.js';
 
 export const LEVELS = meta.levels;
 
@@ -9,6 +10,6 @@ export const TOOL = Object.freeze({ BRIDGE: 'bridge' });
 export const DEFAULT_SETTINGS = Object.freeze({ errors: true, timer: true });
 
 export const SETTINGS = Object.freeze([
-  { key: 'errors', title: 'Marcar islas con puentes de más', desc: 'En rojo las que ya tienen más puentes de los que dice su número.' },
-  { key: 'timer', title: 'Cronómetro', desc: 'Muestra el tiempo de la partida.' }
+  { key: 'errors', title: t('games.hashi.errors'), desc: t('games.hashi.errorsDesc') },
+  { key: 'timer',  title: t('settings.timer'), desc: t('settings.timerDesc') }
 ]);

@@ -1,6 +1,6 @@
 /* Configuración del Solitario. */
 import meta from './meta.js';
-import { BOARDS } from './engine/rules.js';
+import { t } from '../../i18n/index.js';
 
 export const LEVELS = meta.levels;
 
@@ -10,7 +10,7 @@ export const TOOL = Object.freeze({ MOVE: 'move' });
 export const DEFAULT_SETTINGS = Object.freeze({ board: 'english', timer: true });
 
 export const SETTINGS = Object.freeze([
-  { key: 'board', title: 'Tablero', desc: 'Inglés: 33 agujeros en cruz. Europeo: 37, con un agujero más en cada esquina interior.',
-    options: [{ value: 'english', label: `${BOARDS.english.name} (33)` }, { value: 'european', label: `${BOARDS.european.name} (37)` }] },
-  { key: 'timer', title: 'Cronómetro', desc: 'Muestra el tiempo de la partida.' }
+  { key: 'board', title: t('games.peg-solitaire.board'), desc: t('games.peg-solitaire.boardDesc'),
+    options: [{ value: 'english', label: `${t('games.peg-solitaire.english')} (33)` }, { value: 'european', label: `${t('games.peg-solitaire.european')} (37)` }] },
+  { key: 'timer',  title: t('settings.timer'), desc: t('settings.timerDesc') }
 ]);

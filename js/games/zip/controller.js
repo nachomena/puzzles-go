@@ -1,6 +1,7 @@
 /* Partida de Zip: arrastrar desde el 1 para dibujar el camino casilla a casilla. Volver hacia atrás
    sobre el propio camino lo recorta; tocar una casilla del camino lo deja acabando ahí. */
 import { GameController } from '../../core/game-controller.js';
+import { t } from '../../i18n/index.js';
 import { bindCellDrag } from '../../ui/cell-drag.js';
 import { ZipBoardView } from './board-view.js';
 import { labels, canExtend, isSolved, firstMistake } from './rules.js';
@@ -59,7 +60,7 @@ export class ZipController extends GameController {
 
   findMistake(){
     const s = this.session, k = firstMistake(s.path, s.p.solution);
-    return k >= 0 ? { index: k, message: 'El camino se desvía aquí' } : null;
+    return k >= 0 ? { index: k, message: t('games.zip.detour') } : null;
   }
   showMistake({ index }){ this.view.flash(this.session.path[index]); }
   /** Pista: alarga el camino (bien hecho) hasta el siguiente número. */

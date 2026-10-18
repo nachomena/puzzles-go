@@ -1,6 +1,6 @@
 /* Marcado propio de Smart Circle: tablero redondo, botones, bandeja de piezas y ayuda. */
 import { iconButton } from '../../ui/templates.js';
-import { SPOTS_HELP } from '../../ui/fit-spots.js';
+import { t } from '../../i18n/index.js';
 import { gestureStrip } from '../../ui/help-figure.js';
 
 const chip = (action, icon, text, label) =>
@@ -9,33 +9,16 @@ const chip = (action, icon, text, label) =>
 
 export const boardHtml = () =>
   `<div class="sl-area">` +
-  `<div class="sl-board" data-sl-board role="application" aria-label="Tablero"><svg viewBox="-1.04 -1.04 2.08 2.08"></svg></div>` +
+  `<div class="sl-board" data-sl-board role="application" aria-label="${t('common.board')}"><svg viewBox="-1.04 -1.04 2.08 2.08"></svg></div>` +
   `<div class="sl-actions">` +
   `<div class="sl-actions__right">` +
-  chip('turn-ribs', 'turn', 'Nervios', 'Girar los nervios del tablero') +
+  chip('turn-ribs', 'turn', t('games.smart-circle.ribs'), t('games.smart-circle.ribsAria')) +
   `</div></div></div>`;
 
 export const controls = () =>
-  `<div class="sl-tray" data-tray aria-label="Piezas sin colocar"></div>`;
+  `<div class="sl-tray" data-tray aria-label="${t('common.trayAria')}"></div>`;
 
-export const help = () => `
-  <p>Coloca las <b>10 piezas</b> en el tablero hasta llenar sus <b>48 agujeros</b>.</p>
-  <ul>
-    <li>Las bolas grandes van en el anillo de fuera, las medianas en el del medio y las pequeñas en el de dentro.</li>
-    <li>Las piezas giran al moverlas alrededor del tablero y tienen dos caras: tócalas para darles la vuelta.</li>
-    <li>Los <b>nervios</b> del borde no se pueden cruzar: una pieza no puede unir dos bolas grandes a ambos lados de un nervio.</li>
-    <li>Cada reto tiene una sola solución.</li>
-  </ul>
-  <h3>Niveles</h3>
-  <ul>
-    <li><b>Fácil:</b> algunas piezas colocadas.</li>
-    <li><b>Difícil:</b> una o dos piezas, y no sabes cómo está girado el tablero: solo ves las marcas de algunos nervios en el borde. Gira los nervios con el botón <b>Nervios</b> hasta su sitio.</li>
-    <li><b>Experto:</b> dos piezas y ninguna marca: también hay que encontrar dónde van los nervios.</li>
-  </ul>
-  <h3>Controles</h3>
-  ${gestureStrip([{ icon: 'drag', piece: 'rings', text: 'Arrastra al tablero' }, { icon: 'flip', text: 'Toca: da la vuelta' }])}
-  <ul>
-    <li>Arrastra una pieza de la bandeja al tablero; arrástrala fuera para devolverla.</li>
-    <li>Toca una pieza, en la bandeja o en el tablero, para darle la vuelta.</li>
-    <li>${SPOTS_HELP.replace('tal como está girada', 'con la cara que tiene')}</li>
-  </ul>`;
+export const help = () => t('games.smart-circle.help', {
+  gestures: gestureStrip([{ icon: 'drag', piece: 'rings', text: t('common.dragToBoard') }, { icon: 'flip', text: t('common.tapFlip') }]),
+  spots: t('games.smart-circle.spotsHelp')
+});

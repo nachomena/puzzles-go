@@ -13,6 +13,7 @@ export default defineConfig({
     baseURL: `http://localhost:${PORT}/`,
     ...devices['iPhone 13'],
     defaultBrowserType: 'chromium',
+    locale: 'es-ES',   // la app sigue el idioma del móvil: las pruebas van en español
     trace: 'retain-on-failure'
   },
   webServer: {

@@ -2,6 +2,7 @@
    60°, y voltear la elegida con un botón. Con la pieza elegida se marcan los sitios donde cabe tal
    como está girada; tocar uno la muestra ahí y tocarlo otra vez la coloca. */
 import { GameController } from '../../core/game-controller.js';
+import { t } from '../../i18n/index.js';
 import { HexagonBoardView } from './board-view.js';
 import { PIECES, pointsOf, cellsOf } from './engine/pieces.js';
 import { fits, isSolved, findHint, findMistake, occupancy } from './rules.js';
@@ -86,13 +87,13 @@ export class SmartHexagonController extends GameController {
     s.sel = -1;
   }
   isSolved(){ return isSolved(this.session.place, this.session.p.solution); }
-  get resetMessage(){ return 'Tablero vacío.'; }
+  get resetMessage(){ return t('play.clearedShort'); }
   celebrate(){ this.session.sel = -1; this.renderBoard(); this.view.celebrate(); }
   get actions(){ return { flip: () => this.flip() }; }
 
   findMistake(){
     const s = this.session, m = findMistake(s.place, s.p.solution, s.p.fixed);
-    return m && { ...m, message: 'Esta pieza no va aquí' };
+    return m && { ...m, message: t('play.wrongPiece') };
   }
   showMistake({ piece }){ this.session.sel = piece; this.render(); this.view.flash(piece); }
   giveHint(){
@@ -138,7 +139,7 @@ export class SmartHexagonController extends GameController {
     this.spots.clear();
     if (s.sel !== piece){ s.sel = piece; this.render(); return; }
     const pose = s.place[piece], m = pose ? pose.m : s.tm[piece], r = ((pose ? pose.r : s.tr[piece]) + 1) % 6;
-    this.#reorient(piece, m, r, 'No cabe girada aquí');
+    this.#reorient(piece, m, r, t('play.noRotate'));
   }
 
   /** Da la vuelta a la pieza elegida. */
@@ -147,7 +148,7 @@ export class SmartHexagonController extends GameController {
     if (!this.active || piece < 0 || this.#isFixed(piece)) return;
     this.spots.clear();
     const pose = s.place[piece], m = 1 - (pose ? pose.m : s.tm[piece]), r = pose ? pose.r : s.tr[piece];
-    this.#reorient(piece, m, r, 'No cabe volteada aquí');
+    this.#reorient(piece, m, r, t('play.noFlip'));
   }
 
   /** Suelta la pieza con la postura `pose` (o fuera del tablero si es null). */

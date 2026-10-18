@@ -1,5 +1,6 @@
 /* Partida de Binario: tocar una casilla alterna rojo → azul → vacía. Las dadas no se cambian. */
 import { GameController } from '../../core/game-controller.js';
+import { t } from '../../i18n/index.js';
 import { bindCellDrag } from '../../ui/cell-drag.js';
 import { BinarioBoard } from './board-view.js';
 import { evaluate, isSolved, findMistake, findHint, HINT_WHY } from './rules.js';
@@ -46,7 +47,7 @@ export class BinarioController extends GameController {
 
   findMistake(){
     const s = this.session, i = findMistake(s.g, s.p.solution);
-    return i >= 0 ? { cell: i, message: 'Este color no va aquí' } : null;
+    return i >= 0 ? { cell: i, message: t('games.binario.wrongColor') } : null;
   }
   showMistake({ cell }){ this.board.flash(cell); }
   giveHint(){

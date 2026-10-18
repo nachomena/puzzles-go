@@ -1,6 +1,7 @@
 /* Partida de Rush Hour: arrastrar cada vehículo por su carril hasta sacar el coche rojo.
    Un movimiento es deslizar un vehículo (cualquier distancia); se puede deshacer y rehacer. */
 import { GameController } from '../../core/game-controller.js';
+import { t } from '../../i18n/index.js';
 import { RushHourBoardView } from './board-view.js';
 import { range, isSolved, solve } from './engine/board.js';
 
@@ -25,7 +26,7 @@ export class RushHourController extends GameController {
   hasInput(){ return this.session.moves > 0; }
   clearInput(){ const s = this.session; s.pos = s.p.pos.slice(); s.moves = 0; }
   isSolved(){ return isSolved(this.session.p.cars, this.session.pos); }
-  get resetMessage(){ return 'Vuelta a empezar. Puedes deshacerlo.'; }
+  get resetMessage(){ return t('games.rush-hour.restarted'); }
   celebrate(){ this.view.celebrate(); }
   winExtra(){ return { moves: this.session.moves, min: this.session.p.min }; }
 

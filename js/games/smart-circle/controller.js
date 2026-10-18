@@ -1,11 +1,11 @@
 /* Partida de Smart Circle: arrastrar piezas alrededor del tablero (moverlas de sector es girarlas),
    tocarlas para voltearlas y, en los niveles difíciles, girar los nervios. */
 import { GameController } from '../../core/game-controller.js';
+import { t } from '../../i18n/index.js';
 import { CircleBoardView } from './board-view.js';
 import { PIECES, SECTORS, cellsOf, crossesRib, ribsAt } from './engine/pieces.js';
 import { fits, isSolved, findHint, findMistake, occupancy, blockedBy } from './rules.js';
 import { nearestShift } from './piece-svg.js';
-import { plural } from '../../lib/format.js';
 import { FitSpots } from '../../ui/fit-spots.js';
 import { xy } from './piece-svg.js';
 
@@ -75,13 +75,13 @@ export class SmartCircleController extends GameController {
     s.sel = -1;
   }
   isSolved(){ return isSolved(this.session.place, this.session.p.solution); }
-  get resetMessage(){ return 'Tablero vacío.'; }
+  get resetMessage(){ return t('play.clearedShort'); }
   celebrate(){ this.session.sel = -1; this.renderBoard(); this.view.celebrate(); }
   get actions(){ return { 'turn-ribs': () => this.turnRibs() }; }
 
   findMistake(){
     const s = this.session, m = findMistake(s.place, s.p.solution, s.p.fixed);
-    return m && { ...m, message: 'Esta pieza no va aquí' };
+    return m && { ...m, message: t('play.wrongPiece') };
   }
   showMistake({ piece }){ this.session.sel = piece; this.render(); this.view.flash(piece); }
   giveHint(){
@@ -89,7 +89,7 @@ export class SmartCircleController extends GameController {
     if (!hint) return false;
     if (hint.ro !== undefined){
       this.#setRibs(hint.ro);
-      this.notify('Así van los nervios');
+      this.notify(t('games.smart-circle.ribsHint'));
       return true;
     }
     // lo que ocupe su sitio vuelve a la bandeja
@@ -131,7 +131,7 @@ export class SmartCircleController extends GameController {
       const ro = (s.ro + step) % SECTORS;
       if (s.p.fixed.some(p => crossesRib(cellsOf(p, s.place[p]), ribsAt(ro)))) continue;
       const n = this.#setRibs(ro);
-      if (n) this.notify(`${plural(n, 'pieza')} ${n === 1 ? 'vuelve' : 'vuelven'} a la bandeja`);
+      if (n) this.notify(t('games.smart-circle.backToTray', { n }));
       return;
     }
   }
@@ -156,7 +156,7 @@ export class SmartCircleController extends GameController {
       if (fits(s.place, piece, next, s.ro)){ s.place[piece] = next; this.commit(true); return; }
     }
     this.render();
-    this.notify('No cabe volteada aquí');
+    this.notify(t('play.noFlip'));
   }
 
   /** Suelta la pieza con la postura `pose` (o fuera del tablero si es null). */

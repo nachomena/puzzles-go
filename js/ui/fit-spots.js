@@ -1,15 +1,15 @@
 /* "Mostrar dónde cabe" (juegos de piezas): con una pieza elegida se marca con un punto cada sitio
    del tablero donde cabe tal como está girada y volteada. Tocar un punto la muestra ahí (vista
    previa) y tocarlo otra vez la coloca. Cada juego calcula sus sitios; aquí va lo común. */
+import { t } from '../i18n/index.js';
 
 /** Ajuste de la hoja de Ajustes (encendido por defecto en los juegos que lo usan). */
 export const SPOTS_SETTING = Object.freeze({
-  key: 'spots', title: 'Mostrar dónde cabe',
-  desc: 'Al elegir una pieza, marca los sitios del tablero donde cabe tal como está girada. Toca uno para verla ahí y otra vez para colocarla.'
+  key: 'spots', title: t('settings.spots'), desc: t('settings.spotsDesc')
 });
 
 /** Texto para la ayuda de cada juego. */
-export const SPOTS_HELP = 'Con una pieza elegida, los puntos marcan dónde cabe tal como está girada: toca uno para verla ahí y otra vez para colocarla. Se puede desactivar en Ajustes.';
+export const SPOTS_HELP = t('settings.spotsHelp');
 
 /**
  * Marcado SVG de los puntos (en las unidades del tablero de cada juego).

@@ -1,5 +1,6 @@
 /* Configuración de Smart Circle. */
 import meta from './meta.js';
+import { t } from '../../i18n/index.js';
 import { SPOTS_SETTING } from '../../ui/fit-spots.js';
 
 export const LEVELS = meta.levels;
@@ -11,5 +12,5 @@ export const DEFAULT_SETTINGS = Object.freeze({ spots: true, timer: true });
 
 export const SETTINGS = Object.freeze([
   SPOTS_SETTING,
-  { key: 'timer', title: 'Cronómetro', desc: 'Muestra el tiempo de la partida.' }
+  { key: 'timer',  title: t('settings.timer'), desc: t('settings.timerDesc') }
 ]);

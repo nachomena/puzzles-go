@@ -1,11 +1,12 @@
 /* Datos mínimos de Engranajes para el selector y el menú de niveles: se cargan sin el motor ni la interfaz. */
 import { difficulty, LEVEL_ORDER, OLD_LEVELS } from '../../core/levels.js';
+import { t } from '../../i18n/index.js';
 
 export default Object.freeze({
   id: 'gears',
-  name: 'Engranajes',
+  name: t('games.gears.name'),
   /** Frase corta bajo el nombre en el selector. */
-  tagline: 'De la manivela al cerrojo',
+  tagline: t('games.gears.tagline'),
   icon: 'gears',
   storageKey: 'puzzlesgo.gears.v1',
   /** `target` es el nivel del generador (engine/generator.js): panel más grande y menos pistas. */

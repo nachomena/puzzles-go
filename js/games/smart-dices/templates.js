@@ -1,5 +1,6 @@
 /* Marcado propio de Smart Dices: tablero con flechas, controles, bandeja de piezas y ayuda. */
 import { board, iconButton } from '../../ui/templates.js';
+import { t } from '../../i18n/index.js';
 import { gestureStrip } from '../../ui/help-figure.js';
 
 /** Puntos de cada cara (posiciones 0..8 de la rejilla 3×3), como en el reglamento. */
@@ -32,18 +33,9 @@ export const boardHtml = () =>
 
 /** Bajo el tablero solo va la bandeja, para que las piezas se vean sin hacer scroll. */
 export const controls = () =>
-  `<div class="sd-tray" data-tray aria-label="Piezas sin colocar"></div>`;
+  `<div class="sd-tray" data-tray aria-label="${t('common.trayAria')}"></div>`;
 
-export const help = () => `
-  <p>Coloca las 12 piezas en el tablero para que cada una de las <b>4 casillas</b> muestre una <b>cara de dado</b> válida, en cualquier orientación.</p>
-  <p>Una flecha junto a una fila o columna indica cuánto deben <b>sumar los dos dados</b> de esa fila o columna. Las piezas que ya vienen colocadas (en gris) no se pueden mover; las que pones tú se ven resaltadas. Cada reto tiene una única solución.</p>
-  <div class="sd-faces" aria-hidden="true">${faces()}</div>
-  <h3>Controles</h3>
-  ${gestureStrip([{ icon: 'drag', piece: 'dice', text: 'Arrastra al tablero' }, { icon: 'turn', text: 'Toca: gira' }])}
-  <ul>
-    <li>Arrastra una pieza de la bandeja al tablero para colocarla.</li>
-    <li>Toca una pieza para girarla 90°, en la bandeja o en el tablero.</li>
-    <li>Arrastra una pieza fuera del tablero para devolverla a la bandeja.</li>
-  </ul>
-  <h3>Truco de inicio</h3>
-  <p>Los puntos suman siempre 12 entre los 4 dados. Si una fila suma 9, la otra suma 3.</p>`;
+export const help = () => t('games.smart-dices.help', {
+  faces: `<div class="sd-faces" aria-hidden="true">${faces()}</div>`,
+  gestures: gestureStrip([{ icon: 'drag', piece: 'dice', text: t('common.dragToBoard') }, { icon: 'turn', text: t('common.tapRotate') }])
+});

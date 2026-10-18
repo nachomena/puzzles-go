@@ -6,6 +6,7 @@
      boardSize() → { W, H }   orient(piece, m, r) → { w, h }   fits(place, piece, pose)
      isFixed(piece)           (por defecto ninguna) */
 import { GameController } from './game-controller.js';
+import { t } from '../i18n/index.js';
 import { bindPieceDrag } from '../ui/piece-drag.js';
 
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
@@ -43,7 +44,7 @@ export class GridPiecesController extends GameController {
     s.place.forEach((pose, piece) => { if (pose && !this.isFixed(piece)) this.toTray(piece); });
     s.sel = -1;
   }
-  get resetMessage(){ return 'Tablero vacío.'; }
+  get resetMessage(){ return t('play.clearedShort'); }
   celebrate(){ this.session.sel = -1; this.renderBoard(); this.view.celebrate(); }
   get actions(){ return { flip: () => this.flip() }; }
 
@@ -88,7 +89,7 @@ export class GridPiecesController extends GameController {
     if (s.sel !== piece){ s.sel = piece; this.render(); return; }
     const pose = s.place[piece];
     const m = pose ? pose.m : s.tm[piece], r = ((pose ? pose.r : s.tr[piece]) + 1) % 4;
-    this.#reorient(piece, m, r, 'No cabe girada aquí');
+    this.#reorient(piece, m, r, t('play.noRotate'));
   }
 
   /** Da la vuelta (en espejo, sin cambiar el giro aparente) a la pieza elegida. */
@@ -97,7 +98,7 @@ export class GridPiecesController extends GameController {
     if (!this.active || piece < 0 || this.isFixed(piece)) return;
     const pose = s.place[piece];
     const m = 1 - (pose ? pose.m : s.tm[piece]), r = pose ? pose.r : s.tr[piece];
-    this.#reorient(piece, m, (4 - r) % 4, 'No cabe volteada aquí');
+    this.#reorient(piece, m, (4 - r) % 4, t('play.noFlip'));
   }
 
   /** Suelta una pieza: en el tablero (si cabe; pegada al borde si asoma un poco) o fuera, a la bandeja. */

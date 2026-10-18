@@ -5,29 +5,30 @@
 import { svgIcon } from './templates.js';
 import { formatTime } from '../lib/format.js';
 import { statsRows } from '../core/stats.js';
+import { t } from '../i18n/index.js';
 
 /** Grupos del selector: nombre e icono de su fila. */
 export const GROUPS = Object.freeze({
-  smart: Object.freeze({ name: 'Smart Games', icon: 'smart' })
+  smart: Object.freeze({ name: t('hub.groups.smart'), icon: 'smart' })
 });
 
 /** "Récord 1:20" o "Récord · Inglés 0:42 · Europeo 3:10" (solo las filas con récord), o ''. */
 export function bestLine(meta, stats = {}){
   const rows = statsRows(meta), withBest = rows.filter(r => stats[r.key]?.best);
   if (!withBest.length) return '';
-  if (rows.length === 1) return `Récord ${formatTime(stats[rows[0].key].best)}`;
-  return 'Récord · ' + withBest.map(r => `${r.name} ${formatTime(stats[r.key].best)}`).join(' · ');
+  if (rows.length === 1) return t('common.record', { time: formatTime(stats[rows[0].key].best) });
+  return t('common.recordWord') + ' · ' + withBest.map(r => `${r.name} ${formatTime(stats[r.key].best)}`).join(' · ');
 }
 
 /** "ahora", "hace 5 min", "hace 2 h", "ayer", "hace 3 días". */
 export function ago(at, now = Date.now()){
   const min = Math.floor((now - at) / 60000);
-  if (min < 1) return 'ahora';
-  if (min < 60) return `hace ${min} min`;
+  if (min < 1) return t('hub.now');
+  if (min < 60) return t('hub.minutesAgo', { n: min });
   const h = Math.floor(min / 60);
-  if (h < 24) return `hace ${h} h`;
+  if (h < 24) return t('hub.hoursAgo', { n: h });
   const d = Math.floor(h / 24);
-  return d === 1 ? 'ayer' : `hace ${d} días`;
+  return d === 1 ? t('hub.yesterday') : t('hub.daysAgo', { n: d });
 }
 
 /** La partida a medias jugada más recientemente, o null. */
@@ -47,7 +48,7 @@ export function lastSession(items){
 export const resumeCardHtml = ({ icon, name, detail, attrs }) =>
   `<button class="resume-card glass" ${attrs}>` +
   `<span class="resume-card__icon">${svgIcon(icon)}</span>` +
-  `<span class="resume-card__text"><span class="resume-card__kicker">Continuar</span>` +
+  `<span class="resume-card__text"><span class="resume-card__kicker">${t('hub.continue')}</span>` +
   `<span class="resume-card__name">${name}</span><span class="resume-card__detail">${detail}</span></span>` +
   `<span class="resume-card__play" aria-hidden="true">${svgIcon('play')}</span></button>`;
 
@@ -96,7 +97,7 @@ export class HubView {
       if (done.has(g)) return '';
       done.add(g);
       const members = items.filter(i => i.meta.group === g), isOpen = this.open.has(g);
-      return row({ icon: GROUPS[g].icon, name: GROUPS[g].name, info: `${members.length} juegos`, cls: ' game-group' + (isOpen ? ' is-open' : ''),
+      return row({ icon: GROUPS[g].icon, name: GROUPS[g].name, info: t('hub.gamesCount', { n: members.length }), cls: ' game-group' + (isOpen ? ' is-open' : ''),
         attrs: `data-action="toggle-group" data-group="${g}" aria-expanded="${isOpen}"` }) +
         (isOpen ? `<div class="game-group__items">${members.map(i => gameCard(i, true)).join('')}</div>` : '');
     }).join('');

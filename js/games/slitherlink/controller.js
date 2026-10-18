@@ -1,6 +1,7 @@
 /* Partida de Slitherlink: tocar un lado lo cambia (nada → línea → tachado → nada); arrastrar de punto a
    punto dibuja líneas (o las borra, si se empieza sobre una). */
 import { GameController } from '../../core/game-controller.js';
+import { t } from '../../i18n/index.js';
 import { SlitherBoardView } from './board-view.js';
 import { geometry } from './engine/grid.js';
 import { lineCounts, crowded, isSolved, findMistake, findHint } from './rules.js';
@@ -34,7 +35,7 @@ export class SlitherController extends GameController {
   findMistake(){
     const s = this.session, k = findMistake(s.e, s.p.solution);
     if (k < 0) return null;
-    return { edge: k, message: s.e[k] === 1 ? 'Esta línea sobra' : 'Aquí va una línea' };
+    return { edge: k, message: t(s.e[k] === 1 ? 'games.slitherlink.extraLine' : 'games.slitherlink.missingLine') };
   }
   showMistake({ edge }){ this.view.flashEdge(edge); }
   giveHint(){

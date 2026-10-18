@@ -9,8 +9,8 @@ export const CENTER = 24;
  * no se puede terminar con una sola bola, así que empieza con vacío el agujero de encima del centro.
  */
 export const BOARDS = Object.freeze({
-  english:  Object.freeze({ name: 'Inglés',  start: CENTER }),
-  european: Object.freeze({ name: 'Europeo', start: 10 })
+  english:  Object.freeze({ start: CENTER }),
+  european: Object.freeze({ start: 10 })
 });
 
 export const isBoard = b => Object.hasOwn(BOARDS, b);

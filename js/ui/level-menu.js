@@ -3,6 +3,7 @@
 import { formatTime } from '../lib/format.js';
 import { levelSummary } from '../core/stats.js';
 import { resumeCardHtml } from './hub-view.js';
+import { t } from '../i18n/index.js';
 
 /** Bajo cada nivel va el récord (ver levelSummary), salvo que el juego diga otra cosa. */
 const levelMeta = (meta, L, stats) => meta.levelMeta ? meta.levelMeta(L, stats) : levelSummary(stats[L]);
@@ -20,7 +21,7 @@ export class LevelMenu {
    */
   render(meta, { stats, cur }){
     this.titleEl.textContent = meta.name.toUpperCase();
-    if (this.labelEl) this.labelEl.textContent = meta.menuLabel ?? 'Nueva partida';
+    if (this.labelEl) this.labelEl.textContent = meta.menuLabel ?? t('menu.newGame');
     const order = meta.levelOrder;
     this.levelsEl.innerHTML = order.map((L, k) => {
       const bars = order.map((_, j) => `<i${j <= k ? ' class="is-on"' : ''}></i>`).join('');

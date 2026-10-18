@@ -106,12 +106,12 @@ test('menú: progreso por desafío, nombres y partida guardada', () => {
   const stats = { [pentaKey('small', 'A', 3)]: { solved: 1 }, [pentaKey('small', 'B', 4)]: { solved: 2 }, [pentaKey('slam', 'A', 5)]: { solved: 1 } };
   assert.equal(solvedIn('small', stats), 2);
   assert.equal(meta.levelMeta('small', stats), '2 de 42 resueltos');
-  assert.equal(rowName('12'), 'N°12');
+  assert.equal(rowName('12'), 'N° 12');
   assert.equal(rowName('B'), 'B');
   const s = { L: 'grand', p: penta('grand', 'B', 7), place: PIECES.map(() => null), tm: [], tr: [], time: 3, done: false, hints: 0 };
   assert.equal(game.statsKey(s), 'grand:B:7');
-  assert.equal(meta.sessionLabel(s), 'Gran Slam B · PENTA 7');
-  assert.equal(meta.resumeLabel(s), 'Gran Slam B · 7');
+  assert.equal(meta.sessionLabel(s), 'Medio B · 7 piezas');
+  assert.equal(meta.resumeLabel(s), 'Medio B · 7');
   assert.ok(game.restoreSession(structuredClone(s)));
   const bad = structuredClone(s);
   bad.place[s.p.pieces[0]] = { m: 0, r: 0, x: 4, y: 0 };   // se sale por la derecha

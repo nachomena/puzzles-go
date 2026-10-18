@@ -1,6 +1,7 @@
 /* Partida de Katamino (arrastrar, girar y voltear: core/grid-pieces-controller.js). Al resolver un
    PENTA, el siguiente de la fila empieza con el tablero vacío, una fila más y una pieza nueva. */
 import { GridPiecesController } from '../../core/grid-pieces-controller.js';
+import { t } from '../../i18n/index.js';
 import { KataminoBoardView } from './board-view.js';
 import { W, PIECES, orient } from './engine/pieces.js';
 import { nextPenta } from './engine/sets.js';
@@ -44,8 +45,8 @@ export class KataminoController extends GridPiecesController {
     this.solution = res.solution || null;
     if (res.solution) return null;
     return res.mistake >= 0
-      ? { piece: res.mistake, message: 'Esta pieza no va aquí' }
-      : { piece: -1, message: 'Así no se puede completar: quita alguna pieza' };
+      ? { piece: res.mistake, message: t('play.wrongPiece') }
+      : { piece: -1, message: t('games.katamino.stuck') };
   }
   showMistake({ piece }){
     if (piece < 0) return;

@@ -7,6 +7,7 @@ import { hintWait } from './hint-cooldown.js';
 import { formatTime } from '../lib/format.js';
 import { statsRows, winDetail } from './stats.js';
 import { winStrip } from './progress.js';
+import { t } from '../i18n/index.js';
 
 export class GameController {
   /**
@@ -58,7 +59,7 @@ export class GameController {
   /** Recalcula lo derivado tras un cambio (p. ej. X automáticas). */
   normalize(){}
   /** Aviso al reiniciar (los juegos sin deshacer no deben ofrecerlo). */
-  get resetMessage(){ return 'Tablero vacío. Puedes deshacerlo.'; }
+  get resetMessage(){ return t('play.cleared'); }
   /** Reacciona a un ajuste cambiado. */
   onSetting(key){}
   /** Animación de victoria. */
@@ -183,7 +184,7 @@ export class GameController {
   hint(){
     if (!this.active) return;
     const wait = this.hintWait;
-    if (wait > 0){ this.notify(`Próxima pista en ${formatTime(wait)}`); return; }
+    if (wait > 0){ this.notify(t('play.nextHint', { time: formatTime(wait) })); return; }
     const mistake = this.findMistake();
     if (mistake){
       this.notify(mistake.message);

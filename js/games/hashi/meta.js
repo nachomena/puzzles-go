@@ -1,11 +1,12 @@
 /* Datos mínimos de Hashi para el selector y el menú de niveles: se cargan sin el motor ni la interfaz. */
 import { difficulty, LEVEL_ORDER, OLD_LEVELS } from '../../core/levels.js';
+import { t } from '../../i18n/index.js';
 
 export default Object.freeze({
   id: 'hashi',
-  name: 'Hashi',
+  name: t('games.hashi.name'),
   /** Frase corta bajo el nombre en el selector. */
-  tagline: 'Puentes entre islas',
+  tagline: t('games.hashi.tagline'),
   icon: 'hashi',
   storageKey: 'puzzlesgo.hashi.v1',
   /** `target` es el nivel del generador: tablero más grande y más islas cuanto más alto. */

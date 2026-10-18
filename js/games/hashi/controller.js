@@ -2,6 +2,7 @@
    puente; con dos, el siguiente toque los quita. Dos toques seguidos en una isla quitan todos sus
    puentes. Los puentes no pueden cruzarse. */
 import { GameController } from '../../core/game-controller.js';
+import { t } from '../../i18n/index.js';
 import { HashiBoardView } from './board-view.js';
 import { edgesOf } from './engine/graph.js';
 import { counts, blockedBy, isSolved, findMistake, findHint } from './rules.js';
@@ -35,7 +36,7 @@ export class HashiController extends GameController {
 
   findMistake(){
     const k = findMistake(this.session.val, this.session.p.solution);
-    return k >= 0 ? { edge: k, message: 'Aquí sobra un puente' } : null;
+    return k >= 0 ? { edge: k, message: t('games.hashi.extraBridge') } : null;
   }
   showMistake({ edge }){ this.view.flashEdge(edge); }
   giveHint(){
@@ -53,7 +54,7 @@ export class HashiController extends GameController {
     const s = this.session;
     if (!this.active || k < 0) return;
     const next = (s.val[k] + 1) % 3;
-    if (next > 0 && blockedBy(this.edges, s.val, k) >= 0){ this.notify('Se cruza con otro puente'); return; }
+    if (next > 0 && blockedBy(this.edges, s.val, k) >= 0){ this.notify(t('games.hashi.crosses')); return; }
     this.record();
     s.val[k] = next;
     this.commit(true);

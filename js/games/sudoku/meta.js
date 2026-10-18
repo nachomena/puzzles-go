@@ -1,11 +1,12 @@
 /* Datos mínimos del Sudoku para el selector y el menú de niveles: se cargan sin el motor ni la interfaz del juego. */
 import { difficulty, LEVEL_ORDER, OLD_LEVELS } from '../../core/levels.js';
+import { t } from '../../i18n/index.js';
 
 export default Object.freeze({
   id: 'sudoku',
-  name: 'Sudoku',
+  name: t('games.sudoku.name'),
   /** Frase corta bajo el nombre en el selector. */
-  tagline: 'Del 1 al 9 sin repetir',
+  tagline: t('games.sudoku.tagline'),
   icon: 'grid',
   storageKey: 'puzzlesgo.sudoku.v1',
   /** `target` es el nivel del solucionador lógico que exige el tablero. */

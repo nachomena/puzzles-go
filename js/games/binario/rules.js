@@ -1,6 +1,7 @@
 /* Reglas de Binario sobre lo que pone el jugador: g[i] = 0 vacía, 1 rojo, 2 azul (con las casillas
    dadas incluidas). Funciones puras, sin DOM. */
 import { lines, nextDeduction, lookahead } from './engine/grid.js';
+import { t } from '../../i18n/index.js';
 
 /** Casillas que rompen una regla: tres iguales seguidos, más de la mitad de un color, líneas iguales. */
 export function evaluate(n, g){
@@ -29,11 +30,11 @@ export const findMistake = (g, solution) => g.findIndex((v, i) => v && v !== sol
 
 /** Por qué va así, para la pista. */
 export const HINT_WHY = Object.freeze({
-  trio: 'Así no quedan tres iguales seguidos',
-  half: 'Esta línea ya tiene la mitad de ese color',
-  unique: 'Si no, habría dos líneas iguales',
-  look: 'Con el otro color no saldría',
-  none: 'Esta casilla va así'
+  trio: t('games.binario.why.trio'),
+  half: t('games.binario.why.half'),
+  unique: t('games.binario.why.unique'),
+  look: t('games.binario.why.look'),
+  none: t('games.binario.why.none')
 });
 
 /**

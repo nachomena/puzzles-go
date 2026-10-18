@@ -1,13 +1,14 @@
 /* Partida de Star Battle: marcas, estrellas de prueba, X automáticas y pistas. */
 import { GameController } from '../../core/game-controller.js';
+import { t } from '../../i18n/index.js';
 import { bindCellDrag } from '../../ui/cell-drag.js';
 import { StarBattleBoard } from './board-view.js';
 import { MARK, TOOL } from './config.js';
 import { analyze, applyAutoX, effectiveMark, nextMark, hasPlayerInput, findHint, findMistake } from './rules.js';
 
 const HINT_MESSAGES = {
-  'wrong-star': 'Esta estrella no va aquí',
-  'missing-star': 'Aquí sí va una estrella'
+  'wrong-star': t('games.star-battle.wrongStar'),
+  'missing-star': t('games.star-battle.missingStar')
 };
 
 export class StarBattleController extends GameController {

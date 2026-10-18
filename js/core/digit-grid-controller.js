@@ -10,6 +10,7 @@
      peersOf(i)                casillas que ven a i (para limpiar notas)
      hintFor(values, solution) → { cell, digit } o null */
 import { GameController } from './game-controller.js';
+import { t } from '../i18n/index.js';
 import { bindCellDrag } from '../ui/cell-drag.js';
 
 export const PEN = 'pen', PENCIL = 'pencil';
@@ -122,7 +123,7 @@ export class DigitGridController extends GameController {
   input(d){
     const s = this.session;
     if (!this.active) return;
-    if (s.sel < 0){ this.notify('Elige una casilla'); return; }
+    if (s.sel < 0){ this.notify(t('play.pickCell')); return; }
     if (!this.#editable(s.sel)) return;
     const i = s.sel;
     if (this.tool === PENCIL){
@@ -150,7 +151,7 @@ export class DigitGridController extends GameController {
 
   findMistake(){
     const s = this.session, cell = s.values.findIndex((v, i) => v && v !== s.p.solution[i]);
-    return cell >= 0 ? { cell, message: 'Este número no va aquí' } : null;
+    return cell >= 0 ? { cell, message: t('play.wrongNumber') } : null;
   }
   showMistake({ cell }){
     this.session.sel = cell;

@@ -1,5 +1,7 @@
 /* Diálogo de confirmación con el estilo de la app (en vez de window.confirm).
    ask() devuelve una promesa con la opción elegida: 'accept', 'alternate' o 'cancel'. */
+import { t } from '../i18n/index.js';
+
 export class ConfirmDialog {
   constructor(el, overlays){
     this.el = el;
@@ -21,7 +23,7 @@ export class ConfirmDialog {
     this.title.textContent = title;
     this.text.textContent = text;
     this.accept.textContent = accept;
-    this.alternate.textContent = alternate || 'Cancelar';
+    this.alternate.textContent = alternate || t('common.cancel');
     this.overlays.open(this.el.id);
     return new Promise(resolve => { this.resolve = resolve; });
   }

@@ -1,5 +1,6 @@
 /* Vista de Smart Dices: tablero de 6×6 con los 4 dados, piezas colocadas, flechas y bandeja. */
 import { GridBoard } from '../../ui/grid-board.js';
+import { t } from '../../i18n/index.js';
 import { SIZE, CELLS, PIECES, shape, dieOf } from './engine/pieces.js';
 
 const REGIONS = Array.from({ length: CELLS }, (_, i) => dieOf(i));
@@ -44,7 +45,7 @@ export class DicesBoardView {
     for (const [kind, list] of Object.entries(arrows)) list.forEach((sum, i) => {
       const el = this.arrows[`${kind}-${i}`];
       el.querySelector('.sd-arrow__num').textContent = sum ?? '';
-      el.setAttribute('aria-label', sum == null ? '' : `Suma ${sum}`);
+      el.setAttribute('aria-label', sum == null ? '' : t('games.smart-dices.sum', { n: sum }));
       el.classList.toggle('is-empty', sum == null);
     });
   }

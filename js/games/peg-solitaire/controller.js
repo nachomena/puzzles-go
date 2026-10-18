@@ -1,8 +1,8 @@
 /* Partida del Solitario: elegir una bola y saltar (tocando el destino o arrastrando). */
 import { GameController } from '../../core/game-controller.js';
-import { plural } from '../../lib/format.js';
+import { t } from '../../i18n/index.js';
 import { PegBoardView } from './board-view.js';
-import { BOARDS, CENTER, isBoard, startBalls, movesFrom, jumpOver, anyMove, countBalls } from './engine/rules.js';
+import { CENTER, isBoard, startBalls, movesFrom, jumpOver, anyMove, countBalls } from './engine/rules.js';
 
 const DRAG_THRESHOLD = 6;
 
@@ -30,11 +30,11 @@ export class PegSolitaireController extends GameController {
   renderBoard(){
     const s = this.session, n = countBalls(s.balls);
     const targets = s.sel >= 0 ? movesFrom(s.board, s.balls, s.sel).map(m => m.to) : [];
-    let status = plural(n, 'bola');
-    if (n === 1) status = s.balls[CENTER] >= 0 ? '¡Una bola, en el centro!' : '¡Una sola bola!';
-    else if (!anyMove(s.board, s.balls)) status = `Sin saltos · ${status}`;
+    let status = t('games.peg-solitaire.balls', { n });
+    if (n === 1) status = t(s.balls[CENTER] >= 0 ? 'games.peg-solitaire.centerWin' : 'games.peg-solitaire.oneBall');
+    else if (!anyMove(s.board, s.balls)) status = t('games.peg-solitaire.noMoves', { status });
     this.view.render({ balls: s.balls, out: s.out, sel: s.sel, targets });
-    this.hud.setHeader(BOARDS[s.board].name, status);   // cabecera: tablero · bolas · tiempo
+    this.hud.setHeader(t(`games.peg-solitaire.${s.board}`), status);   // cabecera: tablero · bolas · tiempo
   }
   /**
    * Reiniciar pone el cronómetro a 0. Las instantáneas llevan el tiempo y cuántos reinicios
@@ -52,14 +52,14 @@ export class PegSolitaireController extends GameController {
     Object.assign(s, { balls: startBalls(s.board), out: [], sel: -1, time: 0, resets: s.resets + 1 });
   }
   isSolved(){ return countBalls(this.session.balls) === 1; }
-  get resetMessage(){ return 'Partida reiniciada. Puedes deshacerlo.'; }
+  get resetMessage(){ return t('games.peg-solitaire.restarted'); }
   celebrate(){ this.session.sel = -1; this.renderBoard(); this.view.celebrate(); }
 
   /** Cambiar de tablero: al momento si aún no se ha jugado; si no, en la próxima partida. */
   onSetting(key){
     const s = this.session;
     if (key !== 'board' || !s || s.board === this.#boardFromSettings()) return;
-    if (s.done || this.hasInput()){ this.notify('El tablero nuevo se usará en la próxima partida'); return; }
+    if (s.done || this.hasInput()){ this.notify(t('games.peg-solitaire.nextBoard')); return; }
     this.store.state.cur = this.createSession(s.L, s.p);
     this.history.clear();
     this.store.save();
@@ -90,7 +90,7 @@ export class PegSolitaireController extends GameController {
     s.sel = movesFrom(s.board, s.balls, to).length ? to : -1;
     this.autoSel = s.sel >= 0;   // elegida por el juego: tocarla no la suelta, sigue saltando
     this.commit(true);
-    if (!s.done && !anyMove(s.board, s.balls)) this.notify(`No quedan saltos: ${plural(countBalls(s.balls), 'bola')}. Puedes deshacer.`);
+    if (!s.done && !anyMove(s.board, s.balls)) this.notify(t('games.peg-solitaire.stuck', { balls: t('games.peg-solitaire.balls', { n: countBalls(s.balls) }) }));
     return true;
   }
 

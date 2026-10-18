@@ -1,14 +1,13 @@
 /* Los tres niveles de dificultad, iguales en todos los juegos: Fácil, Difícil y Experto. Cada juego solo dice
    qué nivel de su generador (`target`) usa en cada uno. Katamino y el Solitario tienen los suyos (no son
    dificultades sino tableros que se eligen). */
+import { t } from '../i18n/index.js';
 
 export const LEVEL_ORDER = Object.freeze(['easy', 'hard', 'expert']);
 
-const NAMES = Object.freeze({ easy: 'Fácil', hard: 'Difícil', expert: 'Experto' });
-
 /** Niveles de un juego a partir del `target` del generador de cada uno: { easy: 2, hard: 4, expert: 5 }. */
 export const difficulty = targets =>
-  Object.freeze(Object.fromEntries(LEVEL_ORDER.map(L => [L, Object.freeze({ name: NAMES[L], target: targets[L] })])));
+  Object.freeze(Object.fromEntries(LEVEL_ORDER.map(L => [L, Object.freeze({ name: t(`levels.${L}`), target: targets[L] })])));
 
 /**
  * Niveles de antes (id viejo → id nuevo), para pasar las estadísticas, el registro y la partida en curso

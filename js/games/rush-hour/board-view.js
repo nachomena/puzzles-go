@@ -1,6 +1,7 @@
 /* Vista de Rush Hour: aparcamiento de 6 × 6 con la salida a la derecha de la fila del coche rojo y
    los vehículos como bloques que se deslizan (posición en % del tablero). */
 import { N, EXIT_ROW } from './engine/board.js';
+import { t } from '../../i18n/index.js';
 import { restartAnimation } from '../../lib/dom.js';
 
 /** Colores de los demás vehículos (nada parecido al rojo, para no confundirlo). */
@@ -42,7 +43,7 @@ export class RushHourBoardView {
   render({ pos, moves, min, dragging = -1 }){
     pos.forEach((p, i) => { if (i !== dragging) this.place(i, p); });
     this.els.forEach((el, i) => el.classList.toggle('is-dragging', i === dragging));
-    this.movesEl.textContent = `${moves} ${moves === 1 ? 'movimiento' : 'movimientos'} · mínimo ${min}`;
+    this.movesEl.textContent = t('games.rush-hour.moves', { n: moves, min });
   }
 
   flash(i){ const el = this.els[i]; if (el) restartAnimation(el, 'is-flash'); }

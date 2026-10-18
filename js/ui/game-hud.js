@@ -1,5 +1,6 @@
 /* Cabecera y barra de herramientas de una pantalla de juego. Solo presentación. */
 import { formatTime } from '../lib/format.js';
+import { t } from '../i18n/index.js';
 
 export class GameHud {
   constructor(root){
@@ -30,7 +31,7 @@ export class GameHud {
     if (this.hintWait.textContent === text) return;
     this.hintWait.textContent = text;
     this.hint.classList.toggle('is-waiting', sec > 0);
-    this.hint.setAttribute('aria-label', sec > 0 ? `Pista disponible en ${text}` : 'Pista');
+    this.hint.setAttribute('aria-label', sec > 0 ? t('common.hintIn', { time: text }) : t('common.hint'));
   }
   setTool(tool){
     for (const btn of this.tools){

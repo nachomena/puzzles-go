@@ -1,5 +1,6 @@
 /* Configuración de Slitherlink. */
 import meta from './meta.js';
+import { t } from '../../i18n/index.js';
 
 export const LEVELS = meta.levels;
 
@@ -9,6 +10,6 @@ export const TOOL = Object.freeze({ LINE: 'line' });
 export const DEFAULT_SETTINGS = Object.freeze({ errors: false, timer: true });
 
 export const SETTINGS = Object.freeze([
-  { key: 'errors', title: 'Resaltar errores', desc: 'En rojo los números con más líneas de las que dicen y los puntos con más de dos líneas.' },
-  { key: 'timer',  title: 'Cronómetro',       desc: 'Muestra el tiempo de la partida.' }
+  { key: 'errors', title: t('settings.errors'), desc: t('games.slitherlink.errorsDesc') },
+  { key: 'timer',  title: t('settings.timer'), desc: t('settings.timerDesc') }
 ]);

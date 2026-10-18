@@ -1,11 +1,12 @@
 /* Datos mínimos de Puzzler Pro para el selector y el menú de niveles: se cargan sin el motor ni la interfaz. */
 import { difficulty, LEVEL_ORDER, OLD_LEVELS } from '../../core/levels.js';
+import { t } from '../../i18n/index.js';
 
 export default Object.freeze({
   id: 'iq-puzzler',
-  name: 'Puzzler Pro',
+  name: t('games.iq-puzzler.name'),
   /** Frase corta bajo el nombre en el selector. */
-  tagline: 'Piezas de bolas en un 11 × 5',
+  tagline: t('games.iq-puzzler.tagline'),
   icon: 'iqpuzzler',
   storageKey: 'puzzlesgo.iqpuzzler.v1',
   /** Grupo del selector de juegos (ver ui/hub-view.js). */

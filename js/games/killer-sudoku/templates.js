@@ -1,5 +1,6 @@
 /* Marcado propio del Killer Sudoku: el teclado lo pone la plantilla común; aquí, la ayuda. */
-import { svgIcon } from '../../ui/templates.js';
+import { inlineIcon } from '../../ui/templates.js';
+import { t } from '../../i18n/index.js';
 import { helpFigure, hfText } from '../../ui/help-figure.js';
 import { cageOutline } from './board-view.js';
 
@@ -17,26 +18,7 @@ const figure = () => {
     s += `<text class="hf-label" x="${i % 3 + .18}" y="${((i / 3) | 0) + .36}">${sum}</text>`;
   }
   return helpFigure(`<svg viewBox="-.06 -.06 3.12 3.12" width="150" aria-hidden="true">${s}</svg>`,
-    'Cada jaula suma lo que indica: 8 + 1 = 9 y 9 + 4 + 7 = 20. Dentro de una jaula no se repite ningún número.');
+    t('games.killer-sudoku.figure'));
 };
 
-export const help = () => `
-  <p>Es un Sudoku: cada <b>fila</b>, cada <b>columna</b> y cada <b>caja</b> de 3 × 3 lleva los números del 1 al 9 sin repetir.</p>
-  ${figure()}
-  <p>Además, el tablero está dividido en <b>jaulas</b> con borde punteado. Los números de una jaula <b>suman</b> el número pequeño de su esquina y <b>no se repiten</b> dentro de ella. Hay muy pocos números puestos al empezar: el resto se deduce de las sumas. Cada tablero tiene una única solución.</p>
-  <h3>Trucos</h3>
-  <ul>
-    <li>Algunas sumas solo se pueden hacer de una manera: 3 en dos casillas es 1 + 2, y 17 es 8 + 9.</li>
-    <li><b>Regla del 45:</b> cada fila, columna y caja suma 45. Si sabes lo que suman las jaulas que caben enteras en una caja, lo que falta hasta 45 lo suman las casillas que quedan.</li>
-  </ul>
-  <h3>Niveles</h3>
-  <ul>
-    <li><b>Fácil:</b> jaulas de 2 y 3 casillas; basta con las sumas y ver dónde cabe cada número.</li>
-    <li><b>Difícil:</b> jaulas más grandes; hacen falta candidatos bloqueados, pares y tríos, y siempre la regla del 45 en una fila, columna o caja.</li>
-    <li><b>Experto:</b> jaulas de hasta 6 casillas y la regla del 45 en varias filas, columnas o cajas a la vez.</li>
-  </ul>
-  <h3>Controles</h3>
-  <ul>
-    <li>Toca una casilla y después un número. Toca el mismo número otra vez para quitarlo.</li>
-    <li>Con el lápiz ${svgIcon('pencil').replace('<svg', '<svg class="inline-icon"')} anotas candidatos; la goma borra la casilla.</li>
-  </ul>`;
+export const help = () => t('games.killer-sudoku.help', { figure: figure(), pencil: inlineIcon('pencil') });

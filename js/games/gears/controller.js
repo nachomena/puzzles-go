@@ -1,6 +1,7 @@
 /* Partida de Engranajes: tocar un hueco alterna punto → engranaje → vacío; "Girar" mueve la manivela y
    todo lo que ya está unido a ella. */
 import { GameController } from '../../core/game-controller.js';
+import { t } from '../../i18n/index.js';
 import { GearsBoardView } from './board-view.js';
 import { evaluate, isSolved, findMistake, findHint } from './rules.js';
 
@@ -51,16 +52,16 @@ export class GearsController extends GameController {
     if (!this.active) return;
     const { p, marks } = this.session, a = evaluate(p, marks);
     this.view.turn();
-    if (a.jam) return this.notify('Se atasca: hay un círculo de engranajes');
-    if (!a.on.has(p.lock)) return this.notify('El cerrojo aún no está unido a la manivela');
-    if ([p.lock, ...p.fixed].some(i => a.spin[i] !== p.spin[i])) return this.notify('Algo gira hacia el lado contrario de su flecha');
-    if (a.on.size !== a.gears.reduce((t, g) => t + g, 0)) return this.notify('Sobran engranajes sueltos');
-    this.notify('El cerrojo gira, pero algún número no cuadra');
+    if (a.jam) return this.notify(t('games.gears.jam'));
+    if (!a.on.has(p.lock)) return this.notify(t('games.gears.notLinked'));
+    if ([p.lock, ...p.fixed].some(i => a.spin[i] !== p.spin[i])) return this.notify(t('games.gears.wrongWay'));
+    if (a.on.size !== a.gears.reduce((t, g) => t + g, 0)) return this.notify(t('games.gears.loose'));
+    this.notify(t('games.gears.clues'));
   }
 
   findMistake(){
     const s = this.session, i = findMistake(s.p, s.marks);
-    return i >= 0 ? { cell: i, message: s.marks[i] === 1 ? 'Aquí no va un engranaje' : 'Aquí sí va un engranaje' } : null;
+    return i >= 0 ? { cell: i, message: t(s.marks[i] === 1 ? 'games.gears.noGear' : 'games.gears.gear') } : null;
   }
   showMistake({ cell }){ this.view.flash(cell); }
   giveHint(){

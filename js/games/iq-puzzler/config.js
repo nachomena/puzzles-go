@@ -1,5 +1,6 @@
 /* Configuración de Puzzler Pro. */
 import meta from './meta.js';
+import { t } from '../../i18n/index.js';
 
 export const LEVELS = meta.levels;
 
@@ -9,5 +10,5 @@ export const TOOL = Object.freeze({ MOVE: 'move' });
 export const DEFAULT_SETTINGS = Object.freeze({ timer: true });
 
 export const SETTINGS = Object.freeze([
-  { key: 'timer', title: 'Cronómetro', desc: 'Muestra el tiempo de la partida.' }
+  { key: 'timer',  title: t('settings.timer'), desc: t('settings.timerDesc') }
 ]);

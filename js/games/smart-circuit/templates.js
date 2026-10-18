@@ -1,33 +1,18 @@
 /* Marcado propio de Smart Circuit: tablero, botones, bandeja de piezas y ayuda. */
 import { board, iconButton } from '../../ui/templates.js';
+import { t } from '../../i18n/index.js';
 import { gestureStrip } from '../../ui/help-figure.js';
 
 export const boardHtml = () =>
   `<div class="sc-area">` + board('board--circuit') +
   `<div class="sc-actions">` +
-  `<button class="btn-chip" data-action="flip" aria-label="Voltear la pieza seleccionada">` +
-  `<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-flip"/></svg><span>Voltear</span></button>` +
+  `<button class="btn-chip" data-action="flip" aria-label="${t('common.flipAria')}">` +
+  `<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-flip"/></svg><span>${t('common.flip')}</span></button>` +
   `</div></div>`;
 
 export const controls = () =>
-  `<div class="sc-tray" data-tray aria-label="Piezas sin colocar"></div>`;
+  `<div class="sc-tray" data-tray aria-label="${t('common.trayAria')}"></div>`;
 
-export const help = () => `
-  <p>Coloca las <b>10 piezas</b> en el tablero para unir los <b>puntos</b> por parejas con caminos: con 2 puntos hay 1 camino, con 4 hay 2 y con 6 hay 3.</p>
-  <ul>
-    <li>Hay que usar todas las piezas, y cada camino empieza y termina en un punto: no puede quedar ningún tramo suelto ni ningún circuito cerrado.</li>
-    <li>Los puntos del reto son todos los que hay: no se pueden añadir otros.</li>
-    <li>La mayoría de piezas tienen dos caras con caminos distintos; las rectas y las de dos casillas también se pueden poner por su cara lisa.</li>
-  </ul>
-  <h3>Niveles</h3>
-  <ul>
-    <li><b>Fácil:</b> ves la silueta de todas las piezas, pero no los caminos.</li>
-    <li><b>Difícil:</b> algunas piezas con punto ya están colocadas.</li>
-    <li><b>Experto:</b> solo ves los puntos.</li>
-  </ul>
-  <h3>Controles</h3>
-  ${gestureStrip([{ icon: 'drag', piece: 'circuit', text: 'Arrastra al tablero' }, { icon: 'turn', text: 'Toca dos veces: gira' }, { icon: 'flip', text: 'Voltear: otra cara' }])}
-  <ul>
-    <li>Arrastra una pieza de la bandeja al tablero; arrástrala fuera para devolverla.</li>
-    <li>Toca una pieza para elegirla y otra vez para girarla 90°. <b>Voltear</b> cambia de cara la pieza elegida.</li>
-  </ul>`;
+export const help = () => t('games.smart-circuit.help', {
+  gestures: gestureStrip([{ icon: 'drag', piece: 'circuit', text: t('common.dragToBoard') }, { icon: 'turn', text: t('common.tapTwiceRotate') }, { icon: 'flip', text: t('common.flipFace') }])
+});

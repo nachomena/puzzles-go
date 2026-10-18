@@ -1,6 +1,7 @@
 /* Partida de Puzzler Pro (arrastrar, girar y voltear: core/grid-pieces-controller.js).
    Las piezas que trae el reto están fijas; hay una sola solución. */
 import { GridPiecesController } from '../../core/grid-pieces-controller.js';
+import { t } from '../../i18n/index.js';
 import { IqPuzzlerBoardView } from './board-view.js';
 import { W, H, PIECES, orient, cellsOf } from './engine/pieces.js';
 import { fits, isSolved, findMistake, findHint } from './rules.js';
@@ -28,7 +29,7 @@ export class IqPuzzlerController extends GridPiecesController {
 
   findMistake(){
     const s = this.session, m = findMistake(s.place, s.p.solution, s.p.fixed);
-    return m && { ...m, message: 'Esta pieza no va aquí' };
+    return m && { ...m, message: t('play.wrongPiece') };
   }
   showMistake({ piece }){ this.session.sel = piece; this.render(); this.view.flash(piece); }
   giveHint(){

@@ -38,8 +38,11 @@ segundo plano, historial, cronómetro, estadísticas y pantalla de victoria son 
 3. Si necesita estilos, crea `css/games/<id>.css` (se carga al abrir el juego, con su código; sin estilos, quita `css`).
    Lo que use más de un juego va en `css/components.css`: la hoja de un juego puede no estar cargada.
 4. Iconos nuevos: añade un `<symbol id="i-…">` al sprite de `index.html`.
-5. `sw.js` se pone al día solo al hacer commit (lista de archivos y versión, ver `scripts/build-sw.mjs`).
-6. Pruebas en `tests/<id>-*.test.js`.
+5. Textos: todo lo que se ve (nombre, frase del selector, ajustes, ayuda, avisos) va en `js/i18n/es.js` y
+   `js/i18n/en.js`, en `games.<id>`, y se usa con `t('games.<id>.…')` (`js/i18n/index.js`). Los dos ficheros
+   tienen que tener las mismas claves (`tests/i18n.test.js`).
+6. `sw.js` se pone al día solo al hacer commit (lista de archivos y versión, ver `scripts/build-sw.mjs`).
+7. Pruebas en `tests/<id>-*.test.js`.
 
 ## Reutilizable
 

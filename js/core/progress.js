@@ -7,6 +7,7 @@
      controller.winExtra) */
 
 import { statsRows } from './stats.js';
+import { t } from '../i18n/index.js';
 
 /** Partidas que se guardan por juego (las más antiguas se van descartando). */
 export const LOG_CAP = 500;
@@ -49,7 +50,7 @@ export const meanTime = entries => entries.length ? Math.round(entries.reduce((s
 export const bestTime = entries => { const c = clean(entries); return c.length ? Math.min(...c.map(e => e.t)) : null; };
 
 /** Periodos de la pantalla de un nivel: las últimas 20, los últimos 3 meses o todas. */
-export const RANGES = Object.freeze({ last20: 'Últimas 20', months3: '3 meses', all: 'Todo' });
+export const RANGES = Object.freeze({ last20: t('progress.ranges.last20'), months3: t('progress.ranges.months3'), all: t('progress.ranges.all') });
 export function inRange(entries, range, now = Date.now()){
   if (range === 'last20') return entries.slice(-20);
   if (range === 'months3') return entries.filter(e => e.at > now - 91 * DAY);

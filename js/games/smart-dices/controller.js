@@ -1,5 +1,6 @@
 /* Partida de Smart Dices: arrastrar piezas de la bandeja al tablero y tocar para girarlas. */
 import { GameController } from '../../core/game-controller.js';
+import { t } from '../../i18n/index.js';
 import { DicesBoardView } from './board-view.js';
 import { bindPieceDrag } from '../../ui/piece-drag.js';
 import { PIECES, SIZE, shape } from './engine/pieces.js';
@@ -46,12 +47,12 @@ export class SmartDicesController extends GameController {
   }
   isSolved(){ return isSolved(this.session.place, this.session.p.arrows); }
   /** Aquí no hay botón de deshacer: el aviso no lo ofrece. */
-  get resetMessage(){ return 'Tablero vacío.'; }
+  get resetMessage(){ return t('play.clearedShort'); }
   celebrate(){ this.view.celebrate(); }
 
   findMistake(){
     const s = this.session, m = findMistake(s.place, s.p.solution, s.p.fixed);
-    return m && { ...m, message: 'Esta pieza no va aquí' };
+    return m && { ...m, message: t('play.wrongPiece') };
   }
   showMistake({ piece }){ this.view.flash(piece); }
   giveHint(){
@@ -82,7 +83,7 @@ export class SmartDicesController extends GameController {
     const clamp = (v, size) => Math.max(0, Math.min(SIZE - size, v));
     const candidates = [{ rot, r: pos.r, c: pos.c }, { rot, r: clamp(pos.r, sh.h), c: clamp(pos.c, sh.w) }];
     const next = candidates.find(p => fits(s.place, piece, p));
-    if (!next){ this.notify('No cabe girada aquí'); return; }
+    if (!next){ this.notify(t('play.noRotate')); return; }
     this.record();
     s.place[piece] = next;
     this.commit(true);

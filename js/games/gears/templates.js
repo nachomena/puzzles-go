@@ -1,5 +1,6 @@
 /* Marcado propio de Engranajes: tablero, botones y ayuda. */
 import { undoRedo, svgIcon } from '../../ui/templates.js';
+import { t } from '../../i18n/index.js';
 import { helpFigure } from '../../ui/help-figure.js';
 import { center, viewBox, hexPath, gear, clueText } from './art.js';
 
@@ -16,35 +17,15 @@ const figure = () => {
     s += kinds[i] ? gear(x, y, kinds[i], spin[i], 'on') : clueText(x, y, clues[i]);
   }
   return helpFigure(`<svg class="gr-fig" viewBox="${viewBox(w, h)}" width="190" aria-hidden="true">${s}</svg>`,
-    'La manivela (plateada) mueve la cadena hasta el cerrojo (verde). Cada número cuenta los engranajes que tocan su hueco.');
+    t('games.gears.figure'));
 };
 
 export const boardHtml = () =>
-  `<div class="gr-board" data-gr-board role="application" aria-label="Tablero"><svg></svg></div>`;
+  `<div class="gr-board" data-gr-board role="application" aria-label="${t('common.board')}"><svg></svg></div>`;
 
 export const controls = () =>
   `<div class="toolbar">` +
-  `<button class="btn-chip" data-action="turn" aria-label="Girar la manivela">${svgIcon('turn')}<span>Girar</span></button>` +
+  `<button class="btn-chip" data-action="turn" aria-label="${t('games.gears.turnAria')}">${svgIcon('turn')}<span>${t('games.gears.turn')}</span></button>` +
   undoRedo() + `</div>`;
 
-export const help = () => `
-  <p>Pon <b>engranajes</b> en los huecos para que la <b>manivela</b> mueva el <b>cerrojo</b> y lo abra.</p>
-  ${figure()}
-  <ul>
-    <li>Todos los engranajes forman <b>una sola cadena</b> con la manivela, sin piezas sueltas.</li>
-    <li>La cadena no puede <b>cerrar ningún círculo</b>: un círculo de engranajes se atasca.</li>
-    <li>Dos engranajes que se tocan giran en <b>sentidos contrarios</b>. La manivela gira a la derecha; las flechas dicen hacia dónde tiene que girar el cerrojo y cada engranaje que ya está puesto.</li>
-    <li>Un <b>número</b> dice cuántos engranajes tocan ese hueco, que queda vacío.</li>
-    <li>Cada reto tiene una sola solución.</li>
-  </ul>
-  <h3>Niveles</h3>
-  <ul>
-    <li><b>Fácil:</b> 5 × 5, con más números y algunos engranajes puestos.</li>
-    <li><b>Difícil:</b> 7 × 7, sin engranajes puestos.</li>
-    <li><b>Experto:</b> 8 × 8, con los números justos.</li>
-  </ul>
-  <h3>Controles</h3>
-  <ul>
-    <li>Toca un hueco para marcarlo con un punto (aquí no va); otra vez, para poner un engranaje; otra más, para dejarlo vacío.</li>
-    <li>Los engranajes unidos a la manivela se ven en latón; los sueltos, en gris. <b>Girar</b> mueve la manivela y todo lo que ya está unido a ella.</li>
-  </ul>`;
+export const help = () => t('games.gears.help', { figure: figure() });

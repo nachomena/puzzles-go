@@ -1,11 +1,12 @@
 /* Datos mínimos de Zip para el selector y el menú de niveles: se cargan sin el motor ni la interfaz. */
 import { difficulty, LEVEL_ORDER, OLD_LEVELS } from '../../core/levels.js';
+import { t } from '../../i18n/index.js';
 
 export default Object.freeze({
   id: 'zip',
-  name: 'Zip',
+  name: t('games.zip.name'),
   /** Frase corta bajo el nombre en el selector. */
-  tagline: 'Un camino por todas las casillas',
+  tagline: t('games.zip.tagline'),
   icon: 'zip',
   storageKey: 'puzzlesgo.zip.v1',
   /** `target` es el nivel del generador: tablero más grande y menos números cuanto más alto. */

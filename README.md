@@ -1,25 +1,25 @@
 # Puzzles Go
 
-Juegos de lógica como web app instalable que funciona sin conexión. Todos los que tienen dificultades usan las
-mismas tres: Fácil, Difícil y Experto.
+Juegos de lógica como web app instalable que funciona sin conexión, en español e inglés (el idioma del móvil, o el
+que se elija en los ajustes del selector). Todos los que tienen dificultades usan las mismas tres: Fácil, Difícil y Experto.
 
 - **Star Battle** 10×10, 2 estrellas.
 - **Sudoku** 9×9. El Experto siempre exige X-Wing o Swordfish.
 - **Kakuro** de 6×6 a 12×12: sumas en casillas negras y tramos sin números repetidos.
-- **Slitherlink** de 5×5 a 10×10: un único lazo entre los puntos según los números de las casillas.
+- **Bucle** (Slitherlink) de 5×5 a 10×10: un único lazo entre los puntos según los números de las casillas.
 - **Engranajes** (invento propio) de 5×5 a 8×8: engranajes en un panel hexagonal que llevan el giro de la manivela al cerrojo, en una sola cadena sin círculos, con números que cuentan los engranajes de alrededor.
 - **Killer Sudoku** 9×9 con jaulas de suma y casi sin números puestos. El Difícil siempre exige la regla del 45; el Experto, aplicarla a varias filas, columnas o cajas a la vez.
-- **Smart Dices**: 12 piezas que forman 4 caras de dado con sumas por fila y columna.
-- **Smart Circuit**: 10 piezas de doble cara que unen los puntos con caminos en un tablero de 8×4.
-- **Smart Circle**: 10 piezas de bolas de doble cara que llenan un tablero redondo de 3 anillos sin cruzar sus nervios (en Difícil y Experto también hay que encontrar dónde van los nervios).
-- **Smart Hexagon**: 12 piezas de doble cara en forma de trazo que llenan los huecos entre las clavijas de un tablero hexagonal.
-- **Puzzler Pro** (2D): 12 piezas de bolas que llenan un tablero de 11×5; de 8 a 3 piezas puestas al empezar.
-- **Katamino**: llenar un tablero de 5 columnas con pentominós; cada PENTA suma una pieza y una fila. 512 retos en 5 desafíos (del Pequeño Slam al Desafío) que se eligen en una tabla; los resueltos quedan marcados.
-- **Rush Hour**: deslizar coches y camiones en un 6×6 hasta sacar el rojo; niveles por movimientos mínimos (de 8 a más de 30).
-- **Zip**: un camino que pasa por todas las casillas tocando los números en orden (de 6×6 a 7×7).
-- **Hashi**: unir islas con puentes de 1 o 2 que no se cruzan (de 7×7 a 10×10).
-- **KenKen**: del 1 al N sin repetir por fila y columna, con jaulas de sumas, restas, productos y divisiones (de 5×5 a 7×7).
-- **Akari**: bombillas que iluminan todo el tablero sin verse entre ellas (de 7×7 a 10×10).
+- **Dados**: 12 piezas que forman 4 caras de dado con sumas por fila y columna.
+- **Circuito**: 10 piezas de doble cara que unen los puntos con caminos en un tablero de 8×4.
+- **Círculo**: 10 piezas de bolas de doble cara que llenan un tablero redondo de 3 anillos sin cruzar sus nervios (en Difícil y Experto también hay que encontrar dónde van los nervios).
+- **Hexágono**: 12 piezas de doble cara en forma de trazo que llenan los huecos entre las clavijas de un tablero hexagonal.
+- **Encaje**: 12 piezas de bolas que llenan un tablero de 11×5; de 8 a 3 piezas puestas al empezar.
+- **Pentominós**: llenar un tablero de 5 columnas con pentominós; cada reto suma una pieza y una fila. 512 retos en 5 desafíos (de Iniciación a Desafío) que se eligen en una tabla; los resueltos quedan marcados.
+- **Atasco**: deslizar coches y camiones en un 6×6 hasta sacar el rojo; niveles por movimientos mínimos (de 8 a más de 30).
+- **Trazo**: un camino que pasa por todas las casillas tocando los números en orden (de 6×6 a 7×7).
+- **Puentes**: unir islas con puentes de 1 o 2 que no se cruzan (de 7×7 a 10×10).
+- **Calcudoku**: del 1 al N sin repetir por fila y columna, con jaulas de sumas, restas, productos y divisiones (de 5×5 a 7×7).
+- **Luces**: bombillas que iluminan todo el tablero sin verse entre ellas (de 7×7 a 10×10).
 - **Binario** (las reglas de 0h h1): rojo y azul, sin tres iguales seguidos, mitad y mitad en cada línea y sin dos filas o columnas iguales (de 8×8 a 12×12).
 - **Solitario**: el clásico de saltar bolas hasta dejar una, en tablero inglés (33) o europeo (37) a elegir en Ajustes.
 
@@ -67,6 +67,7 @@ js/
   main.js               punto de entrada
   config.js             constantes comunes (tiempos, historial, reserva)
   app/app.js            carcasa: navegación, reparto de acciones, cronómetro, teclado
+  i18n/                 idiomas: es.js y en.js (todos los textos, con las mismas claves) y t()
   core/                 infraestructura genérica, sin saber de ningún juego
     game-definition.js    contrato que cumple cada juego
     game-controller.js    controlador base (patrón plantilla): historial, victoria, cronómetro…
@@ -86,25 +87,25 @@ tests/                  pruebas con node:test
 scripts/                generadores de datos, de sw.js y de las fuentes; comprobación del JS
 ```
 
-Las 6.288 colocaciones válidas de Smart Dices están precalculadas en
+Las 6.288 colocaciones válidas de Dados están precalculadas en
 `js/games/smart-dices/engine/arrangements-data.js` (`node scripts/build-dice-arrangements.mjs` las regenera).
 
-Las 358 colocaciones válidas de Smart Circuit están en `js/games/smart-circuit/engine/arrangements-data.js`
+Las 358 colocaciones válidas de Circuito están en `js/games/smart-circuit/engine/arrangements-data.js`
 (`node scripts/build-circuit-arrangements.mjs` las regenera).
 
-Las 274 soluciones de Smart Circle (con los nervios en su posición de partida; las demás son las mismas giradas) están en `js/games/smart-circle/engine/solutions-data.js`, generadas por `node scripts/build-circle-solutions.mjs`.
+Las 274 soluciones de Círculo (con los nervios en su posición de partida; las demás son las mismas giradas) están en `js/games/smart-circle/engine/solutions-data.js`, generadas por `node scripts/build-circle-solutions.mjs`.
 
-Las 8.124 soluciones de Smart Hexagon se guardan como 677, una por cada grupo de soluciones que son la misma girada o volteada, en `js/games/smart-hexagon/engine/solutions-data.js` (`node scripts/build-hexagon-solutions.mjs`, unos 3 minutos).
+Las 8.124 soluciones de Hexágono se guardan como 677, una por cada grupo de soluciones que son la misma girada o volteada, en `js/games/smart-hexagon/engine/solutions-data.js` (`node scripts/build-hexagon-solutions.mjs`, unos 3 minutos).
 
-Los 512 PENTAS de Katamino (filas de piezas, con solución comprobada y la dificultad medida por el número de soluciones) están en `js/games/katamino/engine/sets-data.js`, generados por `node scripts/build-katamino-sets.mjs` (unos 20 segundos).
+Los 512 retos de Pentominós (filas de piezas, con solución comprobada y la dificultad medida por el número de soluciones) están en `js/games/katamino/engine/sets-data.js`, generados por `node scripts/build-katamino-sets.mjs` (unos 20 segundos).
 
-Los SmartGames (Dices, Circuit, Circle, Hexagon e Puzzler Pro) van juntos en el selector, en una fila "Smart Games" que se despliega (`group` en su `meta.js`).
+Los juegos de piezas (Dados, Circuito, Círculo, Hexágono y Encaje) van juntos en el selector, en una fila "Piezas" que se despliega (`group` en su `meta.js`).
 
 Los retos de Kakuro Experto (12×12) también vienen calculados, en `js/games/kakuro/engine/bank-data.js` (`node scripts/build-kakuro-bank.mjs`, unos minutos); cada uno sale en 4 versiones (traspuesto y con los números cambiados por 10 − n), que conservan la solución única.
 
 Los retos de Engranajes de todos los niveles vienen calculados en `js/games/gears/engine/bank-data.js` (`node scripts/build-gears-bank.mjs`, unos 15 minutos): en el ordenador el solucionador demuestra la solución única sin el límite de pasos del teléfono, y el Experto queda con menos números. Cada uno sale en 2 versiones (al revés de arriba abajo o girado media vuelta con la manivela y el cerrojo cambiados).
 
-Los retos de Rush Hour de los niveles Difícil y Experto, que tardarían varios segundos en generarse en el momento, están ya calculados en `js/games/rush-hour/engine/bank-data.js` (`node scripts/build-rush-hour-bank.mjs`, ver el script). Los demás niveles y juegos se generan en el dispositivo.
+Los retos de Atasco de los niveles Difícil y Experto, que tardarían varios segundos en generarse en el momento, están ya calculados en `js/games/rush-hour/engine/bank-data.js` (`node scripts/build-rush-hour-bank.mjs`, ver el script). Los demás niveles y juegos se generan en el dispositivo.
 
 Los iconos de la app salen de `icons/icon.svg`: `node scripts/make-icons.cjs` regenera los PNG.
 

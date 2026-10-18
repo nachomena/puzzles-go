@@ -1,6 +1,6 @@
 // Versión y lista de archivos: no se editan a mano, las escribe scripts/build-sw.mjs al hacer commit
 // <generado por scripts/build-sw.mjs>
-const VERSION = 'pzg-bda6846202';
+const VERSION = 'pzg-86d0417b39';
 const FILES = [
   './', './index.html', './manifest.webmanifest', './css/base.css', './css/components.css',
   './css/games/akari.css', './css/games/binario.css', './css/games/gears.css', './css/games/hashi.css',
@@ -105,15 +105,16 @@ const FILES = [
   './js/games/zip/board-view.js', './js/games/zip/config.js', './js/games/zip/controller.js',
   './js/games/zip/engine/generator.js', './js/games/zip/engine/path.js', './js/games/zip/index.js',
   './js/games/zip/meta.js', './js/games/zip/rules.js', './js/games/zip/templates.js', './js/games/zip/worker.js',
-  './js/lib/bits.js', './js/lib/dom.js', './js/lib/format.js', './js/lib/grid.js', './js/lib/iter.js',
-  './js/lib/polyomino.js', './js/lib/random.js', './js/main.js', './js/pwa.js', './js/ui/cell-drag.js',
-  './js/ui/confirm-dialog.js', './js/ui/cube-svg.js', './js/ui/edge-back.js', './js/ui/fit-play.js',
-  './js/ui/fit-spots.js', './js/ui/fit-text.js', './js/ui/game-hud.js', './js/ui/grid-board.js',
-  './js/ui/help-figure.js', './js/ui/hub-view.js', './js/ui/level-menu.js', './js/ui/night-mode.js',
-  './js/ui/overlays.js', './js/ui/piece-drag.js', './js/ui/progress-view.js', './js/ui/settings-panel.js',
-  './js/ui/templates.js', './js/ui/toast.js', './js/ui/win-strip.js', './fonts/archivo-black.woff2',
-  './fonts/archivo.woff2', './icons/apple-touch-icon.png', './icons/icon-192.png', './icons/icon-512.png',
-  './icons/icon-maskable-512.png', './icons/icon-maskable.svg', './icons/icon.svg'
+  './js/i18n/en.js', './js/i18n/es.js', './js/i18n/index.js', './js/lib/bits.js', './js/lib/dom.js',
+  './js/lib/format.js', './js/lib/grid.js', './js/lib/iter.js', './js/lib/polyomino.js', './js/lib/random.js',
+  './js/main.js', './js/pwa.js', './js/ui/cell-drag.js', './js/ui/confirm-dialog.js', './js/ui/cube-svg.js',
+  './js/ui/edge-back.js', './js/ui/fit-play.js', './js/ui/fit-spots.js', './js/ui/fit-text.js',
+  './js/ui/game-hud.js', './js/ui/grid-board.js', './js/ui/help-figure.js', './js/ui/hub-view.js',
+  './js/ui/level-menu.js', './js/ui/night-mode.js', './js/ui/overlays.js', './js/ui/piece-drag.js',
+  './js/ui/progress-view.js', './js/ui/settings-panel.js', './js/ui/templates.js', './js/ui/toast.js',
+  './js/ui/win-strip.js', './fonts/archivo-black.woff2', './fonts/archivo.woff2', './icons/apple-touch-icon.png',
+  './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png', './icons/icon-maskable.svg',
+  './icons/icon.svg'
 ];
 // </generado>
 // Cada versión guarda todos sus archivos pedidos al servidor (no a la caché HTTP del navegador,
