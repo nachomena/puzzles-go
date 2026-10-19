@@ -226,7 +226,7 @@ export default {
       help: `
   <p>Es un Sudoku: cada <b>fila</b>, cada <b>columna</b> y cada <b>caja</b> de 3 × 3 lleva los números del 1 al 9 sin repetir.</p>
   {figure}
-  <p>Además, el tablero está dividido en <b>jaulas</b> con borde punteado. Los números de una jaula <b>suman</b> el número pequeño de su esquina y <b>no se repiten</b> dentro de ella. Hay muy pocos números puestos al empezar: el resto se deduce de las sumas. Cada tablero tiene una única solución.</p>
+  <p>Además, el tablero está dividido en <b>jaulas</b> con borde punteado. Los números de una jaula <b>suman</b> el número pequeño de su esquina y <b>no se repiten</b> dentro de ella. Al empezar hay pocos números puestos (menos cuanto más difícil): el resto se deduce de las sumas. Cada tablero tiene una única solución.</p>
   <h3>Trucos</h3>
   <ul>
     <li>Algunas sumas solo se pueden hacer de una manera: 3 en dos casillas es 1 + 2, y 17 es 8 + 9.</li>
@@ -234,9 +234,9 @@ export default {
   </ul>
   <h3>Niveles</h3>
   <ul>
-    <li><b>Fácil:</b> jaulas de 2 y 3 casillas; basta con las sumas y ver dónde cabe cada número.</li>
-    <li><b>Difícil:</b> jaulas más grandes; hacen falta candidatos bloqueados, pares y tríos, y siempre la regla del 45 en una fila, columna o caja.</li>
-    <li><b>Experto:</b> jaulas de hasta 6 casillas y la regla del 45 en varias filas, columnas o cajas a la vez.</li>
+    <li><b>Fácil:</b> jaulas pequeñas, algunas de una sola casilla (su número es su suma), y bastantes números puestos; basta con las sumas y ver dónde cabe cada número.</li>
+    <li><b>Difícil:</b> pocos números puestos; hacen falta candidatos bloqueados, pares y tríos.</li>
+    <li><b>Experto:</b> jaulas de hasta 4 casillas y siempre la regla del 45 en una fila, columna o caja.</li>
   </ul>
   <h3>Controles</h3>
   <ul>
@@ -309,6 +309,7 @@ export default {
       toolTry: 'Estrellas de prueba',
       wrongStar: 'Esta estrella no va aquí',
       missingStar: 'Aquí sí va una estrella',
+      allPlacedWrong: 'Están todas las estrellas, pero las rojas rompen una regla: se tocan, también en diagonal, o sobran en su fila, columna o región.',
       help: `
   <p>Coloca estrellas para que cada <b>fila</b>, cada <b>columna</b> y cada <b>región</b> (zona rodeada por línea gruesa) tenga exactamente 2 estrellas.</p>
   <p>Dos estrellas nunca pueden tocarse, ni siquiera en diagonal. Todos los tableros son de 10×10 y tienen una única solución; la dificultad depende de la forma de las regiones.</p>

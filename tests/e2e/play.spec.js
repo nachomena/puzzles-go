@@ -81,3 +81,17 @@ test('help: the button stays in view, the page behind is locked and each opening
   await play.locator('[data-target="help"]').click();
   expect(await body.evaluate(el => el.scrollTop)).toBe(0);
 });
+
+test('Star Battle: with every star placed but one breaking a rule, it warns and marks it even with errors off', async ({ page }) => {
+  await openApp(page);
+  const play = await startGame(page, 'star-battle');
+  const { N, solution } = await page.evaluate(() => JSON.parse(localStorage.getItem('starbattlego.v2')).cur.p);
+  // the solution with one star moved to another cell of its row: still 20 stars, but not the solution
+  const stars = solution.slice(), row = Math.floor(stars[0] / N);
+  stars[0] = [...Array(N).keys()].map(c => row * N + c).find(i => !solution.includes(i));
+  await play.locator('[data-tool="try"]').click();
+  for (const i of stars) await play.locator('.cell').nth(i).click();
+  await expect(page.locator('#toast')).toContainText('Están todas las estrellas');
+  await expect(play.locator('.cell.is-bad').first()).toBeVisible();
+  await expect(page.locator('#win')).not.toHaveClass(/is-on/);
+});

@@ -13,6 +13,7 @@ const isTrayList = (a, ok) => Array.isArray(a) && a.length === PIECES.length && 
 
 export default defineGame({
   ...meta,
+  confirmReset: false,
   tools: Object.values(TOOL),
   defaultSettings: DEFAULT_SETTINGS,
   settings: SETTINGS,

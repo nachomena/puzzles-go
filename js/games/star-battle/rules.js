@@ -46,7 +46,6 @@ export function analyze(marks, { N, K, regions }){
 /** Does the board have anything the player placed (X or star)? */
 export const hasPlayerInput = marks => marks.some(v => v === MARK.X || isStar(v));
 
-/** Hint: first fix mistakes; if there are none, place a missing star. */
 /** First mistake: a star where it doesn't go, or an X where a star does go. */
 export function findMistake(marks, solution){
   const sol = new Set(solution);
@@ -57,6 +56,7 @@ export function findMistake(marks, solution){
   return null;
 }
 
+/** Hint: first fix mistakes; if there are none, place a missing star. */
 export function findHint(marks, solution){
   const mistake = findMistake(marks, solution);
   if (mistake) return mistake;

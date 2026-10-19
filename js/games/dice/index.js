@@ -11,6 +11,7 @@ const isArrows = a => a && [a.rows, a.cols].every(l => Array.isArray(l) && l.len
 
 export default defineGame({
   ...meta,
+  confirmReset: false,
   tools: Object.values(TOOL),
   defaultSettings: DEFAULT_SETTINGS,
   settings: SETTINGS,

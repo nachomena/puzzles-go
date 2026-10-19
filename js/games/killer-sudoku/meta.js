@@ -10,7 +10,7 @@ export default Object.freeze({
   icon: 'killer',
   storageKey: 'puzzlesgo.killersudoku.v1',
   /** `target` is the logic solver level the board requires (see engine/logic-solver.js). */
-  levels: difficulty({ easy: 1, hard: 3, expert: 4 }),
+  levels: difficulty({ easy: 1, hard: 2, expert: 3 }),
   levelOrder: LEVEL_ORDER,
   /** Old levels, to move records and games (core/level-migration.js). */
   oldLevels: OLD_LEVELS.four

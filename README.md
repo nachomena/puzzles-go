@@ -8,7 +8,7 @@ the one chosen in the picker settings). Every game with difficulties uses the sa
 - **Kakuro** from 6×6 to 12×12: sums in black cells and runs with no repeated numbers.
 - **Loop** from 5×5 to 10×10: a single loop between the dots following the numbers in the cells.
 - **Gears** (an original game) from 5×5 to 8×8: gears on a hexagonal panel that carry the crank's turn to the lock, in a single chain with no cycles, with numbers that count the surrounding gears.
-- **Killer Sudoku** 9×9 with sum cages and almost no given numbers. Hard always requires the rule of 45; Expert, applying it to several rows, columns or boxes at once.
+- **Killer Sudoku** 9×9 with sum cages. Easy has one-cell cages and 16 given numbers; Hard needs locked candidates, pairs or triples; Expert always requires the rule of 45.
 - **Dice**: 12 pieces that form 4 die faces with sums per row and column.
 - **Circuit**: 10 double-sided pieces that join the dots with paths on an 8×4 board.
 - **Circle**: 10 double-sided ball pieces that fill a round board of 3 rings without crossing its ribs (in Hard and Expert you also have to find where the ribs go).

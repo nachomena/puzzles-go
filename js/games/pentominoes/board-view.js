@@ -22,6 +22,8 @@ export class PentominoesBoardView {
     this.n = n;
     this.grid.build(W, new Array(W * n).fill(0), null, n);
     this.board.parentElement.style.setProperty('--rows', n);   // board and slider
+    // with plain numbers: Safari doesn't apply an aspect-ratio that uses var() (it stayed square)
+    this.board.style.aspectRatio = `${W} / ${n}`;
     this.piecesEl.setAttribute('viewBox', `0 0 ${W} ${n}`);
   }
 

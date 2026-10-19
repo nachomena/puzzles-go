@@ -40,14 +40,14 @@ test('the techniques never contradict the real solution', () => {
   }
 });
 
-for (const L of [1, 2, 3, 4]){
-  test(`generator: level ${L} with a single solution, of the exact level and almost no given numbers`, () => {
+for (const L of [1, 2, 3]){
+  test(`generator: level ${L} with a single solution, of the exact level and its level's given numbers`, () => {
     const p = runToEnd(generate(L)), prepared = prepare(p.cages);
     assert.ok(p && p.level === L);
     assert.ok(coversBoard(p.cages));
     assert.ok(Math.max(...p.cages.map(c => c.cells.length)) <= Math.max(...LEVEL_RULES[L].sizes) + 1);
     p.givens.forEach((v, i) => { if (v) assert.equal(v, p.solution[i]); });
-    assert.ok(p.givens.filter(Boolean).length <= 12);
+    assert.equal(p.givens.filter(Boolean).length, LEVEL_RULES[L].keep);
     const r = logic(p.givens, prepared, L);
     assert.ok(r.solved);
     assert.deepEqual(r.grid, p.solution);

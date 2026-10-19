@@ -50,10 +50,6 @@ export const playScreen = ({ id, name, boardClass = '', boardHtml = null, contro
   `<div class="wrap wrap--game">${hud()}<div class="play-fit">${boardHtml ?? board(boardClass)}</div>${controls}${dock({ hint, back })}</div></section>`;
 
 /**
- * Toolbar and number keypad from 1 to n (Sudoku, Calcudoku): restart, number or pencil, eraser,
- * undo and redo.
- */
-/**
  * Pencil notes of a cell (Sudoku, Calcudoku): digit k in its slot if it is in `mask`. The one of the
  * highlighted number (`same`) stands out, like the cells with that number.
  */
@@ -62,6 +58,10 @@ export const notesHtml = (mask, n, same = 0, cls = '') =>
   Array.from({ length: n }, (_, k) => mask & (1 << k) ? `<i${k + 1 === same ? ' class="is-same"' : ''}>${k + 1}</i>` : '<i></i>').join('') +
   '</span>';
 
+/**
+ * Toolbar and number keypad from 1 to n (Sudoku, Calcudoku): restart, number or pencil, eraser,
+ * undo and redo.
+ */
 export const digitControls = n =>
   `<div class="toolbar">` +
   toolPicker([

@@ -9,6 +9,7 @@ import meta from './meta.js';
 
 export default defineGame({
   ...meta,
+  confirmReset: false,
   tools: Object.values(TOOL),
   defaultSettings: DEFAULT_SETTINGS,
   settings: SETTINGS,

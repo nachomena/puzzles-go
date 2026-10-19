@@ -266,6 +266,7 @@ export class App {
     const c = this.current?.controller;
     if (this.screen !== 'play' || !c?.active) return;
     if (!c.hasInput()){ this.toast.show(t('play.alreadyEmpty')); return; }
+    if (this.current.game.confirmReset === false){ c.reset(); return; }
     const choice = await this.confirm.ask({
       title: t('confirm.resetTitle'),
       text: t('confirm.resetText'),

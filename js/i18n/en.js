@@ -226,7 +226,7 @@ export default {
       help: `
   <p>It is a Sudoku: every <b>row</b>, every <b>column</b> and every 3 × 3 <b>box</b> holds the numbers 1 to 9 with no repeats.</p>
   {figure}
-  <p>On top of that, the board is split into <b>cages</b> with a dotted border. The numbers in a cage <b>add up</b> to the small number in its corner and <b>don’t repeat</b> inside it. Very few numbers are given at the start: the rest comes from the sums. Every board has a single solution.</p>
+  <p>On top of that, the board is split into <b>cages</b> with a dotted border. The numbers in a cage <b>add up</b> to the small number in its corner and <b>don’t repeat</b> inside it. Few numbers are given at the start (fewer the harder the level): the rest comes from the sums. Every board has a single solution.</p>
   <h3>Tips</h3>
   <ul>
     <li>Some sums can only be made one way: 3 in two cells is 1 + 2, and 17 is 8 + 9.</li>
@@ -234,9 +234,9 @@ export default {
   </ul>
   <h3>Levels</h3>
   <ul>
-    <li><b>Easy:</b> cages of 2 and 3 cells; the sums and seeing where each number fits are enough.</li>
-    <li><b>Hard:</b> bigger cages; you need locked candidates, pairs and triples, and always the 45 rule in a row, column or box.</li>
-    <li><b>Expert:</b> cages of up to 6 cells and the 45 rule across several rows, columns or boxes at once.</li>
+    <li><b>Easy:</b> small cages, some of a single cell (its number is its sum), and plenty of numbers given; the sums and seeing where each number fits are enough.</li>
+    <li><b>Hard:</b> few numbers given; you need locked candidates, pairs and triples.</li>
+    <li><b>Expert:</b> cages of up to 4 cells and always the 45 rule in a row, column or box.</li>
   </ul>
   <h3>Controls</h3>
   <ul>
@@ -309,6 +309,7 @@ export default {
       toolTry: 'Trial stars',
       wrongStar: 'This star doesn’t go here',
       missingStar: 'A star goes here',
+      allPlacedWrong: 'All the stars are placed, but the red ones break a rule: they touch, diagonally too, or there are too many in their row, column or region.',
       help: `
   <p>Place stars so that every <b>row</b>, every <b>column</b> and every <b>region</b> (area outlined by a thick line) has exactly 2 stars.</p>
   <p>Two stars can never touch, not even diagonally. All boards are 10×10 and have a single solution; the difficulty depends on the shape of the regions.</p>

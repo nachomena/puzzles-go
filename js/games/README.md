@@ -22,7 +22,8 @@ statistics and win screen are shared.
      `data-action="…"`: the shell handles the shared actions and the game's own go in `actions`.
    - `index.js` — `export default defineGame({ ...meta, ... })` with every field of the contract
      (`core/game-definition.js`). `defineGame` fails at startup if any is missing.
-     Optional: `hint: false` removes the hint button. In `settings`, a setting with `options`
+     Optional: `hint: false` removes the hint button, and `confirmReset: false` restarts without asking (the piece
+     games, where clearing every piece is common). In `settings`, a setting with `options`
      (`[{ value, label }]`) is shown as a drop-down instead of a switch.
      Statistics go per level; to group them another way, declare `statsRows` in `meta.js` (`[{ key, name }]`) and
      `statsKey(session)` in `index.js` (e.g. Peg Solitaire, per board), and if needed `statsName(session)` for the

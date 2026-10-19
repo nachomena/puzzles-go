@@ -4,7 +4,7 @@ import { t } from '../../i18n/index.js';
 import { bindCellDrag } from '../../ui/cell-drag.js';
 import { StarBattleBoard } from './board-view.js';
 import { MARK, TOOL } from './config.js';
-import { analyze, applyAutoX, effectiveMark, nextMark, hasPlayerInput, findHint, findMistake } from './rules.js';
+import { analyze, applyAutoX, effectiveMark, isStar, nextMark, hasPlayerInput, findHint, findMistake } from './rules.js';
 
 const HINT_MESSAGES = {
   'wrong-star': t('games.star-battle.wrongStar'),
@@ -33,9 +33,10 @@ export class StarBattleController extends GameController {
     return { L, p: puzzle, marks: new Array(cells).fill(MARK.EMPTY), time: 0, done: false, hints: 0 };
   }
   mountBoard(){ this.board.build(this.session.p, { tint: this.settings.tint }); }
+  /** With every star placed, the ones that break a rule turn red even with errors off: it isn't solved. */
   renderBoard(){
     const s = this.session, { bad } = analyze(s.marks, s.p);
-    this.board.render(s.marks, this.settings.errors ? bad : null);
+    this.board.render(s.marks, this.settings.errors || this.#allPlaced() ? bad : null);
   }
   snapshot(){ return { m: this.session.marks.slice() }; }
   restore(snap){ this.session.marks = snap.m.slice(); }
@@ -105,7 +106,15 @@ export class StarBattleController extends GameController {
     const { before } = this.stroke;
     this.stroke = null;
     // every tap is a step: undoing a star goes back to the X
-    if (!this.sameAs(before)) this.history.record(before);
+    const changed = !this.sameAs(before);
+    if (changed) this.history.record(before);
     this.commit(true);
+    if (changed && this.active && this.#allPlaced()) this.notify(t('games.star-battle.allPlacedWrong'));
+  }
+
+  /** Are all the stars placed (trial ones too)? Then it is either solved or some star breaks a rule. */
+  #allPlaced(){
+    const { N, K } = this.session.p;
+    return this.session.marks.filter(isStar).length === N * K;
   }
 }

@@ -11,6 +11,7 @@ const isPose = v => v && (v.m === 1 || v.m === -1) && Number.isInteger(v.s) && v
 
 export default defineGame({
   ...meta,
+  confirmReset: false,
   tools: Object.values(TOOL),
   defaultSettings: DEFAULT_SETTINGS,
   settings: SETTINGS,

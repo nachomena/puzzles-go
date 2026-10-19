@@ -12,6 +12,7 @@
    @property {{key:string,title:string,desc:string,options?:{value:string,label:string}[]}[]} settings
                                     settings: switches, or selects if they have `options`
    @property {boolean} [hint]       false = no hint button (there is one by default)
+   @property {boolean} [confirmReset]  false = restart without asking (piece games: clearing them all is common)
    @property {{key:string,name:string}[]} [statsRows]  statistics rows (the levels by default)
    @property {(session:object) => string} [statsKey]   row where a win is recorded (its level by default)
    @property {(session:object) => string} [statsName]  name of that row on the win screen

@@ -20,8 +20,8 @@
 /* Header: the puzzle being played, smaller than the level name */
 [data-game="pentominoes"] .hud [data-hud="size"]{font-size:.72em;color:var(--ink-soft)}
 
-/* The board grows downwards with the puzzle; it narrows to fit in height */
-.board--pentominoes{--n:5;aspect-ratio:5/var(--rows,5);width:min(100%, calc(var(--pt-max-h) * 5 / var(--rows,5)), 340px)}
+/* The board grows downwards with the puzzle (its aspect-ratio is set in board-view.js); it narrows to fit in height */
+.board--pentominoes{--n:5;width:min(100%, calc(var(--pt-max-h) * 5 / var(--rows,5)), 340px)}
 /* Slider at the end of the board */
 .pt-slider{width:min(100%, calc(var(--pt-max-h) * 5 / var(--rows,5)), 340px);margin:0 auto;height:9px;border-radius:0 0 4px 4px;
   background:var(--pt-wood)}

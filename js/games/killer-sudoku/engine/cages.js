@@ -18,7 +18,8 @@ const neighbours = i => {
 /**
  * Splits the board into connected cages of the sizes in `sizes` (random from the list) without repeating
  * a number of `solution` inside a cage. Cells left alone join a neighbouring cage that doesn't have their
- * number; if that isn't possible, returns null.
+ * number (unless 1 is one of the sizes: then they stay as one-cell cages); if that isn't possible,
+ * returns null.
  */
 export function partition(solution, sizes){
   const owner = new Int16Array(CELLS).fill(-1), cages = [];
@@ -37,7 +38,7 @@ export function partition(solution, sizes){
   }
   // lone cells: to the smallest neighbouring cage that accepts their number
   for (let k = 0; k < cages.length; k++){
-    if (cages[k].length !== 1) continue;
+    if (cages[k].length !== 1 || sizes.includes(1)) continue;
     const i = cages[k][0];
     const host = neighbours(i).map(j => owner[j]).filter(o => o !== k && cages[o].length > 0 &&
       !cages[o].some(j => solution[j] === solution[i])).sort((a, b) => cages[a].length - cages[b].length)[0];
