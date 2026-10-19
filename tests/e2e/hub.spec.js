@@ -75,10 +75,13 @@ test("the language follows the phone's and can be changed in settings", async ({
 });
 
 test('a slow start shows the logo until the picker is drawn', async ({ page }) => {
-  await page.route('**/js/main.js', async route => { await new Promise(done => setTimeout(done, 800)); await route.continue(); });
-  const opened = page.goto('./');
+  // the app's code is held back until the logo has been seen, so the test doesn't depend on timing
+  let release;
+  const held = new Promise(done => { release = done; });
+  await page.route('**/js/main.js', async route => { await held; await route.continue(); });
+  await page.goto('./', { waitUntil: 'commit' });
   await expect(page.locator('#loading.is-boot .loader__logo')).toBeVisible();
-  await opened;
+  release();
   await expect(page.locator('#games .game-row').first()).toBeVisible();
   await expect(page.locator('#loading')).not.toHaveClass(/is-on/);
 });
