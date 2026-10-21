@@ -309,7 +309,12 @@ export default {
       toolTry: 'Trial stars',
       wrongStar: 'This star doesn’t go here',
       missingStar: 'A star goes here',
-      allPlacedWrong: 'All the stars are placed, but the red ones break a rule: they touch, diagonally too, or there are too many in their row, column or region.',
+      broken: {
+        region: 'There can’t be more than {k} stars in a region.',
+        row: 'There can’t be more than {k} stars in a row.',
+        col: 'There can’t be more than {k} stars in a column.',
+        touch: 'Two stars can’t touch, not even diagonally.'
+      },
       help: `
   <p>Place stars so that every <b>row</b>, every <b>column</b> and every <b>region</b> (area outlined by a thick line) has exactly 2 stars.</p>
   <p>Two stars can never touch, not even diagonally. All boards are 10×10 and have a single solution; the difficulty depends on the shape of the regions.</p>

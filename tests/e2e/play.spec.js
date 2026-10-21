@@ -91,7 +91,7 @@ test('Star Battle: with every star placed but one breaking a rule, it warns and 
   stars[0] = [...Array(N).keys()].map(c => row * N + c).find(i => !solution.includes(i));
   await play.locator('[data-tool="try"]').click();
   for (const i of stars) await play.locator('.cell').nth(i).click();
-  await expect(page.locator('#toast')).toContainText('Están todas las estrellas');
+  await expect(page.locator('#toast')).toHaveText(/No puede haber más de 2 estrellas|no pueden tocarse/);
   await expect(play.locator('.cell.is-bad').first()).toBeVisible();
   await expect(page.locator('#win')).not.toHaveClass(/is-on/);
 });

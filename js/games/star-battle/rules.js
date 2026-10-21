@@ -25,7 +25,8 @@ export function applyAutoX(marks, N, enabled){
 
 /**
  * Looks for stars that break some rule.
- * Returns { bad: Uint8Array, anyBad, solved }.
+ * Returns { bad: Uint8Array, anyBad, solved, broken }: `broken` says which rules are broken
+ * ({ touch, row, col, region }).
  */
 export function analyze(marks, { N, K, regions }){
   const bad = new Uint8Array(N * N);
@@ -35,12 +36,15 @@ export function analyze(marks, { N, K, regions }){
   for (let i = 0; i < marks.length; i++) if (isStar(marks[i])){
     total++; rowCount[rowOf(N, i)]++; colCount[colOf(N, i)]++; regCount[regions[i]]++;
   }
+  const broken = { touch: false, row: false, col: false, region: false };
   for (let i = 0; i < marks.length; i++) if (isStar(marks[i])){
-    const overflow = rowCount[rowOf(N, i)] > K || colCount[colOf(N, i)] > K || regCount[regions[i]] > K;
-    if (overflow || n8[i].some(j => isStar(marks[j]))) bad[i] = 1;
+    const row = rowCount[rowOf(N, i)] > K, col = colCount[colOf(N, i)] > K, region = regCount[regions[i]] > K;
+    const touch = n8[i].some(j => isStar(marks[j]));
+    if (row || col || region || touch) bad[i] = 1;
+    broken.touch ||= touch; broken.row ||= row; broken.col ||= col; broken.region ||= region;
   }
   const anyBad = bad.some(Boolean);
-  return { bad, anyBad, solved: total === N * K && !anyBad };
+  return { bad, anyBad, solved: total === N * K && !anyBad, broken };
 }
 
 /** Does the board have anything the player placed (X or star)? */

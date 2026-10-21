@@ -309,7 +309,12 @@ export default {
       toolTry: 'Estrellas de prueba',
       wrongStar: 'Esta estrella no va aquí',
       missingStar: 'Aquí sí va una estrella',
-      allPlacedWrong: 'Están todas las estrellas, pero las rojas rompen una regla: se tocan, también en diagonal, o sobran en su fila, columna o región.',
+      broken: {
+        region: 'No puede haber más de {k} estrellas en una región.',
+        row: 'No puede haber más de {k} estrellas en una fila.',
+        col: 'No puede haber más de {k} estrellas en una columna.',
+        touch: 'Dos estrellas no pueden tocarse, tampoco en diagonal.'
+      },
       help: `
   <p>Coloca estrellas para que cada <b>fila</b>, cada <b>columna</b> y cada <b>región</b> (zona rodeada por línea gruesa) tenga exactamente 2 estrellas.</p>
   <p>Dos estrellas nunca pueden tocarse, ni siquiera en diagonal. Todos los tableros son de 10×10 y tienen una única solución; la dificultad depende de la forma de las regiones.</p>

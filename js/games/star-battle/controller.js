@@ -109,7 +109,14 @@ export class StarBattleController extends GameController {
     const changed = !this.sameAs(before);
     if (changed) this.history.record(before);
     this.commit(true);
-    if (changed && this.active && this.#allPlaced()) this.notify(t('games.star-battle.allPlacedWrong'));
+    if (changed && this.active && this.#allPlaced()) this.notify(this.#brokenRules());
+  }
+
+  /** What the red stars break, in words: one sentence per rule. */
+  #brokenRules(){
+    const { broken } = analyze(this.session.marks, this.session.p), k = this.session.p.K;
+    return ['region', 'row', 'col', 'touch'].filter(r => broken[r])
+      .map(r => t(`games.star-battle.broken.${r}`, { k })).join(' ');
   }
 
   /** Are all the stars placed (trial ones too)? Then it is either solved or some star breaks a rule. */

@@ -13,7 +13,7 @@ const MARK_VIEW = {
 };
 
 /** Colour of a region when "Colour regions" is on. */
-const regionColor = (g, N) => `hsl(${(g * 360 / N + 18) % 360} 16% 28%)`;
+const regionColor = (g, N) => `hsl(${(g * 360 / N + 18) % 360} 9% 31%)`;
 
 export class StarBattleBoard extends GridBoard {
   build({ N, regions }, { tint = false } = {}){
