@@ -27,7 +27,7 @@ div.ft-piece{position:absolute}
 div.ft-piece.is-selected{filter:drop-shadow(0 0 1px var(--ink)) drop-shadow(0 0 1px var(--ink))}
 .ft-piece.is-lifted{opacity:.2}
 div.ft-piece.is-ghost{position:fixed;z-index:30;pointer-events:none}
-.ft-piece.is-flash{animation:ft-flash .5s ease-in-out 3}
+.ft-piece.is-flash{animation:ft-flash .9s ease-in-out infinite}
 @keyframes ft-flash{50%{opacity:.35}}
 .ft-board.is-won .ft-balls circle{animation:ft-glow 1.4s ease-in-out 2}
 @keyframes ft-glow{50%{filter:brightness(1.35)}}

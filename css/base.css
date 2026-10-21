@@ -20,4 +20,6 @@ svg{display:block}
 .screen{display:none}
 .screen.is-on{display:block}
 
-@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}
+  /* a hint doesn't pulse: it stays outlined until the next touch */
+  .is-flash{outline:2px solid var(--accent);outline-offset:-2px}}

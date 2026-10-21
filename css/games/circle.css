@@ -25,7 +25,7 @@
 .ci-piece.is-lifted,.ci-tray-piece.is-lifted{opacity:.25}
 .ci-piece.is-preview{opacity:.75;pointer-events:none}
 .ci-piece.is-preview.is-bad{opacity:.45;filter:grayscale(1)}
-.ci-piece.is-flash,.ci-tray-piece.is-flash{animation:ci-flash .5s ease-in-out 3}
+.ci-piece.is-flash,.ci-tray-piece.is-flash{animation:ci-flash .9s ease-in-out infinite}
 @keyframes ci-flash{50%{opacity:.35}}
 .ci-board.is-won .ci-pieces .ci-balls circle{animation:ci-glow 1.4s ease-in-out 2}
 @keyframes ci-glow{50%{filter:brightness(1.35)}}

@@ -59,9 +59,8 @@ export class GearsBoardView {
 
   flash(i){
     const [x, y] = center(this.p.w, i);
-    this.flashEl.innerHTML = `<path d="${hexPath(x, y, .9)}"/>`;
-    clearTimeout(this.flashTimer);
-    this.flashTimer = setTimeout(() => { this.flashEl.innerHTML = ''; }, 1600);
+    // it pulses until the next touch, which takes off the is-flash (App#bindEvents)
+    this.flashEl.innerHTML = `<path class="is-flash" d="${hexPath(x, y, .9)}"/>`;
   }
 
   celebrate(){ clearTimeout(this.turnTimer); this.root.classList.remove('is-turning', 'is-stuck'); this.root.classList.add('is-won'); }

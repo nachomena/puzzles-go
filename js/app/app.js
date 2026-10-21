@@ -416,6 +416,12 @@ export class App {
       if (e.target.matches('.overlay[data-dismissable]')) this.overlays.closeDismissable();
     });
 
+    // A hint (or a mistake) pulses until the player touches the screen or presses a key again, so it
+    // isn't missed: any .is-flash is taken off before that touch is handled
+    const clearFlashes = () => document.querySelectorAll('.is-flash').forEach(el => el.classList.remove('is-flash'));
+    document.addEventListener('pointerdown', clearFlashes, true);
+    document.addEventListener('keydown', clearFlashes, true);
+
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape'){ this.confirm.answer('cancel'); this.overlays.closeDismissable(); return; }
       if (this.screen !== 'play' || this.overlays.anyOpen() || e.metaKey || e.ctrlKey || e.altKey) return;

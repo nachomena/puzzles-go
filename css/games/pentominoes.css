@@ -39,7 +39,7 @@ div.pt-piece{position:absolute}
 div.pt-piece.is-selected{filter:drop-shadow(0 0 1px var(--ink)) drop-shadow(0 0 1px var(--ink))}
 .pt-piece.is-lifted{opacity:.2}
 div.pt-piece.is-ghost{position:fixed;z-index:30;pointer-events:none}
-.pt-piece.is-flash{animation:pt-flash .5s ease-in-out 3}
+.pt-piece.is-flash{animation:pt-flash .9s ease-in-out infinite}
 @keyframes pt-flash{50%{opacity:.35}}
 .board.is-won .pt-piece{animation:pt-glow 1.1s ease-in-out both}
 @keyframes pt-glow{40%{filter:brightness(1.35)}}

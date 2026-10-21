@@ -23,7 +23,7 @@
 .hx-piece.is-lifted,.hx-tray-piece.is-lifted{opacity:.25}
 .hx-piece.is-preview{opacity:.75;pointer-events:none}
 .hx-piece.is-preview.is-bad{opacity:.45;filter:grayscale(1)}
-.hx-piece.is-flash,.hx-tray-piece.is-flash{animation:hx-flash .5s ease-in-out 3}
+.hx-piece.is-flash,.hx-tray-piece.is-flash{animation:hx-flash .9s ease-in-out infinite}
 @keyframes hx-flash{50%{opacity:.35}}
 .hx-board.is-won .hx-pieces .hx-outer line{animation:hx-glow 1.4s ease-in-out 2}
 @keyframes hx-glow{50%{filter:brightness(1.35)}}

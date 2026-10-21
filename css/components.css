@@ -52,7 +52,7 @@
 
 /* Base cell of any board (each game adds its modifiers) */
 .cell{display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;background:var(--cell)}
-.cell.is-flash{animation:flash .5s ease-in-out 3}
+.cell.is-flash{animation:flash .9s ease-in-out infinite}
 @keyframes flash{50%{background:var(--cell-flash)}}
 @keyframes pop{from{transform:scale(.4)}to{transform:scale(1)}}
 @keyframes win{0%{transform:scale(1)}40%{transform:scale(1.35) rotate(20deg)}100%{transform:scale(1) rotate(0)}}

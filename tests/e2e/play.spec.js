@@ -95,3 +95,15 @@ test('Star Battle: with every star placed but one breaking a rule, it warns and 
   await expect(play.locator('.cell.is-bad').first()).toBeVisible();
   await expect(page.locator('#win')).not.toHaveClass(/is-on/);
 });
+
+test('a hint keeps pulsing until the next touch', async ({ page }) => {
+  await openApp(page);
+  const play = await startGame(page, 'star-battle');
+  await play.locator('[data-action="hint"]').click();
+  const flashed = play.locator('.cell.is-flash');
+  await expect(flashed).toHaveCount(1);
+  await page.waitForTimeout(3000);   // the old flash lasted 1.5 s
+  await expect(flashed).toHaveCount(1);
+  await play.locator('.hud').click();
+  await expect(flashed).toHaveCount(0);
+});

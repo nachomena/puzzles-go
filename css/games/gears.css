@@ -22,7 +22,7 @@
 .gr-arrow-head{fill:var(--bg);stroke:var(--bg);stroke-width:.03;stroke-linejoin:round}
 .gr-pad rect{fill:var(--bg)}
 .gr-shackle{fill:none;stroke:var(--bg);stroke-width:.07}
-.gr-flash path{fill:none;stroke:var(--accent);stroke-width:.1;animation:gr-flash .5s ease-in-out 3}
+.gr-flash .is-flash{fill:none;stroke:var(--accent);stroke-width:.1;animation:gr-flash .9s ease-in-out infinite}
 @keyframes gr-flash{50%{opacity:.2}}
 
 /* Turn: whatever is connected to the crank turns once (each in its own direction); if it jams, it shakes */

@@ -9,7 +9,7 @@
 .lp-nums text.is-done{fill:var(--dim)}
 .lp-nums text.is-bad{fill:var(--bad)}
 .lp-lines line{stroke:var(--entry);stroke-width:.12;stroke-linecap:round}
-.lp-lines line.is-flash{stroke:#e2bf5a;animation:lp-flash .5s ease-in-out 3}
+.lp-lines line.is-flash{stroke:#e2bf5a;animation:lp-flash .9s ease-in-out infinite}
 @keyframes lp-flash{50%{opacity:.25}}
 .lp-crosses path{stroke:var(--dim);stroke-width:.04;stroke-linecap:round;fill:none}
 .lp-board.is-won .lp-lines line{animation:lp-win 1.2s ease-in-out both}

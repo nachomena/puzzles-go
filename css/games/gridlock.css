@@ -29,7 +29,7 @@
 .gl-car.is-v span::after{top:auto;left:22cqw;right:22cqw;bottom:22cqw;width:auto;height:34cqw}
 .gl-car.is-dragging{transition:none;z-index:2}
 .gl-car.is-dragging span{box-shadow:0 0 0 2px var(--ink)}
-.gl-car.is-flash span{animation:gl-flash .5s ease-in-out 3}
+.gl-car.is-flash span{animation:gl-flash .9s ease-in-out infinite}
 @keyframes gl-flash{50%{opacity:.35}}
 /* On winning, the red car drives out to the right */
 .gl-board.is-won .gl-car.is-red{transition:left .6s ease-in,opacity .6s ease-in;left:calc(100% + 10px) !important;opacity:0}
