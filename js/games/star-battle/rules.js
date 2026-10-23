@@ -9,7 +9,7 @@ export const effectiveMark = v => v === MARK.AUTO_X ? MARK.X : v;
 /** Star or trial star: both count the same for the rules. */
 export const isStar = v => v === MARK.STAR || v === MARK.TRY;
 
-/** Tap cycle: empty → X → star → empty. A trial star becomes a star. */
+/** Tap cycle: empty → X → star → empty (a tapped trial star takes the board back instead, see controller.js). */
 const CYCLE = { [MARK.EMPTY]: MARK.X, [MARK.X]: MARK.STAR, [MARK.STAR]: MARK.EMPTY, [MARK.TRY]: MARK.STAR };
 export const nextMark = v => CYCLE[effectiveMark(v)];
 

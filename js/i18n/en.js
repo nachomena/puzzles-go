@@ -323,7 +323,8 @@ export default {
   <ul>
     <li>Tap a cell to go from empty to X, from X to star and from star to empty.</li>
     <li>Drag your finger to mark several X’s in a row.</li>
-    <li>With the trial tool {try} you place <b>trial stars</b> (with a gold outline) to test a guess. They count as stars: they put their X marks and turn red if they break a rule. Tap one again to remove it, or tap it with the normal tool to keep it as a star.</li>
+    <li>With the trial tool you place <b>trial stars</b> {try} to test a guess. They count as stars: they put their X marks and, if they break a rule, their cell turns red.</li>
+    <li>If the guess leads nowhere, <b>tap the trial star again</b> {try}, with either tool: the board goes back to how it was before you placed it, without it and without anything you did after. If you change your mind, undo brings it back.</li>
   </ul>
   <h3>Getting started</h3>
   <p>Start with the small regions: if a region fits in a single row or column, the stars of that row or column are already decided.</p>`

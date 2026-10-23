@@ -323,7 +323,8 @@ export default {
   <ul>
     <li>Toca una casilla para pasar de vacía a X, de X a estrella y de estrella a vacía.</li>
     <li>Arrastra el dedo para marcar varias X seguidas.</li>
-    <li>Con la herramienta de prueba {try} pones <b>estrellas de prueba</b> (con borde dorado) para probar una suposición. Cuentan como estrellas: ponen sus X y se ponen rojas si rompen una regla. Tócala otra vez para quitarla, o tócala con la herramienta normal para dejarla como estrella.</li>
+    <li>Con la herramienta de prueba pones <b>estrellas de prueba</b> {try} para probar una suposición. Cuentan como estrellas: ponen sus X y, si rompen una regla, su casilla se pone roja.</li>
+    <li>Si la suposición no te lleva a nada, <b>vuelve a tocar la estrella de prueba</b> {try}, con cualquiera de las dos herramientas: el tablero vuelve a como estaba antes de ponerla, sin ella y sin nada de lo que hiciste después. Si te arrepientes, deshacer lo recupera.</li>
   </ul>
   <h3>Truco de inicio</h3>
   <p>Empieza por las regiones pequeñas: si una región cabe en una sola fila o columna, las estrellas de esa fila o columna ya están decididas.</p>`

@@ -34,7 +34,7 @@ test('Star Battle: undoing the star goes back to the X', async ({ page }) => {
   await expect(cell).toHaveClass(/cell--x/);
 });
 
-test('Star Battle: test star with its X marks; the normal tool turns it into a star', async ({ page }) => {
+test('Star Battle: a trial star puts its X marks and tapping it again removes it', async ({ page }) => {
   await openApp(page);
   const play = await startGame(page, 'star-battle');
   const cells = play.locator('.cell');
@@ -43,13 +43,8 @@ test('Star Battle: test star with its X marks; the normal tool turns it into a s
   await expect(cells.nth(0)).toHaveClass(/cell--try/);
   await expect(cells.nth(1)).toHaveClass(/cell--auto/);   // places its automatic X marks
   await cells.nth(0).click();
-  await expect(cells.nth(0)).not.toHaveClass(/cell--star/);
-  await expect(cells.nth(1)).not.toHaveClass(/cell--auto/);
-  await cells.nth(0).click();
-  await play.locator('[data-tool="star"]').click();
-  await cells.nth(0).click();
-  await expect(cells.nth(0)).toHaveClass(/cell--star/);
   await expect(cells.nth(0)).not.toHaveClass(/cell--try/);
+  await expect(cells.nth(1)).not.toHaveClass(/cell--auto/);
 });
 
 test('Binary: undoing blue goes back to red', async ({ page }) => {
@@ -106,4 +101,23 @@ test('a hint keeps pulsing until the next touch', async ({ page }) => {
   await expect(flashed).toHaveCount(1);
   await play.locator('.hud').click();
   await expect(flashed).toHaveCount(0);
+});
+
+test('Star Battle: tapping a trial star, with either tool, undoes it and everything after it', async ({ page }) => {
+  await openApp(page);
+  const play = await startGame(page, 'star-battle');
+  const cells = play.locator('.cell');
+  await cells.nth(99).click();                      // an X from before the guess stays
+  await play.locator('[data-tool="try"]').click();
+  await cells.nth(0).click();                       // the guess
+  await play.locator('[data-tool="star"]').click();
+  await cells.nth(55).click(); await cells.nth(55).click();   // a star after it
+  await expect(cells.nth(55)).toHaveClass(/cell--star/);
+  await cells.nth(0).click();                       // the guess, with the normal tool: back to before it
+  await expect(cells.nth(0)).not.toHaveClass(/cell--try/);
+  await expect(cells.nth(55)).not.toHaveClass(/cell--star/);
+  await expect(cells.nth(99)).toHaveClass(/cell--x/);
+  await play.locator('[data-action="undo"]').click();   // undo brings it all back
+  await expect(cells.nth(0)).toHaveClass(/cell--try/);
+  await expect(cells.nth(55)).toHaveClass(/cell--star/);
 });

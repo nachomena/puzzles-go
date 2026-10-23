@@ -30,7 +30,7 @@ export class StarBattleController extends GameController {
 
   createSession(L, puzzle){
     const cells = puzzle.N * puzzle.N;
-    return { L, p: puzzle, marks: new Array(cells).fill(MARK.EMPTY), time: 0, done: false, hints: 0 };
+    return { L, p: puzzle, marks: new Array(cells).fill(MARK.EMPTY), trials: {}, time: 0, done: false, hints: 0 };
   }
   mountBoard(){ this.board.build(this.session.p, { tint: this.settings.tint }); }
   /** With every star placed, the ones that break a rule turn red even with errors off: it isn't solved. */
@@ -38,11 +38,11 @@ export class StarBattleController extends GameController {
     const s = this.session, { bad } = analyze(s.marks, s.p);
     this.board.render(s.marks, this.settings.errors || this.#allPlaced() ? bad : null);
   }
-  snapshot(){ return { m: this.session.marks.slice() }; }
-  restore(snap){ this.session.marks = snap.m.slice(); }
+  snapshot(){ return { m: this.session.marks.slice(), t: { ...this.session.trials } }; }
+  restore(snap){ this.session.marks = snap.m.slice(); this.session.trials = { ...snap.t }; }
   sameAs(snap){ return snap.m.every((v, i) => effectiveMark(v) === effectiveMark(this.session.marks[i])); }
   hasInput(){ return hasPlayerInput(this.session.marks); }
-  clearInput(){ this.session.marks = this.session.marks.map(() => MARK.EMPTY); }
+  clearInput(){ this.session.marks = this.session.marks.map(() => MARK.EMPTY); this.session.trials = {}; }
   isSolved(){ return analyze(this.session.marks, this.session.p).solved; }
   normalize(){ applyAutoX(this.session.marks, this.session.p.N, this.settings.autoX); }
   onSetting(key){
@@ -75,9 +75,15 @@ export class StarBattleController extends GameController {
   pressCell(i){
     const s = this.session, before = this.snapshot();
     let value = null;
-    if (this.tool === TOOL.TRY){
-      // trial star: it is placed or removed (on a star, it turns it into a trial one); dragging does nothing
-      s.marks[i] = s.marks[i] === MARK.TRY ? MARK.EMPTY : MARK.TRY;
+    if (s.marks[i] === MARK.TRY){
+      // a trial star, with either tool: back to the board from before placing it, so it and everything
+      // done after it go away (undo brings them back); dragging does nothing
+      this.#rewindTrial(i);
+    } else if (this.tool === TOOL.TRY){
+      // placing a trial star (also on a star) remembers the board right before it
+      s.trials ??= {};
+      s.trials[i] = s.marks.slice();
+      s.marks[i] = MARK.TRY;
     } else {
       const next = nextMark(s.marks[i]);
       s.marks[i] = next;
@@ -117,6 +123,15 @@ export class StarBattleController extends GameController {
     const { broken } = analyze(this.session.marks, this.session.p), k = this.session.p.K;
     return ['region', 'row', 'col', 'touch'].filter(r => broken[r])
       .map(r => t(`games.star-battle.broken.${r}`, { k })).join(' ');
+  }
+
+  /** Takes the board back to how it was before trial star `i` was placed (or just removes it). */
+  #rewindTrial(i){
+    const s = this.session, saved = s.trials?.[i];
+    if (saved) s.marks = saved.slice();
+    else s.marks[i] = MARK.EMPTY;
+    // only the trial stars still on the board keep their saved board
+    for (const k of Object.keys(s.trials ?? {})) if (s.marks[k] !== MARK.TRY) delete s.trials[k];
   }
 
   /** Are all the stars placed (trial ones too)? Then it is either solved or some star breaks a rule. */
