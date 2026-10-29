@@ -1,6 +1,5 @@
 /* Hexagon puzzle generator. One of the precomputed solutions is picked at random and some pieces are
-   left placed, checking that with them the solution is unique. The amounts follow the original puzzle's
-   booklet: the fewer pieces placed, the harder. */
+   left placed, checking that with them the solution is unique: the fewer pieces placed, the harder. */
 import { allSolutions, withPiece } from './solutions.js';
 import { PIECES } from './pieces.js';
 import { shuffle, randInt } from '../../../lib/random.js';

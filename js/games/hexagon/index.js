@@ -1,7 +1,7 @@
 /* Hexagon definition for the game registry (contract in js/games/README.md). */
 import { defineGame } from '../../core/game-definition.js';
 import { generate } from './engine/generator.js';
-import { PIECES, cellsOf } from './engine/pieces.js';
+import { PIECES, CELLS, cellsOf } from './engine/pieces.js';
 import { HexagonController } from './controller.js';
 import { boardHtml, controls, help } from './templates.js';
 import { LEVELS, TOOL, DEFAULT_SETTINGS, SETTINGS } from './config.js';
@@ -9,6 +9,9 @@ import meta from './meta.js';
 
 const isPose = (v, p) => v && (v.m === 0 || v.m === 1) && Number.isInteger(v.r) && v.r >= 0 && v.r < 6 &&
   Number.isInteger(v.tu) && Number.isInteger(v.tv) && !!cellsOf(p, v);
+/** Does the solution fill the board exactly? (A board saved before the pieces changed doesn't.) */
+const fillsBoard = sol => Array.isArray(sol) && sol.length === PIECES.length && sol.every(isPose) &&
+  new Set(sol.flatMap((pose, p) => cellsOf(p, pose))).size === CELLS;
 const isTrayList = (a, ok) => Array.isArray(a) && a.length === PIECES.length && a.every(ok);
 
 export default defineGame({
@@ -20,9 +23,9 @@ export default defineGame({
 
   workerUrl: new URL('./worker.js', import.meta.url),
   generate,
-  isValidPuzzle: (p, L) => Array.isArray(p.solution) && p.solution.length === PIECES.length &&
-    p.solution.every(isPose) && Array.isArray(p.fixed) && p.level === LEVELS[L].target,
+  isValidPuzzle: (p, L) => fillsBoard(p.solution) && Array.isArray(p.fixed) && p.level === LEVELS[L].target,
   restoreSession: s => {
+    if (!fillsBoard(s.p?.solution)) return null;
     if (!Array.isArray(s.place) || s.place.length !== PIECES.length || !s.place.every((v, p) => v === null || isPose(v, p))) return null;
     if (!isTrayList(s.tm, v => v === 0 || v === 1)) s.tm = PIECES.map(() => 0);
     if (!isTrayList(s.tr, v => Number.isInteger(v) && v >= 0 && v < 6)) s.tr = PIECES.map(() => 0);

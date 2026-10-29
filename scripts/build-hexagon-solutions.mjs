@@ -1,7 +1,7 @@
 // Computes every Hexagon solution and keeps one per group of solutions that are
 // the same one turned or flipped (the board has 12 symmetries) in
-// js/games/hexagon/engine/solutions-data.js. Uso: node scripts/build-hexagon-solutions.mjs
-// (about 3 minutes; only needed if the pieces change).
+// js/games/hexagon/engine/solutions-data.js. Usage: node scripts/build-hexagon-solutions.mjs
+// (under a minute; only needed if the pieces change).
 import { writeFileSync } from 'node:fs';
 import { solveAll } from '../js/games/hexagon/engine/solver.js';
 import { PIECES, CELLS, SYMMETRIES, allPlacements } from '../js/games/hexagon/engine/pieces.js';

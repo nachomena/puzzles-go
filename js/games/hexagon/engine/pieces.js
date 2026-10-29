@@ -4,22 +4,23 @@
    those points and the 12 pieces fill all of them.
    Coordinates: "doubled" axial (u, v) = sum of the two pegs of each midpoint, with
    x = (u + v / 2) / 2 · d and y = v / 2 · d · √3/2 (d = distance between pegs).
-   The 12 pieces were taken from the 120 solutions in the original puzzle's booklet. */
+   The 12 pieces were found by a computer search: cuts of the board into 12 strokes, kept for their number
+   of solutions. */
 
 /** The pieces (A … L): midpoints each one covers, in a reference pose. */
 export const PIECES = Object.freeze([
-  { id: 'A', hue: 'yellow', pts: [[0, 1], [1, 0], [1, 1], [2, -1], [3, -1], [4, -1]] },
-  { id: 'B', hue: 'orange', pts: [[0, 1], [1, 0], [1, 1], [2, -1], [3, -1], [3, 0]] },
-  { id: 'C', hue: 'red', pts: [[0, 1], [1, -1], [1, 0], [1, 1], [2, 1], [3, 0]] },
-  { id: 'D', hue: 'maroon', pts: [[0, 1], [0, 3], [1, 0], [1, 1], [1, 2], [1, 3]] },
-  { id: 'E', hue: 'pink', pts: [[0, 1], [1, 0], [1, 1], [2, -1], [2, 1], [3, -2], [3, 0]] },
-  { id: 'F', hue: 'purple', pts: [[0, 1], [1, 0], [1, 1], [2, -1], [2, 1], [3, -1]] },
-  { id: 'G', hue: 'navy', pts: [[0, 1], [1, 0], [1, 1], [2, -1], [2, 1], [3, -2], [3, -1]] },
-  { id: 'H', hue: 'blue', pts: [[0, 1], [0, 3], [1, 0], [1, 1], [1, 2], [2, -1]] },
-  { id: 'I', hue: 'sky', pts: [[0, 1], [1, -2], [1, -1], [1, 0], [2, -1]] },
-  { id: 'J', hue: 'aqua', pts: [[0, 1], [0, 3], [1, 0], [1, 1], [1, 2], [2, 1]] },
-  { id: 'K', hue: 'green', pts: [[0, 1], [0, 3], [1, 0], [1, 1], [1, 2]] },
-  { id: 'L', hue: 'lime', pts: [[0, 1], [0, 3], [1, -1], [1, 0], [1, 1], [1, 2]] }
+  { id: 'A', hue: 'yellow', pts: [[0, 1], [0, 3], [1, 1], [1, 2]] },
+  { id: 'B', hue: 'orange', pts: [[0, 3], [1, 2], [2, 1], [3, 1]] },
+  { id: 'C', hue: 'red', pts: [[0, 5], [1, 4], [2, 3], [3, 1], [3, 2]] },
+  { id: 'D', hue: 'maroon', pts: [[1, 1], [1, 2], [1, 3], [2, 1], [3, 1]] },
+  { id: 'E', hue: 'pink', pts: [[0, 1], [1, 1], [1, 2], [1, 3], [1, 4], [1, 5]] },
+  { id: 'F', hue: 'purple', pts: [[0, 1], [1, 1], [1, 2], [2, 1], [3, 0], [3, 1]] },
+  { id: 'G', hue: 'navy', pts: [[1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [1, 5]] },
+  { id: 'H', hue: 'blue', pts: [[0, 1], [0, 3], [1, 1], [1, 2], [1, 3], [2, 1], [2, 3]] },
+  { id: 'I', hue: 'sky', pts: [[1, 2], [1, 3], [2, 1], [2, 3], [3, 0], [3, 1], [3, 2]] },
+  { id: 'J', hue: 'aqua', pts: [[1, 2], [2, 1], [3, 1], [3, 2], [3, 3], [4, 1], [5, 1]] },
+  { id: 'K', hue: 'green', pts: [[1, 4], [2, 3], [3, 2], [3, 3], [3, 4], [4, 1], [4, 3]] },
+  { id: 'L', hue: 'lime', pts: [[0, 1], [0, 3], [1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [2, 1]] }
 ].map(p => Object.freeze({ ...p, pts: Object.freeze(p.pts.map(q => Object.freeze(q))) })));
 
 const ring = (u, v) => Math.max(Math.abs(u), Math.abs(v), Math.abs(u + v));

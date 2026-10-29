@@ -17,10 +17,10 @@ test('board and pieces: 19 pegs, 72 points; the 12 pieces fill them and are conn
   for (const perm of SYMMETRIES) assert.equal(new Set(perm).size, CELLS, 'every symmetry is a permutation');
 });
 
-test('solutions: 8124, all distinct, filling the board without overlapping', () => {
+test('solutions: 4524, all distinct, filling the board without overlapping', () => {
   const all = allSolutions();
   assert.equal(all.length, TOTAL);
-  assert.equal(TOTAL, 8124);
+  assert.equal(TOTAL, 4524);
   assert.equal(new Set(all.map(a => a.key)).size, TOTAL);
   for (const a of all.slice(0, 500)){
     const seen = new Uint8Array(CELLS);

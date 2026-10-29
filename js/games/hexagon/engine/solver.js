@@ -1,6 +1,6 @@
 /* Exact Hexagon solver: fills the board's 72 points with the 12 pieces, always choosing the point with
-   the fewest options. Used to precompute every solution (scripts/build-hexagon-solutions.mjs, about
-   3 minutes). */
+   the fewest options. Used to precompute every solution (scripts/build-hexagon-solutions.mjs, under
+   a minute). */
 import { PIECES, CELLS, allPlacements } from './pieces.js';
 
 /** Calls onSolution(placement index of each piece) for each solution. Returns how many there are. */
