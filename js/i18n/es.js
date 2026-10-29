@@ -76,8 +76,7 @@ export default {
     badge: 'Pro',
     statusPro: 'Activo: todos los niveles.',
     statusFree: 'Gratis: Fácil y el reto del día.',
-    see: 'Ver',
-    seePro: 'Ver Pro',
+    go: 'Hazte Pro',
     reset: 'Quitar (prueba)'
   },
 
