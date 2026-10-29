@@ -75,6 +75,8 @@
   --cell-peer:#45444c;        /* row, column and box of the chosen cell */
   --cell-same:#58566e;        /* cells with the same number */
   --cell-selected:#66656f;
+  --wash-peer:rgba(255,255,255,.08);   /* over a coloured cage: row, column and box of the chosen cell */
+  --wash-same:rgba(120,115,205,.34);  /* over a coloured cage: cells with the same number */
 }
 
 /* Night mode (an app-wide setting, ui/night-mode.js): warm colours, no blues or whites, for playing
@@ -119,6 +121,8 @@
   --cell-peer:#3a2e24;
   --cell-same:#54402c;
   --cell-selected:#5f4a35;
+  --wash-peer:rgba(255,226,180,.08);
+  --wash-same:rgba(217,160,90,.34);
 }
 /* each game's own colours (pieces, paths, dice): a warm filter on the root, which doesn't change how
    the fixed bars are positioned */

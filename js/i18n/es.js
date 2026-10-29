@@ -253,6 +253,8 @@ export default {
       tagline: 'Sudoku con jaulas de suma',
       errorsDesc: 'Se ponen rojos los números repetidos en una fila, columna, caja o jaula, y las jaulas que no dan su suma.',
       notesDesc: 'Al poner un número se borra de las notas de su fila, columna, caja y jaula.',
+      tint: 'Colorear jaulas',
+      tintDesc: 'Tiñe cada jaula con un color suave distinto.',
       figure: 'Cada jaula suma lo que indica: 8 + 1 = 9 y 9 + 4 + 7 = 20. Dentro de una jaula no se repite ningún número.',
       help: `
   <p>Es un Sudoku: cada <b>fila</b>, cada <b>columna</b> y cada <b>caja</b> de 3 × 3 lleva los números del 1 al 9 sin repetir.</p>
@@ -309,6 +311,8 @@ export default {
       tagline: 'Operaciones en jaulas',
       errorsDesc: 'Los números repetidos en una fila o columna se ponen rojos.',
       notesDesc: 'Al poner un número se borra de las notas de su fila y columna.',
+      tint: 'Colorear jaulas',
+      tintDesc: 'Tiñe cada jaula con un color suave distinto.',
       figure: 'En la jaula 6+, 1 + 2 + 3 = 6; en la 2×, 1 × 2 = 2. Ningún número se repite en su fila ni en su columna.',
       help: `
   <p>Rellena el tablero de N × N con los números del <b>1 al N</b> sin repetir en ninguna <b>fila</b> ni <b>columna</b>.</p>

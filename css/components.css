@@ -53,6 +53,12 @@
 /* Base cell of any board (each game adds its modifiers) */
 .cell{display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;background:var(--cell)}
 .cell.is-flash{animation:flash .9s ease-in-out infinite}
+/* Boards with coloured cages (Killer Sudoku, Calcudoku): the cage's colour is the cell's, and the highlights of the
+   chosen cell, its row and its number are washed over it so they still show */
+.board--digits.is-tinted .cell{background:var(--cage,var(--cell))}
+.board--digits.is-tinted .cell.is-peer{background:linear-gradient(var(--wash-peer),var(--wash-peer)),var(--cage,var(--cell))}
+.board--digits.is-tinted .cell.is-same{background:linear-gradient(var(--wash-same),var(--wash-same)),var(--cage,var(--cell))}
+.board--digits.is-tinted .cell.is-selected{background:var(--cell-selected)}
 @keyframes flash{50%{background:var(--cell-flash)}}
 @keyframes pop{from{transform:scale(.4)}to{transform:scale(1)}}
 @keyframes win{0%{transform:scale(1)}40%{transform:scale(1.35) rotate(20deg)}100%{transform:scale(1) rotate(0)}}

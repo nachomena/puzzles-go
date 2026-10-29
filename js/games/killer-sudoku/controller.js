@@ -18,6 +18,7 @@ export class KillerController extends DigitGridController {
     // what doesn't change during the whole game: cells that see each other (with the cage) and the solver's groups
     this.peers = peersOf(p.cages);
     this.prepared = prepare(p.cages);
-    this.board.build(p.cages);
+    this.board.build(p.cages, { tint: this.settings.tint });
   }
+  onSetting(key){ if (key === 'tint') this.mountBoard(); else super.onSetting(key); }
 }

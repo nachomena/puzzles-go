@@ -3,14 +3,18 @@
 import { GridBoard } from '../../ui/grid-board.js';
 import { notesHtml } from '../../ui/templates.js';
 import { cageLabel } from './rules.js';
+import { cageTints } from '../../ui/cage-tint.js';
 
 export class CalcudokuBoard extends GridBoard {
-  build(n, cages){
+  /** @param {{ tint?: boolean }} [opts]  tint: each cage in its own soft colour */
+  build(n, cages, { tint = false } = {}){
     const owner = new Array(n * n).fill(0), label = new Array(n * n).fill('');
     cages.forEach((cage, k) => { cage.cells.forEach(i => { owner[i] = k; }); label[Math.min(...cage.cells)] = cageLabel(cage); });
     this.n = n;
     this.labels = label;
-    super.build(n, owner);
+    const colours = tint ? cageTints(owner, n) : null;
+    super.build(n, owner, colours ? (el, i) => { el.style.setProperty('--cage', colours[owner[i]]); } : null);
+    this.root.classList.toggle('is-tinted', tint);
     this.root.style.setProperty('--n', n);
   }
 

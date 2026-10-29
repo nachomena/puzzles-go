@@ -253,6 +253,8 @@ export default {
       tagline: 'Sudoku with sum cages',
       errorsDesc: 'Numbers repeated in a row, column, box or cage turn red, and so do cages that don’t add up to their sum.',
       notesDesc: 'Placing a number removes it from the pencil marks in its row, column, box and cage.',
+      tint: 'Colour cages',
+      tintDesc: 'Tints each cage in a different soft colour.',
       figure: 'Each cage adds up to its number: 8 + 1 = 9 and 9 + 4 + 7 = 20. No number repeats inside a cage.',
       help: `
   <p>It is a Sudoku: every <b>row</b>, every <b>column</b> and every 3 × 3 <b>box</b> holds the numbers 1 to 9 with no repeats.</p>
@@ -309,6 +311,8 @@ export default {
       tagline: 'Arithmetic in cages',
       errorsDesc: 'Numbers repeated in a row or column turn red.',
       notesDesc: 'Placing a number removes it from the pencil marks in its row and column.',
+      tint: 'Colour cages',
+      tintDesc: 'Tints each cage in a different soft colour.',
       figure: 'In the 6+ cage, 1 + 2 + 3 = 6; in the 2× cage, 1 × 2 = 2. No number repeats in its row or column.',
       help: `
   <p>Fill the N × N board with the numbers <b>1 to N</b> without repeating in any <b>row</b> or <b>column</b>.</p>

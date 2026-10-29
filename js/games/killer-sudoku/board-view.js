@@ -4,6 +4,7 @@ import { GridBoard } from '../../ui/grid-board.js';
 import { notesHtml } from '../../ui/templates.js';
 import { SIZE, CELLS, boxOf } from '../sudoku/engine/grid.js';
 import { sees } from './engine/cages.js';
+import { cageTints } from '../../ui/cage-tint.js';
 
 const REGIONS = Array.from({ length: CELLS }, (_, i) => boxOf(i));
 
@@ -52,8 +53,13 @@ export function cageOutline(cages, n = SIZE, inset = INSET, round = ROUND){
 }
 
 export class KillerBoard extends GridBoard {
-  build(cages){
-    super.build(SIZE, REGIONS);
+  /** @param {{ tint?: boolean }} [opts]  tint: each cage in its own soft colour */
+  build(cages, { tint = false } = {}){
+    const owner = new Array(CELLS).fill(0);
+    cages.forEach((c, k) => c.cells.forEach(i => { owner[i] = k; }));
+    const colours = tint ? cageTints(owner, SIZE) : null;
+    super.build(SIZE, REGIONS, colours ? (el, i) => { el.style.setProperty('--cage', colours[owner[i]]); } : null);
+    this.root.classList.toggle('is-tinted', tint);
     this.labels = new Array(CELLS).fill('');
     for (const { cells, sum } of cages) this.labels[cells[0]] = String(sum);   // top-left cell
     this.linesEl.insertAdjacentHTML('afterbegin', `<path class="ks-cage" d="${cageOutline(cages)}"/>`);

@@ -12,5 +12,6 @@ export class CalcudokuController extends DigitGridController {
   conflicts(values){ const p = this.session.p; return conflicts(p.n, p.cages, values); }
   peersOf(i){ return peers(this.n, i); }
   hintFor(values, solution){ const p = this.session.p; return findHint(p.n, p.cages, values, solution); }
-  mountBoard(){ const p = this.session.p; this.board.build(p.n, p.cages); }
+  mountBoard(){ const p = this.session.p; this.board.build(p.n, p.cages, { tint: this.settings.tint }); }
+  onSetting(key){ if (key === 'tint') this.mountBoard(); else super.onSetting(key); }
 }
