@@ -19,6 +19,8 @@ import { winStripSvg } from '../ui/win-strip.js';
 import { gameHtml, levelHtml, bindChartTips } from '../ui/progress-view.js';
 import { progressRows } from '../core/progress.js';
 import { bindEdgeBack } from '../ui/edge-back.js';
+import { DailyLog, dailyFor, dailyGames, dayKey } from '../core/daily.js';
+import { Membership } from '../core/membership.js';
 import { t, translateDom, LANGUAGES, languageChoice, deviceLanguage, setLanguage } from '../i18n/index.js';
 
 const htmlToElement = html => {
@@ -40,7 +42,12 @@ export class App {
     this.current = null;
     this.toast = new Toast(byId('toast'));
     this.overlays = new Overlays();
-    this.hub = new HubView(byId('games'), byId('resumeLast'));
+    this.hub = new HubView(byId('games'), byId('resumeLast'), byId('daily'));
+    this.membership = new Membership(storage);
+    this.daily = new DailyLog(storage);
+    this.dailyIds = dailyGames(catalog.map(c => c.meta));
+    this.overlays.beforeOpen('pro', () => this.#renderPro());
+    this.overlays.beforeOpen('app-settings', () => this.#renderPro());
     this.levelMenu = new LevelMenu({ title: byId('gameTitle'), label: byId('levelsLabel'), levels: byId('levelList'), resume: byId('resume') });
     this.settings = new SettingsPanel(byId('settingsList'));
     translateDom();
@@ -90,7 +97,12 @@ export class App {
       store, game,
       isBusy: () => this.screen === 'play',
       onChange: () => this.#refreshMenus(),
-      onReady: L => { this.overlays.close('loading'); this.startLevel(L, entry); }
+      onReady: L => {
+        this.overlays.close('loading');
+        const daily = entry.pendingDaily;
+        entry.pendingDaily = null;
+        this.startLevel(L, entry, { daily });
+      }
     });
     entry.controller = new game.Controller({
       game, store, screen,
@@ -99,6 +111,10 @@ export class App {
       onWin: ({ time, detail, strip }) => {
         byId('winTime').textContent = time;
         byId('winDetail').textContent = detail;
+        // today's (or an earlier day's) challenge: it counts for the streak
+        const s = store.state.cur, daily = byId('winDaily');
+        daily.textContent = s?.daily ? t('daily.solved', { n: this.daily.record(s.daily, { id: game.id, L: s.L, time: s.time }) }) : '';
+        daily.hidden = !s?.daily;
         byId('winStrip').innerHTML = winStripSvg(strip);
         this.overlays.open('win');
       }
@@ -186,6 +202,46 @@ export class App {
     });
   }
 
+  /* ---------- Daily challenge and Pro ---------- */
+
+  /** Today's challenge with its game and state: { day, id, L, meta, done, cur, streak }. */
+  #dailyInfo(){
+    const d = dailyFor(dayKey(), this.dailyIds), meta = this.catalog.find(c => c.meta.id === d.id).meta;
+    const cur = this.#menuData(meta).cur;
+    return { ...d, meta, done: this.daily.isDone(d.day), cur: cur?.daily === d.day ? cur : null, streak: this.daily.streak(d.day) };
+  }
+
+  /** Today's challenge: continue it, or start it (asking first if that game has another one unfinished). */
+  playDaily(){
+    const d = this.#dailyInfo();
+    if (d.done){ this.toast.show(t('daily.already', { n: d.streak })); return; }
+    this.currentMeta = d.meta;
+    this.#entryFor(d.id).then(entry => {
+      if (this.currentMeta?.id !== d.id || this.screen !== 'hub') return;
+      this.current = entry;
+      if (entry.store.hasOpenSession && entry.store.state.cur.daily === d.day) this.continueGame();
+      else this.requestLevel(d.L, entry, null, { daily: d.day });
+    });
+  }
+
+  /** Texts of the Pro sheet and of its row in the app settings. */
+  #renderPro(){
+    const pro = this.membership.pro, manage = byId('proManage');
+    byId('proBuy').textContent = t('pro.buy', { price: t('pro.price') });
+    byId('proStatus').textContent = t(pro ? 'pro.statusPro' : 'pro.statusFree');
+    manage.textContent = t(pro ? 'pro.reset' : 'pro.see');
+    manage.dataset.action = pro ? 'reset-pro' : 'open-pro';
+  }
+
+  /** Simulated purchase (the stores' one will go here). */
+  #setPro(pro){
+    this.membership.set(pro);
+    this.overlays.close('pro');
+    this.#renderPro();
+    this.#refreshMenus();
+    this.toast.show(t(pro ? 'pro.thanks' : 'pro.removed'));
+  }
+
   /** Runs `fn` with the open game, waiting for it to finish loading if needed. */
   async #withGame(fn){
     const id = this.currentMeta?.id;
@@ -213,7 +269,7 @@ export class App {
    * New game from the menu (or a specific board from the table, `puzzle`). If there is an unfinished
    * game, ask first so it isn't lost: the player can start the new one or keep the current one.
    */
-  async requestLevel(L, entry, puzzle = null){
+  async requestLevel(L, entry, puzzle = null, { daily = null } = {}){
     const cur = entry.store.hasOpenSession ? entry.store.state.cur : null;
     const screen = this.screen;
     if (cur && puzzle && cur.L === L && entry.game.picker.same(cur, puzzle)){ this.current = entry; this.continueGame(); return; }
@@ -232,28 +288,36 @@ export class App {
       this.current = entry;
       entry.controller.begin(L, puzzle);
       this.continueGame();
-    } else this.startLevel(L, entry);
+    } else this.startLevel(L, entry, { daily });
   }
 
-  startLevel(L, entry = this.current){
+  /**
+   * New board of level `L`. A level that needs Pro opens the Pro sheet instead, except for the daily
+   * challenge (`daily`: its day, saved in the game so it counts when solved).
+   */
+  startLevel(L, entry = this.current, { daily = null } = {}){
+    if (!daily && this.membership.locks(entry.game, L)){ this.overlays.open('pro'); return; }
     this.current = entry;
     const puzzle = entry.store.takePuzzle(L);
     if (!puzzle){
+      entry.pendingDaily = daily;   // for when the board is ready (see onReady)
       this.overlays.open('loading');
       entry.supply.request(L);
       return;
     }
     entry.controller.begin(L, puzzle);
+    if (daily){ entry.store.state.cur.daily = daily; entry.store.save(); }
     this.continueGame();
   }
 
   back(){
     if (this.screen === 'play'){
-      const { store, game } = this.current;
+      const { store, game } = this.current, daily = !!store.state.cur?.daily;
       store.save();
       // barely started: not kept to continue (a picker table board doesn't go back to the reserve)
       store.dropFreshSession({ keepPuzzle: !game.picker });
-      this.#toMenu();
+      if (daily){ this.currentMeta = null; this.showScreen('hub'); }   // the daily challenge was started from the picker
+      else this.#toMenu();
     }
     else if (this.screen === 'pick') this.showScreen('levels');
     else if (this.screen === 'progress-level') this.showScreen('progress');
@@ -316,9 +380,9 @@ export class App {
     byId('progressLevelBody').innerHTML = levelHtml({ row, range: this.progress.range, meta, stats: data.stats });
   }
 
-  /** Current game's menu: its board table, its levels or the picker if it has no menu. */
+  /** Current game's menu: its board table, its levels, or the picker if it has no menu or it was the daily challenge. */
   #toMenu(){
-    if (this.#isDirect()){ this.currentMeta = null; this.showScreen('hub'); }
+    if (this.#isDirect() || this.current?.store.state.cur?.daily){ this.currentMeta = null; this.showScreen('hub'); }
     else if (this.current?.game.picker && this.pickLevel) this.showScreen('pick');
     else this.showScreen('levels');
   }
@@ -332,8 +396,11 @@ export class App {
   }
 
   #refreshMenus(){
-    if (this.screen === 'hub') this.hub.render(this.catalog.map(({ meta }) => ({ meta, data: this.#menuData(meta) })));
-    if (this.screen === 'levels' && this.currentMeta) this.levelMenu.render(this.currentMeta, this.#menuData(this.currentMeta));
+    if (this.screen === 'hub') this.hub.render(this.catalog.map(({ meta }) => ({ meta, data: this.#menuData(meta) })), this.#dailyInfo());
+    if (this.screen === 'levels' && this.currentMeta){
+      const meta = this.currentMeta;
+      this.levelMenu.render(meta, this.#menuData(meta), L => this.membership.locks(meta, L));
+    }
     if (this.screen === 'pick' && this.current){
       const { game, store } = this.current;
       byId('pickTitle').textContent = game.levels[this.pickLevel].name.toUpperCase();
@@ -362,9 +429,17 @@ export class App {
       'progress-level': el => { this.progress.key = el.dataset.key; this.showScreen('progress-level'); },
       'progress-range': el => { this.progress.range = el.dataset.range; this.#renderProgressLevel(); },
       'toggle-group': el => { this.hub.toggle(el.dataset.group); this.#refreshMenus(); },
-      'start-level':  el => this.#withGame(entry => entry.game.picker
-        ? this.openPicker(el.dataset.level, entry)
-        : this.requestLevel(el.dataset.level, entry)),
+      'play-daily':   () => this.playDaily(),
+      'open-pro':     () => { this.overlays.close('app-settings'); this.overlays.open('pro'); },
+      'buy-pro':      () => this.#setPro(true),
+      'restore-pro':  () => this.membership.pro ? this.overlays.close('pro') : this.toast.show(t('pro.nothingToRestore')),
+      'reset-pro':    () => this.#setPro(false),
+      'start-level':  el => {
+        if (this.currentMeta && this.membership.locks(this.currentMeta, el.dataset.level)){ this.overlays.open('pro'); return; }
+        this.#withGame(entry => entry.game.picker
+          ? this.openPicker(el.dataset.level, entry)
+          : this.requestLevel(el.dataset.level, entry));
+      },
       'pick-puzzle':  el => this.#withGame(entry => {
         const puzzle = entry.game.picker.puzzle(this.pickLevel, el.dataset);
         if (puzzle) this.requestLevel(this.pickLevel, entry, puzzle);
@@ -376,7 +451,7 @@ export class App {
       'open':         el => this.#withGame(entry => { this.current = entry; this.#openOverlay(el.dataset.target); }),
       'apply-update': () => { this.#saveAll(); location.reload(); },
       'close':        () => this.overlays.closeDismissable(),
-      'cancel-generation': () => { this.overlays.close('loading'); cur.supply.cancelRequest(); },
+      'cancel-generation': () => { this.overlays.close('loading'); cur.pendingDaily = null; cur.supply.cancelRequest(); },
       'next-puzzle':  () => { this.overlays.close('win'); this.#next(); },
       'to-menu':      () => { this.overlays.close('win'); this.#toMenu(); },
       'wipe-stats':   () => { cur.store.clearStats(); this.#refreshMenus(); this.toast.show(t('settings.wiped')); },

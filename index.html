@@ -61,6 +61,8 @@
   <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1.5"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></symbol>
   <symbol id="i-number" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="2.5"/><path d="M10 8.6l2.4-1.6v10"/></symbol>
   <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20l1.2-4.6L15.8 4.8a2 2 0 0 1 2.8 0l.6.6a2 2 0 0 1 0 2.8L8.6 18.8zM14 6.6l3.4 3.4"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></symbol>
   <symbol id="i-erase" viewBox="0 0 24 24"><path d="M8.5 19.5l-4-4a2 2 0 0 1 0-2.8l8.2-8.2a2 2 0 0 1 2.8 0l4 4a2 2 0 0 1 0 2.8l-8 8.2zM8.5 19.5H20M9 8.2l6.8 6.8"/></symbol>
 </svg>
 
@@ -75,7 +77,8 @@
       <button class="icon-btn hub-progress glass" data-action="open-progress" aria-label="Progreso" data-i18n-aria="common.progress"><svg viewBox="0 0 24 24"><use href="#i-chart"/></svg></button>
     </div>
   </div></header>
-  <!-- the last unfinished game, if any (ui/hub-view.js#resumeCard) -->
+  <!-- today's challenge (ui/hub-view.js#dailyCard) and the last unfinished game, if any (#resumeCard) -->
+  <div class="wrap" id="daily"></div>
   <div class="wrap" id="resumeLast"></div>
   <div class="wrap"><p class="menu__label" data-i18n="hub.choose">Elige un juego</p></div>
   <!-- only the list scrolls; the title and "Choose a game" stay fixed -->
@@ -167,8 +170,31 @@
       <h2 class="display" data-i18n="common.settings">Ajustes</h2>
       <label class="toggle"><div><b data-i18n="appSettings.night">Modo noche</b><span data-i18n="appSettings.nightDesc">Colores cálidos en toda la app, para jugar antes de dormir.</span></div><input type="checkbox" data-night-toggle></label>
       <label class="toggle"><div><b data-i18n="appSettings.language">Idioma</b><span data-i18n="appSettings.languageDesc">Por defecto, el del móvil.</span></div><select class="select" data-lang-select></select></label>
+      <!-- free or Pro (core/membership.js); the text and the button's action are set in js/app/app.js#renderPro -->
+      <div class="toggle"><div><b data-i18n="pro.title">Puzzles Go Pro</b><span id="proStatus"></span></div><button class="btn-chip" id="proManage" data-action="open-pro"></button></div>
     </div>
     <div class="sheet__foot"><button class="btn-primary" data-action="close" data-i18n="common.done">Listo</button></div>
+  </div>
+</div>
+
+<!-- PRO: what it unlocks and the purchase (simulated for now, see core/membership.js) -->
+<div class="overlay" id="pro" role="dialog" aria-label="Puzzles Go Pro" data-i18n-aria="pro.title" data-dismissable>
+  <div class="sheet glass">
+    <div class="sheet__body">
+      <h2 class="display" data-i18n="pro.title">Puzzles Go Pro</h2>
+      <p data-i18n="pro.lead">Juega todos los niveles de todos los juegos.</p>
+      <ul class="pro-perks">
+        <li data-i18n="pro.perkLevels">Difícil y Experto en todos los juegos, sin límite.</li>
+        <li data-i18n="pro.perkTables">Todas las tablas de Pentominoes.</li>
+        <li data-i18n="pro.perkOnce">Un solo pago: sin suscripción ni anuncios.</li>
+      </ul>
+      <p data-i18n="pro.free">Gratis tienes Fácil en todos los juegos y el reto del día.</p>
+      <p class="pro-note" data-i18n="pro.test">Versión de prueba: la compra es simulada y no se cobra nada.</p>
+    </div>
+    <div class="sheet__foot">
+      <button class="btn-primary" id="proBuy" data-action="buy-pro"></button>
+      <button class="btn-ghost pro-restore" data-action="restore-pro" data-i18n="pro.restore">Restaurar compras</button>
+    </div>
   </div>
 </div>
 
@@ -210,6 +236,7 @@
     <h2 class="display" data-i18n="win.title">Resuelto</h2>
     <div class="card__big" id="winTime">0:00</div>
     <div class="card__sub" id="winDetail"></div>
+    <p class="win-daily" id="winDaily" hidden></p>
     <div id="winStrip"></div>
     <button class="btn-primary" data-action="next-puzzle" data-i18n="win.next">Siguiente tablero</button>
     <button class="btn-ghost" data-action="to-menu" data-i18n="common.menu">Menú</button>

@@ -36,13 +36,13 @@ test("opening the app loads no game's CSS", async ({ page }) => {
 
 test('the Continue card leads to the last unfinished game', async ({ page }) => {
   const errors = await openApp(page);
-  await expect(page.locator('#hub .resume-card')).toHaveCount(0);
+  await expect(page.locator('#resumeLast .resume-card')).toHaveCount(0);
   const play = await startGame(page, 'light-up');
   await play.locator('.cell:not(.lu-black)').first().click();
   await play.locator('.back-pill').click();
   await page.locator('#levels .back-pill').click();
-  await expect(page.locator('#hub .resume-card')).toContainText('Luces');
-  await page.locator('#hub .resume-card').click();
+  await expect(page.locator('#resumeLast .resume-card')).toContainText('Luces');
+  await page.locator('#resumeLast .resume-card').click();
   await expect(page.locator('#play-light-up')).toHaveClass(/is-on/);
   expect(errors).toEqual([]);
 });
@@ -84,4 +84,69 @@ test('a slow start shows the logo until the picker is drawn', async ({ page }) =
   release();
   await expect(page.locator('#games .game-row').first()).toBeVisible();
   await expect(page.locator('#loading')).not.toHaveClass(/is-on/);
+});
+
+test('free version: Hard needs Pro; the simulated purchase unlocks it', async ({ page }) => {
+  const errors = await openApp(page);
+  await page.locator('#games [data-game="sudoku"]').click();
+  const hard = page.locator('#levelList [data-level="hard"]');
+  await expect(hard).toHaveClass(/is-locked/);
+  await expect(page.locator('#levelList [data-level="easy"]')).not.toHaveClass(/is-locked/);
+  await hard.click();
+  await expect(page.locator('#pro')).toHaveClass(/is-on/);
+  await page.locator('#pro [data-action="buy-pro"]').click();
+  await expect(page.locator('#pro')).not.toHaveClass(/is-on/);
+  await expect(hard).not.toHaveClass(/is-locked/);
+  await hard.click();
+  await expect(page.locator('#play-sudoku')).toHaveClass(/is-on/, { timeout: 30_000 });
+  await expect(page.locator('#play-sudoku')).toContainText('Difícil');
+  expect(errors).toEqual([]);
+});
+
+test("the daily challenge opens today's game on its level, even without Pro, and goes back to the picker", async ({ page }) => {
+  const errors = await openApp(page);
+  const card = page.locator('#daily .daily-card');
+  await expect(card).toContainText('Reto del día');
+  await card.click();
+  const play = page.locator('.screen.is-on[id^="play-"]');
+  await expect(play).toHaveCount(1, { timeout: 30_000 });
+  await expect(play).toContainText(/Difícil|Experto/);
+  await play.locator('[data-action="back"]').click();
+  await expect(page.locator('#hub')).toHaveClass(/is-on/);
+  expect(errors).toEqual([]);
+});
+
+test('a solved daily challenge shows as done with its streak', async ({ page }) => {
+  await page.addInitScript(() => {
+    const key = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const today = new Date(), yesterday = new Date(Date.now() - 86400000);
+    localStorage.setItem('puzzlesgo.daily', JSON.stringify({ done: { [key(yesterday)]: { id: 'sudoku', L: 'hard', time: 90 }, [key(today)]: { id: 'loop', L: 'hard', time: 60 } } }));
+  });
+  await openApp(page);
+  await expect(page.locator('#daily .daily-card')).toHaveClass(/is-done/);
+  await expect(page.locator('#daily .daily-card')).toContainText('racha de 2 días');
+});
+
+test('solving the daily challenge counts for the streak', async ({ page }) => {
+  // on 9 Nov 2026 the challenge is Sudoku, Hard (core/daily.js)
+  await page.clock.setFixedTime(new Date(2026, 10, 9, 10, 0));
+  const errors = await openApp(page);
+  await expect(page.locator('#daily .daily-card')).toContainText('Sudoku');
+  await page.locator('#daily .daily-card').click();
+  await expect(page.locator('#play-sudoku')).toHaveClass(/is-on/, { timeout: 30_000 });
+  const { p, sel } = await page.evaluate(() => JSON.parse(localStorage.getItem('puzzlesgo.sudoku.v1')).cur);
+  // walk the board with the arrows from the first cell, writing the solution in every empty one
+  if (sel < 0) await page.keyboard.press('ArrowRight');   // with nothing selected, the first arrow picks the first cell
+  else for (let k = 0; k < sel % 9 + Math.floor(sel / 9); k++) await page.keyboard.press(k < sel % 9 ? 'ArrowLeft' : 'ArrowUp');
+  for (let i = 0; i < 81; i++){
+    if (!p.givens[i]) await page.keyboard.press(String(p.solution[i]));
+    if (i % 9 === 8){ await page.keyboard.press('ArrowRight'); await page.keyboard.press('ArrowDown'); }
+    else await page.keyboard.press('ArrowRight');
+  }
+  await expect(page.locator('#win')).toHaveClass(/is-on/, { timeout: 10_000 });
+  await expect(page.locator('#winDaily')).toHaveText('Reto del día hecho · racha de 1 día');
+  await page.locator('#win [data-action="to-menu"]').click();
+  await expect(page.locator('#hub')).toHaveClass(/is-on/);
+  await expect(page.locator('#daily .daily-card')).toHaveClass(/is-done/);
+  expect(errors).toEqual([]);
 });

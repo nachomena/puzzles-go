@@ -1,7 +1,7 @@
 /* Home screen: list of available games, each with its icon and a short line (meta.tagline).
    Games without a level menu (e.g. Peg Solitaire) show their record instead of the line, because they
    have nowhere else to show it. Games in the same group (meta.group, e.g. the piece games) go in a row
-   that expands. */
+   that expands. Above them go the daily challenge (core/daily.js) and the last unfinished game. */
 import { svgIcon } from './templates.js';
 import { formatTime } from '../lib/format.js';
 import { statsRows } from '../core/stats.js';
@@ -42,15 +42,28 @@ export function lastSession(items){
 }
 
 /**
- * Glass "Continue" card (picker and level menu). `attrs`: the button's action.
- * @param {{ icon: string, name: string, detail: string, attrs: string }} c
+ * Glass "Continue" card (picker and level menu). `attrs`: the button's action; `kicker`: the line above
+ * the name; `end`: the icon on the right; `cls`: extra classes.
+ * @param {{ icon: string, name: string, detail: string, attrs: string, kicker?: string, end?: string, cls?: string }} c
  */
-export const resumeCardHtml = ({ icon, name, detail, attrs }) =>
-  `<button class="resume-card glass" ${attrs}>` +
+export const resumeCardHtml = ({ icon, name, detail, attrs, kicker = t('hub.continue'), end = 'play', cls = '' }) =>
+  `<button class="resume-card glass${cls}" ${attrs}>` +
   `<span class="resume-card__icon">${svgIcon(icon)}</span>` +
-  `<span class="resume-card__text"><span class="resume-card__kicker">${t('hub.continue')}</span>` +
+  `<span class="resume-card__text"><span class="resume-card__kicker">${kicker}</span>` +
   `<span class="resume-card__name">${name}</span><span class="resume-card__detail">${detail}</span></span>` +
-  `<span class="resume-card__play" aria-hidden="true">${svgIcon('play')}</span></button>`;
+  `<span class="resume-card__play" aria-hidden="true">${svgIcon(end)}</span></button>`;
+
+/**
+ * Card of today's challenge: game, level, whether it is solved or in progress, and the streak.
+ * @param {{ meta: object, L: string, done: boolean, cur: object|null, streak: number }|null} d
+ */
+export function dailyCard(d){
+  if (!d) return '';
+  const status = d.done ? t('daily.done') : d.cur ? t('daily.inProgress', { time: formatTime(d.cur.time || 0) }) : t('daily.new');
+  const detail = [d.meta.levels[d.L].name, status, d.streak ? t('daily.streak', { n: d.streak }) : ''].filter(Boolean).join(' · ');
+  return resumeCardHtml({ icon: d.meta.icon, name: d.meta.name, detail, kicker: t('daily.kicker'), attrs: 'data-action="play-daily"',
+    end: d.done ? 'check' : 'play', cls: ' daily-card' + (d.done ? ' is-done' : '') });
+}
 
 /** "Continue" card for the last unfinished game, or '' if there is none. */
 export function resumeCard(item){
@@ -78,18 +91,25 @@ const gameCard = ({ meta, data }, inGroup) => row({
 });
 
 export class HubView {
-  constructor(listEl, resumeEl){
+  constructor(listEl, resumeEl, dailyEl){
     this.listEl = listEl;
     this.resumeEl = resumeEl;
+    this.dailyEl = dailyEl;
     this.open = new Set();   // grupos desplegados
   }
 
   /** Expands or collapses a group. */
   toggle(group){ if (!this.open.delete(group)) this.open.add(group); }
 
-  /** @param {{ meta: object, data: { stats: object } }[]} items  in catalogue order */
-  render(items){
-    this.resumeEl.innerHTML = resumeCard(lastSession(items));
+  /**
+   * @param {{ meta: object, data: { stats: object } }[]} items  in catalogue order
+   * @param {object|null} daily  today's challenge (see dailyCard)
+   */
+  render(items, daily = null){
+    if (this.dailyEl) this.dailyEl.innerHTML = dailyCard(daily);
+    // the challenge in progress already has its card: "Continue" doesn't repeat it
+    const last = lastSession(items);
+    this.resumeEl.innerHTML = last && !(daily?.cur && last.meta.id === daily.meta.id) ? resumeCard(last) : '';
     const done = new Set();
     this.listEl.innerHTML = items.map(item => {
       const g = item.meta.group;

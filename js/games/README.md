@@ -35,6 +35,9 @@ statistics and win screen are shared.
      the levels). If a game changes its levels, `upgradeSession(cur)` in `meta.js` converts the saved game to the
      current ones before loading it (see `core/store.js`).
      The controller can define `next()` for the "Next board" button (see `core/game-controller.js`).
+     Every game with Hard and Expert takes part in the daily challenge (`core/daily.js`); `daily: false` in
+     `meta.js` leaves it out (e.g. Pentominoes, whose puzzles are picked from a table). Levels after the first need
+     Pro (`core/membership.js`).
      To put a game inside a picker group (e.g. the piece games), set `group` and optionally `shortName` (its name
      inside the group) in `meta.js`; the groups are in `ui/hub-view.js#GROUPS`.
 2. Add `{ meta, load: () => import('./<id>/index.js'), css: 'css/games/<id>.css' }` to `CATALOG` in

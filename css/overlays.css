@@ -26,6 +26,11 @@ html:has(.overlay.is-on){overflow:hidden}
 .card__sub{color:var(--dim);font-size:15px;margin-bottom:24px;line-height:1.5}
 .card .btn-primary{margin-top:0}
 .card .btn-ghost{display:block;width:100%;margin-top:10px}
+.win-daily{color:var(--accent);font-weight:700;font-size:15px;margin:-12px 0 20px}
+/* Pro sheet */
+.pro-perks li::marker{color:var(--accent)}
+.sheet .pro-note{font-size:14px;color:var(--dim)}
+.pro-restore{display:block;width:100%;margin-top:10px}
 
 .loader{margin:auto;text-align:center;padding:30px}
 .loader__logo{display:block;width:62px;height:88px;margin:0 auto 20px;overflow:visible}

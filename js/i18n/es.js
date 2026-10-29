@@ -50,6 +50,37 @@ export default {
     groups: { pieces: 'Piezas' }
   },
 
+  daily: {
+    kicker: 'Reto del día',
+    new: 'Nuevo hoy',
+    inProgress: 'En curso {time}',
+    done: 'Hecho',
+    streak: ({ n }) => `racha de ${plural(n, 'día', 'días')}`,
+    solved: ({ n }) => `Reto del día hecho · racha de ${plural(n, 'día', 'días')}`,
+    already: ({ n }) => `Ya has hecho el reto de hoy (racha de ${plural(n, 'día', 'días')}). Mañana hay otro.`
+  },
+
+  pro: {
+    title: 'Puzzles Go Pro',
+    lead: 'Juega todos los niveles de todos los juegos.',
+    perkLevels: 'Difícil y Experto en todos los juegos, sin límite.',
+    perkTables: 'Todas las tablas de Pentominoes.',
+    perkOnce: 'Un solo pago: sin suscripción ni anuncios.',
+    free: 'Gratis tienes Fácil en todos los juegos y el reto del día.',
+    test: 'Versión de prueba: la compra es simulada y no se cobra nada.',
+    buy: 'Desbloquear por {price}',
+    price: '4,99 €',
+    restore: 'Restaurar compras',
+    nothingToRestore: 'No hay compras que restaurar',
+    thanks: 'Pro desbloqueado: ya tienes todos los niveles',
+    removed: 'Vuelves a la versión gratis',
+    badge: 'Pro',
+    statusPro: 'Activo: todos los niveles.',
+    statusFree: 'Gratis: Fácil y el reto del día.',
+    see: 'Ver',
+    reset: 'Quitar (prueba)'
+  },
+
   appSettings: {
     night: 'Modo noche',
     nightDesc: 'Colores cálidos en toda la app, para jugar antes de dormir.',

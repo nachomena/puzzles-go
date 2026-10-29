@@ -50,6 +50,37 @@ export default {
     groups: { pieces: 'Pieces' }
   },
 
+  daily: {
+    kicker: 'Daily challenge',
+    new: 'New today',
+    inProgress: 'In progress {time}',
+    done: 'Done',
+    streak: ({ n }) => `${plural(n, 'day', 'days')} streak`,
+    solved: ({ n }) => `Daily challenge done · ${plural(n, 'day', 'days')} streak`,
+    already: ({ n }) => `You’ve done today’s challenge (${plural(n, 'day', 'days')} streak). There’s another one tomorrow.`
+  },
+
+  pro: {
+    title: 'Puzzles Go Pro',
+    lead: 'Play every level of every game.',
+    perkLevels: 'Hard and Expert in every game, with no limit.',
+    perkTables: 'Every Pentominoes table.',
+    perkOnce: 'A single payment: no subscription and no ads.',
+    free: 'For free you get Easy in every game and the daily challenge.',
+    test: 'Test version: the purchase is simulated and nothing is charged.',
+    buy: 'Unlock for {price}',
+    price: '€4.99',
+    restore: 'Restore purchases',
+    nothingToRestore: 'There are no purchases to restore',
+    thanks: 'Pro unlocked: you now have every level',
+    removed: 'Back to the free version',
+    badge: 'Pro',
+    statusPro: 'Active: every level.',
+    statusFree: 'Free: Easy and the daily challenge.',
+    see: 'See',
+    reset: 'Remove (test)'
+  },
+
   appSettings: {
     night: 'Night mode',
     nightDesc: 'Warm colours across the app, for playing before bed.',

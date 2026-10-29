@@ -26,6 +26,13 @@ the one chosen in the picker settings). Every game with difficulties uses the sa
 Every board is generated on the device, has a single solution and its level is guaranteed by a logic solver that
 uses human techniques.
 
+**Daily challenge**: one board a day for the whole app, at the top of the picker. The game changes every day and
+doesn't repeat until every game has had its turn (the order comes from the date, so it is the same on every phone);
+it is Hard on weekdays and Expert at the weekend. Solving it keeps a streak of days in a row (`js/core/daily.js`).
+
+**Free and Pro**: free, every game on Easy plus the daily challenge; Pro, every level (`js/core/membership.js`). For
+now the purchase is simulated and saved on the device; the stores' purchase will replace it.
+
 Published with GitHub Pages. On iPhone: open in Safari → Share → "Add to Home Screen".
 
 Progress is stored on the device and kept across updates: when there is a new version, the app says so
