@@ -1,16 +1,16 @@
 /* Killer Sudoku: cages with a dotted border set inside the cells and the small sum in its corner. */
-.ks-cage{fill:none;stroke:var(--ink-soft);stroke-width:.035;stroke-dasharray:.1 .07;stroke-linecap:butt}
+.ks-cage{fill:none;stroke:var(--ink-soft);stroke-width:.03;stroke-dasharray:.1 .07;stroke-linecap:butt}
 /* the sum sits on the dotted line's corner: above the lines (z-index) and with its cell's background,
    so it cuts the dotted line exactly where it is and leaves room for the number and the notes. It starts
    a little inwards so it doesn't cover the grid or the boxes' thick border, which reach ~4 % */
 .ks-sum{position:absolute;z-index:1;left:5%;top:5%;padding:0 .2em 0 .15em;background:inherit;font-size:clamp(8px,2.3vw,11px);font-weight:500;color:var(--ink-soft);line-height:1.15;pointer-events:none}
 .board--killer .sd-digit{margin-top:6%}
-.board--killer .ks-notes{inset:27% 10% 6% 10%}
+.board--killer .ks-notes{inset:27% 9% 8% 9%}
 .board--killer .ks-notes i{font-size:clamp(7px,1.9vw,9px)}
 /* the cell in the board's rounded corner: the sum, a little further in so it isn't clipped, and the
    number and the notes as much further down, so the sum doesn't cover them */
 .cell[data-corner="tl"] .ks-sum{left:calc(var(--radius-board) * .45);top:calc(var(--radius-board) * .4)}
 .board--killer .cell[data-corner="tl"] .sd-digit{margin-top:calc(6% + var(--radius-board) * .45)}
-.board--killer .cell[data-corner="tl"] .ks-notes{top:calc(27% + var(--radius-board) * .34);bottom:5%;grid-template-rows:repeat(3,minmax(0,1fr))}
+.board--killer .cell[data-corner="tl"] .ks-notes{top:calc(27% + var(--radius-board) * .34);bottom:8%;grid-template-rows:repeat(3,minmax(0,1fr))}
 /* Help figure (templates.js): the sum like .ks-sum */
 .ks-hf-sum{font-family:var(--font-body);font-weight:500;font-size:.2px;fill:var(--ink-soft)}
