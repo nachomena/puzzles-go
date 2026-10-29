@@ -8,7 +8,7 @@ const FACE_DOTS = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 
 const faces = () => Object.entries(FACE_DOTS).map(([n, dots]) =>
   `<span class="dc-face" title="${n}">${[...Array(9).keys()].map(k => `<i${dots.includes(k) ? ' class="on"' : ''}></i>`).join('')}</span>`).join('');
 
-/* Arrow-shaped sum arrow (as in the original game) with the number inside.
+/* Arrow-shaped sum arrow with the number inside.
    Rows: it points left, towards the board; columns: it points up. */
 const ARROW_SHAPE = {
   rows: { box: '0 0 56 40', d: 'M3 20 L17 3 H51 a3 3 0 0 1 3 3 V34 a3 3 0 0 1 -3 3 H17 Z' },
