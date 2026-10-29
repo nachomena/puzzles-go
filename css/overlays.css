@@ -8,6 +8,12 @@ html:has(.overlay.is-on){overflow:hidden}
 /* sheets and cards are glass (.glass): they float over the screen, with a margin and rounded corners */
 /* the sheet's text scrolls and its button stays at the bottom, always in reach */
 .sheet{margin:auto auto 8px;width:calc(100% - 16px);max-width:var(--content-max);border-radius:32px;max-height:86vh;display:flex;flex-direction:column;overflow:hidden}
+/* sheet with a close button in its corner (the title leaves room for it) */
+.sheet--closable{position:relative}
+.sheet--closable h2{padding-right:48px}
+.sheet__close{position:absolute;top:14px;right:14px;z-index:1;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--glass-hover)}
+.sheet__close svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:2;stroke-linecap:round}
+.sheet__close:active{background:var(--glass-on)}
 .sheet__body{min-height:0;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;padding:26px var(--gutter) 4px}
 .sheet__foot{flex:none;padding:12px var(--gutter) 24px}
 .sheet__foot .btn-primary{margin-top:0}

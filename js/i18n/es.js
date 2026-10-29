@@ -23,6 +23,7 @@ export default {
     erase: 'Borrar casilla',
     flip: 'Voltear',
     done: 'Listo',
+    close: 'Cerrar',
     cancel: 'Cancelar',
     flipAria: 'Voltear la pieza seleccionada',
     trayAria: 'Piezas sin colocar',

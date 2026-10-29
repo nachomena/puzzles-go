@@ -23,6 +23,7 @@ export default {
     erase: 'Clear cell',
     flip: 'Flip',
     done: 'Done',
+    close: 'Close',
     cancel: 'Cancel',
     flipAria: 'Flip the selected piece',
     trayAria: 'Pieces not placed yet',

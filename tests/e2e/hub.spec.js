@@ -182,3 +182,14 @@ test('with the daily challenge and an unfinished game, both cards share one row'
   await expect(play).toHaveClass(/is-on/);
   expect(errors).toEqual([]);
 });
+
+test('the Pro sheet has a close button', async ({ page }) => {
+  const errors = await openApp(page);
+  await page.locator('#games [data-game="sudoku"]').click();
+  await page.locator('#levelList [data-level="hard"]').click();
+  await expect(page.locator('#pro')).toHaveClass(/is-on/);
+  await page.locator('#pro .sheet__close').click();
+  await expect(page.locator('#pro')).not.toHaveClass(/is-on/);
+  await expect(page.locator('#levels')).toHaveClass(/is-on/);
+  expect(errors).toEqual([]);
+});

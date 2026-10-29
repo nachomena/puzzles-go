@@ -179,7 +179,8 @@
 
 <!-- PRO: what it unlocks and the purchase (simulated for now, see core/membership.js) -->
 <div class="overlay" id="pro" role="dialog" aria-label="Puzzles Go Pro" data-i18n-aria="pro.title" data-dismissable>
-  <div class="sheet glass">
+  <div class="sheet sheet--closable glass">
+    <button class="sheet__close" data-action="close" aria-label="Cerrar" data-i18n-aria="common.close"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
     <div class="sheet__body">
       <h2 class="display" data-i18n="pro.title">Puzzles Go Pro</h2>
       <p data-i18n="pro.lead">Juega todos los niveles de todos los juegos.</p>
