@@ -25,7 +25,7 @@ test('cageTints: one colour per cage, none shared by cages that touch', () => {
 });
 
 test('cageTints: the real boards of Killer Sudoku and Calcudoku never repeat a colour between neighbouring cages', () => {
-  for (let k = 0; k < 8; k++){
+  for (let k = 0; k < 30; k++){
     const p = runToEnd(killer(1 + (k % 3)));
     assert.ok(p, 'killer');
     assert.ok(!clash(ownerOf(p.cages, 9), 9, cageTints(ownerOf(p.cages, 9), 9)));
