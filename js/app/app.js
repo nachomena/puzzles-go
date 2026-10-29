@@ -230,6 +230,7 @@ export class App {
     byId('proBuy').textContent = t('pro.buy', { price: t('pro.price') });
     byId('proStatus').textContent = t(pro ? 'pro.statusPro' : 'pro.statusFree');
     manage.textContent = t(pro ? 'pro.reset' : 'pro.see');
+    manage.classList.toggle('btn-pro', !pro);
     manage.dataset.action = pro ? 'reset-pro' : 'open-pro';
   }
 
@@ -372,7 +373,7 @@ export class App {
     byId('progressBody').innerHTML = this.membership.pro ? html :
       `<div class="pro-gate"><div class="pro-gate__preview" inert aria-hidden="true">${html}</div>` +
       `<div class="pro-gate__card glass"><b>${t('pro.statsTitle')}</b><p>${t('pro.statsText')}</p>` +
-      `<button class="btn-primary" data-action="open-pro">${t('pro.seePro')}</button></div></div>`;
+      `<button class="btn-primary btn-pro" data-action="open-pro">${t('pro.seePro')}</button></div></div>`;
     byId('progressBody').querySelector('[aria-pressed="true"]')?.scrollIntoView({ block: 'nearest', inline: 'center' });
   }
 

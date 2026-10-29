@@ -68,7 +68,7 @@ export default {
     free: 'For free you get Easy in every game and the daily challenge.',
     test: 'Test version: the purchase is simulated and nothing is charged.',
     buy: 'Unlock for {price}',
-    price: '€4.99',
+    price: '€9.99',
     restore: 'Restore purchases',
     nothingToRestore: 'There are no purchases to restore',
     thanks: 'Pro unlocked: you now have every level',

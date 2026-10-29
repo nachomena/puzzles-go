@@ -68,7 +68,7 @@ export default {
     free: 'Gratis tienes Fácil en todos los juegos y el reto del día.',
     test: 'Versión de prueba: la compra es simulada y no se cobra nada.',
     buy: 'Desbloquear por {price}',
-    price: '4,99 €',
+    price: '9,99 €',
     restore: 'Restaurar compras',
     nothingToRestore: 'No hay compras que restaurar',
     thanks: 'Pro desbloqueado: ya tienes todos los niveles',
