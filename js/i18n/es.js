@@ -518,7 +518,7 @@ export default {
       tagline: 'Caminos entre los puntos',
       errorsDesc: 'Marca en rojo los caminos que se cortan contra otra pieza o contra el borde.',
       help: `
-  <p>Coloca las <b>10 piezas</b> en el tablero para unir los <b>puntos</b> por parejas con caminos: con 2 puntos hay 1 camino, con 4 hay 2 y con 6 hay 3.</p>
+  <p>Coloca las <b>10 piezas</b> en el tablero para unir los <b>puntos</b> por parejas con caminos: hay un camino por cada dos puntos (con 6 puntos, 3 caminos).</p>
   <ul>
     <li>Hay que usar todas las piezas, y cada camino empieza y termina en un punto: no puede quedar ningún tramo suelto ni ningún circuito cerrado.</li>
     <li>Los puntos del reto son todos los que hay: no se pueden añadir otros.</li>

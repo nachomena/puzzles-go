@@ -11,7 +11,7 @@ export default Object.freeze({
   storageKey: 'puzzlesgo.smartcircuit.v1',
   /** Picker group (see ui/hub-view.js). */
   group: 'pieces',
-  /** `target` is the generator level; the clues follow the original booklet. */
+  /** `target` is the generator level (see engine/generator.js). */
   levels: difficulty({ easy: 2, hard: 4, expert: 5 }),
   levelOrder: LEVEL_ORDER,
   /** Old levels, to move records and games (core/level-migration.js). */

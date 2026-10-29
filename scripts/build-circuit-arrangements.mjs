@@ -1,6 +1,6 @@
 // Lists every valid Circuit arrangement (the 10 pieces forming paths from
 // dot to dot) and saves them in js/games/circuit/engine/arrangements-data.js.
-// Usage: node scripts/build-circuit-arrangements.mjs   (about 2 minutes; only if the pieces change)
+// Usage: node scripts/build-circuit-arrangements.mjs   (about 30 seconds; only if the pieces change)
 import { writeFileSync } from 'node:fs';
 import { solve } from '../js/games/circuit/engine/solver.js';
 import { PIECES, CELLS } from '../js/games/circuit/engine/pieces.js';

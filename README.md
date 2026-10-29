@@ -10,7 +10,7 @@ the one chosen in the picker settings). Every game with difficulties uses the sa
 - **Gears** (an original game) from 5×5 to 8×8: gears on a hexagonal panel that carry the crank's turn to the lock, in a single chain with no cycles, with numbers that count the surrounding gears.
 - **Killer Sudoku** 9×9 with sum cages. Easy has one-cell cages and 16 given numbers; Hard needs locked candidates, pairs or triples; Expert always requires the rule of 45.
 - **Dice**: 12 pieces that form 4 die faces with sums per row and column.
-- **Circuit**: 10 double-sided pieces that join the dots with paths on an 8×4 board.
+- **Circuit**: 10 double-sided pieces that join the dots with paths on a 6×5 board.
 - **Circle**: 10 double-sided ball pieces that fill a round board of 3 rings without crossing its ribs (in Hard and Expert you also have to find where the ribs go).
 - **Hexagon**: 12 double-sided stroke-shaped pieces that fill the gaps between the pegs of a hexagonal board.
 - **Fit**: 12 ball pieces of 4, 5 and 6 balls that fill a 10×6 board; from 9 to 3 pieces placed at the start.
@@ -98,7 +98,7 @@ scripts/                data, sw.js and font generators; JS check
 The 8,980 valid Dice arrangements are precomputed in `js/games/dice/engine/arrangements-data.js`
 (`node scripts/build-dice-arrangements.mjs` regenerates them).
 
-The 358 valid Circuit arrangements are in `js/games/circuit/engine/arrangements-data.js`
+The 732 valid Circuit arrangements are in `js/games/circuit/engine/arrangements-data.js`
 (`node scripts/build-circuit-arrangements.mjs` regenerates them).
 
 The 322 Circle solutions (with the ribs in their starting position; the others are the same ones turned) are in

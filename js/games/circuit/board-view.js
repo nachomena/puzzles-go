@@ -1,4 +1,4 @@
-/* Circuit view: 8×4 board, the puzzle's clues, placed pieces and tray.
+/* Circuit view: 6×5 board, the puzzle's clues, placed pieces and tray.
    The board's pieces are all drawn in one SVG with cell coordinates, so the paths of neighbouring
    pieces line up exactly (with a box per piece, each box's pixel rounding could misalign them slightly). */
 import { GridBoard } from '../../ui/grid-board.js';

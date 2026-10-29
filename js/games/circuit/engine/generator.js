@@ -1,5 +1,5 @@
 /* Circuit puzzle generator. One of the valid placements is picked at random and the clues for the
-   level are given (as in the original puzzle's booklet), checking that with them the solution is unique.
+   level are given, checking that with them the solution is unique.
      1 Beginner: shape of every path + some pieces placed.
      2 Easy:     outline of every piece.
      3 Medium:   shape of every path.

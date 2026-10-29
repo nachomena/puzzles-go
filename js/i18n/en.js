@@ -518,7 +518,7 @@ export default {
       tagline: 'Paths between the dots',
       errorsDesc: 'Paths that run into another piece or the edge turn red.',
       help: `
-  <p>Place the <b>10 pieces</b> on the board to join the <b>dots</b> in pairs with paths: with 2 dots there is 1 path, with 4 there are 2 and with 6 there are 3.</p>
+  <p>Place the <b>10 pieces</b> on the board to join the <b>dots</b> in pairs with paths: there is one path for every two dots (with 6 dots, 3 paths).</p>
   <ul>
     <li>You must use every piece, and each path starts and ends at a dot: no loose ends and no closed circuits.</li>
     <li>The dots in the puzzle are all there are: you can’t add others.</li>
