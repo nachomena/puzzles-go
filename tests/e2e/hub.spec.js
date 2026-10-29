@@ -173,10 +173,11 @@ test('with the daily challenge and an unfinished game, both cards share one row'
   const pair = page.locator('#daily .hub-pair');
   await expect(pair.locator('.resume-card')).toHaveCount(2);
   await expect(page.locator('#resumeLast .resume-card')).toHaveCount(0);
-  const [a, b] = await Promise.all([0, 1].map(i => pair.locator('.resume-card').nth(i).boundingBox()));
-  expect(Math.abs(a.y - b.y)).toBeLessThan(1);
-  expect(a.x + a.width).toBeLessThanOrEqual(b.x);
-  expect(b.x + b.width).toBeLessThanOrEqual(page.viewportSize().width);   // neither card runs off the screen
+  // side by side, and neither card runs off the screen (measured until the layout settles, e.g. when the font swaps in)
+  await expect.poll(async () => {
+    const [a, b] = await Promise.all([0, 1].map(i => pair.locator('.resume-card').nth(i).boundingBox()));
+    return !!a && !!b && Math.abs(a.y - b.y) < 1 && a.x + a.width <= b.x && b.x + b.width <= page.viewportSize().width;
+  }).toBe(true);
   await expect(pair.locator('[data-action="resume-last"] .resume-card__detail')).toContainText('En curso');
   await pair.locator('[data-action="resume-last"]').click();
   await expect(play).toHaveClass(/is-on/);

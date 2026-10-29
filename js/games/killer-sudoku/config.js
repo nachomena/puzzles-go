@@ -8,7 +8,7 @@ export const LEVELS = meta.levels;
 /** Tools: write the number or note it down as a candidate. */
 export const TOOL = Object.freeze({ PEN, PENCIL });
 
-export const DEFAULT_SETTINGS = Object.freeze({ errors: false, autoNotes: true, sameDigit: true, timer: true, tint: true });
+export const DEFAULT_SETTINGS = Object.freeze({ errors: false, autoNotes: true, sameDigit: true, timer: true, tint: false });
 
 export const SETTINGS = Object.freeze([
   { key: 'errors',    title: t('settings.errors'),      desc: t('games.killer-sudoku.errorsDesc') },
