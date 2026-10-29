@@ -2,8 +2,10 @@
    6 × 6 to 12 × 12). */
 .board--kakuro{container-type:inline-size}
 .board--kakuro .cell{--cs:calc(100cqw / var(--n))}
-.kr-black{background:color-mix(in srgb,var(--bg) 82%,black);cursor:default}
-.kr-clue{background:linear-gradient(to top right,transparent calc(50% - .6px),var(--rule) 50%,transparent calc(50% + .6px)) ,color-mix(in srgb,var(--bg) 82%,black)}
+/* the lines between cells are a little stronger than in other boards: the runs are read by them */
+.board--kakuro .board__grid{stroke:var(--dim);stroke-opacity:.55}
+.kr-black{background:var(--kr-black);cursor:default}
+.kr-clue{background:linear-gradient(to top right,transparent calc(50% - .7px),var(--dim) 50%,transparent calc(50% + .7px)) ,var(--kr-black)}
 .kr-a,.kr-d{position:absolute;font-size:min(13px,calc(var(--cs) * .3));font-weight:600;color:var(--ink);line-height:1;font-variant-numeric:tabular-nums;pointer-events:none}
 .kr-a{right:10%;top:10%}
 .kr-d{left:10%;bottom:10%}

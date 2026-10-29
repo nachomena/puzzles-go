@@ -35,6 +35,12 @@
   /* Estado */
   --x:#de6a5e;
   --bad:#f0665a;
+  /* flat versions of colours that used to be mixed with color-mix(), which older iPhones ignore (the whole rule is lost) */
+  --kr-black:#1b1a1f;         /* Kakuro's black cells */
+  --lit:#686146;              /* a lit Light Up cell */
+  --bad-soft:rgba(240,102,90,.3);
+  --good-soft:rgba(127,199,154,.14);
+  --slow-soft:rgba(227,144,127,.14);
   --star:#ecebe6;
   --accent:#e2bf5a;           /* the highlight of a chart (today's game) */
   --good:#7fc79a;             /* faster */
@@ -95,6 +101,11 @@
   --outline:#4f3f31;
   --x:#d9694a;
   --bad:#e8603f;
+  --kr-black:#17120f;
+  --lit:#625430;
+  --bad-soft:rgba(232,96,63,.3);
+  --good-soft:rgba(181,181,106,.14);
+  --slow-soft:rgba(217,138,98,.14);
   --star:#efc37d;
   --accent:#e8b45a;
   --good:#b5b56a;
