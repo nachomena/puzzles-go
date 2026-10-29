@@ -98,6 +98,7 @@ const SETS = {
   small: [block(3, 8, chooseRows(3, 8, 7, .55, 1), labels(0, 7))],
   slam: [
     block(5, 9, chooseRows(5, 9, 14, .35, .75), labels(0, 14)),
+    // the last four ids are shown as AA … AD (meta.js#shownLabel); they stay as they are so progress is kept
     block(6, 8, chooseRows(6, 8, 16, .25, .6), [...labels(14, 12), '♠', '♥', '♦', '♣'])
   ],
   grand: [block(4, 11, chooseRows(4, 11, 12, .25, .7), labels(0, 12))],

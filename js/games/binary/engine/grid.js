@@ -1,4 +1,4 @@
-/* Binary (the rules of 0h h1): fill an n × n board (n even) with two colours, 1 and 2, so that there
+/* Binary: fill an n × n board (n even) with two colours, 1 and 2, so that there
    are no three of the same in a row in any row or column, each row and column has as many of one as of
    the other and no two rows (or two columns) are the same. 0 = empty. No DOM. */
 

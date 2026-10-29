@@ -1,5 +1,5 @@
 /* Pieces made of cells (polyominoes) and a solution search to fill a board with them.
-   No DOM. Used by Pentominoes (5 × n) and Fit (11 × 5).
+   No DOM. Used by Pentominoes (5 × n) and Fit (10 × 6).
 
    A placed piece is { m, r, x, y }: m = side (0, 1 = flipped), r = clockwise 90° rotation (0..3)
    and (x, y) the top-left corner of its box. */

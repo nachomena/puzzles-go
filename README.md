@@ -20,7 +20,7 @@ the one chosen in the picker settings). Every game with difficulties uses the sa
 - **Bridges**: join islands with bridges of 1 or 2 that don't cross (from 7×7 to 10×10).
 - **Calcudoku**: 1 to N with no repeats per row and column, with cages of sums, differences, products and quotients (from 5×5 to 7×7).
 - **Light Up**: bulbs that light the whole board without seeing each other (from 7×7 to 10×10).
-- **Binary** (the 0h h1 rules): red and blue, never three equal in a row, half and half in each line and no two equal rows or columns (from 8×8 to 12×12).
+- **Binary**: red and blue, never three equal in a row, half and half in each line and no two equal rows or columns (from 8×8 to 12×12).
 - **Peg Solitaire**: the classic of jumping balls until one is left, on the English (33) or European (37) board, chosen in Settings.
 
 Every board is generated on the device, has a single solution and its level is guaranteed by a logic solver that

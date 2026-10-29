@@ -20,6 +20,10 @@ export const levelOf = part => LEVEL_ORDER.find(L => PARTS[L].includes(part));
 /** Set of a saved game (those from before the change to three levels stored it in `L`). */
 export const partOf = cur => cur.p?.part ?? (SERIES[cur.L] ? cur.L : null);
 
+/** Row labels as shown: the last four rows of a set keep their old ids (so their progress is kept). */
+const SHOWN = Object.freeze({ '♠': 'AA', '♥': 'AB', '♦': 'AC', '♣': 'AD' });
+export const shownLabel = label => SHOWN[label] ?? label;
+
 /** Statistics key of a puzzle: set, row and size (e.g. "grand:B:7"). */
 export const challengeKey = (part, label, n) => `${part}:${label}:${n}`;
 
@@ -34,7 +38,7 @@ export const solvedIn = (L, stats) =>
 export function rowName(part, label){
   if (/^\d+$/.test(label)) return t('games.pentominoes.row', { n: label });
   const parts = LEVELS[levelOf(part)].parts;
-  return parts.length > 1 ? `${parts.indexOf(part) + 1}${label}` : label;
+  return parts.length > 1 ? `${parts.indexOf(part) + 1}${shownLabel(label)}` : shownLabel(label);
 }
 
 /** "7 pieces": the size of a puzzle. */

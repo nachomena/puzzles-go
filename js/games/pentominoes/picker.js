@@ -2,7 +2,7 @@
    and one cell per puzzle (with the piece it adds). The solved ones are marked. */
 import { blocksOf } from './engine/sets.js';
 import { pieceIcon } from './piece-svg.js';
-import meta, { challengeKey, solvedIn, partOf } from './meta.js';
+import meta, { challengeKey, solvedIn, partOf, shownLabel } from './meta.js';
 import { t } from '../../i18n/index.js';
 
 /** Tables of a set (one per block of rows with the same puzzle sizes). */
@@ -18,9 +18,9 @@ function seriesHtml(part, { stats, cur }){
         const isCur = curPart === part && cur.p.label === row.label && cur.p.n === n;
         const cls = (st?.solved ? ' is-done' : '') + (isCur ? ' is-current' : '');
         return `<button class="pt-pick__cell${cls}" data-action="pick-puzzle" data-part="${part}" data-row="${row.label}" data-n="${n}" ` +
-          `aria-label="${t('games.pentominoes.cellAria', { row: row.label, n })}${st?.solved ? t('games.pentominoes.cellSolved') : ''}">${pieceIcon(row.pieces[n - 1])}</button>`;
+          `aria-label="${t('games.pentominoes.cellAria', { row: shownLabel(row.label), n })}${st?.solved ? t('games.pentominoes.cellSolved') : ''}">${pieceIcon(row.pieces[n - 1])}</button>`;
       }).join('');
-      return `<div class="pt-pick__row"><b class="pt-pick__label">${row.label}</b>${icons}${cells}</div>`;
+      return `<div class="pt-pick__row"><b class="pt-pick__label">${shownLabel(row.label)}</b>${icons}${cells}</div>`;
     }).join('');
     return `<div class="pt-pick" style="--base:${base};--cols:${cols}">` +
       `<div class="pt-pick__row pt-pick__head"><span></span><span class="pt-pick__penta">${t('games.pentominoes.piecesHead')}</span>${nums}</div>${rows}</div>`;
