@@ -4,8 +4,10 @@
 .board--kakuro .cell{--cs:calc(100cqw / var(--n))}
 /* the lines between cells are a little stronger than in other boards: the runs are read by them */
 .board--kakuro .board__grid{stroke:var(--dim);stroke-opacity:.55}
-.kr-black{background:var(--kr-black);cursor:default}
-.kr-clue{background:linear-gradient(to top right,transparent calc(50% - .7px),var(--dim) 50%,transparent calc(50% + .7px)) ,var(--kr-black)}
+/* two classes, so they win over .cell's background whatever the order the stylesheets are applied in; the colour
+   has its own fallback in case the page is running next to an older tokens.css */
+.board--kakuro .kr-black{background:var(--kr-black,#1b1a1f);cursor:default}
+.board--kakuro .kr-clue{background:linear-gradient(to top right,transparent calc(50% - .7px),var(--dim,#8f8e9a) 50%,transparent calc(50% + .7px)) ,var(--kr-black,#1b1a1f)}
 .kr-a,.kr-d{position:absolute;font-size:min(13px,calc(var(--cs) * .3));font-weight:600;color:var(--ink);line-height:1;font-variant-numeric:tabular-nums;pointer-events:none}
 .kr-a{right:10%;top:10%}
 .kr-d{left:10%;bottom:10%}
