@@ -95,7 +95,7 @@ tests/                  node:test tests
 scripts/                data, sw.js and font generators; JS check
 ```
 
-The 6,288 valid Dice arrangements are precomputed in `js/games/dice/engine/arrangements-data.js`
+The 8,980 valid Dice arrangements are precomputed in `js/games/dice/engine/arrangements-data.js`
 (`node scripts/build-dice-arrangements.mjs` regenerates them).
 
 The 358 valid Circuit arrangements are in `js/games/circuit/engine/arrangements-data.js`

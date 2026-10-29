@@ -13,7 +13,7 @@ test('the 12 pieces exactly cover the board and have 12 dots', () => {
   const dots = PIECES.reduce((n, t) => n + PIECE_TYPES[t].dots.length, 0);
   assert.equal(area, CELLS);
   assert.equal(dots, 12);
-  assert.equal(PIECES.filter(t => !PIECE_TYPES[t].dots.length).length, 4, '4 blank pieces');
+  assert.equal(PIECES.filter(t => !PIECE_TYPES[t].dots.length).length, 3, '3 blank pieces');
 });
 
 test('turning 4 times leaves the piece the same and the dots stay inside', () => {
@@ -33,7 +33,7 @@ test('valid faces: 1 to 6 in every orientation', () => {
 
 test('the precomputed list matches the solver', () => {
   const { list } = arrangements();
-  assert.equal(list.length, 6288);
+  assert.equal(list.length, 8980);
   for (const a of list.slice(0, 50)){
     assert.deepEqual(diceValues(a.pieces), a.dice);
     assert.ok(a.dice.every(v => v >= 1));

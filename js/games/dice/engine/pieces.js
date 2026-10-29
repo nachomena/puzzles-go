@@ -5,15 +5,13 @@ export const SIZE = 6, DIE = 3, CELLS = SIZE * SIZE;
 
 /** Base shapes: cells [row, col] and black dots [row, col]. `count` = equal pieces. */
 export const PIECE_TYPES = [
-  { id: 'long',   cells: [[0, 0], [0, 1], [0, 2], [0, 3]], dots: [[0, 0], [0, 3]], count: 1 },
-  { id: 'bar3-1', cells: [[0, 0], [0, 1], [0, 2]], dots: [[0, 0]], count: 1 },
-  { id: 'bar3-2', cells: [[0, 0], [0, 1], [0, 2]], dots: [[0, 0], [0, 2]], count: 1 },
-  { id: 'bar2-1', cells: [[0, 0], [0, 1]], dots: [[0, 0]], count: 1 },
-  { id: 'bar2-2', cells: [[0, 0], [0, 1]], dots: [[0, 0], [0, 1]], count: 1 },
-  { id: 'bar2-0', cells: [[0, 0], [0, 1]], dots: [], count: 4 },
-  { id: 'sq-2',   cells: [[0, 0], [0, 1], [1, 0], [1, 1]], dots: [[0, 0], [1, 1]], count: 1 },
-  { id: 'sq-1',   cells: [[0, 0], [0, 1], [1, 0], [1, 1]], dots: [[0, 0]], count: 1 },
-  { id: 'rect',   cells: [[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [1, 2]], dots: [[1, 1]], count: 1 }
+  { id: 'dot',     cells: [[0, 0]], dots: [[0, 0]], count: 2 },
+  { id: 'bar-0',   cells: [[0, 0], [0, 1]], dots: [], count: 3 },
+  { id: 'bar-1',   cells: [[0, 0], [0, 1]], dots: [[0, 0]], count: 3 },
+  { id: 'sq-2',    cells: [[0, 0], [0, 1], [1, 0], [1, 1]], dots: [[0, 0], [0, 1]], count: 1 },
+  { id: 'rect-1',  cells: [[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [1, 2]], dots: [[0, 1]], count: 1 },
+  { id: 'rect-2',  cells: [[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [1, 2]], dots: [[0, 0], [0, 1]], count: 1 },
+  { id: 'rect-2d', cells: [[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [1, 2]], dots: [[0, 0], [1, 1]], count: 1 }
 ];
 
 /** The 12 actual pieces: piece index → type index. */

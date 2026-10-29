@@ -1,6 +1,6 @@
 /* Puzzle generator. A valid placement is picked at random and some arrows and some placed pieces are
    left as clues, removing pieces while the solution stays unique.
-   The ranges of each level come from the original game's puzzles. */
+   The ranges of each level were tuned by playing them. */
 import { arrangements, matching } from './arrangements.js';
 import { shuffle, randInt } from '../../../lib/random.js';
 
