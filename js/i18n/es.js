@@ -593,9 +593,9 @@ export default {
 
     fit: {
       name: 'Encaje',
-      tagline: 'Piezas de bolas en un 11 × 5',
+      tagline: 'Piezas de bolas en un 10 × 6',
       help: `
-  <p>Coloca las <b>12 piezas</b> de bolas en el tablero de 11 × 5 hasta llenarlo, sin dejar ningún hueco.</p>
+  <p>Coloca las <b>12 piezas</b> de bolas en el tablero de 10 × 6 hasta llenarlo, sin dejar ningún hueco.</p>
   <ul>
     <li>Las piezas se pueden girar y voltear.</li>
     <li>Las piezas ya colocadas al empezar forman parte del reto: no se mueven.</li>

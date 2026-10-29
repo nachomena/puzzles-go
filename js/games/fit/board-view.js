@@ -1,4 +1,4 @@
-/* Fit view: an 11 × 5 board of holes, ball pieces and tray.
+/* Fit view: a 10 × 6 board of holes, ball pieces and tray.
    The board's pieces go in one SVG with cell coordinates. */
 import { W, H, orient } from './engine/pieces.js';
 import { pieceParts, pieceSvg } from './piece-svg.js';

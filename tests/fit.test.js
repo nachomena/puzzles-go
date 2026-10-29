@@ -1,13 +1,14 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { PIECES, ALL, CELLS, packer, cellsOf, poseFromCells } from '../js/games/fit/engine/pieces.js';
+import { PIECES, ALL, W, H, CELLS, packer, cellsOf, poseFromCells } from '../js/games/fit/engine/pieces.js';
 import { generate, LEVEL_RULES, isUnique } from '../js/games/fit/engine/generator.js';
 import { fits, isSolved, findMistake, findHint, inPlace } from '../js/games/fit/rules.js';
 import { runToEnd } from '../js/lib/iter.js';
 
-test('pieces: 12, with 55 balls in total (the 11 × 5 board)', () => {
+test('pieces: 12 distinct ones, with 60 balls in total (the 10 × 6 board)', () => {
   assert.equal(PIECES.length, 12);
   assert.equal(PIECES.reduce((n, p) => n + p.cells.length, 0), CELLS);
+  assert.equal(new Set(PIECES.map(p => p.name)).size, PIECES.length);
   for (const piece of ALL){
     const pose = packer.orientations[piece][1] || packer.orientations[piece][0];
     const p = { m: pose.m, r: pose.r, x: 2, y: 1 };
@@ -36,7 +37,7 @@ test('rules: fitting, mistake, hint and solved', () => {
   assert.ok(hint && inPlace(hint.piece, hint.pose, sol));
   // a misplaced piece: where it doesn't go (another position where it fits)
   const wrong = packer.orientations[free].map(o => ({ m: o.m, r: o.r, x: 0, y: 0 }))
-    .flatMap(o => [...Array(11)].flatMap((_, x) => [...Array(5)].map((_, y) => ({ ...o, x, y }))))
+    .flatMap(o => [...Array(W)].flatMap((_, x) => [...Array(H)].map((_, y) => ({ ...o, x, y }))))
     .find(pose => cellsOf(free, pose) && fits(place, free, pose) && !inPlace(free, pose, sol));
   place[free] = wrong;
   assert.deepEqual(findMistake(place, sol, p.fixed), { piece: free });

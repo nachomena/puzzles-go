@@ -13,7 +13,7 @@ the one chosen in the picker settings). Every game with difficulties uses the sa
 - **Circuit**: 10 double-sided pieces that join the dots with paths on an 8×4 board.
 - **Circle**: 10 double-sided ball pieces that fill a round board of 3 rings without crossing its ribs (in Hard and Expert you also have to find where the ribs go).
 - **Hexagon**: 12 double-sided stroke-shaped pieces that fill the gaps between the pegs of a hexagonal board.
-- **Fit**: 12 ball pieces that fill an 11×5 board; from 8 to 3 pieces placed at the start.
+- **Fit**: 12 ball pieces of 4, 5 and 6 balls that fill a 10×6 board; from 9 to 3 pieces placed at the start.
 - **Pentominoes**: fill a 5-column board with pentominoes; each puzzle adds a piece and a row. 512 puzzles in 5 series, spread over Easy, Hard and Expert and picked from a table; solved ones are marked.
 - **Gridlock**: slide cars and trucks on a 6×6 board until the red one gets out; levels by minimum moves (from 8 to more than 30).
 - **Trail**: a path through every cell that touches the numbers in order (from 6×6 to 7×7).

@@ -593,9 +593,9 @@ export default {
 
     fit: {
       name: 'Fit',
-      tagline: 'Ball pieces on an 11 × 5 board',
+      tagline: 'Ball pieces on a 10 × 6 board',
       help: `
-  <p>Place the <b>12 ball pieces</b> on the 11 × 5 board until it is full, without leaving any gap.</p>
+  <p>Place the <b>12 ball pieces</b> on the 10 × 6 board until it is full, without leaving any gap.</p>
   <ul>
     <li>Pieces can be rotated and flipped.</li>
     <li>Pieces already placed at the start are part of the puzzle: they don’t move.</li>

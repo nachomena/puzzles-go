@@ -1,5 +1,5 @@
 /* Fit puzzle generator: a random full board and, from it, some pieces already placed that leave a
-   single solution. Higher level = fewer pieces placed (as in the original puzzle's booklet). */
+   single solution. Higher level = fewer pieces placed. */
 import { ALL, packer } from './pieces.js';
 import { shuffle } from '../../../lib/random.js';
 
