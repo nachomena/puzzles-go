@@ -34,7 +34,7 @@ export const placeKey = (p, pose) => p + ':' + cellsOf(p, pose).slice().sort((a,
 
 let all = null, index = null;
 /**
- * Every solution in the 16 orientations: [{ o, poses, owner, key, pieceKeys }].
+ * Every solution in the 14 orientations: [{ o, poses, owner, key, pieceKeys }].
  * `key` identifies the placement of all the pieces; `pieceKeys[p]`, that of each piece.
  */
 export function allSolutions(){

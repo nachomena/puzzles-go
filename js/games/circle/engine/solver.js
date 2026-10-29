@@ -1,4 +1,4 @@
-/* Exact Circle solver: fills the 48 cells with the 10 pieces without crossing the ribs. Used to
+/* Exact Circle solver: fills the 42 cells with the 10 pieces without crossing the ribs. Used to
    precompute every solution (scripts/build-circle-solutions.mjs) and to check them in the tests. */
 import { PIECES, CELLS, SECTORS, RINGS, cell, cellsOf, crossesRib, poses } from './pieces.js';
 

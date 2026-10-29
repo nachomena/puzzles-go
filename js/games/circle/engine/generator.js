@@ -1,5 +1,5 @@
 /* Circle puzzle generator. One of the precomputed solutions is picked at random and the level's clues
-   are given, as in the original puzzle's booklet, checking that with them the placement of the pieces
+   are given, checking that with them the placement of the pieces
    is unique:
      1 Beginner: 3 to 6 pieces placed; ribs visible.
      2 Easy:     2 to 4 pieces placed; ribs visible.
@@ -54,7 +54,7 @@ export function* generate(target){
   const known = rules.ribs === 'all', pieces = [...Array(10).keys()];
   for (let attempt = 0; attempt < ATTEMPTS; attempt++){
     yield 0;
-    // with the ribs visible, always in the starting position (as in the booklet)
+    // with the ribs visible, always in the starting position
     const sol = known ? all[randInt(all.length / SECTORS)] : all[randInt(all.length)];
     const ribs = ribsAt(sol.o);
     const marks = known ? ribs.slice() : shuffle(ribs.slice()).slice(0, Array.isArray(rules.ribs) ? randInt(rules.ribs[1] + 1) : 0);
