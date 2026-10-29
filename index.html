@@ -218,5 +218,31 @@
 
 <div id="toast" class="toast" role="status"></div>
 
+<!-- Safety net, inline so it also runs next to an older version's code. Service workers from before
+     the page came from the cache too served this page from the network with their old cached files,
+     which never take off the startup screen (is-boot). When the new service worker takes over, or if
+     the screen is still up a while after loading, the page reloads once to get a single version. -->
+<script>
+(function(){
+  var boot = document.getElementById('loading'), KEY = 'puzzlesgo.bootReload';
+  var stuck = function(){ return boot.classList.contains('is-boot'); };
+  var reloadOnce = function(){
+    var done = false;
+    try { done = sessionStorage.getItem(KEY) === '1'; sessionStorage.setItem(KEY, '1'); } catch (e){}
+    if (done) boot.classList.remove('is-on', 'is-boot');   // at least show what there is
+    else location.reload();
+  };
+  if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('controllerchange', function(){ if (stuck()) reloadOnce(); });
+  window.addEventListener('load', function(){
+    setTimeout(function(){
+      if (!stuck()){ try { sessionStorage.removeItem(KEY); } catch (e){} return; }
+      var sw = navigator.serviceWorker;
+      if (!sw) return reloadOnce();
+      sw.getRegistration().then(function(r){ return r && r.update(); }).catch(function(){}).then(reloadOnce);
+    }, 8000);
+  });
+})();
+</script>
+
 </body>
 </html>
