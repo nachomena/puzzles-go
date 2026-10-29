@@ -1,9 +1,15 @@
-/* Calcudoku: cages with a thick border and the small operation at the top left. */
-/* tucked into the corner, just inside the thick border: it takes little room and leaves space for the number and the notes */
-.cc-label{position:absolute;left:7%;top:5%;font-size:clamp(12px,3.7vw,17px);font-weight:600;color:var(--ink);line-height:1.15;pointer-events:none;white-space:nowrap}
+/* Calcudoku: cages with a thick border and the number to reach (with its operation) at the top left. */
+.board--calcudoku{container-type:inline-size}
+/* tucked into the corner, just inside the thick border. Its size follows the cell's (a quarter of its width,
+   at most 14px), so it never reaches the notes below it, which start under it whatever the screen */
+.cc-label{position:absolute;left:7%;top:5%;font-size:min(14px,calc(100cqw / var(--n) * .25));font-weight:600;color:var(--ink);line-height:1.15;pointer-events:none;white-space:nowrap}
 .board--calcudoku .sd-digit{margin-top:14%}
-.board--calcudoku .cc-notes{top:32%}
-/* the cell in the board's rounded corner: the label, a little further in so it isn't clipped */
+.board--calcudoku .cc-notes{top:38%;bottom:4%}
+.board--calcudoku .cc-notes i{font-size:min(10px,calc(100cqw / var(--n) * .17))}
+/* the cell in the board's rounded corner: the label, a little further in so it isn't clipped, and the number and
+   the notes as much further down */
 .cell[data-corner="tl"] .cc-label{left:calc(var(--radius-board) * .45);top:calc(var(--radius-board) * .4)}
+.board--calcudoku .cell[data-corner="tl"] .sd-digit{margin-top:calc(14% + var(--radius-board) * .2)}
+.board--calcudoku .cell[data-corner="tl"] .cc-notes{top:calc(38% + var(--radius-board) * .2)}
 /* Help figure (templates.js): the operation like .cc-label */
 .cc-hf-label{font-family:var(--font-body);font-weight:500;font-size:.22px;fill:var(--ink-soft)}
