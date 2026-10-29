@@ -42,18 +42,14 @@ export default {
     choose: 'Choose a game',
     continue: 'Continue',
     gamesCount: ({ n }) => `${n} games`,
-    now: 'just now',
-    minutesAgo: '{n} min ago',
-    hoursAgo: '{n} h ago',
-    yesterday: 'yesterday',
-    daysAgo: '{n} days ago',
+    inProgress: 'In progress',
     groups: { pieces: 'Pieces' }
   },
 
   daily: {
     kicker: 'Daily challenge',
+    kickerShort: 'Daily',
     new: 'New today',
-    inProgress: 'In progress {time}',
     done: 'Done',
     streak: ({ n }) => `${plural(n, 'day', 'days')} streak`,
     solved: ({ n }) => `Daily challenge done · ${plural(n, 'day', 'days')} streak`,

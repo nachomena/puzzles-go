@@ -42,18 +42,14 @@ export default {
     choose: 'Elige un juego',
     continue: 'Continuar',
     gamesCount: ({ n }) => `${n} juegos`,
-    now: 'ahora',
-    minutesAgo: 'hace {n} min',
-    hoursAgo: 'hace {n} h',
-    yesterday: 'ayer',
-    daysAgo: 'hace {n} días',
+    inProgress: 'En curso',
     groups: { pieces: 'Piezas' }
   },
 
   daily: {
     kicker: 'Reto del día',
+    kickerShort: 'Diario',
     new: 'Nuevo hoy',
-    inProgress: 'En curso {time}',
     done: 'Hecho',
     streak: ({ n }) => `racha de ${plural(n, 'día', 'días')}`,
     solved: ({ n }) => `Reto del día hecho · racha de ${plural(n, 'día', 'días')}`,

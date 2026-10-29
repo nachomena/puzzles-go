@@ -1,6 +1,5 @@
 /* A game's menu: the continue card and the levels, each on a glass card with its difficulty bars and
    its record. The levels that need Pro show a lock instead (core/membership.js). */
-import { formatTime } from '../lib/format.js';
 import { svgIcon } from './templates.js';
 import { levelSummary } from '../core/stats.js';
 import { resumeCardHtml } from './hub-view.js';
@@ -36,7 +35,7 @@ export class LevelMenu {
     }).join('');
     this.resumeEl.innerHTML = cur
       ? resumeCardHtml({ icon: meta.icon, name: (meta.resumeLabel ?? meta.sessionLabel)?.(cur) ?? meta.levels[cur.L].name,
-          detail: formatTime(cur.time || 0), attrs: 'data-action="continue"' })
+          detail: t('hub.inProgress'), attrs: 'data-action="continue"' })
       : '';
   }
 }

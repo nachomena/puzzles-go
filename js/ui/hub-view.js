@@ -20,17 +20,6 @@ export function bestLine(meta, stats = {}){
   return t('common.recordWord') + ' · ' + withBest.map(r => `${r.name} ${formatTime(stats[r.key].best)}`).join(' · ');
 }
 
-/** "just now", "5 min ago", "2 h ago", "yesterday", "3 days ago". */
-export function ago(at, now = Date.now()){
-  const min = Math.floor((now - at) / 60000);
-  if (min < 1) return t('hub.now');
-  if (min < 60) return t('hub.minutesAgo', { n: min });
-  const h = Math.floor(min / 60);
-  if (h < 24) return t('hub.hoursAgo', { n: h });
-  const d = Math.floor(h / 24);
-  return d === 1 ? t('hub.yesterday') : t('hub.daysAgo', { n: d });
-}
-
 /** The most recently played unfinished game, or null. */
 export function lastSession(items){
   let best = null;
@@ -60,10 +49,10 @@ export const resumeCardHtml = ({ icon, name, detail, attrs, kicker = t('hub.cont
  */
 export function dailyCard(d, compact = false){
   if (!d) return '';
-  const status = d.done ? t('daily.done') : d.cur ? t('daily.inProgress', { time: formatTime(d.cur.time || 0) }) : t('daily.new');
-  // half width there is no room for the streak
-  const detail = [d.meta.levels[d.L].name, status, d.streak && !compact ? t('daily.streak', { n: d.streak }) : ''].filter(Boolean).join(' · ');
-  return resumeCardHtml({ icon: d.meta.icon, name: d.meta.name, detail, kicker: t('daily.kicker'), attrs: 'data-action="play-daily"',
+  const status = d.done ? t('daily.done') : d.cur ? t('hub.inProgress') : t('daily.new');
+  // half width there is no room for the streak, and the level and the state go on two lines
+  const detail = [d.meta.levels[d.L].name, status, d.streak && !compact ? t('daily.streak', { n: d.streak }) : ''].filter(Boolean).join(compact ? '<br>' : ' · ');
+  return resumeCardHtml({ icon: d.meta.icon, name: d.meta.name, detail, kicker: t(compact ? 'daily.kickerShort' : 'daily.kicker'), attrs: 'data-action="play-daily"',
     end: d.done ? 'check' : 'play', cls: ' daily-card' + (d.done ? ' is-done' : '') + (compact ? ' is-compact' : '') });
 }
 
@@ -72,7 +61,7 @@ export function resumeCard(item, compact = false){
   if (!item) return '';
   const { meta, data: { cur } } = item;
   const level = (meta.resumeLabel ?? meta.sessionLabel)?.(cur) ?? meta.levels[cur.L]?.name ?? '';
-  const detail = [meta.levelOrder.length > 1 ? level : '', formatTime(cur.time || 0), cur.at ? ago(cur.at) : ''].filter(Boolean).join(' · ');
+  const detail = [meta.levelOrder.length > 1 ? level : '', t('hub.inProgress')].filter(Boolean).join(compact ? '<br>' : ' · ');
   return resumeCardHtml({ icon: meta.icon, name: meta.name, detail, attrs: `data-action="resume-last" data-game="${meta.id}"`, cls: compact ? ' is-compact' : '' });
 }
 
