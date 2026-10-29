@@ -21,6 +21,7 @@ import { progressRows } from '../core/progress.js';
 import { bindEdgeBack } from '../ui/edge-back.js';
 import { DailyLog, dailyFor, dailyGames, dayKey } from '../core/daily.js';
 import { Membership } from '../core/membership.js';
+import { FontProto } from '../ui/font-proto.js';
 import { t, translateDom, LANGUAGES, languageChoice, deviceLanguage, setLanguage } from '../i18n/index.js';
 
 const htmlToElement = html => {
@@ -54,6 +55,8 @@ export class App {
     this.night = new NightMode(storage);
     document.querySelectorAll('[data-night-toggle]').forEach(el => el.addEventListener('change', e => this.night.set(e.target.checked)));
     this.#bindLanguage(document.querySelector('[data-lang-select]'));
+    this.font = new FontProto(storage);
+    document.querySelectorAll('[data-font-select]').forEach(el => el.addEventListener('change', e => this.font.set(e.target.value)));
     this.confirm = new ConfirmDialog(byId('confirm'), this.overlays);
     this.fitHubTitle = keepFitted(byId('title'));
     this.fitGameTitle = keepFitted(byId('gameTitle'));
