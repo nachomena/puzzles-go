@@ -56,22 +56,24 @@ export const resumeCardHtml = ({ icon, name, detail, attrs, kicker = t('hub.cont
 /**
  * Card of today's challenge: game, level, whether it is solved or in progress, and the streak.
  * @param {{ meta: object, L: string, done: boolean, cur: object|null, streak: number }|null} d
+ * @param {boolean} [compact]  half width, next to "Continue"
  */
-export function dailyCard(d){
+export function dailyCard(d, compact = false){
   if (!d) return '';
   const status = d.done ? t('daily.done') : d.cur ? t('daily.inProgress', { time: formatTime(d.cur.time || 0) }) : t('daily.new');
-  const detail = [d.meta.levels[d.L].name, status, d.streak ? t('daily.streak', { n: d.streak }) : ''].filter(Boolean).join(' · ');
+  // half width there is no room for the streak
+  const detail = [d.meta.levels[d.L].name, status, d.streak && !compact ? t('daily.streak', { n: d.streak }) : ''].filter(Boolean).join(' · ');
   return resumeCardHtml({ icon: d.meta.icon, name: d.meta.name, detail, kicker: t('daily.kicker'), attrs: 'data-action="play-daily"',
-    end: d.done ? 'check' : 'play', cls: ' daily-card' + (d.done ? ' is-done' : '') });
+    end: d.done ? 'check' : 'play', cls: ' daily-card' + (d.done ? ' is-done' : '') + (compact ? ' is-compact' : '') });
 }
 
-/** "Continue" card for the last unfinished game, or '' if there is none. */
-export function resumeCard(item){
+/** "Continue" card for the last unfinished game, or '' if there is none. `compact`: half width (see HubView#render). */
+export function resumeCard(item, compact = false){
   if (!item) return '';
   const { meta, data: { cur } } = item;
   const level = (meta.resumeLabel ?? meta.sessionLabel)?.(cur) ?? meta.levels[cur.L]?.name ?? '';
   const detail = [meta.levelOrder.length > 1 ? level : '', formatTime(cur.time || 0), cur.at ? ago(cur.at) : ''].filter(Boolean).join(' · ');
-  return resumeCardHtml({ icon: meta.icon, name: meta.name, detail, attrs: `data-action="resume-last" data-game="${meta.id}"` });
+  return resumeCardHtml({ icon: meta.icon, name: meta.name, detail, attrs: `data-action="resume-last" data-game="${meta.id}"`, cls: compact ? ' is-compact' : '' });
 }
 
 const CHEVRON = '<svg class="game-row__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>';
@@ -106,10 +108,17 @@ export class HubView {
    * @param {object|null} daily  today's challenge (see dailyCard)
    */
   render(items, daily = null){
-    if (this.dailyEl) this.dailyEl.innerHTML = dailyCard(daily);
     // the challenge in progress already has its card: "Continue" doesn't repeat it
-    const last = lastSession(items);
-    this.resumeEl.innerHTML = last && !(daily?.cur && last.meta.id === daily.meta.id) ? resumeCard(last) : '';
+    let last = lastSession(items);
+    if (last && daily?.cur && last.meta.id === daily.meta.id) last = null;
+    // both: side by side, half width each, so the list keeps its room
+    if (daily && last && this.dailyEl){
+      this.dailyEl.innerHTML = `<div class="hub-pair">${dailyCard(daily, true)}${resumeCard(last, true)}</div>`;
+      this.resumeEl.innerHTML = '';
+    } else {
+      if (this.dailyEl) this.dailyEl.innerHTML = dailyCard(daily);
+      this.resumeEl.innerHTML = resumeCard(last);
+    }
     const done = new Set();
     this.listEl.innerHTML = items.map(item => {
       const g = item.meta.group;

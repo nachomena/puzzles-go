@@ -364,10 +364,15 @@ export class App {
 
   #renderProgress(){
     const { meta, data, rows } = this.#progressRows();
-    byId('progressBody').innerHTML = gameHtml({
+    const html = gameHtml({
       games: this.catalog.map(({ meta: m }) => ({ id: m.id, name: m.shortName ?? m.name })),
       game: meta.id, name: meta.name, stats: data.stats, rows
     });
+    // Progress is part of Pro: without it the screen opens, blurred and inert, with a card that says so
+    byId('progressBody').innerHTML = this.membership.pro ? html :
+      `<div class="pro-gate"><div class="pro-gate__preview" inert aria-hidden="true">${html}</div>` +
+      `<div class="pro-gate__card glass"><b>${t('pro.statsTitle')}</b><p>${t('pro.statsText')}</p>` +
+      `<button class="btn-primary" data-action="open-pro">${t('pro.seePro')}</button></div></div>`;
     byId('progressBody').querySelector('[aria-pressed="true"]')?.scrollIntoView({ block: 'nearest', inline: 'center' });
   }
 

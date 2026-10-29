@@ -36,13 +36,13 @@ test("opening the app loads no game's CSS", async ({ page }) => {
 
 test('the Continue card leads to the last unfinished game', async ({ page }) => {
   const errors = await openApp(page);
-  await expect(page.locator('#resumeLast .resume-card')).toHaveCount(0);
+  await expect(page.locator('#hub [data-action="resume-last"]')).toHaveCount(0);
   const play = await startGame(page, 'light-up');
   await play.locator('.cell:not(.lu-black)').first().click();
   await play.locator('.back-pill').click();
   await page.locator('#levels .back-pill').click();
-  await expect(page.locator('#resumeLast .resume-card')).toContainText('Luces');
-  await page.locator('#resumeLast .resume-card').click();
+  await expect(page.locator('#hub [data-action="resume-last"]')).toContainText('Luces');
+  await page.locator('#hub [data-action="resume-last"]').click();
   await expect(page.locator('#play-light-up')).toHaveClass(/is-on/);
   expect(errors).toEqual([]);
 });
@@ -148,5 +148,34 @@ test('solving the daily challenge counts for the streak', async ({ page }) => {
   await page.locator('#win [data-action="to-menu"]').click();
   await expect(page.locator('#hub')).toHaveClass(/is-on/);
   await expect(page.locator('#daily .daily-card')).toHaveClass(/is-done/);
+  expect(errors).toEqual([]);
+});
+
+test('Progress opens without Pro but asks for it; with Pro it is shown', async ({ page }) => {
+  const errors = await openApp(page);
+  await page.locator('.hub-progress[data-action="open-progress"]').click();
+  const gate = page.locator('#progress .pro-gate__card');
+  await expect(gate).toContainText('Progreso es parte de Pro');
+  await gate.locator('[data-action="open-pro"]').click();
+  await expect(page.locator('#pro')).toHaveClass(/is-on/);
+  await page.locator('#pro [data-action="buy-pro"]').click();
+  await expect(gate).toHaveCount(0);
+  await expect(page.locator('#progress .pg-chips')).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
+test('with the daily challenge and an unfinished game, both cards share one row', async ({ page }) => {
+  const errors = await openApp(page);
+  const play = await startGame(page, 'light-up');
+  await play.locator('.cell').first().click();
+  await play.locator('[data-action="back"]').click();
+  await page.locator('#levels [data-action="back"]').click();
+  const pair = page.locator('#daily .hub-pair');
+  await expect(pair.locator('.resume-card')).toHaveCount(2);
+  await expect(page.locator('#resumeLast .resume-card')).toHaveCount(0);
+  const [a, b] = await Promise.all([0, 1].map(i => pair.locator('.resume-card').nth(i).boundingBox()));
+  expect(Math.abs(a.y - b.y)).toBeLessThan(1);
+  await pair.locator('[data-action="resume-last"]').click();
+  await expect(play).toHaveClass(/is-on/);
   expect(errors).toEqual([]);
 });

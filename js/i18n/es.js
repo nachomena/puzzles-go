@@ -65,6 +65,9 @@ export default {
     lead: 'Juega todos los niveles de todos los juegos.',
     perkLevels: 'Difícil y Experto en todos los juegos, sin límite.',
     perkTables: 'Todas las tablas de Pentominoes.',
+    perkStats: 'Progreso y estadísticas de todos tus juegos.',
+    statsTitle: 'Progreso es parte de Pro',
+    statsText: 'Con Pro ves tus tiempos, récords y gráficas de cada juego y nivel.',
     perkOnce: 'Un solo pago: sin suscripción ni anuncios.',
     free: 'Gratis tienes Fácil en todos los juegos y el reto del día.',
     test: 'Versión de prueba: la compra es simulada y no se cobra nada.',
@@ -78,6 +81,7 @@ export default {
     statusPro: 'Activo: todos los niveles.',
     statusFree: 'Gratis: Fácil y el reto del día.',
     see: 'Ver',
+    seePro: 'Ver Pro',
     reset: 'Quitar (prueba)'
   },
 

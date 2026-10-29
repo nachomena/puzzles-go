@@ -65,6 +65,9 @@ export default {
     lead: 'Play every level of every game.',
     perkLevels: 'Hard and Expert in every game, with no limit.',
     perkTables: 'Every Pentominoes table.',
+    perkStats: 'Progress and statistics for all your games.',
+    statsTitle: 'Progress is part of Pro',
+    statsText: 'With Pro you see your times, records and charts for every game and level.',
     perkOnce: 'A single payment: no subscription and no ads.',
     free: 'For free you get Easy in every game and the daily challenge.',
     test: 'Test version: the purchase is simulated and nothing is charged.',
@@ -78,6 +81,7 @@ export default {
     statusPro: 'Active: every level.',
     statusFree: 'Free: Easy and the daily challenge.',
     see: 'See',
+    seePro: 'See Pro',
     reset: 'Remove (test)'
   },
 
