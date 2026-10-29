@@ -57,7 +57,7 @@
   --radius-sm:10px;
   --radius:12px;
   --radius-lg:20px;
-  --radius-board:clamp(14px,4.6vw,22px);
+  --radius-board:clamp(10px,3.6vw,17px);
   --safe-top:env(safe-area-inset-top,0px);
   /* --viewport-gap (js/pwa.js): bottom strip iOS doesn't draw in the installed app; it already acts as a margin */
   --safe-bottom:max(0px, calc(env(safe-area-inset-bottom,0px) - var(--viewport-gap, 0px)));

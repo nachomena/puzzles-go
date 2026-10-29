@@ -7,8 +7,8 @@ import { sees } from './engine/cages.js';
 
 const REGIONS = Array.from({ length: CELLS }, (_, i) => boxOf(i));
 
-const INSET = .06;   // how far the dotted line goes into the cell (in cells)
-const ROUND = .37;   // radius of the dotted line in the board's corners, which are rounded (in cells)
+const INSET = .075;  // how far the dotted line goes into the cell (in cells)
+const ROUND = .3;    // radius of the dotted line in the board's corners, which are rounded (in cells)
 
 /**
  * Path of the cage borders, set `inset` inwards from each one. For each cell side that faces out of its
