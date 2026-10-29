@@ -1,6 +1,5 @@
 /* Design tokens: the single source of colours, fonts and sizes. */
-@font-face{font-family:"Archivo Black";src:url(../fonts/archivo-black.woff2) format("woff2");font-weight:400 900;font-display:swap}
-@font-face{font-family:"Archivo";src:url(../fonts/archivo.woff2) format("woff2");font-weight:100 900;font-display:swap}
+@font-face{font-family:"Rubik";src:url(../fonts/rubik.woff2) format("woff2");font-weight:300 900;font-display:swap}
 
 :root{
   color-scheme:dark;
@@ -49,8 +48,8 @@
   --knob:#e6e5ea;
 
   /* Typography */
-  --font-body:"Archivo",-apple-system,BlinkMacSystemFont,"Helvetica Neue",system-ui,sans-serif;
-  --font-display:"Archivo Black","Arial Black",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  --font-body:"Rubik",-apple-system,BlinkMacSystemFont,"Helvetica Neue",system-ui,sans-serif;
+  --font-display:"Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
 
   /* Medidas */
   --content-max:560px;

@@ -1,6 +1,6 @@
-# Rebuilds fonts/*.woff2 from the original Google Fonts files (OFL license):
-# only the characters the app uses and, in Archivo, without the width axis (pinned at 100: the one the app uses).
-# Uso: pip install fonttools brotli && python3 scripts/build-fonts.py
+# Rebuilds fonts/rubik.woff2 from the original Google Fonts file (OFL license, see fonts/OFL.txt):
+# only the characters the app uses, keeping the weight axis.
+# Usage: pip install fonttools brotli && python3 scripts/build-fonts.py
 import io, os, urllib.request
 from fontTools.ttLib import TTFont
 from fontTools.varLib import instancer
@@ -26,5 +26,4 @@ def build(url, out, axes=None):
     subset.save_font(font, path, opts)
     print(f'{out}: {os.path.getsize(path) // 1024} KB')
 
-build('archivo/Archivo%5Bwdth,wght%5D.ttf', 'archivo.woff2', {'wdth': 100})
-build('archivoblack/ArchivoBlack-Regular.ttf', 'archivo-black.woff2')
+build('rubik/Rubik%5Bwght%5D.ttf', 'rubik.woff2')

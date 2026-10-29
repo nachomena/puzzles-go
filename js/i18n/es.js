@@ -90,9 +90,6 @@ export default {
     nightDesc: 'Colores cálidos en toda la app, para jugar antes de dormir.',
     language: 'Idioma',
     languageDesc: 'Por defecto, el del móvil.',
-    font: 'Fuente (prueba)',
-    fontDesc: 'Para elegir la tipografía de la app.',
-    fontOriginal: 'Actual (Archivo)',
     languageAuto: 'Del móvil ({name})'
   },
 

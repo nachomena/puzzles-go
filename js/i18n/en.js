@@ -90,9 +90,6 @@ export default {
     nightDesc: 'Warm colours across the app, for playing before bed.',
     language: 'Language',
     languageDesc: 'By default, your phone’s language.',
-    font: 'Font (test)',
-    fontDesc: 'To choose the app’s typeface.',
-    fontOriginal: 'Current (Archivo)',
     languageAuto: 'Phone ({name})'
   },
 

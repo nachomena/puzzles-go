@@ -167,7 +167,7 @@ test('Progress opens without Pro but asks for it; with Pro it is shown', async (
 test('with the daily challenge and an unfinished game, both cards share one row', async ({ page }) => {
   const errors = await openApp(page);
   const play = await startGame(page, 'light-up');
-  await play.locator('.cell').first().click();
+  await play.locator('.cell:not(.lu-black)').first().click();
   await play.locator('[data-action="back"]').click();
   await page.locator('#levels [data-action="back"]').click();
   const pair = page.locator('#daily .hub-pair');

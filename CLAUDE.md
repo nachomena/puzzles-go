@@ -16,7 +16,7 @@
   Google Play: $25 once (new personal account: closed test with 12 people for 14 days). App Store: $99 a year,
   built on a Mac or in the cloud. Android only: TWA (PWABuilder or Bubblewrap). For now we keep the web app until
   it is solid.
-- **Before publishing to the stores**: publish a privacy policy, add `fonts/OFL.txt` (the Archivo license) and check
-  that "Puzzles Go" is not a registered trademark.
+- **Before publishing to the stores**: publish a privacy policy and check that "Puzzles Go" is not a registered
+  trademark.
 - **Export and import progress** in Settings, so the app can be reinstalled without losing it.
 - **Custom domain** on GitHub Pages.

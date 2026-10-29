@@ -12,7 +12,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/icon-192.png">
-<link rel="preload" href="fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/rubik.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/components.css">
@@ -20,7 +20,6 @@
 <link rel="stylesheet" href="css/play.css">
 <link rel="stylesheet" href="css/overlays.css">
 <link rel="stylesheet" href="css/progress.css">
-<link rel="stylesheet" href="css/font-proto.css">
 <script src="js/boot-check.js"></script>
 <script type="module" src="js/main.js"></script>
 </head>
@@ -171,13 +170,6 @@
       <h2 class="display" data-i18n="common.settings">Ajustes</h2>
       <label class="toggle"><div><b data-i18n="appSettings.night">Modo noche</b><span data-i18n="appSettings.nightDesc">Colores cálidos en toda la app, para jugar antes de dormir.</span></div><input type="checkbox" data-night-toggle></label>
       <label class="toggle"><div><b data-i18n="appSettings.language">Idioma</b><span data-i18n="appSettings.languageDesc">Por defecto, el del móvil.</span></div><select class="select" data-lang-select></select></label>
-      <!-- PROTOTYPE: font to compare (ui/font-proto.js) -->
-      <label class="toggle"><div><b data-i18n="appSettings.font">Fuente (prueba)</b><span data-i18n="appSettings.fontDesc">Para elegir la tipografía de la app.</span></div>
-        <select class="select" data-font-select>
-          <option value="" data-i18n="appSettings.fontOriginal">Actual (Archivo)</option>
-          <option value="rubik">Rubik</option><option value="outfit">Outfit</option>
-          <option value="bricolage">Bricolage Grotesque</option><option value="space">Space Grotesk</option>
-        </select></label>
       <!-- free or Pro (core/membership.js); the text and the button's action are set in js/app/app.js#renderPro -->
       <div class="toggle"><div><b data-i18n="pro.title">Puzzles Go Pro</b><span id="proStatus"></span></div><button class="btn-chip" id="proManage" data-action="open-pro"></button></div>
     </div>

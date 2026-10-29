@@ -63,8 +63,8 @@ the code is formatted by hand, with the basics in `.editorconfig` (2 spaces, UTF
 GitHub Actions (`.github/workflows/ci.yml`) runs `check`, `test` and `test:e2e` on every push and pull request.
 
 Each game's CSS (`css/games/<id>.css`) loads when the game opens; what several games share goes in
-`css/components.css`. The fonts in `fonts/` are a subset of Archivo and Archivo Black with only the characters the
-app uses (`python3 scripts/build-fonts.py` rebuilds them).
+`css/components.css`. The font in `fonts/` is a subset of Rubik (license in `fonts/OFL.txt`) with only the characters the
+app uses (`python3 scripts/build-fonts.py` rebuilds it).
 
 All visible text lives in `js/i18n/es.js` and `js/i18n/en.js` (same keys, checked by `tests/i18n.test.js`) and is
 used with `t()`. Code, comments and docs are in English. Game names avoid trademarks; the `storageKey` of some games
