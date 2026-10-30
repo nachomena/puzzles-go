@@ -92,6 +92,22 @@ export default {
     languageAuto: 'Phone ({name})'
   },
 
+  backup: {
+    title: 'Backup',
+    desc: 'There are no accounts or servers: your progress only lives on this device. To switch phones or reinstall the app, export it to a file and import it on the new one.',
+    export: 'Export',
+    import: 'Import',
+    exported: 'Backup saved',
+    imported: 'Progress imported',
+    confirmTitle: 'Import the progress?',
+    confirmText: 'The progress on this device is replaced by the file’s. What you have now in the games the file contains is lost.',
+    confirmAccept: 'Import',
+    format: 'That file is not a Puzzles Go backup',
+    newer: 'The backup is from a newer version: update the app',
+    empty: 'The backup has no progress to import',
+    failed: 'Could not save: the device is out of space'
+  },
+
   menu: {
     aria: 'Levels',
     newGame: 'New game',

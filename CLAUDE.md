@@ -18,5 +18,4 @@
   it is solid.
 - **Before publishing to the stores**: publish a privacy policy and check that "Puzzles Go" is not a registered
   trademark.
-- **Export and import progress** in Settings, so the app can be reinstalled without losing it.
 - **Custom domain** on GitHub Pages.

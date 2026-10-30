@@ -172,6 +172,16 @@
       <label class="toggle"><div><b data-i18n="appSettings.language">Idioma</b><span data-i18n="appSettings.languageDesc">Por defecto, el del móvil.</span></div><select class="select" data-lang-select></select></label>
       <!-- free or Pro (core/membership.js); the text and the button's action are set in js/app/app.js#renderPro -->
       <div class="toggle"><div><b data-i18n="pro.title" data-action="dev-tap">Puzzles Go Pro</b><span id="proStatus"></span></div><button class="btn-chip btn-pro" id="proManage" data-action="open-pro"></button></div>
+      <!-- progress to a file and back (core/backup.js): there are no accounts, so this is how it moves to another device -->
+      <div class="backup">
+        <b data-i18n="backup.title">Copia de seguridad</b>
+        <span data-i18n="backup.desc">No hay cuentas ni servidor: tu progreso solo está en este dispositivo. Para cambiar de móvil o reinstalar la app, expórtalo a un archivo e impórtalo en el nuevo.</span>
+        <div class="backup__actions">
+          <button class="btn-chip" data-action="export-progress" data-i18n="backup.export">Exportar</button>
+          <button class="btn-chip" data-action="import-progress" data-i18n="backup.import">Importar</button>
+        </div>
+        <input type="file" id="importFile" accept="application/json,.json" hidden>
+      </div>
     </div>
     <div class="sheet__foot"><button class="btn-primary" data-action="close" data-i18n="common.done">Listo</button></div>
   </div>

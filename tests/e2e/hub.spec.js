@@ -224,3 +224,31 @@ test('seven taps on "Puzzles Go Pro" in the settings switch the test purchase on
   await expect(page.locator('#levelList [data-level="hard"]')).not.toHaveClass(/is-locked/);
   expect(errors).toEqual([]);
 });
+
+test('backup: the progress is exported to a file and imported back, asking first', async ({ page }) => {
+  const errors = await openApp(page);
+  const KEY = 'puzzlesgo.sudoku.v1', saved = { stats: { easy: { best: 77 } }, log: [] };
+  await page.evaluate(([k, v]) => localStorage.setItem(k, JSON.stringify(v)), [KEY, saved]);
+  await page.locator('[data-action="open-app-settings"]').click();
+  await expect(page.locator('#app-settings .backup')).toContainText('No hay cuentas');
+  const [download] = await Promise.all([page.waitForEvent('download'), page.locator('#app-settings [data-action="export-progress"]').click()]);
+  expect(download.suggestedFilename()).toMatch(/^puzzles-go-\d{4}-\d{2}-\d{2}\.json$/);
+  const path = await download.path();
+
+  // a file that isn't a backup is refused with a notice
+  await page.locator('#importFile').setInputFiles({ name: 'x.json', mimeType: 'application/json', buffer: Buffer.from('{"hola":1}') });
+  await expect(page.locator('#toast')).toContainText('no es una copia');
+
+  // the progress is lost (new device), then imported: cancelling changes nothing, accepting reloads with it
+  await page.evaluate(k => localStorage.removeItem(k), KEY);
+  await page.locator('#importFile').setInputFiles(path);
+  await expect(page.locator('#confirm')).toHaveClass(/is-on/);
+  await page.locator('#confirm [data-action="confirm-alternate"]').click();
+  expect(await page.evaluate(k => localStorage.getItem(k), KEY)).toBeNull();
+
+  await page.locator('#importFile').setInputFiles(path);
+  await page.locator('#confirm [data-action="confirm-accept"]').click();
+  await expect(page.locator('#toast')).toContainText('Progreso importado');
+  expect(JSON.parse(await page.evaluate(k => localStorage.getItem(k), KEY)).stats.easy.best).toBe(77);
+  expect(errors).toEqual([]);
+});

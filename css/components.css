@@ -44,6 +44,12 @@
 .toggle{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--divider);gap:16px}
 .toggle b{display:block;font-size:17px;font-weight:600}
 .toggle span{display:block;font-size:14px;color:var(--dim);margin-top:2px}
+/* backup row of the app settings: text, then its two buttons side by side */
+.backup{padding:14px 0;border-bottom:1px solid var(--divider)}
+.backup b{display:block;font-size:17px;font-weight:600}
+.backup span{display:block;font-size:14px;color:var(--dim);margin-top:2px;line-height:1.45}
+.backup__actions{display:flex;gap:10px;margin-top:12px}
+.backup__actions .btn-chip{flex:1;justify-content:center}
 .toggle input{appearance:none;-webkit-appearance:none;width:52px;height:32px;border-radius:16px;background:var(--switch-off);position:relative;flex-shrink:0;cursor:pointer;margin:0;transition:background .2s}
 .toggle input::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:var(--knob);transition:transform .2s}
 .toggle input:checked{background:var(--switch-on)}

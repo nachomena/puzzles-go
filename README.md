@@ -41,6 +41,9 @@ Progress is stored on the device and kept across updates: when there is a new ve
 ("A new version is available · Update") and there is no need to add it to the home screen again (deleting the
 icon also deletes its progress).
 
+**Backup**: there are no accounts or servers, so the progress can be exported to a file and imported on another device
+(app settings, `js/core/backup.js`). Each game's saved data and the daily streak travel; Pro, language and night mode don't.
+
 ## Development
 
 No build step: HTML, CSS and native ES modules. The only dependency is Playwright, for the browser tests (the app

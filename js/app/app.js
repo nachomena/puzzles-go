@@ -21,7 +21,11 @@ import { progressRows } from '../core/progress.js';
 import { bindEdgeBack } from '../ui/edge-back.js';
 import { DailyLog, dailyFor, dailyGames, dayKey } from '../core/daily.js';
 import { Membership } from '../core/membership.js';
+import { BackupError, MAX_BYTES, applyBackup, backupKeys, backupName, exportBackup, parseBackup } from '../core/backup.js';
 import { t, translateDom, LANGUAGES, languageChoice, deviceLanguage, setLanguage } from '../i18n/index.js';
+
+/** Session flag: the app was reloaded by an import (its notice is shown on start). */
+const IMPORTED = 'puzzlesgo.imported';
 
 const htmlToElement = html => {
   const t = document.createElement('template');
@@ -46,6 +50,8 @@ export class App {
     this.membership = new Membership(storage);
     this.daily = new DailyLog(storage);
     this.dailyIds = dailyGames(catalog.map(c => c.meta));
+    this.backupKeys = backupKeys(catalog.map(c => c.meta));
+    this.restoring = false;     // an import is about to reload the app: nothing may save over it
     this.overlays.beforeOpen('pro', () => this.#renderPro());
     this.overlays.beforeOpen('app-settings', () => this.#renderPro());
     this.levelMenu = new LevelMenu({ title: byId('gameTitle'), label: byId('levelsLabel'), levels: byId('levelList'), resume: byId('resume') });
@@ -54,6 +60,7 @@ export class App {
     this.night = new NightMode(storage);
     document.querySelectorAll('[data-night-toggle]').forEach(el => el.addEventListener('change', e => this.night.set(e.target.checked)));
     this.#bindLanguage(document.querySelector('[data-lang-select]'));
+    byId('importFile').addEventListener('change', e => this.#importProgress(e.target));
     this.confirm = new ConfirmDialog(byId('confirm'), this.overlays);
     this.fitHubTitle = keepFitted(byId('title'));
     this.fitGameTitle = keepFitted(byId('gameTitle'));
@@ -126,6 +133,10 @@ export class App {
   start(){
     this.#refreshMenus();
     byId('loading').classList.remove('is-on', 'is-boot');
+    // an import reloads the app: the notice waits for it
+    try {
+      if (sessionStorage.getItem(IMPORTED) === '1'){ sessionStorage.removeItem(IMPORTED); this.toast.show(t('backup.imported')); }
+    } catch (e){}
   }
 
   /* ---------- New version ---------- */
@@ -146,7 +157,58 @@ export class App {
     requestAnimationFrame(() => requestAnimationFrame(() => bar.classList.add('is-on')));
   }
 
-  #saveAll(){ for (const e of this.entries.values()) e.store.save(); }
+  #saveAll(){
+    if (this.restoring) return;
+    for (const e of this.entries.values()) e.store.save();
+  }
+
+  /** Saves the progress into a file: shared (save to Files, send…) where the phone offers it, downloaded elsewhere. */
+  async #exportProgress(){
+    this.#saveAll();
+    const name = backupName(), text = exportBackup(this.storage, this.backupKeys);
+    const file = new File([text], name, { type: 'application/json' });
+    if (navigator.canShare?.({ files: [file] })){
+      try {
+        await navigator.share({ files: [file] });
+        this.toast.show(t('backup.exported'));
+        return;
+      } catch (e){
+        if (e.name === 'AbortError') return;   // the player closed the share sheet
+      }
+    }
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(file);
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 10_000);
+    this.toast.show(t('backup.exported'));
+  }
+
+  /** Reads the chosen file, asks before replacing the progress and reloads the app with it. */
+  async #importProgress(input){
+    const file = input.files[0];
+    input.value = '';   // the same file can be chosen again
+    if (!file) return;
+    try {
+      if (file.size > MAX_BYTES) throw new BackupError('format');
+      const entries = parseBackup(await file.text(), this.backupKeys);
+      const choice = await this.confirm.ask({
+        title: t('backup.confirmTitle'),
+        text: t('backup.confirmText'),
+        accept: t('backup.confirmAccept')
+      });
+      if (choice !== 'accept') return;
+      this.restoring = true;
+      if (!applyBackup(this.storage, entries)){ this.restoring = false; this.toast.show(t('backup.failed')); return; }
+      try { sessionStorage.setItem(IMPORTED, '1'); } catch (e){}
+      location.reload();
+    } catch (e){
+      if (!(e instanceof BackupError)) throw e;
+      this.toast.show(t(`backup.${e.reason}`));
+    }
+  }
 
   /* ---------- Navigation ---------- */
 
@@ -460,6 +522,8 @@ export class App {
       'restore-pro':  () => this.membership.pro ? this.overlays.close('pro') : this.toast.show(t('pro.nothingToRestore')),
       'reset-pro':    () => this.#setPro(false),
       'dev-tap':      () => this.#devTap(),
+      'export-progress': () => this.#exportProgress(),
+      'import-progress': () => byId('importFile').click(),
       'start-level':  el => {
         if (this.currentMeta && this.membership.locks(this.currentMeta, el.dataset.level)){ this.overlays.open('pro'); return; }
         this.#withGame(entry => entry.game.picker
@@ -545,7 +609,7 @@ export class App {
     }, 1000);
 
     document.addEventListener('visibilitychange', () => {
-      if (document.hidden) for (const e of this.entries.values()) e.store.save();
+      if (document.hidden) this.#saveAll();
     });
   }
 }

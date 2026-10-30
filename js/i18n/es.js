@@ -92,6 +92,22 @@ export default {
     languageAuto: 'Del móvil ({name})'
   },
 
+  backup: {
+    title: 'Copia de seguridad',
+    desc: 'No hay cuentas ni servidor: tu progreso solo está en este dispositivo. Para cambiar de móvil o reinstalar la app, expórtalo a un archivo e impórtalo en el nuevo.',
+    export: 'Exportar',
+    import: 'Importar',
+    exported: 'Copia guardada',
+    imported: 'Progreso importado',
+    confirmTitle: '¿Importar el progreso?',
+    confirmText: 'Se sustituye el progreso de este dispositivo por el del archivo. Lo que tengas ahora en los juegos del archivo se pierde.',
+    confirmAccept: 'Importar',
+    format: 'Ese archivo no es una copia de Puzzles Go',
+    newer: 'La copia es de una versión más nueva: actualiza la app',
+    empty: 'La copia no tiene progreso que importar',
+    failed: 'No se pudo guardar: no hay espacio en el dispositivo'
+  },
+
   menu: {
     aria: 'Niveles',
     newGame: 'Nueva partida',
