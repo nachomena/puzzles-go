@@ -122,10 +122,10 @@ test('Star Battle: tapping a trial star, with either tool, undoes it and everyth
   await expect(cells.nth(55)).toHaveClass(/cell--star/);
 });
 
-test('Killer Sudoku and Calcudoku start with plain cages; the setting tints them', async ({ page }) => {
-  const errors = await openApp(page);
-  for (const id of ['killer-sudoku', 'calcudoku']){
-    await page.goto('./');
+// one test per game, so each has its own time to generate a board on a busy machine
+for (const id of ['killer-sudoku', 'calcudoku']){
+  test(`${id} starts with plain cages; the setting tints them`, async ({ page }) => {
+    const errors = await openApp(page);
     const play = await startGame(page, id);
     const board = play.locator('.board');
     await expect(board).not.toHaveClass(/is-tinted/);
@@ -136,6 +136,6 @@ test('Killer Sudoku and Calcudoku start with plain cages; the setting tints them
     expect(await board.locator('.cell').first().evaluate(el => el.style.getPropertyValue('--cage'))).toMatch(/^hsl\(/);
     await toggle.uncheck({ force: true });
     await expect(board).not.toHaveClass(/is-tinted/);
-  }
-  expect(errors).toEqual([]);
-});
+    expect(errors).toEqual([]);
+  });
+}
