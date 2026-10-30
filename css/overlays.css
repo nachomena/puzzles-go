@@ -36,6 +36,7 @@ html:has(.overlay.is-on){overflow:hidden}
 /* Pro sheet */
 .pro-perks li::marker{color:var(--accent)}
 .sheet .pro-note{font-size:14px;color:var(--dim)}
+.sheet .pro-web{font-weight:600;color:var(--ink)}
 .pro-restore{display:block;width:100%;margin-top:10px}
 /* Progress without Pro: the screen behind, blurred, and a card on top */
 .pro-gate{position:relative}

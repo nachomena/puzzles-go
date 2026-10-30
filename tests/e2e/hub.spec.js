@@ -87,6 +87,7 @@ test('a slow start shows the logo until the picker is drawn', async ({ page }) =
 });
 
 test('free version: Hard needs Pro; the simulated purchase unlocks it', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('puzzlesgo.dev', '1'));   // developer mode: simulated purchase
   const errors = await openApp(page);
   await page.locator('#games [data-game="sudoku"]').click();
   const hard = page.locator('#levelList [data-level="hard"]');
@@ -152,6 +153,7 @@ test('solving the daily challenge counts for the streak', async ({ page }) => {
 });
 
 test('Progress opens without Pro but asks for it; with Pro it is shown', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('puzzlesgo.dev', '1'));   // developer mode: simulated purchase
   const errors = await openApp(page);
   await page.locator('.hub-progress[data-action="open-progress"]').click();
   const gate = page.locator('#progress .pro-gate__card');
@@ -192,5 +194,33 @@ test('the Pro sheet has a close button', async ({ page }) => {
   await page.locator('#pro .sheet__close').click();
   await expect(page.locator('#pro')).not.toHaveClass(/is-on/);
   await expect(page.locator('#levels')).toHaveClass(/is-on/);
+  expect(errors).toEqual([]);
+});
+
+test('on the web Pro is not sold: the sheet says where it is, with no purchase button', async ({ page }) => {
+  const errors = await openApp(page);
+  await page.locator('#games [data-game="sudoku"]').click();
+  await page.locator('#levelList [data-level="hard"]').click();
+  await expect(page.locator('#pro')).toHaveClass(/is-on/);
+  await expect(page.locator('#pro #proWeb')).toBeVisible();
+  await expect(page.locator('#pro #proBuy')).toBeHidden();
+  await expect(page.locator('#pro #proRestore')).toBeHidden();
+  await page.locator('#pro #proGotIt').click();
+  await expect(page.locator('#pro')).not.toHaveClass(/is-on/);
+  // the level stays locked
+  await expect(page.locator('#levelList [data-level="hard"]')).toHaveClass(/is-locked/);
+  expect(errors).toEqual([]);
+});
+
+test('seven taps on "Puzzles Go Pro" in the settings switch the test purchase on', async ({ page }) => {
+  const errors = await openApp(page);
+  await page.locator('[data-action="open-app-settings"]').click();
+  for (let i = 0; i < 7; i++) await page.locator('#app-settings [data-action="dev-tap"]').click();
+  await page.locator('#app-settings [data-action="open-pro"]').click();
+  await expect(page.locator('#pro #proBuy')).toBeVisible();
+  await page.locator('#pro #proBuy').click();
+  await expect(page.locator('#pro')).not.toHaveClass(/is-on/);
+  await page.locator('#games [data-game="sudoku"]').click();
+  await expect(page.locator('#levelList [data-level="hard"]')).not.toHaveClass(/is-locked/);
   expect(errors).toEqual([]);
 });

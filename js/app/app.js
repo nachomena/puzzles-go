@@ -224,18 +224,37 @@ export class App {
     });
   }
 
-  /** Texts of the Pro sheet and of its row in the app settings. */
+  /**
+   * Texts of the Pro sheet and of its row in the app settings. Where Pro can't be bought (the web) the sheet only says
+   * where it is sold; in developer mode it shows the simulated purchase.
+   */
   #renderPro(){
-    const pro = this.membership.pro, manage = byId('proManage');
+    const { pro, canBuy } = this.membership, manage = byId('proManage');
     byId('proBuy').textContent = t('pro.buy', { price: t('pro.price') });
+    for (const id of ['proBuy', 'proRestore', 'proTest']) byId(id).hidden = !canBuy;
+    byId('proWeb').hidden = byId('proGotIt').hidden = canBuy;
     byId('proStatus').textContent = t(pro ? 'pro.statusPro' : 'pro.statusFree');
     manage.textContent = t(pro ? 'pro.reset' : 'pro.go');
     manage.classList.toggle('btn-pro', !pro);
     manage.dataset.action = pro ? 'reset-pro' : 'open-pro';
   }
 
+  /** Seven quick taps on "Puzzles Go Pro" in the app settings switch the developer mode (simulated purchase) on or off. */
+  #devTap(){
+    clearTimeout(this.devTimer);
+    this.devTaps = (this.devTaps || 0) + 1;
+    this.devTimer = setTimeout(() => { this.devTaps = 0; }, 2000);
+    if (this.devTaps < 7) return;
+    this.devTaps = 0;
+    this.membership.setDev(!this.membership.dev);
+    this.#renderPro();
+    this.#refreshMenus();
+    this.toast.show(t(this.membership.dev ? 'pro.devOn' : 'pro.devOff'));
+  }
+
   /** Simulated purchase (the stores' one will go here). */
   #setPro(pro){
+    if (!this.membership.canBuy) return;
     this.membership.set(pro);
     this.overlays.close('pro');
     this.#renderPro();
@@ -440,6 +459,7 @@ export class App {
       'buy-pro':      () => this.#setPro(true),
       'restore-pro':  () => this.membership.pro ? this.overlays.close('pro') : this.toast.show(t('pro.nothingToRestore')),
       'reset-pro':    () => this.#setPro(false),
+      'dev-tap':      () => this.#devTap(),
       'start-level':  el => {
         if (this.currentMeta && this.membership.locks(this.currentMeta, el.dataset.level)){ this.overlays.open('pro'); return; }
         this.#withGame(entry => entry.game.picker

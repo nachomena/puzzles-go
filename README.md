@@ -30,8 +30,10 @@ uses human techniques.
 doesn't repeat until every game has had its turn (the order comes from the date, so it is the same on every phone);
 it is Hard on weekdays and Expert at the weekend. Solving it keeps a streak of days in a row (`js/core/daily.js`).
 
-**Free and Pro**: free, every game on Easy plus the daily challenge; Pro, every level (`js/core/membership.js`). For
-now the purchase is simulated and saved on the device; the stores' purchase will replace it.
+**Free and Pro**: free, every game on Easy plus the daily challenge; Pro, every level (`js/core/membership.js`). Pro is
+only sold inside the apps, so on the web it is a demo: the Pro sheet says where to get it and there is no purchase.
+For tests there is a developer mode (seven quick taps on "Puzzles Go Pro" in the app settings) with a simulated
+purchase saved on the device; the stores' purchase will be added to the apps.
 
 Published with GitHub Pages. On iPhone: open in Safari → Share → "Add to Home Screen".
 

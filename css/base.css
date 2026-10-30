@@ -9,6 +9,8 @@ body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:
   overscroll-behavior:none;-webkit-font-smoothing:antialiased}
 /* iPhone, installed app: with the page as tall as the screen, iOS stops cropping the window (js/pwa.js) */
 .has-viewport-gap body{min-height:calc(100lvh - var(--safe-top) - var(--safe-bottom))}   /* + the :root padding = the screen */
+/* the hidden attribute wins over any display a class sets */
+[hidden]{display:none !important}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;touch-action:manipulation}
 button:focus-visible,label:focus-within{outline:2px solid var(--wall);outline-offset:3px;border-radius:6px}
 button:disabled{opacity:.35;cursor:default}

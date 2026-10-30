@@ -53,12 +53,24 @@ test('DailyLog: records once, is saved and gives the streak', () => {
   assert.equal(again.streak('2026-10-29'), 2);
 });
 
-test('Membership: free locks every level but the first; Pro, none; single-level games are free', () => {
+test('Membership: free locks every level but the first; Pro only exists in developer mode', () => {
   const storage = memory(), m = new Membership(storage);
   const sudoku = CATALOG.find(c => c.meta.id === 'sudoku').meta, peg = CATALOG.find(c => c.meta.id === 'peg-solitaire').meta;
-  assert.deepEqual(sudoku.levelOrder.map(L => m.locks(sudoku, L)), [false, true, true]);
+  const locks = mm => sudoku.levelOrder.map(L => mm.locks(sudoku, L));
+  assert.deepEqual(locks(m), [false, true, true]);
   assert.ok(!m.locks(peg, peg.levelOrder[0]));
+  // on the web (no developer mode) the purchase does nothing and nothing is saved
+  assert.ok(!m.canBuy);
   m.set(true);
-  assert.ok(new Membership(storage).pro, 'saved');
-  assert.deepEqual(sudoku.levelOrder.map(L => m.locks(sudoku, L)), [false, false, false]);
+  assert.ok(!m.pro && !new Membership(storage).pro);
+  assert.deepEqual(locks(m), [false, true, true]);
+  // developer mode: the simulated purchase works and is kept
+  m.setDev(true);
+  assert.ok(m.canBuy && !m.pro);
+  m.set(true);
+  assert.ok(m.pro && new Membership(storage).pro, 'saved');
+  assert.deepEqual(locks(m), [false, false, false]);
+  // leaving developer mode takes Pro away again
+  m.setDev(false);
+  assert.ok(!m.pro && !new Membership(storage).pro);
 });
