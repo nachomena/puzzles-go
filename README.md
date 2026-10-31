@@ -42,7 +42,8 @@ Progress is stored on the device and kept across updates: when there is a new ve
 icon also deletes its progress).
 
 **Backup**: there are no accounts or servers, so the progress can be exported to a file and imported on another device
-(app settings, `js/core/backup.js`). Each game's saved data and the daily streak travel; Pro, language and night mode don't.
+(app settings, `js/core/backup.js`). Each game's statistics, history and settings and the daily streak travel; the game in progress (its board holds the
+solution), Pro, language and night mode don't.
 
 ## Development
 

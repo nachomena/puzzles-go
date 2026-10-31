@@ -94,7 +94,7 @@ export default {
 
   backup: {
     title: 'Copia de seguridad',
-    desc: 'No hay cuentas ni servidor: tu progreso solo está en este dispositivo. Para cambiar de móvil o reinstalar la app, expórtalo a un archivo e impórtalo en el nuevo.',
+    desc: 'No hay cuentas ni servidor: tu progreso solo está en este dispositivo. Para cambiar de móvil o reinstalar la app, expórtalo a un archivo e impórtalo en el nuevo. La partida a medias no se incluye.',
     export: 'Exportar',
     import: 'Importar',
     exported: 'Copia guardada',

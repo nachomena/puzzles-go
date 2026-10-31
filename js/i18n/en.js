@@ -94,7 +94,7 @@ export default {
 
   backup: {
     title: 'Backup',
-    desc: 'There are no accounts or servers: your progress only lives on this device. To switch phones or reinstall the app, export it to a file and import it on the new one.',
+    desc: 'There are no accounts or servers: your progress only lives on this device. To switch phones or reinstall the app, export it to a file and import it on the new one. A game in progress is not included.',
     export: 'Export',
     import: 'Import',
     exported: 'Backup saved',
