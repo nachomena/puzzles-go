@@ -234,6 +234,9 @@ test('backup: the progress is exported to a file and imported back, asking first
   const [download] = await Promise.all([page.waitForEvent('download'), page.locator('#app-settings [data-action="export-progress"]').click()]);
   expect(download.suggestedFilename()).toMatch(/^puzzles-go-\d{4}-\d{2}-\d{2}\.json$/);
   const path = await download.path();
+  // the file calls the game by its name, not by the key it is saved under
+  const file = JSON.parse(await (await import('node:fs/promises')).readFile(path, 'utf8'));
+  expect(Object.keys(file.data)).toEqual(['sudoku']);
 
   // a file that isn't a backup is refused with a notice
   await page.locator('#importFile').setInputFiles({ name: 'x.json', mimeType: 'application/json', buffer: Buffer.from('{"hola":1}') });

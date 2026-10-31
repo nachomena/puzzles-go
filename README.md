@@ -42,7 +42,7 @@ Progress is stored on the device and kept across updates: when there is a new ve
 icon also deletes its progress).
 
 **Backup**: there are no accounts or servers, so the progress can be exported to a file and imported on another device
-(app settings, `js/core/backup.js`). Each game's statistics, history and settings and the daily streak travel; the game in progress (its board holds the
+(app settings, `js/core/backup.js`). Each game's statistics, history and settings (under the game's id) and the daily streak travel; the game in progress (its board holds the
 solution), Pro, language and night mode don't.
 
 ## Development
@@ -73,8 +73,8 @@ Each game's CSS (`css/games/<id>.css`) loads when the game opens; what several g
 app uses (`python3 scripts/build-fonts.py` rebuilds it).
 
 All visible text lives in `js/i18n/es.js` and `js/i18n/en.js` (same keys, checked by `tests/i18n.test.js`) and is
-used with `t()`. Code, comments and docs are in English. Game names avoid trademarks; the `storageKey` of some games
-keeps its old name so saved progress isn't lost.
+used with `t()`. Code, comments and docs are in English. Game names avoid trademarks; each game's `storageKey` is
+`puzzlesgo.<id>.v1`.
 
 ## Structure
 

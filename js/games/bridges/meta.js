@@ -8,7 +8,7 @@ export default Object.freeze({
   /** Short line under the name in the picker. */
   tagline: t('games.bridges.tagline'),
   icon: 'bridges',
-  storageKey: 'puzzlesgo.hashi.v1',
+  storageKey: 'puzzlesgo.bridges.v1',
   /** `target` is the generator level: a bigger board and more islands the higher it is. */
   levels: difficulty({ easy: 2, hard: 4, expert: 5 }),
   levelOrder: LEVEL_ORDER,

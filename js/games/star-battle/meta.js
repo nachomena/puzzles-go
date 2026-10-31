@@ -8,7 +8,7 @@ export default Object.freeze({
   /** Short line under the name in the picker. */
   tagline: t('games.star-battle.tagline'),
   icon: 'star',
-  storageKey: 'starbattlego.v2',   // legacy key: keeps saved games and statistics
+  storageKey: 'puzzlesgo.star-battle.v1',
   /** `target` is the logic solver level the board requires. */
   levels: difficulty({ easy: 1, hard: 2, expert: 3 }),
   levelOrder: LEVEL_ORDER

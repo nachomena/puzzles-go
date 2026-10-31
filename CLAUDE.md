@@ -8,8 +8,8 @@
 - Before pushing: `npm run build:sw`, `npm run check`, `npm test` and `npx playwright test`.
 - Tidy CSS with no duplication: shared styles go in `css/components.css`, each game's in `css/games/<id>.css`.
 - No visible text in the code: it goes in `js/i18n/es.js` and `js/i18n/en.js` (same keys) and is used with `t()`.
-- Game names without trademarks (Gridlock, Pentominoes, Calcudoku, Fit, Dice…). Ids, folders and classes use the
-  new names; the `storageKey` values don't change, so saved progress isn't lost.
+- Game names without trademarks (Gridlock, Pentominoes, Calcudoku, Fit, Dice…). Ids, folders, classes and `storageKey`s
+  (`puzzlesgo.<id>.v1`) use the new names. (The old keys were renamed on purpose, dropping the progress saved under them.)
 
 ## For later
 - **Store apps with Capacitor**: the same web app inside an iOS and Android app (`npx cap sync` after each change).

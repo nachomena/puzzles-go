@@ -8,7 +8,7 @@ export default Object.freeze({
   /** Short line under the name in the picker. */
   tagline: t('games.binary.tagline'),
   icon: 'binary',
-  storageKey: 'puzzlesgo.binario.v1',
+  storageKey: 'puzzlesgo.binary.v1',
   /** `target` is the generator level: a bigger board the higher it is; the last one needs looking one step ahead. */
   levels: difficulty({ easy: 2, hard: 4, expert: 5 }),
   levelOrder: LEVEL_ORDER,

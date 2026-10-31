@@ -8,7 +8,7 @@ export default Object.freeze({
   /** Short line under the name in the picker. */
   tagline: t('games.dice.tagline'),
   icon: 'dice',
-  storageKey: 'puzzlesgo.smartdices.v1',
+  storageKey: 'puzzlesgo.dice.v1',
   /** Picker group (see ui/hub-view.js). */
   group: 'pieces',
   /** `target` is the generator level (higher = fewer clues). */

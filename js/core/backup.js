@@ -5,7 +5,7 @@
    the language and night mode (they belong to the device). No DOM. */
 
 const APP = 'puzzles-go';
-const VERSION = 1;
+const VERSION = 2;   // 1: keyed by storage key (kept readable); 2: keyed by the game's id
 /** Largest file accepted, so a wrong one is refused before it is read. */
 export const MAX_BYTES = 5_000_000;
 const DAILY_KEY = 'puzzlesgo.daily';
@@ -15,8 +15,13 @@ export class BackupError extends Error {
   constructor(reason){ super(reason); this.reason = reason; }
 }
 
-/** Storage keys that go into a backup. @param {{ storageKey: string }[]} metas */
-export const backupKeys = metas => [...metas.map(m => m.storageKey), DAILY_KEY];
+/**
+ * What goes into a backup: each game under its id (what the player knows it by) and the daily log as 'daily'. The
+ * storage keys keep the old names so saved progress isn't lost; the file doesn't show them.
+ * @param {{ id: string, storageKey: string }[]} metas
+ * @returns {{ name: string, key: string }[]}
+ */
+export const backupSpec = metas => [...metas.map(m => ({ name: m.id, key: m.storageKey })), { name: 'daily', key: DAILY_KEY }];
 
 const isObject = v => v !== null && typeof v === 'object' && !Array.isArray(v);
 
@@ -24,14 +29,14 @@ const isObject = v => v !== null && typeof v === 'object' && !Array.isArray(v);
 const LEFT_OUT = ['buffers', 'cur'];
 const withoutLeftOut = value => Object.fromEntries(Object.entries(value).filter(([k]) => !LEFT_OUT.includes(k)));
 
-/** The file's text for the data saved under `keys`. */
-export function exportBackup(storage, keys, now = new Date()){
+/** The file's text for the data saved under `spec` (see backupSpec). */
+export function exportBackup(storage, spec, now = new Date()){
   const data = {};
-  for (const key of keys){
+  for (const { name, key } of spec){
     let value = null;
     try { value = JSON.parse(storage?.getItem(key) || 'null'); } catch (e){ /* corrupt data: not exported */ }
     if (!isObject(value)) continue;
-    data[key] = withoutLeftOut(value);
+    data[name] = withoutLeftOut(value);
   }
   return JSON.stringify({ app: APP, version: VERSION, date: now.toISOString(), data });
 }
@@ -40,17 +45,22 @@ export function exportBackup(storage, keys, now = new Date()){
 export const backupName = (now = new Date()) => `${APP}-${now.toISOString().slice(0, 10)}.json`;
 
 /**
- * Reads a backup. Returns the entries to write: [[key, object]], only for known keys.
+ * Reads a backup. Returns the entries to write: [[storage key, object]], only for known games (a file of version 1
+ * has them under their storage keys).
  * @throws {BackupError} 'format' (not a Puzzles Go file), 'newer' (made by a newer version), 'empty' (nothing to restore)
  */
-export function parseBackup(text, keys){
+export function parseBackup(text, spec){
   let file;
   try { file = JSON.parse(text); } catch (e){ throw new BackupError('format'); }
   if (!isObject(file) || file.app !== APP || !isObject(file.data)) throw new BackupError('format');
   if (!(file.version >= 1)) throw new BackupError('format');
   if (file.version > VERSION) throw new BackupError('newer');
   // a file from an earlier version may still carry the game in progress: it is not restored
-  const entries = keys.filter(k => isObject(file.data[k])).map(k => [k, withoutLeftOut(file.data[k])]);
+  const entries = [];
+  for (const { name, key } of spec){
+    const value = file.data[name] ?? file.data[key];
+    if (isObject(value)) entries.push([key, withoutLeftOut(value)]);
+  }
   if (!entries.length) throw new BackupError('empty');
   return entries;
 }

@@ -9,7 +9,7 @@ export default Object.freeze({
   /** Short line under the name in the picker. */
   tagline: t('games.gridlock.tagline'),
   icon: 'car',
-  storageKey: 'puzzlesgo.rushhour.v1',
+  storageKey: 'puzzlesgo.gridlock.v1',
   /** `target` is the generator level: higher = more moves to get the red car out. */
   levels: difficulty({ easy: 2, hard: 4, expert: 5 }),
   levelOrder: LEVEL_ORDER,

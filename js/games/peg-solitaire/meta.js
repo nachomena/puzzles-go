@@ -7,7 +7,7 @@ export default Object.freeze({
   /** Short line under the name in the picker. */
   tagline: t('games.peg-solitaire.tagline'),
   icon: 'peg',
-  storageKey: 'puzzlesgo.pegsolitaire.v1',
+  storageKey: 'puzzlesgo.peg-solitaire.v1',
   /** A single level, so there is no menu: it goes straight into the game. The board is chosen in Settings. */
   levels: Object.freeze({
     classic: Object.freeze({ name: t('games.peg-solitaire.level'), target: 1 })

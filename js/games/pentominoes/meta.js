@@ -53,7 +53,7 @@ export default Object.freeze({
   /** Short line under the name in the picker. */
   tagline: t('games.pentominoes.tagline'),
   icon: 'pentominoes',
-  storageKey: 'puzzlesgo.katamino.v1',
+  storageKey: 'puzzlesgo.pentominoes.v1',
   /** Its puzzles are picked from a table, so it doesn't take part in the daily challenge (core/daily.js). */
   daily: false,
   /** Inside each level the set, row and puzzle are chosen (picker.js). `target` only numbers the levels. */

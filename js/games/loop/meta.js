@@ -8,7 +8,7 @@ export default Object.freeze({
   /** Short line under the name in the picker. */
   tagline: t('games.loop.tagline'),
   icon: 'loop',
-  storageKey: 'puzzlesgo.slitherlink.v1',
+  storageKey: 'puzzlesgo.loop.v1',
   /** `target` is the generator level (engine/generator.js): a bigger board and more techniques. */
   levels: difficulty({ easy: 1, hard: 3, expert: 4 }),
   levelOrder: LEVEL_ORDER,

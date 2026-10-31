@@ -8,7 +8,7 @@ export default Object.freeze({
   /** Short line under the name in the picker. */
   tagline: t('games.killer-sudoku.tagline'),
   icon: 'killer',
-  storageKey: 'puzzlesgo.killersudoku.v1',
+  storageKey: 'puzzlesgo.killer-sudoku.v1',
   /** `target` is the logic solver level the board requires (see engine/logic-solver.js). */
   levels: difficulty({ easy: 1, hard: 2, expert: 3 }),
   levelOrder: LEVEL_ORDER,

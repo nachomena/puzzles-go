@@ -80,7 +80,7 @@ test('help: the button stays in view, the page behind is locked and each opening
 test('Star Battle: with every star placed but one breaking a rule, it warns and marks it even with errors off', async ({ page }) => {
   await openApp(page);
   const play = await startGame(page, 'star-battle');
-  const { N, solution } = await page.evaluate(() => JSON.parse(localStorage.getItem('starbattlego.v2')).cur.p);
+  const { N, solution } = await page.evaluate(() => JSON.parse(localStorage.getItem('puzzlesgo.star-battle.v1')).cur.p);
   // the solution with one star moved to another cell of its row: still 20 stars, but not the solution
   const stars = solution.slice(), row = Math.floor(stars[0] / N);
   stars[0] = [...Array(N).keys()].map(c => row * N + c).find(i => !solution.includes(i));

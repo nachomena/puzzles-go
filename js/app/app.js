@@ -21,7 +21,7 @@ import { progressRows } from '../core/progress.js';
 import { bindEdgeBack } from '../ui/edge-back.js';
 import { DailyLog, dailyFor, dailyGames, dayKey } from '../core/daily.js';
 import { Membership } from '../core/membership.js';
-import { BackupError, MAX_BYTES, applyBackup, backupKeys, backupName, exportBackup, parseBackup } from '../core/backup.js';
+import { BackupError, MAX_BYTES, applyBackup, backupName, backupSpec, exportBackup, parseBackup } from '../core/backup.js';
 import { t, translateDom, LANGUAGES, languageChoice, deviceLanguage, setLanguage } from '../i18n/index.js';
 
 /** Session flag: the app was reloaded by an import (its notice is shown on start). */
@@ -50,7 +50,7 @@ export class App {
     this.membership = new Membership(storage);
     this.daily = new DailyLog(storage);
     this.dailyIds = dailyGames(catalog.map(c => c.meta));
-    this.backupKeys = backupKeys(catalog.map(c => c.meta));
+    this.backupSpec = backupSpec(catalog.map(c => c.meta));
     this.restoring = false;     // an import is about to reload the app: nothing may save over it
     this.overlays.beforeOpen('pro', () => this.#renderPro());
     this.overlays.beforeOpen('app-settings', () => this.#renderPro());
@@ -165,7 +165,7 @@ export class App {
   /** Saves the progress into a file: shared (save to Files, send…) where the phone offers it, downloaded elsewhere. */
   async #exportProgress(){
     this.#saveAll();
-    const name = backupName(), text = exportBackup(this.storage, this.backupKeys);
+    const name = backupName(), text = exportBackup(this.storage, this.backupSpec);
     const file = new File([text], name, { type: 'application/json' });
     if (navigator.canShare?.({ files: [file] })){
       try {
@@ -193,7 +193,7 @@ export class App {
     if (!file) return;
     try {
       if (file.size > MAX_BYTES) throw new BackupError('format');
-      const entries = parseBackup(await file.text(), this.backupKeys);
+      const entries = parseBackup(await file.text(), this.backupSpec);
       const choice = await this.confirm.ask({
         title: t('backup.confirmTitle'),
         text: t('backup.confirmText'),

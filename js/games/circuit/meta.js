@@ -8,7 +8,7 @@ export default Object.freeze({
   /** Short line under the name in the picker. */
   tagline: t('games.circuit.tagline'),
   icon: 'circuit',
-  storageKey: 'puzzlesgo.smartcircuit.v1',
+  storageKey: 'puzzlesgo.circuit.v1',
   /** Picker group (see ui/hub-view.js). */
   group: 'pieces',
   /** `target` is the generator level (see engine/generator.js). */

@@ -8,7 +8,7 @@ export default Object.freeze({
   /** Short line under the name in the picker. */
   tagline: t('games.light-up.tagline'),
   icon: 'bulb',
-  storageKey: 'puzzlesgo.akari.v1',
+  storageKey: 'puzzlesgo.light-up.v1',
   /** `target` is the generator level: a bigger board and fewer numbers the higher it is. */
   levels: difficulty({ easy: 2, hard: 4, expert: 5 }),
   levelOrder: LEVEL_ORDER,
